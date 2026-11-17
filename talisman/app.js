@@ -193,6 +193,13 @@
     }, 1250);
   }
 
+  // 같은 부적이 연달아 나오지 않도록, 직전 부적은 빼고 뽑는다
+  function pickRandom(excludeId) {
+    var pool = TALISMANS.filter(function (x) { return x.id !== excludeId; });
+    if (!pool.length) pool = TALISMANS;
+    return pool[Math.floor(Math.random() * pool.length)];
+  }
+
   function closeSheet() {
     sheet.classList.remove('open');
     sheet.setAttribute('aria-hidden', 'true');
@@ -203,8 +210,7 @@
   sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });
 
   randomBtn.addEventListener('click', function () {
-    var t = TALISMANS[Math.floor(Math.random() * TALISMANS.length)];
-    requestDraw(t);
+    requestDraw(pickRandom(current && current.id));
   });
 
   adBtn.addEventListener('click', function () {
@@ -212,9 +218,8 @@
     playAd(function () {
       state.adCredits += 1;
       saveState(state);
-      var t = TALISMANS[Math.floor(Math.random() * TALISMANS.length)];
-      requestDraw(t);           // 방금 받은 광고 부적으로 바로 한 장 더
-      toast('광고 부적 1장 도착! 다른 부적도 뽑을 수 있어요 ✨');
+      requestDraw(pickRandom(current && current.id));   // 방금 받은 광고 부적으로 바로 한 장 더
+      toast('광고 부적 도착! 한 장 더 뽑았어요 ✨');
     });
   });
 

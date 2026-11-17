@@ -348,6 +348,7 @@ button{font-family:inherit;cursor:pointer}
 .help-box ul{margin:0 0 16px;padding-left:16px;font-size:12px;line-height:1.7;color:#4d3b59}
 .help-box li{margin-bottom:8px}
 .help-box b{color:#8c3f68}
+.help-box .btn{width:100%}
 
 /* ── 토스트 ──────────────────────────────────────────────── */
 .toast{
