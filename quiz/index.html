@@ -4,894 +4,201 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
 <meta name="theme-color" content="#fdeef4" />
-<meta name="description" content="취미 발레인(취발러)을 위한 발레 용어 퀴즈 · 슈가가 직접 시연해요" />
-<meta property="og:title" content="슈가의 발레 용어 퀴즈 🩰" />
-<meta property="og:description" content="슈가가 시연하는 발레 동작을 맞혀봐! 10문제 취발러 감정 테스트" />
+<meta name="description" content="마법 슈가와 함께하는 미니 발레 게임 — 용어 퀴즈, 앙셰느망 순서 외우기, 동작 카드 도감, 나만의 작품 무대" />
+<meta property="og:title" content="마법 슈가의 미니 발레 🩰" />
+<meta property="og:description" content="슈가가 시연하는 발레 동작을 맞히고, 카드를 모아 나만의 무대를 완성해 보세요." />
 <meta property="og:type" content="website" />
-<title>슈가의 발레 용어 퀴즈 🩰</title>
+<meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/quiz/assets/arabesque.webp" />
+<title>마법 슈가의 미니 발레 🩰</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<style>
-:root{
-  --pink:#f6a8c5; --pink-d:#e87fa8; --pink-deep:#d95f92;
-  --ivory:#fffaf3; --cream:#fff3e6;
-  --ink:#5c4354; --ink-soft:#8a6f80;
-  --mint:#8fd6b9; --gold:#f4c95d;
-  --card:#ffffff;
-}
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{height:100%}
-body{
-  font-family:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Noto Sans KR','Malgun Gothic',sans-serif;
-  background:linear-gradient(180deg,#fdeef4 0%,#fff6ec 60%,#fdeef4 100%);
-  color:var(--ink);
-  display:flex;justify-content:center;
-  min-height:100dvh;
-}
-#app{
-  width:100%;max-width:430px;min-height:100dvh;
-  display:flex;flex-direction:column;position:relative;
-  background:transparent;
-}
-.screen{display:none;flex-direction:column;flex:1;padding:14px 16px 20px;}
-.screen.on{display:flex}
-
-/* ---------- 공통 ---------- */
-.brand{display:flex;align-items:center;gap:6px;font-weight:800;font-size:14px;color:var(--pink-deep)}
-.brand .dot{width:6px;height:6px;border-radius:50%;background:var(--pink);display:inline-block}
-.btn{
-  border:none;border-radius:18px;font-family:inherit;cursor:pointer;
-  font-weight:800;transition:transform .08s ease, box-shadow .08s ease;
-}
-.btn:active{transform:scale(.97)}
-.btn-main{
-  background:linear-gradient(135deg,#f7a8c6,#f28fb6);color:#fff;
-  box-shadow:0 6px 16px rgba(233,127,168,.35);
-  padding:16px 20px;font-size:18px;width:100%;
-}
-.btn-sub{
-  background:#fff;color:var(--pink-deep);
-  border:2px solid #f6c3d8;
-  padding:13px 18px;font-size:15px;width:100%;
-}
-
-/* ---------- 타이틀 ---------- */
-#s-title{justify-content:flex-end;gap:12px}
-.hero-wrap{position:relative;border-radius:24px;overflow:hidden;flex:1;min-height:340px;
-  box-shadow:0 10px 30px rgba(216,130,170,.18);}
-#cv-title{width:100%;height:100%;display:block}
-.title-card{
-  background:rgba(255,255,255,.92);border-radius:24px;padding:22px 20px;
-  box-shadow:0 8px 24px rgba(216,130,170,.16);text-align:center;
-}
-.title-card h1{font-size:26px;letter-spacing:-.5px;color:var(--ink)}
-.title-card h1 em{font-style:normal;color:var(--pink-deep)}
-.title-card .sub{font-size:14px;color:var(--ink-soft);margin-top:6px;font-weight:600}
-.badge-row{display:flex;gap:6px;justify-content:center;margin:12px 0 14px;flex-wrap:wrap}
-.badge{font-size:12px;font-weight:700;background:#fdeaf2;color:var(--pink-deep);padding:5px 10px;border-radius:999px}
-
-/* ---------- 퀴즈 ---------- */
-#s-quiz{gap:10px}
-.qtop{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.qtop .pill{background:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:800;color:var(--ink-soft);box-shadow:0 2px 8px rgba(216,130,170,.12)}
-.qtop .score{color:var(--pink-deep)}
-.combo{background:linear-gradient(135deg,#f4c95d,#f7a8c6);color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:900;box-shadow:0 2px 8px rgba(244,201,93,.4);display:none}
-.combo.on{display:inline-block}
-.progress{height:8px;border-radius:99px;background:#ffffffaa;overflow:hidden;box-shadow:inset 0 1px 3px rgba(216,130,170,.15)}
-.progress i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f7a8c6,#f28fb6);width:0%;transition:width .3s ease}
-.stage-wrap{position:relative;border-radius:24px;overflow:hidden;box-shadow:0 8px 24px rgba(216,130,170,.18);height:296px;flex-shrink:0}
-#cv{width:100%;height:100%;display:block}
-.stage-ctrl{position:absolute;right:10px;bottom:10px;display:flex;gap:6px}
-.stage-ctrl button{
-  border:none;background:rgba(255,255,255,.92);border-radius:12px;
-  padding:8px 12px;font-size:14px;font-weight:800;color:var(--ink);cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,.12);font-family:inherit;
-}
-.stage-ctrl button.slow-on{background:#fdeaf2;color:var(--pink-deep)}
-.beat-tag{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.9);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:800;color:var(--pink-deep)}
-.qcard{
-  background:#fff;border-radius:20px;padding:16px;text-align:center;
-  box-shadow:0 6px 18px rgba(216,130,170,.14);
-}
-.qcard .q{font-size:17px;font-weight:800}
-.qcard .q b{color:var(--pink-deep)}
-.hint-btn{
-  margin-top:10px;border:none;background:#fdeaf2;color:var(--pink-deep);
-  font-weight:800;font-size:13px;padding:9px 16px;border-radius:999px;cursor:pointer;font-family:inherit;
-}
-.hint-text{display:none;margin-top:9px;font-size:14px;font-weight:700;color:var(--ink-soft);
-  background:#fff7ef;border-radius:12px;padding:9px 12px;}
-.hint-text.on{display:block}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.choice{
-  border:2px solid #f6d3e0;background:#fff;border-radius:16px;
-  padding:13px 8px;font-family:inherit;cursor:pointer;
-  display:flex;flex-direction:column;gap:2px;align-items:center;justify-content:center;
-  min-height:64px;transition:border-color .1s, background .1s;
-}
-.choice .ko{font-size:15.5px;font-weight:800;color:var(--ink)}
-.choice .fr{font-size:12px;font-weight:700;color:var(--ink-soft);font-style:italic}
-.choice:disabled{cursor:default}
-.choice.correct{border-color:#4cae8b;background:#eefaf4}
-.choice.correct .ko,.choice.correct .fr{color:#2e8563}
-.choice.wrong{border-color:#e98a8a;background:#fdefee}
-.choice.wrong .ko,.choice.wrong .fr{color:#c25b5b}
-.choice.dim{opacity:.55}
-.feedback{display:none;background:#fff;border-radius:20px;padding:15px 16px;box-shadow:0 6px 18px rgba(216,130,170,.14)}
-.feedback.on{display:block}
-.feedback .verdict{font-weight:900;font-size:16px}
-.feedback .verdict.good{color:#2e8563}
-.feedback .verdict.bad{color:#c25b5b}
-.feedback .ans{font-size:14px;font-weight:800;color:var(--pink-deep);margin-top:3px}
-.feedback .exp{font-size:13.5px;line-height:1.55;color:var(--ink-soft);font-weight:600;margin-top:6px}
-.feedback .btn-main{margin-top:12px;padding:13px;font-size:16px}
-
-/* ---------- 결과 ---------- */
-#s-result{gap:12px;justify-content:flex-start}
-.result-card{background:#fff;border-radius:24px;padding:24px 18px;text-align:center;box-shadow:0 8px 24px rgba(216,130,170,.16)}
-.grade-emoji{font-size:52px;line-height:1}
-.grade-name{font-size:23px;font-weight:900;color:var(--pink-deep);margin-top:8px}
-.result-score{font-size:15px;font-weight:700;color:var(--ink-soft);margin-top:6px}
-.result-score b{font-size:24px;color:var(--ink)}
-.acc{margin-top:10px;display:flex;justify-content:center;gap:8px}
-.acc span{background:#fdeaf2;color:var(--pink-deep);font-weight:800;font-size:13px;padding:6px 12px;border-radius:999px}
-.grade-bar{margin:16px auto 0;max-width:320px;text-align:left}
-.grade-bar .g-item{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--ink-soft);padding:3px 2px;border-radius:8px}
-.grade-bar .g-item.now{background:#fdeaf2;color:var(--pink-deep)}
-.review{background:#fff;border-radius:20px;padding:16px;box-shadow:0 6px 18px rgba(216,130,170,.14)}
-.review h3{font-size:15px;font-weight:900;color:var(--ink);margin-bottom:9px}
-.review ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.review li{font-size:13.5px;font-weight:700;padding:9px 12px;border-radius:12px;background:#f7f8f9;color:var(--ink-soft);line-height:1.45}
-.review li.ok{background:#eefaf4;color:#2e8563}
-.review li b{color:inherit}
-.copy-done{display:none;font-size:12.5px;font-weight:800;color:#2e8563;text-align:center;margin-top:6px}
-.copy-done.on{display:block}
-
-.toast{position:fixed;left:50%;bottom:36px;transform:translateX(-50%) translateY(20px);
-  background:#5c4354;color:#fff;font-weight:800;font-size:14px;padding:11px 20px;border-radius:999px;
-  opacity:0;pointer-events:none;transition:.25s ease;z-index:50}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-</style>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div id="app">
 
-  <!-- 타이틀 -->
-  <section class="screen on" id="s-title">
-    <div class="hero-wrap"><canvas id="cv-title"></canvas></div>
-    <div class="title-card">
-      <h1>슈가의 <em>발레 용어</em> 퀴즈</h1>
-      <p class="sub">슈가가 직접 시연해요 · 취발러 감정 테스트</p>
-      <div class="badge-row">
-        <span class="badge">🩰 12종 중 10문제 랜덤</span>
-        <span class="badge">💡 어원 힌트</span>
-        <span class="badge">🔥 콤보 점수</span>
+  <!-- ============ 홈 ============ -->
+  <section class="screen on" id="s-home">
+    <header class="topbar">
+      <div class="brand"><span class="brand-dot"></span> MAGIC SUGAR BALLET</div>
+      <button class="icon-btn" id="soundBtn" aria-label="소리 켜기/끄기">🔔</button>
+    </header>
+
+    <div class="hero">
+      <img src="assets/arabesque.webp" alt="아라베스크 자세의 마법 슈가" id="heroImg" />
+      <div class="hero-glow"></div>
+      <div class="hero-copy">
+        <p class="eyebrow">마법 슈가의</p>
+        <h1>미니 발레 스튜디오</h1>
+        <p class="sub">동작을 배우고, 카드를 모으고,<br />나만의 무대를 완성해요.</p>
       </div>
-      <button class="btn btn-main" id="btnStart">시작하기 ✨</button>
+    </div>
+
+    <div class="progress-pill">
+      <span class="pp-label">내 카드</span>
+      <span class="pp-count"><b id="homeCount">3</b> / 9</span>
+      <div class="pp-bar"><i id="homeBar"></i></div>
+      <span class="pp-theme" id="homeThemes">의상 1/3</span>
+    </div>
+
+    <div class="menu">
+      <button class="menu-card" data-go="quiz">
+        <span class="mc-ico">📖</span>
+        <span class="mc-txt"><b>용어 퀴즈</b><small>5문제 · 하트 3개</small></span>
+        <span class="mc-arrow">›</span>
+      </button>
+      <button class="menu-card" data-go="order">
+        <span class="mc-ico">🧠</span>
+        <span class="mc-txt"><b>순서 외우기</b><small>앙셰느망 기억력</small></span>
+        <span class="mc-arrow">›</span>
+      </button>
+      <button class="menu-card" data-go="dex">
+        <span class="mc-ico">🃏</span>
+        <span class="mc-txt"><b>내 카드 도감</b><small>9종 동작 카드</small></span>
+        <span class="mc-arrow">›</span>
+      </button>
+      <button class="menu-card wide" data-go="stage">
+        <span class="mc-ico">🎭</span>
+        <span class="mc-txt"><b>나만의 작품 무대</b><small>3개 이상 고르면 공연 시작</small></span>
+        <span class="mc-arrow">›</span>
+      </button>
     </div>
   </section>
 
-  <!-- 퀴즈 -->
+  <!-- ============ 용어 퀴즈 ============ -->
   <section class="screen" id="s-quiz">
-    <div class="qtop">
-      <span class="pill" id="qNum">Q1 / 10</span>
-      <span class="combo" id="combo">🔥 x2</span>
-      <span class="pill score" id="score">0점</span>
+    <header class="topbar">
+      <button class="icon-btn back" data-go="home" aria-label="홈으로">←</button>
+      <div class="topbar-title">용어 퀴즈</div>
+      <div class="round-chip" id="quizRound">1 / 5</div>
+    </header>
+
+    <div class="hp-row">
+      <div class="hearts" id="quizHearts"></div>
+      <button class="wand" id="wandBtn"><span>🪄</span> 토슈즈 마법봉 <em>1회</em></button>
     </div>
-    <div class="progress"><i id="progFill"></i></div>
-    <div class="stage-wrap">
-      <canvas id="cv"></canvas>
-      <span class="beat-tag" id="beatTag">♪ 준비 중</span>
-      <div class="stage-ctrl">
-        <button id="btnPlay">⏸</button>
-        <button id="btnSlow">🐢 느리게</button>
+
+    <div class="quiz-card">
+      <img id="quizImg" src="assets/arabesque.webp" alt="동작 카드" />
+      <div class="quiz-q">이 동작의 이름은?</div>
+    </div>
+
+    <div class="answers" id="quizAnswers"></div>
+    <div class="tip-line" id="quizTip"></div>
+  </section>
+
+  <!-- ============ 순서 외우기 ============ -->
+  <section class="screen" id="s-order">
+    <header class="topbar">
+      <button class="icon-btn back" data-go="home" aria-label="홈으로">←</button>
+      <div class="topbar-title">순서 외우기</div>
+      <div class="round-chip" id="orderRound">3개</div>
+    </header>
+
+    <p class="lead" id="orderLead">카드가 반짝이는 순서를 잘 보고 기억해요.</p>
+
+    <div class="demo-stage" id="demoStage">
+      <img id="demoImg" src="assets/arabesque.webp" alt="" />
+      <div class="demo-name" id="demoName">아라베스크</div>
+    </div>
+
+    <div class="seq-dots" id="seqDots"></div>
+    <div class="order-grid" id="orderGrid"></div>
+    <div class="order-foot">
+      <div class="hearts small" id="orderHearts"></div>
+      <button class="ghost-btn" id="replayBtn">👀 다시 보기</button>
+    </div>
+  </section>
+
+  <!-- ============ 도감 ============ -->
+  <section class="screen" id="s-dex">
+    <header class="topbar">
+      <button class="icon-btn back" data-go="home" aria-label="홈으로">←</button>
+      <div class="topbar-title">내 카드 도감</div>
+      <div class="round-chip" id="dexCount">3 / 9</div>
+    </header>
+    <p class="lead">카드를 눌러 동작 설명과 팁을 확인하세요.</p>
+    <div class="dex-grid" id="dexGrid"></div>
+    <p class="dex-foot">용어 퀴즈나 순서 외우기를 클리어하면<br />새 동작 카드가 한 장씩 열려요.</p>
+    <div class="dex-tip">
+      <b>🩰 발레 상식</b>
+      <p>발레 동작 이름은 대부분 프랑스어예요. <i>plié</i>는 '굽히다', <i>tendu</i>는 '펴다', <i>échappé</i>는 '빠져나가다'라는 뜻이에요. 뜻을 알면 동작이 훨씬 잘 기억돼요.</p>
+    </div>
+  </section>
+
+  <!-- ============ 무대 만들기 ============ -->
+  <section class="screen" id="s-stage">
+    <header class="topbar">
+      <button class="icon-btn back" data-go="home" aria-label="홈으로">←</button>
+      <div class="topbar-title">나만의 작품 무대</div>
+      <div class="round-chip" id="stageCount">0 / 4</div>
+    </header>
+
+    <div class="slots" id="slots"></div>
+    <p class="hint" id="slotHint">아래 카드를 순서대로 눌러 무대에 올려 보세요. (3개 이상)</p>
+
+    <div class="stage-own" id="stageOwn"></div>
+
+    <div class="opt-block">
+      <div class="opt-title">무대 배경</div>
+      <div class="opt-row" id="bgRow">
+        <button class="opt bg-theater" data-bg="theater"><span></span>클래식 극장</button>
+        <button class="opt bg-night" data-bg="night"><span></span>별빛 밤</button>
+        <button class="opt bg-studio" data-bg="studio"><span></span>연습실</button>
       </div>
     </div>
-    <div class="qcard">
-      <p class="q">슈가가 보여주는 발레 동작은 <b>무엇</b>일까요?</p>
-      <button class="hint-btn" id="btnHint">💡 어원 힌트 보기</button>
-      <div class="hint-text" id="hintText"></div>
+
+    <div class="opt-block">
+      <div class="opt-title">의상 필터</div>
+      <div class="opt-row" id="themeRow">
+        <button class="opt theme" data-theme="opal"><i class="sw sw-opal"></i>오팔 핑크</button>
+        <button class="opt theme" data-theme="swan"><i class="sw sw-swan"></i>백조 화이트</button>
+        <button class="opt theme" data-theme="midnight"><i class="sw sw-midnight"></i>미드나잇 블루</button>
+      </div>
     </div>
-    <div class="choices" id="choices"></div>
-    <div class="feedback" id="feedback">
-      <div class="verdict" id="verdict"></div>
-      <div class="ans" id="ansLine"></div>
-      <div class="exp" id="expLine"></div>
-      <button class="btn btn-main" id="btnNext">다음 문제 →</button>
-    </div>
+
+    <button class="btn-main" id="startShow" disabled>공연 시작 🎀</button>
   </section>
 
-  <!-- 결과 -->
-  <section class="screen" id="s-result">
-    <div class="result-card">
-      <div class="grade-emoji" id="gradeEmoji">🩰</div>
-      <div class="grade-name" id="gradeName"></div>
-      <div class="result-score">총점 <b id="finalScore">0</b>점</div>
-      <div class="acc"><span id="accText">정답 0/10</span><span id="comboMaxText">최고 콤보 x0</span></div>
-      <div class="grade-bar" id="gradeBar"></div>
+  <!-- ============ 공연 ============ -->
+  <section class="screen show" id="s-show">
+    <header class="topbar">
+      <button class="icon-btn back" id="showBack" aria-label="나가기">←</button>
+      <div class="topbar-title">마법 슈가의 무대</div>
+      <div class="round-chip" id="showChip">공연 중</div>
+    </header>
+
+    <div class="canvas-wrap">
+      <canvas id="stageCanvas" width="390" height="560"></canvas>
+      <div class="rec-overlay" id="recOverlay"><span class="rec-dot"></span><span id="recMsg">영상 저장 중…</span></div>
     </div>
-    <div class="review">
-      <h3>📋 오답·전체 복습</h3>
-      <ul id="reviewList"></ul>
+
+    <div class="show-actions" id="showActions">
+      <button class="btn-main" id="recordBtn">🎬 내 작품 영상 저장</button>
+      <div class="row2">
+        <button class="btn-sub" id="posterBtn">🖼 포스터 저장</button>
+        <button class="btn-sub" id="againBtn">↻ 다시 공연</button>
+      </div>
+      <p class="tiny" id="recNote"></p>
     </div>
-    <button class="btn btn-main" id="btnCopy">🖼 결과 복사하고 공유하기</button>
-    <div class="copy-done" id="copyDone">복사 완료! 인스타·스레드에 붙여넣어 공유해 주세요 ✨</div>
-    <button class="btn btn-sub" id="btnRetry">다시 풀기 🔄</button>
+    <div class="show-meta" id="showMeta"></div>
   </section>
 
+  <!-- ============ 하단 내비 ============ -->
+  <nav class="tabbar">
+    <button class="tab on" data-go="home"><span>🏠</span>홈</button>
+    <button class="tab" data-go="quiz"><span>📖</span>퀴즈</button>
+    <button class="tab" data-go="order"><span>🧠</span>순서</button>
+    <button class="tab" data-go="dex"><span>🃏</span>도감</button>
+    <button class="tab" data-go="stage"><span>🎭</span>무대</button>
+  </nav>
+
+  <!-- 결과/해금 오버레이 -->
+  <div class="sheet" id="sheet">
+    <div class="sheet-inner" id="sheetInner"></div>
+  </div>
+  <div class="toast" id="toast"></div>
 </div>
-<div class="toast" id="toast"></div>
-
-<script>
-(() => {
-'use strict';
-
-/* ============================================================
-   발레 스텝 데이터 (시연 애니메이션)
-   ============================================================ */
-const P0 = {
-  hipX:0, hipY:100, lean:4, head:0, sx:1, tutu:0, zoom:1,
-  armF:{a:12,b:20}, armB:{a:6,b:14},
-  legF:{a:5,k:4,p:0.2,yaw:0}, legB:{a:-5,k:4,p:0.2,yaw:0},
-};
-
-const STEPS = {
-  plie:{ beats:'2박자', view:1, dur:3.4, frames:[
-    {t:0,   hipY:104, lean:2, armF:{a:-12,b:-14}, armB:{a:12,b:14}, legF:{a:9,k:9,p:0,yaw:18}, legB:{a:-9,k:-9,p:0,yaw:-18}},
-    {t:0.5, hipY:87,  lean:3, armF:{a:-14,b:-18}, armB:{a:14,b:18}, legF:{a:24,k:24,p:0,yaw:30}, legB:{a:-24,k:-24,p:0,yaw:-30}},
-    {t:1}
-  ]},
-  tendu:{ beats:'2박자', view:0, dur:3.4, frames:[
-    {t:0,   hipY:101, lean:3, legF:{a:4,k:2,p:0.2}, legB:{a:-6,k:3,p:0.2}, armF:{a:16,b:30}, armB:{a:8,b:18}},
-    {t:0.42,hipY:99,  lean:1, legF:{a:22,k:0,p:1},  legB:{a:-3,k:2,p:0.2}, armF:{a:26,b:62}, armB:{a:12,b:24}},
-    {t:0.62},
-    {t:1}
-  ]},
-  arabesque:{ beats:'2박자', view:0, dur:3.8, frames:[
-    {t:0,   hipY:102, lean:16, head:-6, legF:{a:2,k:2,p:0.2}, legB:{a:-88,k:2,p:1}, armF:{a:118,b:6}, armB:{a:-72,b:-24}},
-    {t:0.5, hipY:109, lean:15, head:-6, legF:{a:2,k:1,p:0.3}, legB:{a:-93,k:2,p:1}, armF:{a:123,b:6}, armB:{a:-76,b:-22}},
-    {t:1}
-  ]},
-  passe:{ beats:'2박자', view:0, dur:3.2, frames:[
-    {t:0,   hipY:100, lean:4, legF:{a:6,k:2,p:0.2}, legB:{a:-6,k:3,p:0.2}, armF:{a:14,b:26}, armB:{a:8,b:16}},
-    {t:0.45,hipY:114, lean:2, legF:{a:98,k:233,p:1}, legB:{a:-2,k:1,p:1}, armF:{a:34,b:66}, armB:{a:18,b:40}},
-    {t:0.72,hipY:115},
-    {t:1}
-  ]},
-  attitude:{ beats:'2박자', view:0, dur:3.8, frames:[
-    {t:0,   hipY:104, lean:12, head:-6, legF:{a:2,k:2,p:0.2}, legB:{a:-70,k:94,p:1}, armF:{a:150,b:8}, armB:{a:-52,b:-18}},
-    {t:0.5, hipY:110, lean:11, head:-6, legF:{a:2,k:1,p:0.3}, legB:{a:-74,k:97,p:1}, armF:{a:154,b:8}, armB:{a:-55,b:-17}},
-    {t:1}
-  ]},
-  grandJete:{ beats:'2박자', view:0, dur:3.0, zoom:0.84, frames:[
-    {t:0,   hipY:90, lean:10, legF:{a:34,k:36,p:0.2}, legB:{a:-10,k:8,p:0.2}, armF:{a:55,b:35}, armB:{a:28,b:28}},
-    {t:0.32,hipY:170, lean:2, head:-4, legF:{a:88,k:0,p:1}, legB:{a:-80,k:2,p:1}, armF:{a:148,b:6}, armB:{a:-88,b:-8}},
-    {t:0.56,hipY:158, lean:3, head:-4, legF:{a:92,k:0,p:1}, legB:{a:-84,k:2,p:1}, armF:{a:144,b:6}, armB:{a:-90,b:-8}},
-    {t:0.86,hipY:88, lean:16, legF:{a:40,k:40,p:0.2}, legB:{a:-48,k:10,p:0.7}, armF:{a:112,b:18}, armB:{a:-42,b:-14}},
-    {t:1}
-  ]},
-  pasDeChat:{ beats:'2박자', view:0, dur:2.6, zoom:0.92, frames:[
-    {t:0,   hipY:100, lean:3, legF:{a:5,k:3,p:0.2}, legB:{a:-5,k:3,p:0.2}, armF:{a:20,b:30}, armB:{a:14,b:22}},
-    {t:0.3, hipY:142, lean:2, legF:{a:55,k:120,p:1}, legB:{a:-28,k:55,p:1}, armF:{a:92,b:18}, armB:{a:82,b:22}},
-    {t:0.55,hipY:150, lean:1, legF:{a:85,k:225,p:1}, legB:{a:-48,k:148,p:1}, armF:{a:40,b:66}, armB:{a:30,b:52}},
-    {t:0.8, hipY:89, lean:5, legF:{a:8,k:8,p:0.2}, legB:{a:-8,k:8,p:0.2}, armF:{a:16,b:26}, armB:{a:10,b:18}},
-    {t:1}
-  ]},
-  pirouette:{ beats:'2회전', view:0, dur:2.8, frames:[
-    {t:0,    hipY:95, lean:6, sx:1,  legF:{a:8,k:22,p:0.2}, legB:{a:-8,k:10,p:0.2}, armF:{a:92,b:16}, armB:{a:86,b:18}},
-    {t:0.15, hipY:114, lean:2, sx:1,  legF:{a:100,k:235,p:1}, legB:{a:-2,k:1,p:1}, armF:{a:24,b:68}, armB:{a:16,b:72}},
-    {t:0.35, sx:-1},
-    {t:0.55, sx:1},
-    {t:0.75, sx:-1},
-    {t:0.9,  sx:1, hipY:113},
-    {t:1,    hipY:95, lean:6, sx:1, legF:{a:8,k:22,p:0.2}, legB:{a:-8,k:16,p:0.2}, armF:{a:92,b:16}, armB:{a:86,b:18}}
-  ]},
-  chasse:{ beats:'2박자', view:1, dur:3.2, frames:[
-    {t:0,    hipY:100, lean:0, legF:{a:6,k:5,p:0.2,yaw:8}, legB:{a:-6,k:-5,p:0.2,yaw:-8}, armF:{a:92,b:12}, armB:{a:-92,b:-12}},
-    {t:0.28, hipY:87, lean:9, legF:{a:40,k:36,p:0.2,yaw:8}, legB:{a:-3,k:0,p:0.3,yaw:-8}, armF:{a:98,b:10}, armB:{a:-96,b:-10}},
-    {t:0.5,  hipY:119, lean:0, legF:{a:3,k:0,p:1,yaw:4}, legB:{a:-3,k:0,p:1,yaw:-4}},
-    {t:0.68, hipY:87, lean:-9, legF:{a:3,k:0,p:0.3,yaw:8}, legB:{a:-40,k:-36,p:0.2,yaw:-8}},
-    {t:0.86, hipY:101, lean:0, legF:{a:6,k:5,p:0.2,yaw:8}, legB:{a:-6,k:-5,p:0.2,yaw:-8}},
-    {t:1}
-  ]},
-  echappe:{ beats:'2박자', view:1, dur:2.8, frames:[
-    {t:0,    hipY:100, legF:{a:4,k:4,p:0.1,yaw:12}, legB:{a:-4,k:-4,p:0.1,yaw:-12}, armF:{a:18,b:30}, armB:{a:-18,b:-30}},
-    {t:0.25, hipY:122, legF:{a:2,k:0,p:1,yaw:6}, legB:{a:-2,k:0,p:1,yaw:-6}, armF:{a:10,b:20}, armB:{a:-10,b:-20}},
-    {t:0.5,  hipY:85,  legF:{a:34,k:30,p:0.1,yaw:26}, legB:{a:-34,k:-30,p:0.1,yaw:-26}, armF:{a:95,b:8}, armB:{a:-95,b:-8}},
-    {t:0.75, hipY:122, legF:{a:2,k:0,p:1,yaw:6}, legB:{a:-2,k:0,p:1,yaw:-6}, armF:{a:10,b:20}, armB:{a:-10,b:-20}},
-    {t:1}
-  ]},
-  balance:{ beats:'3박자', view:1, dur:3.6, frames:[
-    {t:0,    hipY:100, lean:0, legF:{a:6,k:5,p:0.2,yaw:8}, legB:{a:-6,k:-5,p:0.2,yaw:-8}, armF:{a:70,b:20}, armB:{a:-70,b:-20}},
-    {t:0.3,  hipY:88, lean:10, legF:{a:38,k:34,p:0.2,yaw:10}, legB:{a:-4,k:0,p:0.3,yaw:-8}, armF:{a:118,b:22}, armB:{a:-34,b:-46}},
-    {t:0.55, hipY:104, lean:0, legF:{a:4,k:0,p:0.3,yaw:6}, legB:{a:-4,k:0,p:0.3,yaw:-6}, armF:{a:80,b:18}, armB:{a:-80,b:-18}},
-    {t:0.8,  hipY:88, lean:-10, legF:{a:4,k:0,p:0.3,yaw:8}, legB:{a:-38,k:-34,p:0.2,yaw:-10}, armF:{a:34,b:46}, armB:{a:-118,b:-22}},
-    {t:1}
-  ]},
-  sousSus:{ beats:'2박자', view:1, dur:2.6, frames:[
-    {t:0,    hipY:88,  legF:{a:5,k:7,p:0.1,yaw:14}, legB:{a:-5,k:-7,p:0.1,yaw:-14}, armF:{a:-12,b:-16}, armB:{a:12,b:16}},
-    {t:0.3,  hipY:112, legF:{a:2,k:1,p:0.8,yaw:8}, legB:{a:-2,k:-1,p:0.8,yaw:-8}},
-    {t:0.5,  hipY:118, lean:0, legF:{a:1,k:0,p:1,yaw:6}, legB:{a:-1,k:0,p:1,yaw:-6}, armF:{a:168,b:6}, armB:{a:-168,b:-6}},
-    {t:0.82},
-    {t:1}
-  ]},
-  idle:{ beats:'♪', view:1, dur:3.6, frames:[
-    {t:0,    hipY:101, lean:2, armF:{a:-10,b:-16}, armB:{a:10,b:16}, legF:{a:8,k:8,p:0,yaw:16}, legB:{a:-8,k:-8,p:0,yaw:-16}},
-    {t:0.5,  hipY:96,  lean:3, armF:{a:-12,b:-20}, armB:{a:12,b:20}, legF:{a:12,k:12,p:0,yaw:20}, legB:{a:-12,k:-12,p:0,yaw:-20}},
-    {t:1}
-  ]},
-};
-
-/* ============================================================
-   퀴즈 데이터
-   ============================================================ */
-const QUESTIONS = [
-  { key:'plie',      ko:'플리에',   fr:'Plié',        hint:'프랑스어로 "접히다, 구부리다"라는 뜻이에요.',
-    exp:'무릎을 발끝 방향으로 부드럽게 구부리는 동작. 모든 점프와 턴의 준비가 되는 발레의 기초 중 기초예요.' },
-  { key:'tendu',     ko:'탄듀',     fr:'Tendu',       hint:'"늘어난, 뻗은"이라는 뜻이에요.',
-    exp:'다리를 무릎 없이 끝까지 뻗어 발끝만 바닥에 닿게 하는 동작. 다리 라인을 만드는 기본기 중 기본기예요.' },
-  { key:'arabesque', ko:'아라베스크', fr:'Arabesque',  hint:'아랍 장식 문양 "아라베스크"에서 따온 이름이에요.',
-    exp:'한 다리로 서서 다른 다리를 뒤로 길게 뻗아 만드는, 발레를 대표하는 긴 라인의 자세예요.' },
-  { key:'passe',     ko:'파세',     fr:'Passé / Retiré', hint:'"지나가다"라는 뜻. 발끝이 무릎을 지나가요.',
-    exp:'발끝이 받침다리 무릎을 지나 무릎 옆에 붙는 자세. 피루엣을 돌 때 도는 다리 모양이기도 해요.' },
-  { key:'attitude',  ko:'아티튜드',  fr:'Attitude',    hint:'조각가 조반니 다 볼로냐의 상 "머큐리"의 자세에서 유래했어요.',
-    exp:'뒤로 든 다리의 무릎을 부드럽게 구부린 자세. 고전 발레의 우아한 포즈를 대표해요.' },
-  { key:'grandJete', ko:'그랑 주테', fr:'Grand Jeté', hint:'"크게 던지다"라는 뜻 (jeter = 던지다).',
-    exp:'앞다리와 뒷다리를 크게 벌려 허공에서 일자가 되는 대절프. 발레의 가장 화려한 점프예요.' },
-  { key:'pasDeChat', ko:'파 드 샤',  fr:'Pas de chat', hint:'"고양이의 발걸음"이라는 뜻이에요.',
-    exp:'고양이처럼 두 발이 번갈아 무릎으로 붙으며 조용히 넘어가는 점프예요.' },
-  { key:'pirouette', ko:'피루엣',    fr:'Pirouette',   hint:'"이리저리 휘두르다, 회전"이라는 뜻이에요.',
-    exp:'한 발 위에서 몸의 축을 세워 도는 회전. 파세 자세로 다리를 붙이고 돌아요.' },
-  { key:'chasse',    ko:'샤세',     fr:'Chassé',      hint:'"쫓다"라는 뜻. 한 발이 다른 발을 쫓아가요.',
-    exp:'한 발을 뛰어 붙이며 다른 발을 밀어내듯 미끄러지듯 이동하는 스텝이에요.' },
-  { key:'echappe',   ko:'에샤페',    fr:'Échappé',     hint:'"탈출하다, 벗어나다"라는 뜻이에요.',
-    exp:'다섯 번째 자세에서 두 발이 벽을 박차고 나가듯 뛰어 벌어지는 점프예요.' },
-  { key:'balance',   ko:'바랑세',    fr:'Balancé',     hint:'"흔들다, 저울질하다"라는 뜻이에요.',
-    exp:'1-2-3, 3박자에 맞춰 좌우로 무게중심을 옮기며 흔들듯 나아가는 스텝이에요.' },
-  { key:'sousSus',   ko:'수수',     fr:'Sous-sus',    hint:'"아래(sous)에서 위(sus)로"라는 뜻이에요.',
-    exp:'다섯 번째 자세에서 작게 뛰어 두 발을 포개어 토 포인트로 올라서는 동작이에요.' },
-];
-
-const GRADES = [
-  { min:1700, emoji:'👑', name:'수석무용수 슈가' },
-  { min:1400, emoji:'🌟', name:'16년 차 취발러' },
-  { min:1000, emoji:'🦢', name:'턴아웃 장인' },
-  { min:600,  emoji:'🩰', name:'바(Barre) 단골' },
-  { min:0,    emoji:'🐣', name:'발레 병아리' },
-];
-
-/* ============================================================
-   리깅 렌더러 — 슈가 캐릭터
-   좌표계: 바닥 중심 원점, y 위쪽(+), 단위 유닛
-   ============================================================ */
-const THIGH=50, SHIN=48, UPPER=28, FORE=26, TORSO=60, HEAD_R=23;
-const C = {
-  skin:'#ffe3d2', skinLine:'#eebfa8',
-  leotard:'#f7a0c0', leotardD:'#ec82ab',
-  tutuA:'#fff1f7', tutuB:'#ffd2e7', tutuC:'#ffc3de',
-  hair:'#a5714f', hairD:'#8a5a3d',
-  tights:'#ffeaf1', tightsLine:'#e9bccd',
-  shoe:'#f7b3cd', shoeD:'#e88cae', ribbon:'#e88cae',
-  ink:'#5b4234', blush:'#ffb9c9',
-};
-
-function dirV(aDeg){
-  const a = aDeg * Math.PI/180;
-  return [Math.sin(a), -Math.cos(a)]; // a=0 아래, a=90 정면(+x), a=180 위
-}
-function add(p, d, len){ return [p[0]+d[0]*len, p[1]+d[1]*len]; }
-function lerp(a,b,u){ return a + (b-a)*u; }
-function ease(u){ return u<=0?0:u>=1?1:u*u*(3-2*u); }
-
-function cap(ctx, p1, p2, w, color){
-  ctx.strokeStyle = color; ctx.lineWidth = w; ctx.lineCap='round';
-  ctx.beginPath(); ctx.moveTo(p1[0],p1[1]); ctx.lineTo(p2[0],p2[1]); ctx.stroke();
-}
-function circle(ctx, p, r, color){ ctx.fillStyle=color; ctx.beginPath(); ctx.arc(p[0],p[1],r,0,Math.PI*2); ctx.fill(); }
-
-// 프레임 병합(부분 프레임 지원)
-function mergedFrames(step){
-  const out = []; let acc = JSON.parse(JSON.stringify(P0));
-  for (const f of step.frames){
-    deepMerge(acc, f);
-    const cp = JSON.parse(JSON.stringify(acc));
-    cp.t = f.t;
-    out.push(cp);
-  }
-  out[out.length-1] = JSON.parse(JSON.stringify(out[0]));
-  out[out.length-1].t = 1;
-  return out;
-}
-function deepMerge(dst, src){
-  for (const k in src){
-    if (k==='t') continue;
-    if (src[k] && typeof src[k]==='object' && !Array.isArray(src[k])){
-      if (!dst[k] || typeof dst[k]!=='object') dst[k]={};
-      deepMerge(dst[k], src[k]);
-    } else dst[k]=src[k];
-  }
-}
-function samplePose(step, tNorm){
-  const fr = step._mf || (step._mf = mergedFrames(step));
-  let i = 0;
-  while (i < fr.length-2 && tNorm > fr[i+1].t) i++;
-  const A = fr[i], B = fr[Math.min(i+1, fr.length-1)];
-  const span = Math.max(1e-6, B.t - A.t);
-  const u = ease((tNorm - A.t)/span);
-  return lerpPose(A, B, u);
-}
-function lerpPose(a, b, u){
-  const r = {};
-  for (const k in a){
-    if (typeof a[k]==='number') r[k]=lerp(a[k], (typeof b[k]==='number'?b[k]:a[k]), u);
-    else if (typeof a[k]==='object') {
-      r[k]={};
-      for (const k2 in a[k]) r[k][k2] = lerp(a[k][k2], (b[k]&&typeof b[k][k2]==='number'?b[k][k2]:a[k][k2]), u);
-    } else r[k]=a[k];
-  }
-  return r;
-}
-
-function drawLimb(ctx, j1, j2, j3, w1, w2, lineC, fillC){
-  cap(ctx, j1, j2, w1+3.4, lineC); cap(ctx, j2, j3, w2+3.4, lineC);
-  cap(ctx, j1, j2, w1, fillC);     cap(ctx, j2, j3, w2, fillC);
-}
-
-function drawSugar(ctx, P, opts){
-  opts = opts || {};
-  const view = opts.view != null ? opts.view : 0; // 0 side, 1 front
-  const side = view === 0;
-
-  ctx.save();
-  const sxRaw = P.sx || 1;
-  const sxClamped = Math.max(0.28, Math.min(1, Math.abs(sxRaw))) * (sxRaw < 0 ? -1 : 1);
-  ctx.scale(sxClamped, 1); // 피루엣 회전 스쿼시 (0이 되어 사라지지 않게 클램프)
-
-  const hip = [P.hipX, P.hipY];
-  const neckDir = dirV(180 - P.lean);
-  const neck = add(hip, neckDir, TORSO);
-  const shoulder = add(hip, neckDir, TORSO-7);
-  const headC = add(neck, dirV(180 - P.lean - P.head), 15);
-  const shL = side ? shoulder : [shoulder[0]-15, shoulder[1]];
-  const shR = side ? shoulder : [shoulder[0]+15, shoulder[1]];
-  const hipB = side ? [hip[0]-2, hip[1]-2] : [hip[0]-7, hip[1]-3];
-  const hipF = side ? [hip[0]+2, hip[1]-2] : [hip[0]+7, hip[1]-3];
-
-  function armChain(sh, arm, farSide){
-    const el = add(sh, dirV(arm.a), UPPER);
-    const wr = add(el, dirV(arm.a + arm.b), FORE);
-    const hand = add(wr, dirV(arm.a + arm.b), 9);
-    drawLimb(ctx, sh, el, wr, 9.5, 8, C.skinLine, C.skin);
-    circle(ctx, hand, 5.2, C.skin);
-    return [sh, el, wr];
-  }
-  function legChain(hj, leg, frontLeg){
-    const kn = add(hj, dirV(leg.a), THIGH);
-    const an = add(kn, dirV(leg.a - leg.k), SHIN);
-    // 발: flat 방향 → point 방향 보간
-    const shinA = leg.a - leg.k;
-    const flat = side ? [0.985,-0.17] : [Math.cos((leg.yaw-16)*Math.PI/180), Math.sin((leg.yaw-16)*Math.PI/180)];
-    const point = dirV(shinA);
-    const mixv = [lerp(flat[0], point[0], leg.p), lerp(flat[1], point[1], leg.p)];
-    const n = Math.hypot(mixv[0], mixv[1]) || 1;
-    const toe = add(an, [mixv[0]/n, mixv[1]/n], 24 + leg.p*4);
-    drawLimb(ctx, hj, kn, an, 13, 11, C.tightsLine, C.tights);
-    // 토슈즈
-    ctx.lineCap='round';
-    cap(ctx, an, [an[0]+(toe[0]-an[0])*0.55, an[1]+(toe[1]-an[1])*0.55], 12.5, C.shoeD);
-    cap(ctx, an, toe, 11, C.shoe);
-    circle(ctx, toe, 5.4, C.shoe);
-    // 리본
-    ctx.strokeStyle=C.ribbon; ctx.lineWidth=1.6;
-    ctx.beginPath(); ctx.moveTo(an[0]-5,an[1]-4); ctx.lineTo(an[0]+5,an[1]+4); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(an[0]+5,an[1]-4); ctx.lineTo(an[0]-5,an[1]+4); ctx.stroke();
-    return [hj, kn, an];
-  }
-
-  /* ---- 뒤쪽 팔·다리 ---- */
-  legChain(hipB, P.legB, false);
-  if (side) armChain(shL, P.armB, true);
-
-  /* ---- 몸통(레오타드) ---- */
-  cap(ctx, hip, neck, 21, C.leotardD);
-  cap(ctx, hip, add(hip, neckDir, TORSO-12), 20, C.leotard);
-  circle(ctx, hip, 13.5, C.leotardD); // 레오타드 하의
-  // 목
-  cap(ctx, neck, add(neck, dirV(180-P.lean-P.head), 10), 7, C.skin);
-
-  /* ---- 튀튜 ---- */
-  ctx.save();
-  ctx.translate(hip[0], hip[1]-1);
-  ctx.rotate((side? P.lean : P.lean*0.6) * -0.012 + P.tutu*0.02);
-  for (let layer=0; layer<2; layer++){
-    const col = layer===0 ? C.tutuA : C.tutuB;
-    const n = 7, spread = 58;
-    for (let i=0;i<n;i++){
-      const px = -spread/2 + spread*i/(n-1);
-      ctx.fillStyle = col;
-      ctx.beginPath();
-      ctx.ellipse(px + (layer? (i%2?2:-2):0), -4 - layer*1.5, 12.5, 17 + (i%2?2:0), (i-(n-1)/2)*0.08, 0, Math.PI*2);
-      ctx.fill();
-    }
-  }
-  ctx.fillStyle = C.leotardD;
-  ctx.beginPath(); ctx.ellipse(0, 2, 16, 5.5, 0, 0, Math.PI*2); ctx.fill();
-  ctx.restore();
-
-  /* ---- 앞다리·앞팔 ---- */
-  legChain(hipF, P.legF, true);
-  if (side) armChain(shR, P.armF, false);
-  else { armChain(shL, P.armB, true); armChain(shR, P.armF, false); }
-
-  /* ---- 머리 ---- */
-  // 뒤머리
-  circle(ctx, [headC[0] + (side?-3:0), headC[1]+1], HEAD_R+1.5, C.hairD);
-  circle(ctx, headC, HEAD_R, C.skin);
-  // 머리카락(위) + 번머리
-  ctx.fillStyle = C.hair;
-  ctx.beginPath();
-  if (side){
-    ctx.arc(headC[0], headC[1]+2, HEAD_R, Math.PI*0.12, Math.PI*0.98, false);
-  } else {
-    ctx.arc(headC[0], headC[1]+2, HEAD_R, Math.PI*0.06, Math.PI*0.94, false);
-  }
-  ctx.fill();
-  const bunC = side ? [headC[0]-7, headC[1]+HEAD_R+6] : [headC[0], headC[1]+HEAD_R+5];
-  circle(ctx, bunC, 9.5, C.hair);
-  circle(ctx, [bunC[0]+2.5, bunC[1]+2.5], 3.2, '#c08b63');
-  // 앞머리
-  ctx.fillStyle = C.hair;
-  ctx.beginPath();
-  ctx.ellipse(headC[0] + (side? 8:0), headC[1]+13, side?9:16, 6.5, side?0.35:0, 0, Math.PI*2);
-  ctx.fill();
-
-  /* ---- 얼굴 ---- */
-  ctx.fillStyle = C.ink;
-  if (side){
-    ctx.beginPath(); ctx.ellipse(headC[0]+11, headC[1]+3, 2.4, 3.4, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle=C.ink; ctx.lineWidth=1.7; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(headC[0]+13, headC[1]-6); ctx.quadraticCurveTo(headC[0]+16, headC[1]-8.5, headC[0]+18.5, headC[1]-5.5); ctx.stroke();
-    circle(ctx, [headC[0]+7, headC[1]-3], 3, C.blush);
-  } else {
-    ctx.beginPath(); ctx.ellipse(headC[0]-8.5, headC[1]+3, 2.3, 3.3, 0, 0, Math.PI*2); ctx.fill();
-    ctx.beginPath(); ctx.ellipse(headC[0]+8.5, headC[1]+3, 2.3, 3.3, 0, 0, Math.PI*2); ctx.fill();
-    ctx.strokeStyle=C.ink; ctx.lineWidth=1.7; ctx.lineCap='round';
-    ctx.beginPath(); ctx.moveTo(headC[0]-4, headC[1]-7); ctx.quadraticCurveTo(headC[0], headC[1]-10.5, headC[0]+4, headC[1]-7); ctx.stroke();
-    circle(ctx, [headC[0]-14, headC[1]-3], 3.4, C.blush);
-    circle(ctx, [headC[0]+14, headC[1]-3], 3.4, C.blush);
-  }
-
-  ctx.restore();
-}
-
-/* ============================================================
-   연습실 무대 그리기
-   ============================================================ */
-function drawScene(ctx, W, H, floorY, S){
-  // 벽
-  const wg = ctx.createLinearGradient(0,0,0,floorY);
-  wg.addColorStop(0,'#fdeef4'); wg.addColorStop(1,'#fdece2');
-  ctx.fillStyle = wg; ctx.fillRect(0,0,W,floorY);
-  // 거울
-  const mx=26, mw=W-52, mt=26, mh=floorY-118*S-40;
-  ctx.fillStyle='#e9d2dc';
-  roundRect(ctx, mx-5, mt-5, mw+10, mh+10, 14); ctx.fill();
-  const mg = ctx.createLinearGradient(mx,mt,mx+mw,mt+mh);
-  mg.addColorStop(0,'#f4f9fb'); mg.addColorStop(0.5,'#e8f1f5'); mg.addColorStop(1,'#f6fafc');
-  ctx.fillStyle=mg; roundRect(ctx, mx, mt, mw, mh, 10); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.55)';
-  ctx.beginPath(); ctx.moveTo(mx+30, mt+mh); ctx.lineTo(mx+80, mt); ctx.lineTo(mx+112, mt); ctx.lineTo(mx+62, mt+mh); ctx.closePath(); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.35)';
-  ctx.beginPath(); ctx.moveTo(mx+140, mt+mh); ctx.lineTo(mx+185, mt); ctx.lineTo(mx+200, mt); ctx.lineTo(mx+155, mt+mh); ctx.closePath(); ctx.fill();
-  // 바 (barre)
-  const by = floorY - 116*S;
-  ctx.fillStyle='#c9a184';
-  roundRect(ctx, 12, by-5, W-24, 10, 5); ctx.fill();
-  ctx.fillStyle='#b98e70';
-  roundRect(ctx, 54, by-3, 9, 26, 3); ctx.fill();
-  roundRect(ctx, W-63, by-3, 9, 26, 3); ctx.fill();
-  // 바닥
-  const fg = ctx.createLinearGradient(0,floorY,0,H);
-  fg.addColorStop(0,'#ddb892'); fg.addColorStop(1,'#c79b74');
-  ctx.fillStyle=fg; ctx.fillRect(0,floorY,W,H-floorY);
-  ctx.strokeStyle='rgba(140,100,70,.25)'; ctx.lineWidth=1.5;
-  for (let x=-20;x<W+40;x+=46){
-    ctx.beginPath(); ctx.moveTo(x, H); ctx.lineTo(x+14, floorY); ctx.stroke();
-  }
-  ctx.strokeStyle='rgba(120,85,60,.35)';
-  ctx.beginPath(); ctx.moveTo(0, floorY+1); ctx.lineTo(W, floorY+1); ctx.stroke();
-}
-function roundRect(ctx,x,y,w,h,r){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
-}
-
-/* ============================================================
-   애니메이터
-   ============================================================ */
-function makeAnimator(canvas, stepKey, opts){
-  opts = opts || {};
-  const ctx2 = canvas.getContext('2d');
-  const st = { step: STEPS[stepKey], phase:0, speed:1, playing:true, sparkles:[], lastTs:0,
-    maxS: opts.maxS || null, floorPad: opts.floorPad != null ? opts.floorPad : 14 };
-  function fit(){
-    const dpr = Math.min(window.devicePixelRatio||1, 2);
-    const r = canvas.getBoundingClientRect();
-    canvas.width = Math.round(r.width*dpr); canvas.height = Math.round(r.height*dpr);
-    st.W = r.width; st.H = r.height;
-  }
-  fit(); st.fit = fit;
-  window.addEventListener('resize', fit);
-
-  st.setStep = (key, reset) => { st.step = STEPS[key]; if (reset){ st.phase=0; } };
-  st.freeze = (tNorm) => { st.frozen = tNorm; };
-  st.unfreeze = () => { st.frozen = null; };
-  st.loop = (ts) => {
-    const dt = Math.min(0.05, (ts - (st.lastTs||ts))/1000); st.lastTs = ts;
-    if (st.playing && st.frozen == null) st.phase += dt * st.speed;
-    const dur = st.step.dur;
-    const t = st.frozen != null ? st.frozen : ((st.phase % dur) + dur) % dur / dur;
-    const pose = samplePose(st.step, t);
-    let S = 1.06 * (pose.zoom || 1) * (st.H/300);
-    if (st.maxS) S = Math.min(S, st.maxS);
-    const floorY = st.H - st.floorPad;
-    const c = ctx2, dpr = canvas.width / st.W;
-    c.setTransform(dpr,0,0,dpr,0,0);
-    c.clearRect(0,0,st.W,st.H);
-    drawScene(c, st.W, st.H, floorY, S);
-    // 그림자
-    c.save();
-    c.translate(st.W/2 + (pose.hipX||0)*S*0.3, floorY);
-    c.scale(pose.sx,1);
-    c.fillStyle='rgba(160,110,90,.18)';
-    c.beginPath(); c.ellipse(0, 6, 46*(1 - Math.min(0.4,(pose.hipY-85)/300)), 8, 0, 0, Math.PI*2); c.fill();
-    c.restore();
-    // 슈가
-    c.save();
-    c.translate(st.W/2 + (pose.hipX||0)*S, floorY);
-    c.scale(S, -S);
-    drawSugar(c, pose, {view: st.step.view});
-    c.restore();
-    // 스파클
-    for (const s of st.sparkles){
-      s.life -= dt; s.x += s.vx*dt; s.y += s.vy*dt; s.vy += 30*dt;
-      c.save(); c.globalAlpha = Math.max(0, s.life);
-      c.translate(s.x, s.y); c.rotate(s.life*3);
-      c.fillStyle='#f7c4da'; star(c, 0,0, 6, 5.2); c.fill();
-      c.restore();
-    }
-    st.sparkles = st.sparkles.filter(s=>s.life>0);
-    requestAnimationFrame(st.loop);
-  };
-  requestAnimationFrame(st.loop);
-  st.burst = () => {
-    for (let i=0;i<14;i++){
-      st.sparkles.push({ x: st.W/2 + (Math.random()-0.5)*120, y: st.H*0.45 + (Math.random()-0.5)*80,
-        vx:(Math.random()-0.5)*90, vy:-40-Math.random()*70, life:0.7+Math.random()*0.5 });
-    }
-  };
-  return st;
-}
-function star(c, x, y, R, r){
-  c.beginPath();
-  for (let i=0;i<8;i++){
-    const a = i*Math.PI/4, rad = i%2? r:R;
-    c[i?'lineTo':'moveTo'](x+Math.cos(a)*rad, y+Math.sin(a)*rad);
-  }
-  c.closePath();
-}
-
-/* ============================================================
-   퀴즈 로직
-   ============================================================ */
-const $ = id => document.getElementById(id);
-const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0; [a[i],a[j]]=[a[j],a[i]];} return a; };
-
-const SHARE_URL = 'https://sheeny6-cmyk.github.io/magic-sugar-game/quiz/';
-
-let anim = null, titleAnim = null;
-let quiz = null;
-
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
-  $(id).classList.add('on');
-  window.scrollTo(0,0);
-}
-
-function startGame(){
-  quiz = {
-    qs: shuffle(QUESTIONS).slice(0,10),
-    idx:0, score:0, streak:0, best:0,
-    log: [], answered:false,
-  };
-  showScreen('s-quiz');
-  if (!anim) anim = makeAnimator($('cv'), 'plie');
-  loadQuestion();
-}
-
-function loadQuestion(){
-  const q = quiz.qs[quiz.idx];
-  quiz.answered = false;
-  $('qNum').textContent = `Q${quiz.idx+1} / 10`;
-  $('score').textContent = `${quiz.score}점`;
-  const cb = $('combo');
-  if (quiz.streak >= 2){ cb.textContent = `🔥 x${quiz.streak}`; cb.classList.add('on'); }
-  else cb.classList.remove('on');
-  $('progFill').style.width = `${(quiz.idx)/10*100}%`;
-  $('feedback').classList.remove('on');
-  $('hintText').classList.remove('on');
-  $('btnHint').style.display='';
-  $('btnHint').textContent='💡 어원 힌트 보기';
-  $('beatTag').textContent = `♪ ${STEPS[q.key].beats} 시연 중`;
-
-  // 보기: 정답 + 오답 3
-  const others = shuffle(QUESTIONS.filter(x=>x.key!==q.key)).slice(0,3);
-  quiz.choices = shuffle([q, ...others]);
-  const box = $('choices'); box.innerHTML='';
-  quiz.choices.forEach((cItem, i2) => {
-    const b = document.createElement('button');
-    b.className='choice';
-    b.innerHTML = `<span class="ko">${cItem.ko}</span><span class="fr">${cItem.fr}</span>`;
-    b.addEventListener('click', () => answer(i2));
-    box.appendChild(b);
-  });
-
-  anim.setStep(q.key, true);
-  anim.playing = true; $('btnPlay').textContent='⏸';
-}
-
-function answer(i2){
-  if (quiz.answered) return;
-  quiz.answered = true;
-  const q = quiz.qs[quiz.idx];
-  const correct = quiz.choices[i2].key === q.key;
-  const btns = $('choices').querySelectorAll('.choice');
-  btns.forEach((b, j) => {
-    b.disabled = true;
-    if (quiz.choices[j].key === q.key) b.classList.add('correct');
-    else if (j === i2) b.classList.add('wrong');
-    else b.classList.add('dim');
-  });
-  let gained = 0;
-  if (correct){
-    quiz.streak++; quiz.best = Math.max(quiz.best, quiz.streak);
-    gained = 100 + (quiz.streak-1)*20;
-    quiz.score += gained;
-    anim.burst();
-  } else {
-    quiz.streak = 0;
-  }
-  quiz.log.push({ q, ok: correct });
-  $('score').textContent = `${quiz.score}점`;
-  if (quiz.streak >= 2){ $('combo').textContent=`🔥 x${quiz.streak}`; $('combo').classList.add('on'); }
-  else $('combo').classList.remove('on');
-
-  const v = $('verdict');
-  v.textContent = correct ? `정답! +${gained}점${quiz.streak>=2?` · 콤보 x${quiz.streak}`:''}` : '아쉬워요! 다음엔 꼭 맞혀요 🩰';
-  v.className = 'verdict ' + (correct?'good':'bad');
-  $('ansLine').textContent = `정답: ${q.ko} (${q.fr})`;
-  $('expLine').textContent = q.exp;
-  $('feedback').classList.add('on');
-  $('btnNext').textContent = quiz.idx === 9 ? '결과 보기 🎀' : '다음 문제 →';
-  $('progFill').style.width = `${(quiz.idx+1)/10*100}%`;
-  $('feedback').scrollIntoView({behavior:'smooth', block:'nearest'});
-}
-
-function nextQuestion(){
-  if (quiz.idx >= 9){ showResult(); return; }
-  quiz.idx++;
-  loadQuestion();
-  window.scrollTo(0,0);
-}
-
-function gradeOf(score){ return GRADES.find(g=>score>=g.min); }
-
-function showResult(){
-  const g = gradeOf(quiz.score);
-  const okN = quiz.log.filter(l=>l.ok).length;
-  $('gradeEmoji').textContent = g.emoji;
-  $('gradeName').textContent = g.name;
-  $('finalScore').textContent = quiz.score;
-  $('accText').textContent = `정답 ${okN}/10`;
-  $('comboMaxText').textContent = `최고 콤보 x${quiz.best}`;
-  // 등급 바
-  const bar = $('gradeBar'); bar.innerHTML='';
-  GRADES.slice().reverse().forEach(gg=>{
-    const d = document.createElement('div');
-    d.className = 'g-item' + (gg.name===g.name?' now':'');
-    d.innerHTML = `<span>${gg.emoji} ${gg.name}</span><span>${gg.min}+</span>`;
-    bar.appendChild(d);
-  });
-  // 복습 리스트
-  const ul = $('reviewList'); ul.innerHTML='';
-  quiz.log.forEach(l=>{
-    const li = document.createElement('li');
-    li.className = l.ok ? 'ok' : '';
-    li.innerHTML = l.ok
-      ? `<b>${l.q.ko}</b> (${l.q.fr}) ✓ 맞혔어요`
-      : `<b>${l.q.ko}</b> (${l.q.fr}) — ${l.q.exp}`;
-    ul.appendChild(li);
-  });
-  showScreen('s-result');
-}
-
-function shareText(){
-  const g = gradeOf(quiz.score);
-  const okN = quiz.log.filter(l=>l.ok).length;
-  const wrong = quiz.log.filter(l=>!l.ok).map(l=>`${l.q.ko}(${l.q.fr})`);
-  const lines = [
-    '🩰 슈가의 발레 용어 퀴즈 결과 🩰',
-    `점수 ${quiz.score}점 · 등급: ${g.emoji} ${g.name}`,
-    `정답 ${okN}/10 · 최고 콤보 x${quiz.best}`,
-  ];
-  if (wrong.length) lines.push(`복습할 동작: ${wrong.join(', ')}`);
-  lines.push('취발러라면 한번 풀어봐 ✨', SHARE_URL);
-  return lines.join('\n');
-}
-
-async function copyResult(){
-  const text = shareText();
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch(e){
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-    document.body.appendChild(ta); ta.select();
-    document.execCommand('copy'); ta.remove();
-  }
-  $('copyDone').classList.add('on');
-  toast('결과를 복사했어요! 🎉');
-}
-
-let toastTimer=null;
-function toast(msg){
-  const t=$('toast'); t.textContent=msg; t.classList.add('on');
-  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('on'), 1800);
-}
-
-/* ---------- 이벤트 ---------- */
-$('btnStart').addEventListener('click', startGame);
-$('btnNext').addEventListener('click', nextQuestion);
-$('btnRetry').addEventListener('click', startGame);
-$('btnCopy').addEventListener('click', copyResult);
-$('btnHint').addEventListener('click', () => {
-  const q = quiz.qs[quiz.idx];
-  $('hintText').textContent = `💡 ${q.hint}`;
-  $('hintText').classList.add('on');
-  $('btnHint').style.display='none';
-});
-$('btnPlay').addEventListener('click', () => {
-  anim.playing = !anim.playing;
-  $('btnPlay').textContent = anim.playing ? '⏸' : '▶';
-});
-$('btnSlow').addEventListener('click', () => {
-  anim.speed = anim.speed === 1 ? 0.4 : 1;
-  $('btnSlow').classList.toggle('slow-on', anim.speed !== 1);
-  $('btnSlow').textContent = anim.speed === 1 ? '🐢 느리게' : '🐇 빠르게';
-});
-
-/* ---------- 타이틀 캐릭터 ---------- */
-function bootTitle(){
-  titleAnim = makeAnimator($('cv-title'), 'idle', { maxS: 1.45, floorPad: 30 });
-}
-
-/* ---------- 디버그 훅 (검증용) ---------- */
-window.__quiz = {
-  state: () => quiz ? ({ idx:quiz.idx, score:quiz.score, streak:quiz.streak, answered:quiz.answered,
-    correct: quiz.qs[quiz.idx] ? quiz.qs[quiz.idx].key : null,
-    choices: quiz.choices ? quiz.choices.map(c=>c.key) : [] }) : null,
-  dbg: { samplePose, mergedFrames, lerpPose, P0, dirV },
-  steps: () => Object.keys(STEPS),
-  renderDemo: (key, t) => { // 스텝 프리뷰용: 해당 스텝을 지정 시점으로 고정 렌더
-    const step = STEPS[key]; if (!step || !anim) return null;
-    anim.setStep(key, true); anim.freeze(t);
-    return samplePose(step, t);
-  },
-  demoCanvas: () => $('cv'),
-};
-
-bootTitle();
-})();
-</script>
+<script src="game.js"></script>
 </body>
 </html>
