@@ -492,7 +492,8 @@
       b.className = 'dex-card' + (has ? '' : ' locked');
       b.innerHTML = has
         ? '<img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /><div class="dc-name">' + p.ko + '</div>'
-        : '<div class="lock-face">🔒</div><div class="dc-name">???</div>';
+        : '<img class="sil" src="assets/sil/' + p.id + '.webp" alt="아직 모르는 동작" /><i class="lock-badge">🔒</i>' +
+          '<div class="dc-name">???</div>';
       b.addEventListener('click', function () {
         if (has) showPoseSheet(p);
         else openSheet('<div class="unlock-badge">LOCKED</div><h2>아직 모르는 동작</h2>' +
