@@ -1078,7 +1078,8 @@
   /* ------------ 영상 저장 ------------ */
   function pickMime() {
     if (!window.MediaRecorder) return '';
-    const cands = ['video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm', 'video/mp4'];
+    // 인스타·갤러리 업로드 호환을 위해 MP4(H.264)를 먼저 시도
+    const cands = ['video/mp4;codecs=avc1.42E01E', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
     for (let i = 0; i < cands.length; i++) {
       try { if (MediaRecorder.isTypeSupported(cands[i])) return cands[i]; } catch (e) { }
     }
