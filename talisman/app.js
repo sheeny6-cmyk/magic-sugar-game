@@ -171,7 +171,6 @@
     cWish.textContent = '“' + t.wish + '”';
     $('cEffect').textContent = t.effect;
     cStars.textContent = '★★★★★'.slice(0, t.stars) + '☆☆☆☆☆'.slice(0, 5 - t.stars);
-    $('cardFront').style.setProperty('--tint', t.tint + '66');
     cWish.title = t.effect + ' ' + t.note;
 
     // 카드 뒷면에서 시작 → 앞면으로 플립
