@@ -23,15 +23,16 @@ html,body{
   overflow:hidden;overscroll-behavior:none;
   -webkit-user-select:none;user-select:none;
 }
+body{display:grid;place-items:center;background:#f3dfec;}
 img{display:block;-webkit-user-drag:none;}
 #app{
-  position:relative;width:100%;max-width:480px;height:100dvh;
+  position:relative;width:100%;max-width:480px;height:min(100dvh,880px);
   margin:0 auto;overflow:hidden;isolation:isolate;
   background:linear-gradient(180deg,#fff2f8,#fbe7f1 60%,#f6deec);
   box-shadow:0 0 60px rgba(200,120,170,.25);
 }
-@supports (height:100dvh){#app{height:100dvh;}}
-@supports not (height:100dvh){#app{height:100vh;}}
+@supports (height:100dvh){#app{height:min(100dvh,880px);}}
+@supports not (height:100dvh){#app{height:min(100vh,880px);}}
 
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -295,7 +296,7 @@ img{display:block;-webkit-user-drag:none;}
 .end-top{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px;
   padding:calc(10px + var(--safe-t)) 16px 6px;position:sticky;top:0;background:linear-gradient(180deg,#fff6fb,rgba(255,246,251,.75));backdrop-filter:blur(6px);z-index:5;}
 .end-title{font-size:13px;font-weight:800;color:#a06a8d;letter-spacing:-.2px;}
-.end-card{padding:4px 20px 0;display:flex;flex-direction:column;align-items:center;}
+.end-card{padding:4px 20px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1 0 auto;}
 .rank-badge{font-size:54px;line-height:1;margin-top:6px;filter:drop-shadow(0 8px 12px rgba(210,120,170,.35));animation:popIn .45s cubic-bezier(.2,1.4,.5,1);}
 .rank-label{margin:8px 0 2px;font-size:11px;font-weight:800;letter-spacing:2px;color:#b88bb0;}
 .rank-title{margin:0;font-size:22px;font-weight:900;letter-spacing:-.7px;text-align:center;line-height:1.25;
@@ -319,6 +320,9 @@ img{display:block;-webkit-user-drag:none;}
 .tip-card{width:100%;margin-top:12px;background:rgba(255,255,255,.66);border-radius:14px;padding:10px 14px;}
 .tip-card b{font-size:11.5px;font-weight:900;color:#8e3f75;}
 .tip-card p{margin:4px 0 0;font-size:12px;line-height:1.45;color:#8a6b85;font-weight:600;}
+.end-stickers{width:100%;margin:0 0 4px;padding-top:14px;display:flex;align-items:flex-end;justify-content:center;gap:12px;opacity:.92;}
+.end-stickers img{height:120px;width:auto;filter:drop-shadow(0 6px 10px rgba(190,120,160,.22));}
+.end-stickers span{font-size:8.5px;font-weight:800;letter-spacing:1.4px;color:#c39ab5;padding-bottom:8px;}
 .end-actions{width:100%;margin-top:16px;display:flex;flex-direction:column;gap:9px;}
 .end-foot{margin:10px 0 0;font-size:11px;color:#b08ca4;font-weight:600;text-align:center;}
 
