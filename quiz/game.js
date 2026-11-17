@@ -8,58 +8,58 @@
   /* ---------------- 데이터 ---------------- */
   const POSES = [
     {
-      id: 'arabesque', ko: '아라베스크', fr: 'Arabesque', starter: true,
-      desc: '한 발로 서서 다른 다리를 뒤로 길게 뻗고, 팔로 하늘과 땅을 잇는 대표적인 균형 동작이에요.',
-      tip: '시선은 앞으로 뻗은 손끝 너머로. 등과 목을 길게 늘여야 다리가 더 길어 보여요.',
-      hint: '한 발로 서서 뒤로 다리를 뻗은, 날개를 편 새 같은 자세'
-    },
-    {
-      id: 'passe', ko: '파세', fr: 'Passé', starter: true,
-      desc: '한 다리의 발끝을 서 있는 다리의 무릎에 대고 세우는 동작이에요. 턴을 준비할 때 자주 써요.',
-      tip: '발끝은 무릎 앞이나 옆에 살짝. 골반이 옆으로 빠지지 않게 배에 힘을 주세요.',
-      hint: '발끝을 반대쪽 무릎에 콕, 하고 붙이고 서는 자세'
-    },
-    {
       id: 'plie', ko: '플리에', fr: 'Plié', starter: true,
-      desc: '무릎을 굽혀 몸을 낮추는 동작이에요. 모든 점프와 턴의 시작이 되는 기본 중의 기본이에요.',
-      tip: '뒤꿈치는 바닥에 붙인 채, 무릎은 발끝이 향하는 방향으로 밀어내듯 굽혀요.',
+      desc: '무릎을 굽혀 몸을 낮추는 동작이에요. 1번 자리에서 무릎이 바깥으로 열리며 내려가고, 뒤꿈치는 바닥에서 떨어지지 않아요. 모든 점프와 턴의 시작이 되는 기본 중의 기본이에요.',
+      tip: '뒤꿈치는 바닥에 붙인 채, 무릎은 발끝이 향하는 방향으로 밀어낸다는 느낌으로. 상체는 수직, 팔은 1번에서 2번으로 부드럽게 호흡해요.',
       hint: '무릎을 굽혀 몸을 낮추는, 점프 전의 준비 동작'
     },
     {
       id: 'tendu', ko: '탄듀', fr: 'Tendu',
-      desc: '발을 바닥에 붙인 채 발끝으로 미끄러지듯 쭉 뻗는 동작이에요. 다리 힘을 기르는 기본 동작이에요.',
-      tip: '발끝까지 에너지를 보내되, 발은 끝까지 바닥을 떠나지 않게. 다리는 밖으로 돌린 채로요.',
+      desc: '발을 바닥에 붙인 채 발끝으로 미끄러지듯 쭉 뻗는 동작이에요. 지지하는 다리는 고정하고, 발등의 아치로 바닥을 스치며 나갔다가 돌아와요.',
+      tip: '발끝까지 에너지를 보내되 발은 바닥을 떠나지 않게. 다리는 밖으로 돌린 채로 곧게요.',
       hint: '발을 바닥에 끈 채 발끝으로 미끄러지듯 뻗는 동작'
     },
     {
+      id: 'passe', ko: '파세', fr: 'Passé', starter: true,
+      desc: '한 다리의 발끝을 서 있는 다리의 무릎 옆에 딱 붙이고 세우는 동작이에요. 르베레(균형)의 기본이고, 턴을 준비할 때 가장 많이 써요.',
+      tip: '발끝은 무릎 옆에 살짝. 골반이 옆으로 빠지지 않게 배에 힘을 주고, 서 있는 다리를 길게 늘여요.',
+      hint: '발끝을 반대쪽 무릎에 콕, 하고 붙이고 서는 자세'
+    },
+    {
+      id: 'arabesque', ko: '아라베스크', fr: 'Arabesque', starter: true,
+      desc: '한 발로 서서 다른 다리를 뒤로 길게 뻗어 올리고, 팔로 하늘과 땅을 잇는 대표적인 균형 동작이에요. 측면으로 돌아서서 뒷다리를 90도까지 들어요.',
+      tip: '시선은 앞으로 뻗은 손끝 너머로. 등과 목을 길게 늘여야 다리가 더 길어 보여요.',
+      hint: '한 발로 서서 뒤로 다리를 뻗은, 날개를 편 새 같은 자세'
+    },
+    {
       id: 'attitude', ko: '아티튜드', fr: 'Attitude',
-      desc: '한 발로 서서 반대 다리를 뒤로 굽혀 들어 올린, 우아함의 대명사 같은 자세예요.',
+      desc: '한 발로 서서 반대 다리를 뒤로 들어 올리고 무릎을 우아하게 굽히는 자세예요. 한 팔은 머리 위 5번으로 부드럽게 호를 그려요.',
       tip: '들어 올린 무릎은 옆으로 열고, 버티는 다리는 길게. 가슴은 살짝 들어 올려요.',
       hint: '한 발로 서서 뒤로 다리를 굽혀 들어 올린 자세'
     },
     {
-      id: 'grandjete', ko: '그랑 주테', fr: 'Grand Jeté',
-      desc: '공중에서 앞뒤 다리를 180도로 쭉 찢으며 나는, 발레에서 가장 화려한 점프예요.',
-      tip: '점프의 정점에서 다리를 찢고, 그 순간 잠깐 공중에 떠 있는 느낌을 만들어요.',
-      hint: '공중에서 두 다리를 일직선으로 찢는 큰 점프'
-    },
-    {
-      id: 'cambre', ko: '캄브레', fr: 'Cambré',
-      desc: '허리를 축으로 상체를 뒤나 옆으로 부드럽게 젖히는 동작이에요. 숨을 쉬는 느낌으로 해요.',
-      tip: '허리만 꺾지 말고 머리 끝까지 하나의 곡선을 그린다는 생각으로 젖혀요.',
-      hint: '상체를 뒤나 옆으로 부드럽게 젖히는 동작'
-    },
-    {
-      id: 'echappe', ko: '에샤페', fr: 'Échappé',
-      desc: '두 발로 바닥을 밀어 양옆으로 벌려 서는 동작이에요. 다섯 번째 자리에서 두 번째 자리로 이동해요.',
-      tip: '벌어질 때 두 다리가 동시에, 같은 속도로. 착지는 조용하게, 무릎으로 충격을 받아요.',
-      hint: '두 발로 밀어 양옆으로 벌려 서는, "escape"라는 뜻의 동작'
+      id: 'pirouette', ko: '피루엣', fr: 'Pirouette',
+      desc: '플리에로 준비한 뒤 파세로 올라서며 한 바퀴 360도 도는 턴이에요. 드는 동안 시선은 한 곳을 붙잡고(스포팅), 착지는 조용하게.',
+      tip: '머리는 몸보다 늦게 돌아 마지막에 확 돌아와요. 팔은 1번의 둥근 모양 그대로, 배에 힘을 주세요.',
+      hint: '파세로 올라서서 한 바퀴 도는 회전 동작'
     },
     {
       id: 'pasdechat', ko: '파드샤', fr: 'Pas de chat',
-      desc: '고양이가 폴짝 뛰어오르듯, 두 발을 차례로 들어 올리며 나는 점프예요.',
-      tip: '발이 하나씩 빠르게 지나가야 고양이처럼 가벼워 보여요. 팔은 오체로 살짝 들어요.',
+      desc: '고양이가 폴짝 뛰어오르듯, 두 발을 한 발씩 차례로 들어 올리며 나는 점프예요. 양쪽 다리가 비대칭으로 접히는 게 포인트예요.',
+      tip: '발이 하나씩 빠르게 지나가야 고양이처럼 가벼워 보여요. 팔은 3번으로 살짝 들어요.',
       hint: '고양이처럼 두 발을 차례로 들며 뛰는 점프'
+    },
+    {
+      id: 'grandjete', ko: '그랑 주테', fr: 'Grand Jeté',
+      desc: '측면으로 도약하며 공중에서 앞뒤 다리를 180도로 쭉 펼치는, 발레에서 가장 화려한 점프예요.',
+      tip: '점프의 정점에서 다리를 찢고, 그 순간 잠깐 공중에 떠 있는 느낌을 만들어요. 시선은 앞으로.',
+      hint: '공중에서 두 다리를 일직선으로 찢는 큰 점프'
+    },
+    {
+      id: 'echappe', ko: '에샤페', fr: 'Échappé',
+      desc: '5번 자리에서 두 발로 바닥을 밀어 2번 자리로 벌려 서고, 다시 5번으로 모으는 동작이에요. "escape(빠져나가다)"라는 뜻이에요.',
+      tip: '벌어질 때 두 다리가 동시에, 같은 속도로. 착지는 조용하게, 무릎으로 충격을 받아요.',
+      hint: '두 발로 밀어 양옆으로 벌려 서는, "escape"라는 뜻의 동작'
     }
   ];
   const POSE = {};
@@ -138,23 +138,48 @@
     });
     sheet.classList.add('on');
     sheet.onclick = function (e) { if (e.target === sheet) closeSheet(); };
+    mountRigs(inner);
   }
   function closeSheet() { $('#sheet').classList.remove('on'); }
 
-  /* ---------------- 이미지 프리로드 ---------------- */
-  const IMG = {};
-  const imgReady = {};
-  POSES.forEach(function (p) {
-    const img = new Image();
-    img.decoding = 'async';
-    imgReady[p.id] = new Promise(function (res) {
-      img.onload = function () { res(img); };
-      img.onerror = function () { res(null); };
+  /* ---------------- 리깅 캐릭터 ---------------- */
+  function whenImages() { return Promise.resolve([]); }
+
+  function cardHTML(poseId, mode, theme) {
+    return '<canvas class="rig-cv" data-rig="' + poseId + '" data-mode="' + (mode || 'static') + '"' +
+      (theme ? ' data-theme="' + theme + '"' : '') + ' aria-label="마법 슈가" role="img"></canvas>';
+  }
+
+  function drawStaticCard(cv, pose, theme) {
+    let tries = 0;
+    const paint = function () {
+      const w = cv.clientWidth, h = cv.clientHeight;
+      if ((!w || !h) && tries++ < 40) { requestAnimationFrame(paint); return; }
+      const W = w || 150, H = h || 200;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      const c2 = cv.getContext('2d');
+      SugarRig.renderStatic(c2, W, H, {
+        pose: pose, theme: theme, dpr: dpr,
+        u: SugarRig.APEX[pose] == null ? 0.5 : SugarRig.APEX[pose]
+      });
+    };
+    requestAnimationFrame(paint);
+  }
+
+  function mountRigs(root) {
+    if (!root) return;
+    root.querySelectorAll('canvas[data-rig]').forEach(function (cv) {
+      if (cv.dataset.mounted) return;
+      cv.dataset.mounted = '1';
+      const pose = cv.dataset.rig, mode = cv.dataset.mode;
+      const theme = cv.dataset.theme || stageSel.theme || 'opal';
+      if (mode === 'static') { drawStaticCard(cv, pose, theme); }
+      else {
+        SugarRig.create(cv, { pose: pose, theme: theme, mode: 'loop', fps: mode === 'thumb' ? 14 : 30 });
+      }
     });
-    img.src = 'assets/' + p.id + '.webp';
-    IMG[p.id] = img;
-  });
-  function whenImages(ids) { return Promise.all(ids.map(function (id) { return imgReady[id]; })); }
+  }
 
   /* ---------------- 화면 이동 ---------------- */
   const SCREENS = ['home', 'quiz', 'order', 'dex', 'stage', 'show'];
@@ -178,7 +203,12 @@
   });
 
   /* ---------------- 홈 ---------------- */
+  let heroRig = null;
   function renderHome() {
+    const heroCv = $('#heroCanvas');
+    if (heroCv && !heroRig) {
+      heroRig = SugarRig.create(heroCv, { pose: 'arabesque', theme: 'opal', mode: 'loop', fps: 30, offsetY: 0.02 });
+    }
     $('#homeCount').textContent = state.owned.length;
     $('#homeBar').style.width = (state.owned.length / POSES.length * 100) + '%';
     $('#homeThemes').textContent = '의상 ' + state.themes.length + '/3';
@@ -202,6 +232,7 @@
      용어 퀴즈
      ========================================================= */
   const quiz = { q: [], i: 0, hp: 3, wand: false, locked: false };
+  let quizRig = null;
 
   function startQuiz() {
     const pool = shuffle(POSES);
@@ -225,8 +256,8 @@
     quiz.locked = false;
     $('#quizRound').textContent = (quiz.i + 1) + ' / ' + quiz.q.length;
     renderHearts($('#quizHearts'), quiz.hp);
-    $('#quizImg').src = 'assets/' + p.id + '.webp';
-    $('#quizImg').alt = '발레 동작 카드';
+    if (!quizRig) quizRig = SugarRig.create($('#quizCanvas'), { pose: p.id, theme: 'opal', mode: 'loop', fps: 30, offsetY: 0.04 });
+    else quizRig.setPose(p.id);
     $('#quizTip').innerHTML = '';
     const box = $('#quizAnswers');
     box.innerHTML = '';
@@ -305,7 +336,7 @@
     let html = '<div class="unlock-badge">ROUND CLEAR</div><h2>퀴즈 클리어! 🎉</h2>' +
       '<p>5문제를 모두 풀었어요.<br />노력한 만큼 카드가 한 장 늘었어요.</p>';
     if (got && got.type === 'pose') {
-      html += '<div class="sheet-img"><img src="assets/' + got.pose.id + '.webp" alt="' + got.pose.ko + '" /></div>' +
+      html += '<div class="sheet-img">' + cardHTML(got.pose.id, 'live', stageSel.theme) + '</div>' +
         '<div class="name">' + got.pose.ko + '</div><div class="fr">' + got.pose.fr + '</div>' +
         '<div class="tip">' + got.pose.desc + '</div>';
     } else if (got && got.type === 'theme') {
@@ -349,6 +380,7 @@
      순서 외우기 (앙셰느망)
      ========================================================= */
   const order = { seq: [], tiles: [], hp: 3, step: 0, phase: 'idle', busy: false };
+  let demoRig = null;
 
   function startOrder() {
     const owned = POSES.filter(function (p) { return state.owned.indexOf(p.id) >= 0; });
@@ -389,7 +421,8 @@
     demo.classList.remove('dim');
     for (let i = 0; i < order.seq.length; i++) {
       const p = order.seq[i];
-      $('#demoImg').src = 'assets/' + p.id + '.webp';
+      if (!demoRig) demoRig = SugarRig.create($('#demoCanvas'), { pose: p.id, theme: 'opal', mode: 'loop', fps: 30, offsetY: 0.03 });
+      else demoRig.setPose(p.id);
       $('#demoName').textContent = (i + 1) + '. ' + p.ko;
       $('#demoName').classList.add('on');
       demo.classList.remove('flash');
@@ -421,10 +454,11 @@
       const b = document.createElement('button');
       b.className = 'order-card';
       b.dataset.id = p.id;
-      b.innerHTML = '<img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /><span>' + p.ko + '</span><i class="ord">1</i>';
+      b.innerHTML = cardHTML(p.id, 'static') + '<span>' + p.ko + '</span><i class="ord">1</i>';
       b.addEventListener('click', function () { tapOrder(p, b); });
       box.appendChild(b);
     });
+    mountRigs(box);
   }
 
   function tapOrder(p, btn) {
@@ -461,7 +495,7 @@
     if (got && got.type === 'theme') {
       html += '<div class="tip">🎀 <b>' + got.theme.ko + '</b> 의상 필터를 열었어요!</div>';
     } else if (got && got.type === 'pose') {
-      html += '<div class="sheet-img"><img src="assets/' + got.pose.id + '.webp" alt="' + got.pose.ko + '" /></div>' +
+      html += '<div class="sheet-img">' + cardHTML(got.pose.id, 'live', stageSel.theme) + '</div>' +
         '<div class="name">' + got.pose.ko + '</div>';
     } else {
       html += '<div class="tip">모든 카드와 의상을 모았어요. 이제 무대만 남았네요! 🎭</div>';
@@ -491,9 +525,8 @@
       const b = document.createElement('button');
       b.className = 'dex-card' + (has ? '' : ' locked');
       b.innerHTML = has
-        ? '<img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /><div class="dc-name">' + p.ko + '</div>'
-        : '<img class="sil" src="assets/sil/' + p.id + '.webp" alt="아직 모르는 동작" /><i class="lock-badge">🔒</i>' +
-          '<div class="dc-name">???</div>';
+        ? cardHTML(p.id, 'thumb') + '<div class="dc-name">' + p.ko + '</div>'
+        : cardHTML(p.id, 'static') + '<i class="lock-badge">🔒</i><div class="dc-name">???</div>';
       b.addEventListener('click', function () {
         if (has) showPoseSheet(p);
         else openSheet('<div class="unlock-badge">LOCKED</div><h2>아직 모르는 동작</h2>' +
@@ -502,11 +535,12 @@
       });
       box.appendChild(b);
     });
+    mountRigs(box);
   }
 
   function showPoseSheet(p) {
     openSheet('<div class="unlock-badge">' + p.fr.toUpperCase() + '</div>' +
-      '<div class="sheet-img"><img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /></div>' +
+      '<div class="sheet-img">' + cardHTML(p.id, 'live', stageSel.theme) + '</div>' +
       '<div class="name">' + p.ko + '</div><div class="fr">' + p.fr + '</div>' +
       '<div class="tip">' + p.desc + '</div>' +
       '<div class="tip"><b>🩰 팁</b> · ' + p.tip + '</div>' +
@@ -527,7 +561,7 @@
       const d = document.createElement('button');
       d.className = 'slot' + (p ? ' filled' : '');
       if (p) {
-        d.innerHTML = '<img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /><i class="idx">' + (i + 1) + '</i>';
+        d.innerHTML = cardHTML(p.id, 'static', stageSel.theme) + '<i class="idx">' + (i + 1) + '</i>';
         d.addEventListener('click', function () {
           stageSel.slots.splice(i, 1);
           playFx('blip');
@@ -550,7 +584,7 @@
       const used = stageSel.slots.indexOf(p.id) >= 0;
       const b = document.createElement('button');
       b.className = 'own-card' + (used ? ' used' : '');
-      b.innerHTML = '<img src="assets/' + p.id + '.webp" alt="' + p.ko + '" /><span>' + p.ko + '</span>';
+      b.innerHTML = cardHTML(p.id, 'static', stageSel.theme) + '<span>' + p.ko + '</span>';
       b.addEventListener('click', function () {
         if (used) return;
         if (stageSel.slots.length >= 4) { toast('네 개까지 올릴 수 있어요'); return; }
@@ -580,6 +614,7 @@
     });
     if (state.themes.indexOf(stageSel.theme) < 0) stageSel.theme = 'opal';
 
+    mountRigs(slots); mountRigs(own);
     $('#startShow').disabled = stageSel.slots.length < 3;
     $('#startShow').onclick = function () {
       if (stageSel.slots.length < 3) return;
@@ -591,7 +626,8 @@
      무대 엔진 (canvas)
      ========================================================= */
   const CV = { W: 390, H: 560, dpr: 1 };
-  let cvs = null, ctx = null;
+  let cvs = null, ctx = null, stageRig = null;
+  const shadowGrads = {};
   const tintCache = {};
   let masterGain = null, AC = null;
 
@@ -653,84 +689,17 @@
     if (kind === 'win') { [523.25, 659.25, 783.99, 1046.5].forEach(function (f, i) { tone(f, i * 0.11, 0.4, 0.1, 'triangle'); }); }
   }
 
-  // 채도 기반 마스크: 배경(아이보리)은 0, 드레스·머리·피부는 1에 가깝게
-  const satMaskCache = {};
-  function satMask(id) {
-    if (satMaskCache[id]) return satMaskCache[id];
-    const img = IMG[id];
-    if (!img || !img.naturalWidth) return null;
-    const c = document.createElement('canvas');
-    c.width = img.naturalWidth; c.height = img.naturalHeight;
-    const x = c.getContext('2d');
-    x.drawImage(img, 0, 0);
-    const d = x.getImageData(0, 0, c.width, c.height);
-    const a = d.data;
-    for (let i = 0; i < a.length; i += 4) {
-      const r = a[i], gg = a[i + 1], bb = a[i + 2];
-      const mx = Math.max(r, gg, bb), mn = Math.min(r, gg, bb);
-      const sat = mx ? (mx - mn) / mx : 0;
-      let t = (sat - 0.028) / (0.085 - 0.028);
-      t = t < 0 ? 0 : (t > 1 ? 1 : t);
-      a[i + 3] = Math.round(t * 235);
-    }
-    x.putImageData(d, 0, 0);
-    satMaskCache[id] = c;
-    return c;
-  }
-
-  // 의상 필터: 원본 위에 캐릭터에만 색을 입힌 레이어를 얹은 캔버스를 돌려준다
-  function tinted(id, theme) {
-    const key = id + '|' + theme;
-    if (tintCache[key]) return tintCache[key];
-    const img = IMG[id];
-    if (!img || !img.naturalWidth) return img;
-    if (theme === 'opal') { tintCache[key] = img; return img; }
-
-    const w = img.naturalWidth, h = img.naturalHeight;
-    const mask = satMask(id);
-
-    const over = document.createElement('canvas');
-    over.width = w; over.height = h;
-    const ox = over.getContext('2d');
-    let filter = 'none';
-    if (theme === 'swan') filter = 'saturate(.22) brightness(1.12) contrast(1.04)';
-    else if (theme === 'midnight') filter = 'saturate(.95) brightness(.93)';
-    try { ox.filter = filter; } catch (e) { }
-    ox.drawImage(img, 0, 0);
-    if (theme === 'swan') {
-      ox.globalCompositeOperation = 'source-atop';
-      ox.globalAlpha = 0.58;
-      ox.fillStyle = '#ffffff';
-      ox.fillRect(0, 0, w, h);
-      ox.globalAlpha = 1;
-      ox.globalCompositeOperation = 'source-over';
-    }
-    if (theme === 'midnight') {
-      ox.globalCompositeOperation = 'color';
-      ox.globalAlpha = 0.8;
-      ox.fillStyle = '#3348c4';
-      ox.fillRect(0, 0, w, h);
-      ox.globalAlpha = 1;
-      ox.globalCompositeOperation = 'source-over';
-    }
-    const c = document.createElement('canvas');
-    c.width = w; c.height = h;
-    const x = c.getContext('2d');
-    x.drawImage(img, 0, 0);
-    // 원본의 부드러운 가장자리 알파를 그대로 따라가며 색만 입힌다
-    x.globalCompositeOperation = 'source-atop';
-    x.drawImage(over, 0, 0);
-    x.globalCompositeOperation = 'source-over';
-    tintCache[key] = c;
-    return c;
-  }
-
   function setupCanvas() {
     cvs = $('#stageCanvas');
-    CV.dpr = Math.min(2, window.devicePixelRatio || 1);
-    cvs.width = Math.round(CV.W * CV.dpr);
-    cvs.height = Math.round(CV.H * CV.dpr);
-    ctx = cvs.getContext('2d');
+    if (!stageRig) {
+      stageRig = SugarRig.create(cvs, { mode: 'manual', theme: stageSel.theme, autoClear: false, shadow: true, fit: 1 });
+    }
+    stageRig.resize();
+    CV.W = stageRig.w; CV.H = stageRig.h; CV.dpr = stageRig.dpr;
+    ctx = stageRig.ctx;
+  }
+  function fxTransform() {
+    if (!ctx) return;
     ctx.setTransform(CV.dpr, 0, 0, CV.dpr, 0, 0);
   }
 
@@ -862,38 +831,6 @@
     ctx.fillStyle = tg; ctx.fillRect(0, 0, W, 46);
   }
 
-  function drawPerformer(id, alpha, zoom, yOff) {
-    const img = tinted(id, stageTheme);
-    if (!img || !img.width) return;
-    const targetH = CV.H * 0.66 * zoom;
-    const ratio = img.width / img.height;
-    const w = targetH * ratio, h = targetH;
-    const x = (CV.W - w) / 2;
-    const y = CV.H * 0.84 - h + (yOff || 0);
-    // 받침 그림자
-    ctx.save();
-    ctx.globalAlpha = 0.22 * alpha;
-    const sg = ctx.createRadialGradient(CV.W / 2, CV.H * 0.84, 6, CV.W / 2, CV.H * 0.84, 90);
-    sg.addColorStop(0, 'rgba(0,0,0,.5)'); sg.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = sg;
-    ctx.beginPath(); ctx.ellipse(CV.W / 2, CV.H * 0.845, 92, 16, 0, 0, 6.3); ctx.fill();
-    ctx.restore();
-    // 인물 뒤 스포트라이트 번짐
-    ctx.save();
-    ctx.globalAlpha = 0.34 * alpha;
-    const lg = ctx.createRadialGradient(CV.W / 2, y + h * 0.42, 10, CV.W / 2, y + h * 0.42, h * 0.62);
-    lg.addColorStop(0, 'rgba(255,246,232,.7)');
-    lg.addColorStop(0.55, 'rgba(255,226,230,.35)');
-    lg.addColorStop(1, 'rgba(255,226,230,0)');
-    ctx.fillStyle = lg;
-    ctx.beginPath(); ctx.arc(CV.W / 2, y + h * 0.42, h * 0.62, 0, 6.3); ctx.fill();
-    ctx.restore();
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.drawImage(img, x, y, w, h);
-    ctx.restore();
-  }
-
   function drawSparkles() {
     for (let i = sparkles.length - 1; i >= 0; i--) {
       const s = sparkles[i];
@@ -940,98 +877,63 @@
   let stageTheme = 'opal';
   let showRAF = 0;
 
-  const T_OPEN = 750, T_END = 900, SEG = 1700;
+  function totalMs() { return show && stageRig ? stageRig.showMs() : 0; }
 
-  function totalMs() { return T_OPEN + show.poses.length * SEG + T_END; }
-
-  function frameAt(t) {
-    if (t < T_OPEN) {
-      return { open: Math.min(1, t / T_OPEN), seg: 0, local: 0, phase: 'open' };
+  function segAt(t) {
+    if (!show || !stageRig || !stageRig.show) return null;
+    const segs = stageRig.show.segs;
+    for (let i = 0; i < segs.length; i++) {
+      if (t < segs[i].start + segs[i].dur) return segs[i];
     }
-    const perf = t - T_OPEN;
-    const total = show.poses.length * SEG;
-    if (perf < total) {
-      const i = Math.floor(perf / SEG);
-      return { open: 1, seg: i, local: perf - i * SEG, phase: 'dance' };
-    }
-    const tail = perf - total;
-    // 커튼 콜: 완전히 닫지 않고 살짝만 닫아 마지막 자세를 남긴다
-    return { open: Math.max(0.62, 1 - (tail / T_END) * 0.38), seg: show.poses.length - 1, local: SEG, phase: 'close' };
+    return segs[segs.length - 1];
   }
 
   function drawShow(t) {
     const W = CV.W, H = CV.H;
+    fxTransform();
     ctx.clearRect(0, 0, W, H);
     drawBackdrop(show.bg, t);
 
-    if (show.phase === 'dance' || show.phase === 'close' || t >= T_OPEN) {
-      // 커튼 열린 상태의 무대 조명
-      if (t >= T_OPEN) {
-        const gl = ctx.createRadialGradient(W / 2, H * 0.34, 20, W / 2, H * 0.34, H * 0.6);
-        gl.addColorStop(0, 'rgba(255,246,226,.20)'); gl.addColorStop(1, 'rgba(255,246,226,0)');
-        ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
-      }
+    const total = totalMs();
+    const openK = t < 900 ? t / 900 : (t > total - 900 ? Math.max(0.58, 1 - (t - (total - 900)) / 900 * 0.42) : 1);
+
+    // 무대 조명
+    if (t > 300) {
+      const gl = ctx.createRadialGradient(W / 2, H * 0.36, 20, W / 2, H * 0.36, H * 0.62);
+      const k = Math.min(1, (t - 300) / 700);
+      gl.addColorStop(0, 'rgba(255,246,226,' + (0.2 * k).toFixed(3) + ')');
+      gl.addColorStop(1, 'rgba(255,246,226,0)');
+      ctx.fillStyle = gl;
+      ctx.fillRect(0, 0, W, H);
     }
 
-    // 퍼포머
-    if (t >= T_OPEN - 50) {
-      const st = frameAt(Math.max(T_OPEN, t));
-      const list = show.poses;
-      if (st.phase !== 'close') {
-        const i = st.seg;
-        const local = st.local;
-        const fadeIn = Math.min(1, local / 420);
-        const fadeOut = Math.min(1, (SEG - local) / 420);
-        const alpha = Math.max(0, Math.min(fadeIn, fadeOut));
-        const zoom = 1 + 0.05 * (local / SEG);
-        // 이전 동작은 아직 그대로 남아 있다가 흐려짐
-        if (i > 0 && local < 420) {
-          const prevAlpha = 1 - local / 420;
-          drawPerformer(list[i - 1], prevAlpha * 0.55, 1.05, 0);
-        }
-        drawPerformer(list[i], alpha, zoom, Math.sin(t / 480) * 1.6);
-      } else {
-        drawPerformer(list[list.length - 1], 1, 1.05, 0);
-      }
-    }
+    // 캐릭터 (2D 리깅)
+    if (t > 200) stageRig.render(t, 0.016);
 
+    // 효과 · 커튼
+    fxTransform();
     drawSparkles();
-
-    // 동작이 바뀔 때 스포트라이트가 한 번 번쩍인다
-    if (t >= T_OPEN) {
-      const perf = t - T_OPEN;
-      const total = show.poses.length * SEG;
-      if (perf < total) {
-        const local = perf % SEG;
-        if (local < 300) {
-          const k = 1 - local / 300;
-          const fl = ctx.createRadialGradient(CV.W / 2, CV.H * 0.42, 10, CV.W / 2, CV.H * 0.42, CV.H * 0.55);
-          fl.addColorStop(0, 'rgba(255,252,244,' + (0.55 * k).toFixed(3) + ')');
-          fl.addColorStop(1, 'rgba(255,252,244,0)');
-          ctx.fillStyle = fl;
-          ctx.fillRect(0, 0, CV.W, CV.H);
-        }
+    // 동작이 바뀔 때 스포트라이트 번쩍
+    const seg = segAt(t);
+    if (seg && seg.type === 'pose') {
+      const local = t - seg.start;
+      if (local < 320) {
+        const k = 1 - local / 320;
+        const fl = ctx.createRadialGradient(W / 2, H * 0.4, 10, W / 2, H * 0.4, H * 0.56);
+        fl.addColorStop(0, 'rgba(255,252,244,' + (0.4 * k).toFixed(3) + ')');
+        fl.addColorStop(1, 'rgba(255,252,244,0)');
+        ctx.fillStyle = fl;
+        ctx.fillRect(0, 0, W, H);
       }
     }
+    drawCurtains(openK);
 
-    drawCurtains(frameAt(t).open);
-
-    // 자막
-    if (t >= T_OPEN) {
-      const st = frameAt(Math.min(t, T_OPEN + show.poses.length * SEG - 1));
-      const name = POSE[show.poses[st.seg]].ko;
-      const ending = t > T_OPEN + show.poses.length * SEG - 260;
-      caption(ending ? 'THE END' : '마법 슈가의 미니 발레', name);
-    }
-  }
-
-  function loop() {
-    const t = performance.now() - show.t0;
-    drawShow(t);
-    if (t < totalMs()) showRAF = requestAnimationFrame(loop);
-    else {
-      drawShow(totalMs());
-      if (show.onEnd) show.onEnd();
+    if (t > 350) {
+      if (seg && seg.type === 'finale') {
+        caption('FINALE', t > total - 500 ? 'THE END' : '레베랑스');
+      } else if (seg) {
+        caption('마법 슈가의 미니 발레', POSE[seg.id] ? POSE[seg.id].ko : '');
+      }
     }
   }
 
@@ -1040,13 +942,22 @@
     setupCanvas();
     show.t0 = performance.now();
     sparkles.length = 0;
-    const audioCtx = audio();
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    playWaltz(show.poses.length, 0.55);
-    const sparkTimer = setInterval(function () { spawnSparkle(); }, 130);
-    show.onEnd = function () { clearInterval(sparkTimer); };
-    loop();
-    if (show.record) startRecorder();
+    const ac = audio();
+    if (ac && ac.state === 'suspended') ac.resume();
+    playWaltz(show.poses.length * 2 + 3, 0.6);
+    const sparkTimer = setInterval(function () { spawnSparkle(); }, 150);
+    const tick = function () {
+      const t = performance.now() - show.t0;
+      drawShow(Math.min(t, totalMs()));
+      if (t < totalMs()) showRAF = requestAnimationFrame(tick);
+      else {
+        clearInterval(sparkTimer);
+        if (show.record && recorder && recorder.state !== 'inactive') {
+          setTimeout(function () { if (recorder && recorder.state !== 'inactive') recorder.stop(); }, 240);
+        }
+      }
+    };
+    tick();
   }
 
   /* ------------ 공연 화면 열기 ------------ */
@@ -1057,22 +968,24 @@
     stageTheme = stageSel.theme;
     show = {
       poses: stageSel.slots.slice(),
-      bg: stageSel.bg,
-      record: false,
-      onEnd: null
+      bg: stageSel.bg
     };
-    $('#showChip').textContent = BGS.filter(function (b) { return b.id === stageSel.bg; })[0].ko;
+    setupCanvas();
+    stageRig.setTheme(stageTheme);
+    stageRig.setShow(show.poses);
     const bgName = BGS.filter(function (b) { return b.id === stageSel.bg; })[0].ko;
     const thName = THEMES.filter(function (t) { return t.id === stageSel.theme; })[0].ko;
+    $('#showChip').textContent = bgName;
     const meta = $('#showMeta');
     meta.innerHTML = '<span class="chip">' + bgName + '</span><span class="chip">' + thName + '</span>' +
-      show.poses.map(function (id, i) { return '<span class="chip pose">' + (i + 1) + '. ' + POSE[id].ko + '</span>'; }).join('');
+      show.poses.map(function (id, i) { return '<span class="chip pose">' + (i + 1) + '. ' + POSE[id].ko + '</span>'; }).join('') +
+      '<span class="chip pose">✦ 레베랑스</span>';
     $('#recordBtn').disabled = false;
+    $('#recordBtn').textContent = '🎬 내 작품 영상 저장';
     $('#showActions').style.opacity = 0;
-    whenImages(show.poses).then(function () {
-      playShow();
-      setTimeout(function () { $('#showActions').style.opacity = 1; }, 400);
-    });
+    playShow();
+    setTimeout(function () { $('#showActions').style.opacity = 1; }, 400);
+    if (show.record) startRecorder();
   }
 
   /* ------------ 영상 저장 ------------ */
@@ -1135,34 +1048,48 @@
     }
     $('#recordBtn').disabled = true;
     $('#recordBtn').textContent = '● 저장 중…';
-    $('#recMsg').textContent = '영상 저장 중… (약 8초)';
+    const secs = Math.max(3, Math.round(totalMs() / 1000));
+    $('#recMsg').textContent = '영상 저장 중… (약 ' + secs + '초)';
     $('#recOverlay').classList.add('on');
     show.record = true;
-    show.onEnd = null;
     cancelAnimationFrame(showRAF);
-    const runRecording = function () {
-      // 화면에 보이는 그대로 다시 한 번 공연하고 녹화
-      show.t0 = performance.now();
-      sparkles.length = 0;
-      playWaltz(show.poses.length, 0.55);
-      const sparkTimer = setInterval(function () { spawnSparkle(); }, 130);
-      startRecorder();
-      const tick = function () {
-        const t = performance.now() - show.t0;
-        drawShow(t);
-        if (t < totalMs()) showRAF = requestAnimationFrame(tick);
-        else {
-          drawShow(totalMs());
-          clearInterval(sparkTimer);
-          setTimeout(function () { if (recorder && recorder.state !== 'inactive') recorder.stop(); }, 220);
-        }
-      };
-      tick();
+    show.t0 = performance.now();
+    sparkles.length = 0;
+    playWaltz(show.poses.length * 2 + 3, 0.6);
+    const sparkTimer = setInterval(function () { spawnSparkle(); }, 150);
+    startRecorder();
+    const tick = function () {
+      const t = performance.now() - show.t0;
+      drawShow(Math.min(t, totalMs()));
+      if (t < totalMs()) showRAF = requestAnimationFrame(tick);
+      else {
+        drawShow(totalMs());
+        clearInterval(sparkTimer);
+        setTimeout(function () { if (recorder && recorder.state !== 'inactive') recorder.stop(); }, 260);
+      }
     };
-    whenImages(show.poses).then(runRecording);
+    tick();
   }
 
   /* ------------ 포스터 저장 ------------ */
+  function rigThumb(poseId, w, h, theme) {
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    const x = c.getContext('2d');
+    SugarRig.renderStatic(x, w, h, { pose: poseId, theme: theme, dpr: 1, u: SugarRig.APEX[poseId] == null ? 0.5 : SugarRig.APEX[poseId] });
+    return c;
+  }
+
+  function fitText(x, text, maxW, size, weight) {
+    let sz = size;
+    do {
+      x.font = weight + ' ' + sz + 'px Pretendard, sans-serif';
+      if (x.measureText(text).width <= maxW) break;
+      sz -= 2;
+    } while (sz > 14);
+    return sz;
+  }
+
   function savePoster() {
     const W = 1080, H = 1350;
     const c = document.createElement('canvas');
@@ -1172,62 +1099,60 @@
     bg.addColorStop(0, '#fff6fb'); bg.addColorStop(0.55, '#fde8f3'); bg.addColorStop(1, '#efe6ff');
     x.fillStyle = bg; x.fillRect(0, 0, W, H);
 
-    // 배경 별가루
-    for (let i = 0; i < 40; i++) {
-      const sx = Math.random() * W, sy = Math.random() * H;
-      x.globalAlpha = 0.15 + Math.random() * 0.35;
+    for (let i = 0; i < 46; i++) {
+      x.globalAlpha = 0.12 + Math.random() * 0.3;
       x.fillStyle = '#ffffff';
-      x.beginPath(); x.arc(sx, sy, 1 + Math.random() * 2.4, 0, 6.3); x.fill();
+      x.beginPath(); x.arc(Math.random() * W, Math.random() * H, 1 + Math.random() * 2.4, 0, 6.3); x.fill();
     }
     x.globalAlpha = 1;
-
     x.textAlign = 'center';
+
+    // 헤더
     x.fillStyle = '#d95f92';
-    x.font = '800 28px Pretendard, sans-serif';
-    x.fillText('MAGIC SUGAR BALLET', W / 2, 112);
+    x.font = '800 26px Pretendard, sans-serif';
+    x.fillText('MAGIC SUGAR BALLET', W / 2, 96);
     x.fillStyle = '#573f4f';
-    x.font = '800 64px Pretendard, sans-serif';
-    x.fillText('마법 슈가의 미니 발레', W / 2, 196);
+    x.font = '800 62px Pretendard, sans-serif';
+    x.fillText('마법 슈가의 미니 발레', W / 2, 176);
     x.fillStyle = '#96707f';
-    x.font = '600 25px Pretendard, sans-serif';
-    x.fillText('나만의 작품 · ' + new Date().toLocaleDateString('ko-KR'), W / 2, 242);
+    x.font = '600 24px Pretendard, sans-serif';
+    x.fillText('나만의 작품 · ' + new Date().toLocaleDateString('ko-KR'), W / 2, 220);
 
     // 무대 패널
-    const pTop = 282, pBot = H - 108;
+    const pTop = 258, pBot = H - 168;
     x.save();
-    x.shadowColor = 'rgba(206,120,160,.14)'; x.shadowBlur = 30; x.shadowOffsetY = 10;
-    x.fillStyle = 'rgba(255,255,255,.55)';
+    x.shadowColor = 'rgba(206,120,160,.16)'; x.shadowBlur = 34; x.shadowOffsetY = 10;
+    x.fillStyle = 'rgba(255,255,255,.62)';
     roundRectPath(x, 34, pTop, W - 68, pBot - pTop, 44);
     x.fill();
     x.restore();
     x.save();
     roundRectPath(x, 34, pTop, W - 68, pBot - pTop, 44);
     x.clip();
-    const spod = x.createRadialGradient(W / 2, pTop + 90, 20, W / 2, pTop + 90, (pBot - pTop) * 0.9);
-    spod.addColorStop(0, 'rgba(255,246,236,.85)');
-    spod.addColorStop(1, 'rgba(255,246,236,0)');
+    const spod = x.createRadialGradient(W / 2, pTop + 70, 20, W / 2, pTop + 70, (pBot - pTop) * 0.95);
+    spod.addColorStop(0, 'rgba(255,248,240,.9)');
+    spod.addColorStop(1, 'rgba(255,248,240,0)');
     x.fillStyle = spod;
     x.fillRect(34, pTop, W - 68, pBot - pTop);
     x.restore();
 
     const poses = show.poses.slice(0, 4);
-    const cols = poses.length >= 4 ? 2 : poses.length;
+    const cols = poses.length >= 3 ? 2 : poses.length;
     const rows = Math.ceil(poses.length / cols);
-    const padX = 48, gapX = 24, gapY = 26, captionH = 58;
-    const gridTop = pTop + 34, gridBottom = pBot - 24;
+    const padX = 58, gapX = 26, gapY = 22, capH = 52;
+    const gridTop = pTop + 30, gridBottom = pBot - 22;
     const cellW = (W - padX * 2 - gapX * (cols - 1)) / cols;
     const rowH = (gridBottom - gridTop - gapY * (rows - 1)) / rows;
-    const cellH = Math.max(200, Math.min(rowH - captionH, cellW * 1.48));
-    const blockH = rows * (cellH + captionH) + gapY * (rows - 1);
-    const startY = gridTop + Math.max(0, (gridBottom - gridTop - blockH) / 2) + 8;
+    const cellH = Math.min(rowH - capH, cellW * 1.42);
+    const blockH = rows * (cellH + capH) + gapY * (rows - 1);
+    const startY = gridTop + Math.max(0, (gridBottom - gridTop - blockH) / 2);
 
     poses.forEach(function (id, i) {
-      const col = i % cols;
-      const cx = padX + col * (cellW + gapX) + (cols === poses.length ? 0 : 0);
-      const cy = startY + Math.floor(i / cols) * (cellH + captionH + gapY);
+      const cx = padX + (i % cols) * (cellW + gapX);
+      const cy = startY + Math.floor(i / cols) * (cellH + capH + gapY);
       x.save();
-      x.shadowColor = 'rgba(206,120,160,.22)';
-      x.shadowBlur = 24;
+      x.shadowColor = 'rgba(206,120,160,.2)';
+      x.shadowBlur = 22;
       x.shadowOffsetY = 8;
       x.fillStyle = '#fffdfa';
       roundRectPath(x, cx, cy, cellW, cellH, 26);
@@ -1236,25 +1161,25 @@
       x.save();
       roundRectPath(x, cx, cy, cellW, cellH, 26);
       x.clip();
-      const t = tinted(id, stageTheme);
-      if (t && t.width) {
-        const sc = Math.min(cellW / t.width, cellH / t.height);
-        x.drawImage(t, cx + (cellW - t.width * sc) / 2, cy + (cellH - t.height * sc) / 2, t.width * sc, t.height * sc);
-      }
+      const th = rigThumb(id, Math.round(cellW * 1.6), Math.round(cellH * 1.6), stageTheme);
+      x.drawImage(th, cx, cy, cellW, cellH);
       x.restore();
       x.fillStyle = '#573f4f';
-      x.font = '800 28px Pretendard, sans-serif';
-      x.fillText(POSE[id].ko, cx + cellW / 2, cy + cellH + 40);
+      x.font = '800 27px Pretendard, sans-serif';
+      x.fillText(POSE[id].ko, cx + cellW / 2, cy + cellH + 38);
     });
 
-    // 안무 목록
-    const lineY = Math.min(H - 150, startY + blockH + 76);
+    // 안무 목록 (겹침 없이)
+    const listText = poses.map(function (id) { return POSE[id].ko; }).join('   ·   ') + '   ·   레베랑스';
+    const listY = pBot + 62;
+    const sz = fitText(x, listText, W - 120, 28, '800');
     x.fillStyle = '#b07f95';
-    x.font = '800 30px Pretendard, sans-serif';
-    x.fillText(poses.map(function (id) { return POSE[id].ko; }).join('   ·   '), W / 2, lineY);
+    x.font = '800 ' + sz + 'px Pretendard, sans-serif';
+    x.textAlign = 'center';
+    x.fillText(listText, W / 2, listY);
 
     x.fillStyle = '#d95f92';
-    x.font = '700 24px Pretendard, sans-serif';
+    x.font = '700 22px Pretendard, sans-serif';
     x.fillText('sheeny6-cmyk.github.io/magic-sugar-game/quiz', W / 2, H - 46);
 
     c.toBlob(function (blob) {
@@ -1265,7 +1190,7 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 6000);
       toast('포스터를 저장했어요 🖼');
     }, 'image/png');
   }
@@ -1316,9 +1241,5 @@
   /* ---------------- 시작 ---------------- */
   load();
   renderHome();
-  setupCanvas();
-  whenImages(POSES.map(function (p) { return p.id; })).then(function () {
-    // 첫 화면 준비 완료
-    document.body.dataset.ready = '1';
-  });
+  document.body.dataset.ready = '1';
 })();

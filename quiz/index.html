@@ -25,7 +25,7 @@
     </header>
 
     <div class="hero">
-      <img src="assets/arabesque.webp" alt="아라베스크 자세의 마법 슈가" id="heroImg" />
+      <canvas id="heroCanvas" class="rig-cv" aria-label="아라베스크 자세의 마법 슈가"></canvas>
       <div class="hero-glow"></div>
       <div class="hero-copy">
         <p class="eyebrow">마법 슈가의</p>
@@ -79,7 +79,7 @@
     </div>
 
     <div class="quiz-card">
-      <img id="quizImg" src="assets/arabesque.webp" alt="동작 카드" />
+      <canvas id="quizCanvas" class="rig-cv" aria-label="동작 시연"></canvas>
       <div class="quiz-q">이 동작의 이름은?</div>
     </div>
 
@@ -98,7 +98,7 @@
     <p class="lead" id="orderLead">카드가 반짝이는 순서를 잘 보고 기억해요.</p>
 
     <div class="demo-stage" id="demoStage">
-      <img id="demoImg" src="assets/arabesque.webp" alt="" />
+      <canvas id="demoCanvas" class="rig-cv" aria-label="동작 시연"></canvas>
       <div class="demo-name" id="demoName">아라베스크</div>
     </div>
 
@@ -199,6 +199,8 @@
   </div>
   <div class="toast" id="toast"></div>
 </div>
+<script src="rig.js"></script>
+<script src="rig-art.js"></script>
 <script src="game.js"></script>
 </body>
 </html>
