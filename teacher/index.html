@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#fdeef4" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="description" content="발레 쌤이 등 돌린 사이 몰래 딴짓! 쌤이 고개를 돌리기 전에 손을 떼는 눈치 게임 — 마법 슈가의 미니 발레" />
+<meta property="og:title" content="😈 발레쌤 눈 피하기 🩰" />
+<meta property="og:description" content="꾹 눌러서 몰래 딴짓, 쌤이 돌아보기 전에 손 떼기. 오늘 몇 번이나 찍혔는지 도전!" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/teacher/assets/sugar-sneak.webp" />
+<title>😈 발레쌤 눈 피하기 🩰</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+
+  <!-- ================= 시작 화면 ================= -->
+  <section class="screen on" id="s-start">
+    <div class="start-bg" aria-hidden="true">
+      <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+    </div>
+    <header class="start-top">
+      <span class="brand"><i></i> MAGIC SUGAR BALLET</span>
+      <button class="icon-btn" id="soundBtnStart" aria-label="소리 켜기/끄기">🔔</button>
+    </header>
+
+    <div class="start-hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <img class="hero-sugar" src="assets/sugar-sneak.webp" alt="몰래 셀카를 찍는 마법 슈가" />
+      <div class="hero-teacher" aria-hidden="true"><img src="assets/teacher-glare.webp" alt="" /></div>
+      <div class="hero-emoji e1" aria-hidden="true">📸</div>
+      <div class="hero-emoji e2" aria-hidden="true">⚠️</div>
+    </div>
+
+    <div class="start-copy">
+      <p class="eyebrow">마법 슈가의</p>
+      <h1>발레쌤 눈 피하기</h1>
+      <p class="sub">쌤이 등 돌린 사이 몰래 딴짓,<br />고개 돌리기 전에 손 떼면 완벽한 시치미!</p>
+    </div>
+
+    <ul class="rules">
+      <li><b>꾹 누르기</b><span>쌤이 등 돌렸을 때 몰래 딴짓 → 점수 쭉쭉</span></li>
+      <li><b>손 떼기</b><span>⚠️ 경고가 뜨면 바로 손 떼기 → 완벽한 시치미</span></li>
+      <li><b>걸리면?</b><span>잔소리 폭탄 + 하트 1개 차감</span></li>
+    </ul>
+
+    <button class="btn-main" id="startBtn">몰래 시작하기 🩰</button>
+    <p class="start-foot">하트 3개 · 30초 · 터치 or 마우스</p>
+  </section>
+
+  <!-- ================= 플레이 화면 ================= -->
+  <section class="screen" id="s-play">
+    <div class="hud">
+      <div class="hud-left">
+        <div class="hearts" id="hearts" aria-label="남은 하트"></div>
+        <div class="score-wrap"><span class="score" id="score">0</span><span class="score-unit">점</span></div>
+      </div>
+      <div class="hud-mid">
+        <div class="combo" id="combo">콤보 <b>0</b></div>
+        <div class="happy"><i id="happyBar"></i></div>
+      </div>
+      <div class="hud-right">
+        <div class="time" id="clock">30</div>
+        <button class="icon-btn sm" id="soundBtn" aria-label="소리 켜기/끄기">🔔</button>
+      </div>
+    </div>
+    <div class="timebar"><i id="timeBar"></i></div>
+
+    <div class="studio" id="studio">
+      <div class="mirror-wall" aria-hidden="true">
+        <div class="mirror"><i class="shine"></i><i class="shine s2"></i>
+          <div class="refl"></div>
+          <div class="frames"><i class="fr f1"></i><i class="fr f2"></i><i class="fr f3"></i></div><i class="refl-bar"></i><i class="refl-post p1"></i><i class="refl-post p2"></i>
+        </div>
+        <div class="rail"></div>
+        <div class="clock"><i class="h"></i><i class="m"></i><b></b></div>
+        <div class="wall-sign">BALLET STUDIO</div>
+        <div class="beams"></div>
+      </div>      <div class="floor" aria-hidden="true"></div>
+      <div class="barre" aria-hidden="true"><i class="bar"></i><span class="post p1"></span><span class="post p2"></span></div>
+      <div class="lightpool" aria-hidden="true"></div>
+      <div class="prop plant" aria-hidden="true"><i class="lf l1"></i><i class="lf l2"></i><i class="lf l3"></i><i class="lf l4"></i><span class="pot"></span></div>
+      <div class="bench-group" aria-hidden="true"><i class="towel"></i><i class="bottle"></i><div class="bench"><span class="lg l"></span><span class="lg r"></span></div></div>
+      <div class="vignette" id="vignette" aria-hidden="true"></div>
+
+      <div class="actor sugar" id="sugar">
+        <img class="sprite" id="sugarImg" src="assets/sugar-good.webp" alt="마법 슈가" />
+        <div class="shadow" aria-hidden="true"></div>
+      </div>
+
+      <div class="actor teacher" id="teacher">
+        <img class="sprite" id="teacherImg" src="assets/teacher-back.webp" alt="발레 쌤" />
+        <div class="shadow" aria-hidden="true"></div>
+        <div class="t-mark" aria-hidden="true">!</div>
+      </div>
+
+      <div class="bubble nag" id="nagBubble" role="status"><b>발레쌤</b><span id="nagText"></span></div>
+      <div class="bubble say" id="sugarSay" role="status"><span id="sayText"></span></div>
+      <div class="warn-banner" id="warnBanner"><span class="w-ico">⚠️</span><span class="w-txt">쌤이 고개를 돌리려 한다...</span><i class="w-bar" id="warnBar"></i></div>
+      <div class="catch-flash" id="catchFlash" aria-hidden="true"></div>
+      <div class="pop-layer" id="popLayer" aria-hidden="true"></div>
+    </div>
+
+    <div class="pad" id="pad">
+      <div class="pad-btn" aria-hidden="true"><span id="padIcon">👆</span></div>
+      <div class="pad-txt" id="padTxt"><b>화면을 꾹 누르고 있어요</b><span>쌤이 돌아보기 전에 손을 떼세요!</span></div>
+    </div>
+  </section>
+
+  <!-- ================= 결과 화면 ================= -->
+  <section class="screen" id="s-end">
+    <header class="end-top">
+      <button class="icon-btn back" id="homeBtn" aria-label="처음으로">←</button>
+      <span class="end-title" id="endTitle">오늘의 취발러 결과</span>
+      <button class="icon-btn" id="soundBtnEnd" aria-label="소리 켜기/끄기">🔔</button>
+    </header>
+
+    <div class="end-card">
+      <div class="rank-badge" id="rankBadge">🕵️‍♀️</div>
+      <p class="rank-label">너의 등급</p>
+      <h2 class="rank-title" id="rankTitle">프로 눈치 100단 취발러</h2>
+      <p class="rank-sub" id="rankSub">쌤이 한 번도 못 봤어요.</p>
+
+      <div class="end-stats">
+        <div class="st"><span>점수</span><b id="endScore">0</b></div>
+        <div class="st"><span>최고 콤보</span><b id="endCombo">0</b></div>
+        <div class="st"><span>남은 하트</span><b id="endHearts">0</b></div>
+      </div>
+
+      <div class="nag-box">
+        <h3>오늘 들은 잔소리 <em id="nagCount">0</em></h3>
+        <ul id="nagList"></ul>
+      </div>
+
+      <div class="tip-card">
+        <b>💡 다음엔 이렇게</b>
+        <p id="endTip">경고 배너가 뜨면 0.5초 안에 손을 떼면 세이프!</p>
+      </div>
+
+      <div class="end-actions">
+        <button class="btn-main" id="againBtn">다시 도전 🔄</button>
+        <button class="btn-sub" id="saveBtn">결과 이미지 저장 📸</button>
+      </div>
+      <p class="end-foot" id="endFoot">인스타 스토리에 올리면 딱 좋아요 (1080×1920)</p>
+    </div>
+    <canvas id="resultCanvas" width="1080" height="1920" hidden></canvas>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
