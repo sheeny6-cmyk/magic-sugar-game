@@ -370,6 +370,17 @@ button{font-family:inherit;cursor:pointer}
 @keyframes shine{0%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
 @keyframes cardfloat{0%,100%{margin-top:0}50%{margin-top:-6px}}
 
+@media (max-width:379px){
+  .tile{padding:8px;gap:8px}
+  .tile .thumb{width:36px;height:36px}
+  .tile .t-name{font-size:11px}
+  .tile .t-dance{font-size:8.5px}
+}
+
+@media (max-height:680px){
+  .tip{display:none}
+}
+
 @media (max-height:700px){
   .hero h1{font-size:23px}
   .hero-moon{width:82px;height:82px}
