@@ -1,0 +1,120 @@
+/* ─────────────────────────────────────────────────────────────
+   마법 슈가의 오늘의 부적 — 부적 데이터
+   · video : Google Flow에서 만든 짧은 루프 mp4를 넣으면
+             카드 안에서 일러스트 대신 자동 재생됩니다.
+             예) video: 'assets/loops/stock.mp4'
+   ───────────────────────────────────────────────────────────── */
+window.TALISMANS = [
+  {
+    id: 'stock',
+    emoji: '📈',
+    title: '주식 반등 기원',
+    wish: '내 계좌도 그랑 주테처럼 떡상하게 해 주세요',
+    dance: '그랑 주테',
+    danceFr: 'Grand Jeté',
+    effect: '빨간불 계좌에 초록불이 켜져요',
+    note: '오늘은 손절 말고 홀딩.',
+    tag: '#떡상기원',
+    stars: 4,
+    img: 'assets/grandjete.webp',
+    video: null,
+    tint: '#ffd9a8',
+    tint2: '#ffb6c8'
+  },
+  {
+    id: 'lotto',
+    emoji: '🎱',
+    title: '로또 1등 기원',
+    wish: '이번 주 토요일, 내 번호만 피해 가지 마라',
+    dance: '피루엣',
+    danceFr: 'Pirouette',
+    effect: '번호가 하나씩 맞아떨어져요',
+    note: '당첨은 운, 구매는 용기.',
+    tag: '#토요일의기적',
+    stars: 5,
+    img: 'assets/pirouette.webp',
+    video: null,
+    tint: '#cdb8ff',
+    tint2: '#ffd1e8'
+  },
+  {
+    id: 'ballet',
+    emoji: '🩰',
+    title: '발레 천재 기원',
+    wish: '오늘만큼은 턴아웃 180도 + 흔들림 ZERO',
+    dance: '아라베스크',
+    danceFr: 'Arabesque',
+    effect: '선생님 눈에 오늘만 반짝여요',
+    note: '오늘은 콧대 높여도 돼요.',
+    tag: '#발레천재',
+    stars: 4,
+    img: 'assets/arabesque.webp',
+    video: null,
+    tint: '#bfe0ff',
+    tint2: '#ffd9f2'
+  },
+  {
+    id: 'money',
+    emoji: '💸',
+    title: '텅장 방어 부적',
+    wish: '결제 버튼 누르기 전 3초 중심 잡기',
+    dance: '파세 밸런스',
+    danceFr: 'Passé',
+    effect: '장바구니에서 손이 미끄러져요',
+    note: '3초만 버티면 이번 달은 산다.',
+    tag: '#텅장방어',
+    stars: 5,
+    img: 'assets/passe.webp',
+    video: null,
+    tint: '#ffc9d9',
+    tint2: '#cfc3ff'
+  },
+  {
+    id: 'offwork',
+    emoji: '⏰',
+    title: '칼퇴 사수 부적',
+    wish: '퇴근 5분 전 갑작스런 업무 봉인',
+    dance: '샤세',
+    danceFr: 'Chassé',
+    effect: '퇴근 5분 전 업무가 사라져요',
+    note: '오늘은 진짜 칼퇴.',
+    tag: '#칼퇴사수',
+    stars: 4,
+    img: 'assets/chasse.webp',
+    video: null,
+    tint: '#ffe3a3',
+    tint2: '#b8f0e0'
+  },
+  {
+    id: 'night',
+    emoji: '🍗',
+    title: '야식 유혹 차단',
+    wish: '밤 11시 배달앱 켜는 손가락 정지',
+    dance: '방어 포즈',
+    danceFr: 'Croisé Guard',
+    effect: '배달앱이 알아서 꺼져요',
+    note: '내일 아침의 나를 위해.',
+    tag: '#야식차단',
+    stars: 3,
+    img: 'assets/guard.webp',
+    video: null,
+    tint: '#cbb6ff',
+    tint2: '#ffc0b8'
+  },
+  {
+    id: 'commute',
+    emoji: '☕',
+    title: '출근길 생존 부적',
+    wish: '월요병·상사 잔소리 자동 반사',
+    dance: '에샤페',
+    danceFr: 'Échappé',
+    effect: '잔소리가 BGM처럼 흘러가요',
+    note: '오늘 하루도 무사히.',
+    tag: '#출근생존',
+    stars: 5,
+    img: 'assets/echappe.webp',
+    video: null,
+    tint: '#bfe3ff',
+    tint2: '#fff0c2'
+  }
+];

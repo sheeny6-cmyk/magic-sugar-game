@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
+<meta name="theme-color" content="#1b1236" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<title>🔮 마법 슈가의 오늘의 부적</title>
+<meta name="description" content="마법 슈가가 발레 동작으로 빌어 주는 오늘의 부적. 하루 한 장, 소원을 골라 뽑아 보세요." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='48'%3E%F0%9F%94%AE%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ── 배경: 밤하늘 · 별 · 달빛 ─────────────────────────────── -->
+<div class="sky" aria-hidden="true">
+  <div class="nebula n1"></div>
+  <div class="nebula n2"></div>
+  <div class="nebula n3"></div>
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+</div>
+
+<!-- ── 화면 1: 부적 상점 ──────────────────────────────────── -->
+<main class="scene" id="scene">
+
+  <header class="topbar">
+    <span class="brand"><span class="brand-mark">🔮</span> 마법 슈가</span>
+    <button class="ghost-btn" id="helpBtn" aria-label="사용법 보기">?</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">MAGIC SUGAR · 오늘의 부적 상점</p>
+      <h1>오늘 하루,<br /><em>어떤 부적</em>이<br />필요해요?</h1>
+      <p class="sub">일곱 가지 소원 중에 하나를 골라도 되고,<br />운에 맡겨 뽑아도 돼요.</p>
+    </div>
+    <div class="hero-moon">
+      <img src="assets/guard.webp" alt="마법 슈가" />
+    </div>
+  </section>
+
+  <section class="wishlist" id="wishlist" aria-label="일곱 가지 소원"></section>
+
+  <div class="tip">
+    <span class="tip-mark">✦</span>
+    <p class="tip-text"><b>슈가의 한마디</b> <span id="tipText">오늘은 작은 용기가 통하는 날이에요.</span></p>
+  </div>
+
+  <p class="shop-note">부적은 <b>매일 자정</b>에 새로워져요 · 오늘도 무사히 ✦</p>
+
+  <div class="cta-wrap">
+    <button class="cta" id="randomBtn">
+      <span class="cta-spark">✨</span> 오늘의 랜덤 부적 뽑기
+    </button>
+    <p class="quota" id="quota">오늘 무료 뽑기 1장 남음</p>
+  </div>
+
+</main>
+
+<!-- ── 화면 2: 뽑기 결과 ─────────────────────────────────── -->
+<section class="sheet" id="sheet" aria-hidden="true">
+  <div class="rays" aria-hidden="true"></div>
+  <canvas class="particles" id="particles" aria-hidden="true"></canvas>
+
+  <div class="sheet-inner">
+    <div class="card-stage">
+      <div class="card" id="card">
+
+        <!-- 앞면: 완성된 부적 -->
+        <div class="card-face card-front" id="cardFront">
+          <div class="art">
+            <img id="cardImg" alt="" />
+            <!-- Google Flow 루프 영상 슬롯: data.js의 video 값이 있으면 자동 재생됩니다 -->
+            <video id="cardVideo" class="loop" playsinline muted loop preload="none" hidden></video>
+            <div class="art-glow"></div>
+          </div>
+          <div class="label">
+            <p class="l-date" id="cDate">2026. 11. 18</p>
+            <h2 class="l-title" id="cTitle">📈 주식 반등 기원</h2>
+            <p class="l-dance" id="cDance">그랑 주테 · Grand Jeté</p>
+            <p class="l-wish" id="cWish">“내 계좌도 그랑 주테처럼 떡상하게 해 주세요”</p>
+            <p class="l-effect" id="cEffect">빨간불 계좌에 초록불이 켜져요</p>
+            <div class="l-foot">
+              <span class="l-stars" id="cStars">★★★★★</span>
+              <span class="l-valid">오늘 자정까지</span>
+            </div>
+            <div class="seal" aria-hidden="true"><span>마법<br />슈가</span></div>
+          </div>
+        </div>
+
+        <!-- 뒷면: 뽑기 전 카드 -->
+        <div class="card-face card-back" aria-hidden="true">
+          <div class="back-ring"></div>
+          <div class="back-ring r2"></div>
+          <div class="back-core">
+            <span class="back-orb">🔮</span>
+            <p class="back-name">마법 슈가</p>
+            <p class="back-sub">TODAY'S TALISMAN</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" id="saveBtn"><span>📸</span> 인스타 스토리로 저장</button>
+      <div class="btn-row">
+        <button class="btn soft" id="adBtn"><span>🎬</span> 광고 보고 한 장 더</button>
+        <button class="btn quiet" id="closeBtn">닫기</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 광고 모의 오버레이 ─────────────────────────────────── -->
+<div class="ad" id="ad" aria-hidden="true">
+  <div class="ad-box">
+    <p class="ad-label">리워드 광고 자리 (프로토타입)</p>
+    <div class="ad-visual">🎬</div>
+    <div class="ad-bar"><i id="adBar"></i></div>
+    <p class="ad-note" id="adNote">광고 보는 중… <b id="adCount">2</b>초</p>
+  </div>
+</div>
+
+<!-- ── 사용법 ─────────────────────────────────────────────── -->
+<div class="help" id="help" aria-hidden="true">
+  <div class="help-box">
+    <h3>이렇게 써요</h3>
+    <ul>
+      <li><b>하루 한 장</b>은 공짜예요. 마음에 드는 소원을 누르거나 랜덤으로 뽑아 보세요.</li>
+      <li><b>광고 보고 한 장 더</b> — 프로토타입이라 2초만 기다리면 바로 한 장 더 뽑을 수 있어요. (앱인토스 리워드 광고 자리)</li>
+      <li><b>인스타 스토리로 저장</b>을 누르면 1080×1920 부적 PNG가 내려받아져요.</li>
+      <li>부적은 그날 자정까지만 효력이 있어요. 내일 또 뽑아 주세요.</li>
+    </ul>
+    <button class="btn primary" id="helpClose">알겠어요</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
