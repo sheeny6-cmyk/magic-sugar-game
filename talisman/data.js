@@ -1,5 +1,5 @@
 /* ─────────────────────────────────────────────────────────────
-   마법 슈가의 오늘의 부적 — 부적 데이터
+   마법 슈가의 오늘의 소원 카드 — 카드 데이터
    · video : Google Flow에서 만든 짧은 루프 mp4를 넣으면
              카드 안에서 일러스트 대신 자동 재생됩니다.
              예) video: 'assets/loops/stock.mp4'
@@ -12,7 +12,7 @@ window.TALISMANS = [
     wish: '내 계좌도 그랑 주테처럼 떡상하게 해 주세요',
     dance: '그랑 주테',
     danceFr: 'Grand Jeté',
-    effect: '빨간불 계좌에 초록불이 켜져요',
+    effect: '파란불 계좌에 빨간불이 켜져요',
     note: '오늘은 손절 말고 홀딩.',
     tag: '#떡상기원',
     stars: 4,
@@ -56,7 +56,7 @@ window.TALISMANS = [
   {
     id: 'money',
     emoji: '💸',
-    title: '텅장 방어 부적',
+    title: '텅장 방어 카드',
     wish: '결제 버튼 누르기 전 3초 중심 잡기',
     dance: '파세 밸런스',
     danceFr: 'Passé',
@@ -72,7 +72,7 @@ window.TALISMANS = [
   {
     id: 'offwork',
     emoji: '⏰',
-    title: '칼퇴 사수 부적',
+    title: '칼퇴 사수 카드',
     wish: '퇴근 5분 전 갑작스런 업무 봉인',
     dance: '샤세',
     danceFr: 'Chassé',
@@ -104,7 +104,7 @@ window.TALISMANS = [
   {
     id: 'commute',
     emoji: '☕',
-    title: '출근길 생존 부적',
+    title: '출근길 생존 카드',
     wish: '월요병·상사 잔소리 자동 반사',
     dance: '에샤페',
     danceFr: 'Échappé',

@@ -1,6 +1,6 @@
 /* ═════════════════════════════════════════════════════════════
-   🔮 마법 슈가의 오늘의 부적 — app.js
-   · 하루 1장 무료 뽑기 + 리워드 광고(모의) 1장 추가
+   ✨ 마법 슈가의 오늘의 소원 카드 — app.js
+   · 하루 3장 무료 뽑기 + 무료 소진 후 리워드 광고(모의)로 한 장 더
    · 카드 3D 플립 + 반짝이 파티클 + 빛줄기
    · 1080×1920 인스타 스토리 PNG 저장 (Canvas)
    ═════════════════════════════════════════════════════════════ */
@@ -8,7 +8,9 @@
   'use strict';
 
   var TALISMANS = window.TALISMANS || [];
-  var STORE_KEY = 'sugar-talisman-v1';
+  var STORE_KEY = 'sugar-wishcard-v1';
+  var LEGACY_KEY = 'sugar-talisman-v1';   // 예전 이름으로 저장된 값도 이어받는다
+  var FREE_PER_DAY = 3;          // 하루 무료 뽑기 장수
   var pad = function (n) { return String(n).padStart(2, '0'); };
 
   var $ = function (id) { return document.getElementById(id); };
@@ -27,6 +29,7 @@
   var cStars = $('cStars');
   var saveBtn = $('saveBtn');
   var adBtn = $('adBtn');
+  var sheetQuotaEl = $('sheetQuota');
   var closeBtn = $('closeBtn');
   var adEl = $('ad');
   var adBar = $('adBar');
@@ -53,8 +56,25 @@
     var today = ymd();
     var s = null;
     try { s = JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { s = null; }
-    if (!s || s.date !== today) s = { date: today, freeUsed: false, adCredits: 0, last: null, count: 0 };
+    if (!s) { try { s = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null'); } catch (e) { s = null; } }
+    if (!s || s.date !== today) {
+      // 날짜가 바뀌면(자정 리셋) 무료 3장이 다시 채워진다
+      s = { date: today, freeDrawn: 0, adCredits: 0, last: null, count: 0 };
+    } else {
+      // 예전 버전(하루 1장 · freeUsed true/false)의 저장값을 그대로 이어받는다
+      if (typeof s.freeDrawn !== 'number') {
+        s.freeDrawn = s.freeUsed ? 1 : 0;
+        delete s.freeUsed;
+      }
+      s.adCredits = s.adCredits || 0;
+      s.count = s.count || 0;
+    }
     return s;
+  }
+
+  // 오늘 남은 무료 뽑기 장수
+  function freeLeft() {
+    return Math.max(0, FREE_PER_DAY - (state.freeDrawn || 0));
   }
   function saveState(s) {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) { /* 사생활 보호 모드 등 */ }
@@ -79,7 +99,7 @@
     var b = document.createElement('button');
     b.className = 'tile' + (i === TALISMANS.length - 1 && TALISMANS.length % 2 ? ' wide' : '');
     b.type = 'button';
-    b.setAttribute('aria-label', t.title + ' 부적 뽑기');
+    b.setAttribute('aria-label', t.title + ' 소원 카드 뽑기');
     b.innerHTML =
       '<span class="thumb"><img src="' + t.img + '" alt="" loading="eager" /></span>' +
       '<span class="meta"><span class="t-name"><span class="t-emoji">' + t.emoji + '</span> ' + t.title + '</span>' +
@@ -94,7 +114,7 @@
       '오늘은 작은 용기가 통하는 날이에요.',
       '잘 안 풀리는 일은 내일의 나에게 넘겨도 돼요.',
       '오늘의 나, 생각보다 꽤 반짝이고 있어요.',
-      '한 번 쉬어 가도 괜찮아요. 그래도 부적은 챙기고요.',
+      '한 번 쉬어 가도 괜찮아요. 그래도 소원 카드는 챙기고요.',
       '오늘 마주치는 사람은 다 착한 사람일 거예요.',
       '좋은 일은 조용히, 갑자기 찾아와요.',
       '오늘 하루도 무사히 — 그거면 충분해요.'
@@ -108,20 +128,34 @@
 
   /* ── 남은 뽑기 표시 ────────────────────────────────────── */
   function refreshQuota() {
-    if (!state.freeUsed) {
-      quotaEl.textContent = '오늘 무료 뽑기 1장 남음 · 광고 보면 한 장 더';
+    var left = freeLeft();
+    if (left > 0) {
+      quotaEl.textContent = '오늘 무료 뽑기 ' + left + '장 남음 · ' + FREE_PER_DAY + '장 다 쓰면 광고 보면 한 장 더';
     } else if (state.adCredits > 0) {
-      quotaEl.textContent = '광고 부적 ' + state.adCredits + '장 남음';
+      quotaEl.textContent = '광고 카드 ' + state.adCredits + '장 남음';
     } else {
-      quotaEl.textContent = '오늘 몫은 다 뽑았어요 · 광고 보면 한 장 더';
+      quotaEl.textContent = '오늘 무료 ' + FREE_PER_DAY + '장을 다 뽑았어요 · 광고 보면 한 장 더';
+    }
+  }
+
+  // 결과 화면: 무료가 남았으면 광고 없이 한 장 더, 다 썼으면 광고 버튼
+  function refreshSheetQuota() {
+    if (!sheetQuotaEl) return;
+    var left = freeLeft();
+    if (left > 0) {
+      sheetQuotaEl.textContent = '오늘 무료 ' + FREE_PER_DAY + '장 중 ' + state.freeDrawn + '장 사용 · ' + left + '장 남았어요';
+      adBtn.innerHTML = '<span>✨</span> 무료로 한 장 더 (' + left + '장 남음)';
+    } else {
+      sheetQuotaEl.textContent = '오늘 무료 ' + FREE_PER_DAY + '장을 다 뽑았어요 · 광고 보면 한 장 더';
+      adBtn.innerHTML = '<span>🎬</span> 광고 보고 한 장 더';
     }
   }
 
   /* ── 뽑기 요청 (무료 → 광고 → 추가) ───────────────────── */
   function requestDraw(t) {
     if (busy) return;
-    if (!state.freeUsed) {
-      state.freeUsed = true;
+    if (freeLeft() > 0) {
+      state.freeDrawn = (state.freeDrawn || 0) + 1;
       saveState(state);
       reveal(t);
       return;
@@ -132,11 +166,8 @@
       reveal(t);
       return;
     }
-    // 오늘 몫을 다 쓴 경우 → 광고 모의를 거쳐 한 장 더
+    // 오늘 무료 3장을 다 쓴 경우 → 광고 모의를 거쳐 한 장 더
     playAd(function () {
-      state.freeUsed = true;
-      saveState(state);
-      refreshQuota();
       reveal(t);
     });
   }
@@ -149,6 +180,7 @@
     state.count = (state.count || 0) + 1;
     saveState(state);
     refreshQuota();
+    refreshSheetQuota();
 
     cardImg.src = t.img;
     cardImg.alt = '마법 슈가 ' + t.dance + ' 일러스트';
@@ -192,7 +224,7 @@
     }, 1250);
   }
 
-  // 같은 부적이 연달아 나오지 않도록, 직전 부적은 빼고 뽑는다
+  // 같은 카드가 연달아 나오지 않도록, 직전 카드는 빼고 뽑는다
   function pickRandom(excludeId) {
     var pool = TALISMANS.filter(function (x) { return x.id !== excludeId; });
     if (!pool.length) pool = TALISMANS;
@@ -214,11 +246,13 @@
 
   adBtn.addEventListener('click', function () {
     if (busy) return;
+    if (freeLeft() > 0) {                              // 아직 무료가 남았으면 광고 없이 한 장 더
+      requestDraw(pickRandom(current && current.id));
+      return;
+    }
     playAd(function () {
-      state.adCredits += 1;
-      saveState(state);
-      requestDraw(pickRandom(current && current.id));   // 방금 받은 광고 부적으로 바로 한 장 더
-      toast('광고 부적 도착! 한 장 더 뽑았어요 ✨');
+      reveal(pickRandom(current && current.id));       // 무료를 다 쓴 뒤엔 광고 보고 한 장 더
+      toast('광고 카드 도착! 한 장 더 뽑았어요 ✨');
     });
   });
 
@@ -450,7 +484,7 @@
     ctx.globalAlpha = 1;
   }
 
-  /* ── 1080×1920 부적 이미지 만들기 ──────────────────────── */
+  /* ── 1080×1920 소원 카드 이미지 만들기 ────────────────── */
   async function buildShareImage(t) {
     var W = 1080, H = 1920;
     var c = document.createElement('canvas');
@@ -493,15 +527,22 @@
     titleGrad.addColorStop(0, '#ffe6bd');
     titleGrad.addColorStop(0.5, '#ffb9d6');
     titleGrad.addColorStop(1, '#d6c4ff');
-    ctx.font = '800 100px "Noto Serif KR","Noto Serif CJK KR",serif';
+    // 제목은 폭에 맞춰 글자 크기를 줄여 한 줄로 그린다
+    var titleText = '오늘의 소원 카드';
+    var titleSize = 96;
+    do {
+      ctx.font = '800 ' + titleSize + 'px "Noto Serif KR","Noto Serif CJK KR",serif';
+      if (ctx.measureText(titleText).width <= 900) break;
+      titleSize -= 4;
+    } while (titleSize > 56);
     ctx.fillStyle = titleGrad;
-    ctx.fillText('오늘의 부적', 540, 244);
+    ctx.fillText(titleText, 540, 244);
 
     ctx.font = '500 30px "Noto Sans KR","Noto Sans CJK KR",sans-serif';
     ctx.fillStyle = 'rgba(206,186,236,.9)';
     tracked(ctx, ymdDot() + ' ' + weekdayKR(), 540, 300, 3);
 
-    // 4) 부적 카드
+    // 4) 소원 카드
     var card = { x: 90, y: 348, w: 900, h: 1360, r: 46 };
     ctx.save();
     ctx.shadowColor = 'rgba(0,0,0,.5)';
@@ -577,11 +618,11 @@
     ctx.fillText('슈가', 0, 25);
     ctx.restore();
 
-    // 8) 영험도 · 유효기간
+    // 8) 응원 파워 · 유효기간
     ctx.textAlign = 'left';
     ctx.font = '600 26px "Noto Sans KR","Noto Sans CJK KR",sans-serif';
     ctx.fillStyle = '#d9a441';
-    ctx.fillText('★'.repeat(t.stars) + '☆'.repeat(5 - t.stars) + '  영험도', card.x + 56, 1640);
+    ctx.fillText('★'.repeat(t.stars) + '☆'.repeat(5 - t.stars) + '  응원 파워', card.x + 56, 1640);
     ctx.font = '500 26px "Noto Sans KR","Noto Sans CJK KR",sans-serif';
     ctx.fillStyle = '#b7a6c8';
     ctx.fillText('오늘 자정까지 유효', card.x + 56, 1676);
@@ -590,10 +631,10 @@
     // 9) 푸터
     ctx.font = '600 30px "Noto Sans KR","Noto Sans CJK KR",sans-serif';
     ctx.fillStyle = 'rgba(214,196,240,.92)';
-    tracked(ctx, '🔮 마법 슈가 · @sugarballet0506', 540, 1804, 2);
+    tracked(ctx, '✨ 마법 슈가 · @sugarballet0506', 540, 1804, 2);
     ctx.font = '400 26px "Noto Sans KR","Noto Sans CJK KR",sans-serif';
     ctx.fillStyle = 'rgba(200,182,230,.65)';
-    ctx.fillText('오늘 하루도, 부적과 함께 ✨', 540, 1850);
+    ctx.fillText('오늘 하루도, 소원과 함께 ✨', 540, 1850);
 
     return c;
   }
@@ -603,19 +644,19 @@
     if (!current || saveBtn.disabled) return;
     var label = saveBtn.innerHTML;
     saveBtn.disabled = true;
-    saveBtn.innerHTML = '<span>🖼️</span> 부적 그리는 중…';
+    saveBtn.innerHTML = '<span>🖼️</span> 카드 그리는 중…';
     try {
       if (document.fonts && document.fonts.ready) { try { await document.fonts.ready; } catch (e) {} }
       var canvas = await buildShareImage(current);
       var url = canvas.toDataURL('image/png');
-      var name = 'sugar-talisman-' + ymd().replace(/-/g, '') + '.png';
+      var name = 'sugar-wish-card-' + ymd().replace(/-/g, '') + '.png';
       var a = document.createElement('a');
       a.href = url;
       a.download = name;
       document.body.appendChild(a);
       a.click();
       a.remove();
-      toast('부적을 저장했어요 · 스토리에 붙여 보세요 📸');
+      toast('소원 카드를 저장했어요 · 스토리에 붙여 보세요 📸');
     } catch (err) {
       toast('저장에 실패했어요. 다시 한 번 눌러 주세요.');
     } finally {
@@ -642,9 +683,9 @@
   refreshQuota();
   window.addEventListener('resize', function () { if (rafId) sizeParticles(); });
 
-  // 오늘 이미 뽑은 부적이 있으면 살짝 안내
+  // 오늘 이미 뽑은 카드가 있으면 살짝 안내
   if (state.last && state.count) {
     var lastT = TALISMANS.filter(function (t) { return t.id === state.last; })[0];
-    if (lastT) setTimeout(function () { toast('오늘 뽑은 부적: ' + lastT.emoji + ' ' + lastT.title); }, 900);
+    if (lastT) setTimeout(function () { toast('오늘 뽑은 카드: ' + lastT.emoji + ' ' + lastT.title); }, 900);
   }
 })();
