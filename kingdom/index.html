@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#150f1d" />
+<title>💀 취발러의 엔딩은 죽음뿐 — BALLET KINGDOM</title>
+<meta name="description" content="취미 발레 16년, Lv.16 취발러의 발레 왕국 RPG. 센터에서 살아남고, 발레 백화점 자유이용권을 손에 넣으세요. (로그아웃은 클리어 후에만)" />
+<meta property="og:title" content="💀 취발러의 엔딩은 죽음뿐" />
+<meta property="og:description" content="16년의 플레이 경력 확인. Lv.16 취발러, 발레 왕국 입장. 로그아웃 조건: 게임 클리어." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/kingdom/assets/sugar_arabesque.webp" />
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='16' fill='%23c9a7ff'/%3E%3Cpath d='M10 20c3-1 5-3 6-8 1 4 3 6 6 6-2 3-5 4-8 4z' fill='%23fff5fb'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="app">
+  <div class="sky" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <!-- ================= HUD ================= -->
+  <header class="hud" id="hud" hidden>
+    <button class="hud-lv" id="lvBtn" aria-label="스탯 보기">
+      <small>LV</small><b id="hudLv">16</b>
+    </button>
+    <div class="hud-mid">
+      <div class="hud-row">
+        <span class="hud-name">취발러</span>
+        <span class="hud-gold"><i>◈</i><b id="hudGold">1,250</b>G</span>
+      </div>
+      <div class="hpbar"><i id="hpFill"></i><span id="hpText">78 / 122</span></div>
+    </div>
+    <button class="hud-out" id="logoutBtn">로그아웃</button>
+  </header>
+
+  <main class="screens">
+
+    <!-- ================= BOOT ================= -->
+    <section class="screen on" id="s-boot">
+      <div class="boot">
+        <div class="boot-art">
+          <img src="assets/sugar_arabesque@2x.webp" alt="아라베스크 자세의 슈가 공주" />
+          <div class="boot-glow"></div>
+        </div>
+        <p class="kicker">BALLET KINGDOM</p>
+        <h1 class="boot-title">취발러의 엔딩은<br /><em>죽음뿐</em></h1>
+        <p class="boot-sub">취미 발레 16년 · Lv.16<br />오늘도 나는 센터에서 죽는다.</p>
+        <div class="sys boot-log" id="bootLog" role="log" aria-live="polite"></div>
+        <button class="btn primary" id="bootStart" hidden>게임 시작</button>
+        <p class="boot-foot" id="bootFoot" hidden>※ 클리어 전까지 로그아웃할 수 없습니다</p>
+      </div>
+    </section>
+
+    <!-- ================= MAP ================= -->
+    <section class="screen game" id="s-map">
+      <div class="map-head">
+        <p class="kicker">발레 왕국 · MAP</p>
+        <h2 class="map-title">어디로 갈까요,<br />취발러님?</h2>
+        <div class="reward-chip"><span>최종 보상</span><b>발레 백화점 자유이용권 🎫</b></div>
+      </div>
+
+      <div class="map-grid">
+        <button class="area cafe" data-go="shop">
+          <span class="area-ico">☕</span>
+          <b>발레 카페</b>
+          <small>SHOP · 피루</small>
+          <i class="area-tag" id="tagCafe">영업 중</i>
+        </button>
+        <button class="area stage" data-go="stage">
+          <span class="area-ico">💃</span>
+          <b>메인 스테이지</b>
+          <small>QUEST · 센터에서 살아남기</small>
+          <i class="area-tag" id="tagStage">ROUND 1</i>
+        </button>
+        <button class="area pool" data-go="pool">
+          <span class="area-ico">🌊</span>
+          <b>발레 워터파크</b>
+          <small>훈련 던전 · 알레 & 샹즈</small>
+          <i class="area-tag" id="tagPool">골드 파밍</i>
+        </button>
+        <button class="area boss" data-go="audition">
+          <span class="area-ico">👑</span>
+          <b>최종 던전</b>
+          <small>BOSS · 작품반 오디션</small>
+          <i class="area-tag lock" id="tagBoss">잠김</i>
+        </button>
+      </div>
+
+      <div class="stat-strip" id="statStrip"></div>
+
+      <div class="quest-card">
+        <span class="q-label">현재 목표</span>
+        <b id="questTitle">메인 스테이지 3라운드 클리어</b>
+        <p id="questDesc">안무 선생님 앞에서 5동작을 기억해 내면 최종 던전이 열려요.</p>
+      </div>
+      <p class="map-tip" id="mapTip">TIP · 포카리 포션은 HP가 30 이하일 때 마시면 효과가 커요.</p>
+      <p class="map-foot">BALLET KINGDOM v1.0 · FOR 취발러</p>
+    </section>
+
+    <!-- ================= SHOP ================= -->
+    <section class="screen game" id="s-shop">
+      <div class="topline">
+        <button class="back" data-go="map">‹ 왕국 지도</button>
+      </div>
+
+      <div class="npc-head">
+        <div class="npc-face"><img src="assets/av_piru.webp" alt="피루" /></div>
+        <div class="npc-say">
+          <b class="npc-name" style="--c:#ff9fbf">피루 <small>Pirouette · 회전</small></b>
+          <p id="shopSay">도아가는 리듬이 빛나는 너! 어서 와, 오늘 뭐 마실래?</p>
+        </div>
+      </div>
+
+      <div class="shop-list" id="shopList"></div>
+      <p class="shop-note">※ 음료 효과는 <b>다음 미션 1회</b>에 실제로 적용돼요. 근력 스무디는 영구예요.</p>
+    </section>
+
+    <!-- ================= STAGE (main quest) ================= -->
+    <section class="screen game" id="s-stage">
+      <div class="topline">
+        <button class="back" data-go="map">‹ 왕국 지도</button>
+        <div class="round-pill"><b id="stageRound">ROUND 1</b><span id="stageGoal">3동작</span></div>
+      </div>
+
+      <div class="arena">
+        <div class="arena-bg"></div>
+        <div class="pose-show" id="poseShow">
+          <img id="poseShowImg" class="idle" alt="" src="assets/sugar_front@2x.webp" />
+          <span class="pose-tag" id="poseShowName">아라베스크</span>
+        </div>
+        <p class="arena-msg" id="stageMsg">안무 선생님이 동작을 외우고 있어요…</p>
+      </div>
+
+      <div class="timerbar" id="timerBar"><i id="timerFill"></i></div>
+      <div class="pad-grid" id="padGrid"></div>
+    </section>
+
+    <!-- ================= POOL (training) ================= -->
+    <section class="screen game" id="s-pool">
+      <div class="topline">
+        <button class="back" data-go="map">‹ 왕국 지도</button>
+      </div>
+
+      <div class="npc-head small">
+        <div class="npc-face"><img src="assets/av_alle.webp" alt="알레" /></div>
+        <div class="npc-say">
+          <b class="npc-name" style="--c:#8fd6b4">알레 <small>Allegro · 빠르게</small></b>
+          <p>가자! 더 빛나는 곳으로! 물살을 박자에 맞춰 차면 골드가 떠내려와!</p>
+        </div>
+      </div>
+
+      <div class="rhythm">
+        <div class="rhythm-top">
+          <span>PERFECT <b id="poolPerfect">0</b></span>
+          <span>남은 횟수 <b id="poolLeft">10</b></span>
+        </div>
+        <div class="track" id="track">
+          <div class="zone" id="zone"></div>
+          <div class="zone perfect" id="zoneCore"></div>
+          <div class="marker" id="marker"></div>
+        </div>
+        <p class="rhythm-msg" id="poolMsg">초록 존에 들어오면 터치!</p>
+        <button class="tap-btn" id="poolTap">물장구 🏊</button>
+      </div>
+    </section>
+
+    <!-- ================= AUDITION (boss) ================= -->
+    <section class="screen game boss-mode" id="s-audition">
+      <div class="topline">
+        <button class="back" data-go="map">‹ 왕국 지도</button>
+        <div class="round-pill boss"><b id="auditionPhase">PHASE 1</b><span>실수 0회</span></div>
+      </div>
+
+      <div class="npc-head small">
+        <div class="npc-face"><img src="assets/av_ara.webp" alt="아라" /></div>
+        <div class="npc-say">
+          <b class="npc-name" style="--c:#8aa8e8">아라 <small>Arabesque · 이어짐</small></b>
+          <p>이제는 마음이 언제나 더 멀리, 더 아름다운 곳으로 닿을 수 있어요. …실수는 없어요.</p>
+        </div>
+      </div>
+
+      <div class="arena boss">
+        <div class="arena-bg"></div>
+        <div class="pose-show" id="poseShow2">
+          <img id="poseShowImg2" class="idle" alt="" src="assets/sugar_front@2x.webp" />
+          <span class="pose-tag" id="poseShowName2">아라베스크</span>
+        </div>
+        <p class="arena-msg" id="auditionMsg">작품반 오디션 — 실수 허용 0회.</p>
+      </div>
+
+      <div class="pad-grid" id="padGrid2"></div>
+    </section>
+
+    <!-- ================= DEATH ================= -->
+    <section class="screen death" id="s-death">
+      <div class="death-bg"></div>
+      <div class="death-art"><img src="assets/sugar_rest@2x.webp" alt="바닥에 앉아 쉬는 슈가 공주" /></div>
+      <div class="death-card">
+        <p class="death-title">💀 사망했습니다 💀</p>
+        <p class="death-reason" id="deathReason">사유: 센터에서 발을 헛디뎠습니다</p>
+        <p class="death-sub" id="deathSub">로그아웃은 허용되지 않습니다.</p>
+        <div class="death-btns">
+          <button class="btn primary" id="retryBtn">다시 도전</button>
+          <button class="btn ghost" id="quitBtn">나가기 (불가)</button>
+        </div>
+        <button class="share-link" id="shareDeath">📸 결과 이미지 만들기</button>
+      </div>
+    </section>
+
+    <!-- ================= ENDING ================= -->
+    <section class="screen ending" id="s-ending">
+      <div class="ending-bg"></div>
+      <div class="ending-art"><img src="assets/sugar_arabesque@2x.webp" alt="아라베스크로 마무리하는 슈가 공주" /></div>
+      <div class="ending-card">
+        <p class="kicker">BALLET KINGDOM · CLEAR</p>
+        <h2 class="ending-title">발레 백화점<br />자유이용권 🎫</h2>
+        <p class="ending-sub" id="endingSub">취발러 Lv.16 → Lv.19 · 로그아웃 해제</p>
+        <div class="ticket">
+          <div class="ticket-h">BALLET DEPARTMENT STORE</div>
+          <div class="ticket-b">
+            <span>1일 자유이용권</span>
+            <b>SUGAR PRINCESS</b>
+            <span>NO. 16-0001 · 무제한</span>
+          </div>
+        </div>
+        <button class="btn primary" id="shareClear">📸 결과 이미지 만들기</button>
+        <button class="share-link" id="logoutNow">로그아웃 하기</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= overlays ================= -->
+  <div class="dialog" id="dialog" hidden>
+    <div class="dialog-box sys">
+      <div class="dialog-top">
+        <img id="dlgFace" alt="" />
+        <div>
+          <b id="dlgName">피루</b>
+          <small id="dlgRole">Pirouette</small>
+        </div>
+      </div>
+      <p id="dlgText"></p>
+      <div class="dialog-btns" id="dlgBtns"></div>
+    </div>
+  </div>
+
+  <div class="dialog" id="statDlg" hidden>
+    <div class="dialog-box sys stat-box">
+      <div class="dialog-top"><div><b>취발러 스탯</b><small>LV <span id="statLv">16</span></small></div></div>
+      <div id="statList"></div>
+      <p class="stat-note" id="statNote"></p>
+      <div class="dialog-btns"><button class="btn ghost" data-close="statDlg">닫기</button></div>
+    </div>
+  </div>
+
+  <div class="dialog" id="resultDlg" hidden>
+    <div class="dialog-box result-box">
+      <p class="result-h">결과 이미지 <span>1080 × 1920</span></p>
+      <div class="result-scroll"><img id="resultImg" alt="결과 이미지" /></div>
+      <p class="result-tip" id="resultTip">이미지를 길게 눌러 저장하거나, 아래 버튼을 눌러 주세요.</p>
+      <div class="dialog-btns">
+        <a class="btn primary" id="resultSave" download="ballet-kingdom.png">저장</a>
+        <button class="btn ghost" data-close="resultDlg">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+  <div class="levelup" id="levelup" hidden><span>LEVEL UP</span><b id="levelupTo">Lv.17</b></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
