@@ -431,6 +431,16 @@ em{font-style:normal}
 }
 .rhythm-top{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;color:#9fbfb2}
 .rhythm-top b{color:#dff7ec;font-size:12px}
+.pool-stage{
+  flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;padding:6px 0;
+}
+.pool-stage img{
+  height:min(34vh,250px);width:auto;max-width:90%;
+  filter:drop-shadow(0 16px 28px rgba(0,0,0,.5));
+  animation:floaty 4.2s ease-in-out infinite;
+}
+.pool-stage img.splash{animation:splash .32s ease-out}
+@keyframes splash{0%{transform:scale(.94) translateY(6px)}55%{transform:scale(1.04) translateY(-4px)}100%{transform:none}}
 .track{
   position:relative;height:58px;border-radius:14px;
   background:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 1px,transparent 1px 26px),rgba(0,0,0,.28);

@@ -692,6 +692,8 @@ function poolTap() {
   $('#poolMsg').textContent = gain ? `${msg}  +${gain}G` : msg;
   const btn = $('#poolTap');
   btn.classList.remove('hit'); void btn.offsetWidth; btn.classList.add('hit');
+  const art = $('#poolArt');
+  if (art) { art.classList.remove('splash'); void art.offsetWidth; art.classList.add('splash'); }
   if (gain) flashGold();
   if (pool.left <= 0) endPool();
 }
