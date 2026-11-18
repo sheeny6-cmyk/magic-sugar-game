@@ -139,6 +139,13 @@ function dialog({ name, role, face, text, buttons }) {
   d.hidden = false;
 }
 
+function flashGold() {
+  const el = $('#hudGold');
+  if (!el || !el.animate) return;
+  el.animate([{ color: '#fffbe0', transform: 'scale(1.2)' }, { color: '#ffd88a', transform: 'scale(1)' }],
+    { duration: 650, easing: 'ease-out' });
+}
+
 function levelUpFx(to) {
   const el = $('#levelup');
   $('#levelupTo').textContent = 'Lv.' + to;
@@ -547,8 +554,7 @@ function beginStage() {
     dmg: 18,
     reasons: DEATH_REASONS.stage,
     onRound: idx => {
-      S.gold += 90; save(); renderHud();
-      toast('ROUND ' + clamp(startIdx + idx, 1, 3) + ' 클리어 · +90G');
+      S.gold += 90; save(); renderHud(); flashGold();
       $('#stageRound').textContent = 'ROUND ' + clamp(startIdx + idx + 1, 1, 3);
     },
     onClear: stageClear
@@ -686,6 +692,7 @@ function poolTap() {
   $('#poolMsg').textContent = gain ? `${msg}  +${gain}G` : msg;
   const btn = $('#poolTap');
   btn.classList.remove('hit'); void btn.offsetWidth; btn.classList.add('hit');
+  if (gain) flashGold();
   if (pool.left <= 0) endPool();
 }
 
