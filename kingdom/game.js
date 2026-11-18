@@ -361,6 +361,13 @@ function missionUI(cfg) {
   };
 }
 
+const MOODS = { focus: 'assets/sugar_face1.webp', happy: 'assets/sugar_face2.webp',
+               tense: 'assets/sugar_face3.webp', upset: 'assets/sugar_face4.webp' };
+function setMood(k) {
+  const el = $('#moodImg');
+  if (el && MOODS[k] && current === 'stage') el.src = MOODS[k];
+}
+
 function showPose(ui, i) {
   ui.img.classList.remove('idle');
   ui.img.src = POSES[i].big;
@@ -439,6 +446,7 @@ async function playRound() {
   for (const i of m.seq) {
     if (m.canceled) return;
     showPose(m.ui, i);
+    setMood('focus');
     sfx('tick');
     await sleep(m.showMs);
     if (m.canceled) return;
@@ -447,6 +455,7 @@ async function playRound() {
   }
   if (m.canceled) return;
   m.ui.msg.innerHTML = '<b>지금!</b> 순서대로 따라하세요.';
+  setMood('tense');
   m.locked = false;
   tickTimer();
 }
@@ -476,6 +485,7 @@ function tapPad(i, btn) {
   if (!m || m.canceled || m.locked || !m.timerOn) return;
   if (i === m.seq[m.inputIdx]) {
     m.inputIdx++;
+    setMood('happy');
     m.timerOn = false;
     btn.classList.add('lit');
     sfx('ok');
@@ -504,6 +514,7 @@ function fail(kind, idx) {
     setTimeout(() => m.ui.pads && m.ui.pads[idx] && m.ui.pads[idx].classList.remove('err'), 500);
   }
   m.ui.msg.classList.add('bad');
+  setMood('upset');
   sfx('err');
   const dmg = m.cfg.dmg || 18;
   S.hp = Math.max(0, S.hp - dmg);
