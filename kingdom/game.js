@@ -225,6 +225,12 @@ function showStats() {
 }
 $$('[data-close]').forEach(b => b.onclick = () => { $('#' + b.dataset.close).hidden = true; });
 
+$('#resetBtn').onclick = () => {
+  if (!confirm('게임 기록을 지우고 Lv.16부터 다시 시작할까요?')) return;
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  location.reload();
+};
+
 $('#logoutBtn').onclick = () => {
   if (S.cleared) {
     dialog({ name: 'SYSTEM', role: '로그아웃', text: '[SYSTEM] 클리어 기록 확인.\n로그아웃이 허용되었습니다.\n\n수고하셨습니다, 취발러님. 내일도 센터에서 봐요.',
