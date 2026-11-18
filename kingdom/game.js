@@ -774,8 +774,7 @@ async function buildResult(type, reason) {
 
   // character
   try {
-    const src = clear ? 'assets/sugar_arabesque@2x.webp'
-      : ['assets/sugar_rest@2x.webp', 'assets/sugar_attitude@2x.webp', 'assets/sugar_curtsy@2x.webp'][Math.floor(Math.random() * 3)];
+    const src = clear ? 'assets/sugar_arabesque@2x.webp' : 'assets/sugar_rest@2x.webp';
     const im = await loadImg(src);
     const maxH = 720, ratio = im.width / im.height;
     let h = maxH, w = h * ratio;
