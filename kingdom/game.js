@@ -397,7 +397,7 @@ async function startMission(cfg) {
   const sp = cfg.speed || 1;
   M = {
     cfg, ui, roundIdx: 0, seq: [], inputIdx: 0, locked: true,
-    canceled: false, timerOn: false, hadBuff: { ...S.buffs }
+    canceled: false, timerOn: false, timerGen: 0, hadBuff: { ...S.buffs }
   };
   // buffs are scoped to this mission only
   if (S.buffs.turnout || S.buffs.align) {
@@ -445,16 +445,18 @@ async function playRound() {
 function tickTimer() {
   const m = M;
   if (!m || m.canceled) return;
+  const gen = (m.timerGen = (m.timerGen || 0) + 1);
   const dur = m.windowMs * (1 - clamp(m.inputIdx, 0, 8) * 0.012);
   const t0 = performance.now();
   m.timerOn = true;
   m.ui.timer.classList.add('on');
   const fill = m.ui.timer.querySelector('i');
   const step = t => {
-    if (!m || m.canceled || !m.timerOn) return;
+    // a newer timer (or a cleared one) owns the bar now — this loop must stop
+    if (!m || m.canceled || gen !== m.timerGen || !m.timerOn) return;
     const p = 1 - (t - t0) / dur;
     fill.style.transform = `scaleX(${clamp(p, 0, 1)})`;
-    if (p <= 0) { m.timerOn = false; fail('timeout'); return; }
+    if (p <= 0) { m.timerGen++; m.timerOn = false; fail('timeout'); return; }
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
