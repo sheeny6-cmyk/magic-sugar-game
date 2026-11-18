@@ -21,15 +21,82 @@ const IDLE_BIG = 'assets/sugar_front@2x.webp';
 const STAT_LABEL = { flex: '유연성', knowledge: '발레 지식', stamina: '체력', strength: '근력', direction: '방향감각' };
 
 const SHOP = [
-  { id: 'latte', ico: '🥛', name: '턴아웃 라떼', price: 500, tag: '턴아웃 +10',
-    desc: '따뜻한 우유 거품에 턴아웃 한 스푼. 다음 미션 입력 제한시간 +0.45초' },
-  { id: 'ribs', ico: '🍵', name: '갈비뼈 닫히는 라떼', price: 600, tag: '상체 정렬 +15',
-    desc: '마시면 등뼈가 스르륵. 다음 미션 동작 표시 +0.13초, 입력 +0.25초' },
-  { id: 'poca', ico: '🧃', name: '포카리 포션', price: 300, tag: 'HP +30',
-    desc: '이온이 돌아온다. 즉시 HP 30 회복 (최대 HP 초과 가능)' },
-  { id: 'smoothie', ico: '🥤', name: '근력 스무디', price: 500, tag: '근력 +10',
-    desc: '바나나·견과·프로틴. 근력 +10, 워터파크 골드 보너스가 영구히 올라감' }
+  { id: 'latte', ico: '🥛', name: '턴아웃 라떼', price: 500, tag: '오답 1회 자동 보정',
+    desc: '센터 미션에서 오답 1회를 자동으로 고쳐 줘요. 입력 제한 +0.45초. 미션 중 상단에 턴아웃 버프 배지가 떠요.' },
+  { id: 'ribs', ico: '🍵', name: '갈비뼈 닫히는 라떼', price: 600, tag: '즉사 1회 방어',
+    desc: '작품반 오디션에서 죽음 1회를 막아 줘요(실드). 동작 표시 +0.13초, 입력 +0.25초. 상단에 상체 정렬 버프 배지.' },
+  { id: 'poca', ico: '🧃', name: '포카리 포션', price: 300, tag: 'HP +30 · 수분 충전',
+    desc: '지금 바로 HP 30 회복. 다음 미션을 시작할 때 물이 차오르는 “수분 충전” 연출과 함께 HP +10.' },
+  { id: 'smoothie', ico: '🥤', name: '근력 스무디', price: 500, tag: '골드 2배',
+    desc: '근력 +10. 다음 워터파크 훈련에서 골드 2배 + 판정 존 확대. 상단에 근력 버프 배지.' }
 ];
+
+/* 발레 분식집 (체력·스탯 분식) */
+const SNACK = [
+  { id: 'sundae', ico: '🥟', name: '체력 만배 순대', price: 400, tag: 'HP 완전 회복 · 체력 +5',
+    desc: '한 줄이면 센터 한 바퀴. HP를 가득 채우고 체력 스탯이 영구히 +5 올라요.' },
+  { id: 'tteok', ico: '🍲', name: '유연성 떡볶이', price: 450, tag: '유연성 +10 · 표시 +0.5초',
+    desc: '매콤한데 다리가 풀려요. 유연성 +10, 다음 미션 동작 표시 시간 +0.5초.' },
+  { id: 'eomuk', ico: '🍢', name: '집중력 어묵 꼬치', price: 350, tag: '발레 지식 +8 · 오답 힌트',
+    desc: '국물까지 마시면 머리가 맑아져요. 발레 지식 +8, 다음 미션 오답 1회는 힌트로.' },
+  { id: 'twigim', ico: '🍤', name: '방향감각 모둠튀김', price: 400, tag: '방향감각 +5',
+    desc: '튀김 기름 덕인지 몸이 어디로 가는지 알겠어요. 방향감각 +5.' }
+];
+
+const SNACK_SAY = {
+  sundae: '순대는 체력이야. 한 줄 먹고 센터 들어가면 다리가 안 떨려. 진짜야.',
+  tteok: '떡볶이는 유연성. 매운데 다리가 풀리는 기분, 알지? 다음 미션은 동작이 더 오래 보여.',
+  eomuk: '어묵 국물은 집중력. 하나 물고 들어가면 틀려도 한 번은 정답을 알려 줄게.',
+  twigim: '모둠튀김은 방향감각! 어디서 도는지 몰랐던 네가 달라질 거야.',
+  poor: '골드가 모자라? 워터파크에서 물장구 치고 다시 와. 국물은 남겨 둘게.'
+};
+
+function renderSnack() {
+  const list = $('#snackList');
+  if (!list) return;
+  let rec;
+  if (S.hp < maxHp() * 0.7) rec = 'sundae';
+  else if (S.stats.flex < 40) rec = 'tteok';
+  else if (S.bossUnlocked && !S.cleared) rec = 'eomuk';
+  else rec = 'twigim';
+  const recItem = SNACK.find(i => i.id === rec);
+  const next = $('#snackNext');
+  if (next) next.innerHTML = `<span>에튜 추천</span><b>${recItem.ico} ${recItem.name}</b><i>${recItem.tag}</i>`;
+  list.innerHTML = '';
+  SNACK.forEach(it => {
+    const el = document.createElement('div');
+    el.className = 'item' + (it.id === rec ? ' rec' : '');
+    el.innerHTML = `
+      <div class="item-ico">${it.ico}</div>
+      <div class="item-body">
+        ${it.id === rec ? '<i class="rec-tag">추천</i>' : ''}
+        <b>${it.name} <span style="color:#ffd88a;font-size:10px">${it.tag}</span></b>
+        <small>${it.desc}</small>
+      </div>
+      <button class="item-buy" ${S.gold < it.price ? 'disabled' : ''}>${it.price}G</button>`;
+    el.querySelector('.item-buy').onclick = () => buySnack(it, el);
+    list.appendChild(el);
+  });
+  const say = $('#snackSay');
+  if (say) say.textContent = S.hp < maxHp() * 0.7
+    ? '얼굴이 파래. 순대부터 한 줄 먹고 가.'
+    : '먹고 추면 된다. 오늘은 뭐로 채울래?';
+  renderHud();
+}
+
+function buySnack(it, el) {
+  if (S.gold < it.price) { toast('골드가 부족해요', true); return; }
+  S.gold -= it.price;
+  if (it.id === 'sundae') { S.stats.stamina += 5; S.hp = maxHp(); }
+  if (it.id === 'tteok') { S.stats.flex += 10; S.buffs.stretch = true; }
+  if (it.id === 'eomuk') { S.stats.knowledge += 8; S.buffs.hint = true; }
+  if (it.id === 'twigim') { S.stats.direction += 5; }
+  sfx('gold');
+  save(); renderSnack(); renderMapTags();
+  $('#snackSay').textContent = SNACK_SAY[it.id] || '';
+  toast(`${it.name} 완료 · ${it.tag}`);
+  el.animate([{ transform: 'scale(.98)' }, { transform: 'none' }], { duration: 260 });
+}
 
 const DEATH_REASONS = {
   stage: [
@@ -54,11 +121,11 @@ const DEATH_REASONS = {
 };
 
 /* ---------------- persistence ---------------- */
-const KEY = 'ballet-kingdom-v1';
+const KEY = 'ballet-kingdom-v2';
 const DEFAULT = {
-  lv: 16, hp: 78, gold: 1250,
-  stats: { flex: 82, knowledge: 47, stamina: 31, strength: 28, direction: 7 },
-  buffs: { turnout: false, align: false },
+  lv: 0, hp: 100, gold: 800,
+  stats: { flex: 15, knowledge: 10, stamina: 20, strength: 10, direction: 3 },
+  buffs: { turnout: false, align: false, poca: false, power: false, stretch: false, hint: false },
   poolSessions: 0,
   round: 0, stageClear: false, bossUnlocked: false, cleared: false,
   deaths: 0, attempts: 0
@@ -70,14 +137,20 @@ function load() {
     const raw = localStorage.getItem(KEY);
     if (!raw) return structuredClone(DEFAULT);
     const d = JSON.parse(raw);
-    return Object.assign(structuredClone(DEFAULT), d, { stats: Object.assign({}, DEFAULT.stats, d.stats || {}) });
+    const merged = Object.assign(structuredClone(DEFAULT), d, { stats: Object.assign({}, DEFAULT.stats, d.stats || {}) });
+    merged.buffs = Object.assign({ turnout: false, align: false, poca: false, power: false, stretch: false, hint: false }, d.buffs || {});
+    return merged;
   } catch (e) { return structuredClone(DEFAULT); }
 }
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
 
+/* ---------------- 년차(레벨) ---------------- */
+const yearTxt = v => (v <= 0 ? '0년차' : v + '년차');
+const ticketNo = () => 'NO. ' + String(S.lv).padStart(2, '0') + '-0001';
+
 /* ---------------- derived ---------------- */
 const maxHp     = () => 60 + S.stats.stamina * 2;
-const showMs    = () => (0.52 + S.stats.knowledge * 0.004 + (S.buffs.align ? 0.13 : 0)) * 1000;
+const showMs    = () => (0.52 + S.stats.knowledge * 0.004 + (S.buffs.align ? 0.13 : 0) + (S.buffs.stretch ? 0.5 : 0)) * 1000;
 const windowMs  = () => (1.45 + S.stats.direction * 0.05 + (S.buffs.turnout ? 0.45 : 0) + (S.buffs.align ? 0.25 : 0)) * 1000;
 const goldMult  = () => 1 + S.stats.strength * 0.01;
 
@@ -149,14 +222,78 @@ function flashGold() {
 function levelUpFx(to) {
   const el = $('#levelup');
   $('#levelupTo').textContent = 'Lv.' + to;
+  const y = $('#levelupYear');
+  if (y) y.textContent = yearTxt(to) + ' · 성장!'; 
   el.hidden = false;
   sfx('lvl');
   setTimeout(() => { el.hidden = true; }, 1500);
 }
 
+/* 스탯 성장 + 레벨업을 한 번에 */
+function grow(up, lvUp, note) {
+  const add = [];
+  Object.keys(up || {}).forEach(k => {
+    if (S.stats[k] == null) return;
+    S.stats[k] += up[k];
+    add.push(`${STAT_LABEL[k]} +${up[k]}`);
+  });
+  if (lvUp) {
+    S.lv += lvUp;
+    S.hp = maxHp();
+    levelUpFx(S.lv);
+    add.push(`Lv.${S.lv} (${yearTxt(S.lv)})`);
+  }
+  save(); renderHud();
+  if (add.length) toast((note ? note + ' · ' : '성장 · ') + add.join(' · '));
+}
+
+/* 물약·버프 배지 ------------------------------------------------ */
+const BUFF_TXT = {
+  turnout: { ico: '🥛', title: '턴아웃 버프 발동 중', sub: '오답 1회 자동 보정' },
+  align:   { ico: '🍵', title: '상체 정렬 버프 발동 중', sub: '즉사 1회 방어(실드)' },
+  poca:    { ico: '🧃', title: '수분 충전 완료', sub: 'HP 회복' },
+  power:   { ico: '🥤', title: '근력 버프 발동 중', sub: '골드 2배 · 판정 존 확대' },
+  stretch: { ico: '🍲', title: '유연성 떡볶이 발동 중', sub: '동작 표시 +0.5초' },
+  hint:    { ico: '🍢', title: '집중력 어묵 발동 중', sub: '오답 1회 힌트' }
+};
+function renderBuffs(el, list) {
+  if (!el) return;
+  if (!list.length) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+  el.innerHTML = list.map(([k, used]) => {
+    const b = BUFF_TXT[k];
+    return `<span class="buff-chip${used ? ' used' : ''}"><i>${b.ico}</i><b>${b.title}</b><small>${used ? '사용 완료' : b.sub}</small></span>`;
+  }).join('');
+}
+function missionBuffList() {
+  const m = M; if (!m) return [];
+  const out = [];
+  if (m.buffs.turnout) out.push(['turnout', !m.guard.turnout]);
+  if (m.buffs.align) out.push(['align', !m.guard.align]);
+  if (m.buffs.stretch) out.push(['stretch', false]);
+  if (m.buffs.hint) out.push(['hint', !m.guard.hint]);
+  if (m.buffs.poca) out.push(['poca', false]);
+  return out;
+}
+function refreshMissionBuffs() {
+  if (!M) return;
+  renderBuffs($(M.cfg.boss ? '#auditionBuff' : '#stageBuff'), missionBuffList());
+}
+function splash(text) {
+  const el = $('#splash');
+  if (!el) return;
+  $('#splashText').textContent = text;
+  el.hidden = false;
+  el.classList.remove('go'); void el.offsetWidth; el.classList.add('go');
+  clearTimeout(splash._t);
+  splash._t = setTimeout(() => { el.hidden = true; }, 1300);
+}
+
 function renderHud() {
   const mh = maxHp();
   $('#hudLv').textContent = S.lv;
+  const hy = $('#hudYear');
+  if (hy) hy.textContent = yearTxt(S.lv);
   $('#hudGold').textContent = S.gold.toLocaleString();
   const pct = clamp(S.hp / mh * 100, 0, 100);
   $('#hpFill').style.width = pct + '%';
@@ -170,6 +307,11 @@ function renderMapTags() {
   $('#tagBoss').classList.toggle('lock', !S.bossUnlocked && !S.cleared);
   $('.area.boss').classList.toggle('locked', !S.bossUnlocked && !S.cleared);
   $('#tagPool').textContent = S.poolSessions >= 3 ? '훈련 완료' : '골드 파밍';
+  const ts = $('#tagSnack');
+  if (ts) ts.textContent = S.hp < maxHp() * 0.7 ? 'HP 보충' : '스탯 보충';
+
+  const mt = $('#mapTitle');
+  if (mt) mt.innerHTML = '어디로 갈까요,<br />' + (S.lv <= 0 ? '입문 취발러님?' : `${S.lv}년차 취발러님?`);
 
   const q = !S.bossUnlocked ? ['메인 스테이지 3라운드 클리어', '안무 선생님 앞에서 5동작을 기억해 내면 최종 던전이 열려요.']
     : (!S.cleared ? ['최종 던전 — 작품반 오디션', '실수 허용 0회. 통과하면 발레 백화점 자유이용권이 손에 들어옵니다.']
@@ -185,14 +327,16 @@ function renderMapTags() {
 /* ---------------- navigation ---------------- */
 let current = 'boot';
 function go(name, opts = {}) {
-  if (current === 'stage' || current === 'audition') cancelMission();
+  if (current === 'stage' || current === 'audition') { cancelMission(); refreshMissionBuffs(); }
   if (name === 'pool') stopRhythm();
+  if (current === 'pool' && name !== 'pool') renderBuffs($('#poolBuff'), []);
   $$('.screen').forEach(s => s.classList.toggle('on', s.id === 's-' + name));
   current = name;
   $('#hud').hidden = (name === 'boot' || name === 'death' || name === 'ending');
   renderHud();
   if (name === 'map') renderMapTags();
   if (name === 'shop') renderShop();
+  if (name === 'snack') renderSnack();
   if (name === 'stage') { $('#stageRound').textContent = 'ROUND ' + clamp(S.round + 1, 1, 3); beginStage(); }
   if (name === 'audition') { beginAudition(); }
   if (name === 'pool') { resetPool(); }
@@ -214,6 +358,7 @@ $$('[data-go]').forEach(b => b.onclick = () => {
 $('#lvBtn').onclick = showStats;
 function showStats() {
   $('#statLv').textContent = S.lv;
+  const sy = $('#statYear'); if (sy) sy.textContent = yearTxt(S.lv);
   $('#statList').innerHTML = Object.keys(STAT_LABEL).map(k => {
     const v = S.stats[k], pct = clamp((v / (k === 'flex' ? 120 : 80)) * 100, 3, 100);
     return `<div class="srow"><span>${STAT_LABEL[k]}</span><div class="sbar"><i style="width:${pct}%"></i></div><b>${v}</b></div>`;
@@ -226,7 +371,7 @@ function showStats() {
 $$('[data-close]').forEach(b => b.onclick = () => { $('#' + b.dataset.close).hidden = true; });
 
 $('#resetBtn').onclick = () => {
-  if (!confirm('게임 기록을 지우고 Lv.16부터 다시 시작할까요?')) return;
+  if (!confirm('게임 기록을 지우고 Lv.0 (입문)부터 다시 시작할까요?')) return;
   try { localStorage.removeItem(KEY); } catch (e) {}
   location.reload();
 };
@@ -248,8 +393,8 @@ $('#logoutBtn').onclick = () => {
 const BOOT_LINES = [
   ['[SYSTEM] 접속 중…', ''],
   ['[SYSTEM] 플레이어 확인 · <b>취발러</b>', ''],
-  ['[SYSTEM] <b>16년</b>의 플레이 경력이 확인되었습니다.', 'hl'],
-  ['[SYSTEM] Lv.<b>16</b> — 발레 왕국에 입장합니다.', ''],
+  ['[SYSTEM] 신규 취발러 등록 확인 · <b>Lv.0 (0년차)</b>', 'hl'],
+  ['[SYSTEM] 오늘부터 발레 왕국에서 <b>레벨</b>을 쌓습니다.', ''],
   ['[SYSTEM] 로그아웃 조건: <b>게임 클리어</b>', 'warn'],
   ['[SYSTEM] ※ 클리어 전까지 로그아웃할 수 없습니다.', 'warn'],
   ['[SYSTEM] 최종 보상: <b>발레 백화점 자유이용권 🎫</b>', 'hl']
@@ -299,22 +444,47 @@ $('#bootStart').onclick = () => { sfx('ok'); go('map'); };
    ============================================================= */
 const SHOP_SAY = {
   enter: ['도아가는 리듬이 빛나는 너! 어서 와, 오늘 뭐 마실래?', '회전은 마음가짐부터! 근데 배는 채워야지~', '오늘 라떼 거품 진짜 예뻐. 한 잔 어때?'],
-  latte: '턴아웃 라떼 나왔어! 이거 마시면 다리가 10도는 더 열려. 진짜야!',
-  ribs: '갈비뼈 닫히는 라떼~ 마시면 등이 스르륵 붙어. 숨은 조금 불편해!',
-  poca: '포카리 포션! 이온 충전 완료. 다시 춤출 수 있어!',
-  smoothie: '근력 스무디! 바나나 듬뿍. 이제 파르드부레도 버텨!',
+  latte: '턴아웃 라떼 나왔어! 이거 마시면 센터에서 오답 한 번은 자동으로 고쳐 줄게. 진짜야!',
+  ribs: '갈비뼈 닫히는 라떼~ 오디션에서 한 번 죽는 걸 막아 줄 거야. 숨은 조금 불편해!',
+  poca: '포카리 포션! 이온 충전 완료. 다음 미션 시작할 때 물도 한 번 더 채워 줄게!',
+  smoothie: '근력 스무디! 바나나 듬뿍. 워터파크 가면 골드가 두 배로 떠내려와!',
   poor: '어라, 골드가 모자라네? 워터파크에서 물장구 치면 금방 모여!'
 };
+
+/* 다음 미션 + 피루 추천 */
+function nextMissionInfo() {
+  if (!S.bossUnlocked) return { key: 'stage', label: `메인 스테이지 · ROUND ${clamp(S.round + 1, 1, 3)}` };
+  if (!S.cleared) return { key: 'audition', label: '최종 던전 · 작품반 오디션' };
+  return { key: 'pool', label: '발레 워터파크 · 자유 훈련' };
+}
+function pickDrink() {
+  const m = nextMissionInfo();
+  if (S.hp <= maxHp() * 0.45) return { id: 'poca',
+    say: '얼굴이 파래… 포카리 포션부터 마셔! HP부터 채우고, 미션 시작하면 물도 한 번 더 충전해 줄게.' };
+  if (m.key === 'audition') return { id: 'ribs',
+    say: '다음은 작품반 오디션! 거긴 실수하면 즉사니까 갈비뼈 닫히는 라떼 챙겨. 한 번은 살려 줄 거야.' };
+  if (m.key === 'stage') return { id: 'latte',
+    say: '센터 순서 외우기 힘들면 턴아웃 라떼 한 잔 하고 가! 오답 한 번은 자동으로 고쳐 줄게.' };
+  return { id: 'smoothie',
+    say: '물장구로 골드를 벌 생각이면 근력 스무디! 골드가 두 배로 떠내려와.' };
+}
+
 function renderShop() {
   const list = $('#shopList');
+  const m = nextMissionInfo();
+  const rec = pickDrink();
+  const recItem = SHOP.find(s => s.id === rec.id);
+  const next = $('#shopNext');
+  if (next) next.innerHTML = `<span>다음 미션</span><b>${m.label}</b><i>피루 추천 · ${recItem.ico} ${recItem.name}</i>`;
   list.innerHTML = '';
   SHOP.forEach(it => {
-    const owned = (it.id === 'latte' && S.buffs.turnout) || (it.id === 'ribs' && S.buffs.align);
+    const owned = (it.id === 'latte' && S.buffs.turnout) || (it.id === 'ribs' && S.buffs.align) || (it.id === 'poca' && S.buffs.poca);
     const el = document.createElement('div');
-    el.className = 'item' + (owned ? ' owned' : '');
+    el.className = 'item' + (owned ? ' owned' : '') + (it.id === rec.id ? ' rec' : '');
     el.innerHTML = `
       <div class="item-ico">${it.ico}</div>
       <div class="item-body">
+        ${it.id === rec.id ? '<i class="rec-tag">추천</i>' : ''}
         <b>${it.name} <span style="color:#ffd88a;font-size:10px">${it.tag}</span></b>
         <small>${it.desc}</small>
       </div>
@@ -322,16 +492,18 @@ function renderShop() {
     el.querySelector('.item-buy').onclick = () => buy(it, el);
     list.appendChild(el);
   });
+  const say = $('#shopSay');
+  if (say) say.textContent = rec.say;
   renderHud();
 }
 
 function buy(it, el) {
   if (S.gold < it.price) { toast('골드가 부족해요', true); return; }
   S.gold -= it.price;
-  if (it.id === 'latte') { S.buffs.turnout = true; }
-  if (it.id === 'ribs') { S.buffs.align = true; }
-  if (it.id === 'poca') { S.hp = Math.min(S.hp + 30, maxHp() + 30); }
-  if (it.id === 'smoothie') { S.stats.strength += 10; }
+  if (it.id === 'latte') { S.buffs.turnout = true; S.stats.knowledge += 1; }
+  if (it.id === 'ribs') { S.buffs.align = true; S.stats.knowledge += 1; }
+  if (it.id === 'poca') { S.hp = Math.min(S.hp + 30, maxHp() + 30); S.buffs.poca = true; }
+  if (it.id === 'smoothie') { S.stats.strength += 10; S.buffs.power = true; }
   sfx('gold');
   save(); renderShop();
   $('#shopSay').textContent = SHOP_SAY[it.id] || '';
@@ -415,22 +587,27 @@ async function startMission(cfg) {
   cancelMission();
   const ui = missionUI(cfg);
   const sp = cfg.speed || 1;
+  const b = { ...S.buffs };
+  const show0 = showMs(), win0 = windowMs();
   M = {
     cfg, ui, roundIdx: 0, seq: [], inputIdx: 0, locked: true,
-    canceled: false, timerOn: false, timerGen: 0, hadBuff: { ...S.buffs }
+    canceled: false, timerOn: false, timerGen: 0,
+    buffs: b,
+    guard: { turnout: !!b.turnout, align: !!b.align, hint: !!b.hint }
   };
-  // buffs are scoped to this mission only
-  if (S.buffs.turnout || S.buffs.align) {
-    const parts = [];
-    if (S.buffs.turnout) parts.push('턴아웃 버프');
-    if (S.buffs.align) parts.push('상체 정렬 버프');
-    toast(parts.join(' · ') + ' 적용 중');
-    S.buffs = { turnout: false, align: false };
-    save(); renderHud();
+  if (b.poca) {
+    S.hp = Math.min(maxHp(), S.hp + 10);
+    splash('💧 수분 충전 완료!');
+    toast('포카리 포션 · HP +10');
   }
+  // 음료·분식 버프는 이 미션 1회분으로 소모
+  S.buffs.turnout = false; S.buffs.align = false; S.buffs.poca = false;
+  S.buffs.stretch = false; S.buffs.hint = false;
+  save(); renderHud();
+  refreshMissionBuffs();
   idlePose(ui);
-  M.showMs = Math.max(360, showMs() * sp);
-  M.windowMs = Math.max(1000, windowMs() * sp);
+  M.showMs = Math.max(360, show0 * sp);
+  M.windowMs = Math.max(1000, win0 * sp);
   await playRound();
 }
 
@@ -513,6 +690,75 @@ function tapPad(i, btn) {
 function fail(kind, idx) {
   const m = M;
   if (!m || m.canceled) return;
+
+  /* 🥛 턴아웃 라떼 — 오답 1회 자동 보정 */
+  if (kind === 'wrong' && m.guard.turnout) {
+    m.guard.turnout = false;
+    m.timerOn = false;
+    const right = m.seq[m.inputIdx];
+    const pad = m.ui.pads[right];
+    if (pad) {
+      pad.classList.add('lit', 'fixed');
+      setTimeout(() => pad.classList.remove('lit', 'fixed'), 560);
+    }
+    sfx('ok');
+    setMood('happy');
+    m.inputIdx++;
+    m.ui.msg.classList.remove('bad');
+    m.ui.msg.innerHTML = '<b>턴아웃 버프!</b> 오답을 자동으로 보정했어요 <span style="opacity:.65">(1회 사용)</span>';
+    refreshMissionBuffs();
+    if (m.inputIdx >= m.seq.length) {
+      m.locked = true;
+      m.ui.timer.classList.remove('on');
+      setTimeout(() => nextRound(), 640);
+    } else {
+      m.locked = false;
+      tickTimer();
+    }
+    return;
+  }
+
+  /* 🍢 어묵 꼬치 — 오답 1회 힌트 (피해 없이 정답 공개) */
+  if (kind === 'wrong' && m.guard.hint) {
+    m.guard.hint = false;
+    m.timerOn = false; m.locked = true;
+    m.ui.timer.classList.remove('on');
+    const right = m.seq[m.inputIdx];
+    const pad = m.ui.pads[right];
+    if (pad) {
+      pad.classList.add('lit', 'fixed');
+      setTimeout(() => pad.classList.remove('lit', 'fixed'), 1100);
+    }
+    sfx('ok');
+    m.ui.msg.classList.remove('bad');
+    m.ui.msg.innerHTML = `<b>어묵 꼬치 힌트!</b> 정답은 <b>${POSES[right].name}</b> — 이번엔 피해 없음 <span style="opacity:.65">(1회 사용)</span>`;
+    refreshMissionBuffs();
+    setTimeout(() => {
+      if (M === m) { m.ui.msg.classList.remove('bad'); playRound(); }
+    }, 1250);
+    return;
+  }
+
+  const dmg0 = m.cfg.dmg || 18;
+  const wouldDie = m.cfg.boss || S.hp - dmg0 <= 0;
+
+  /* 🍵 갈비뼈 라떼 — 즉사 1회 방어 */
+  if (m.guard.align && wouldDie) {
+    m.guard.align = false;
+    m.timerOn = false; m.locked = true;
+    m.ui.timer.classList.remove('on');
+    S.hp = Math.max(1, Math.round(maxHp() * 0.5));
+    renderHud();
+    m.ui.msg.classList.add('bad');
+    m.ui.msg.innerHTML = '<b>갈비뼈 라떼 덕에 1회 생존!</b> HP 50%로 버텼어요 <span style="opacity:.65">(실드 사용)</span>';
+    sfx('lvl');
+    refreshMissionBuffs();
+    setTimeout(() => {
+      if (M === m) { m.ui.msg.classList.remove('bad'); playRound(); }
+    }, 1150);
+    return;
+  }
+
   m.timerOn = false; m.locked = true;
   m.ui.timer.classList.remove('on');
   if (idx != null && m.ui.pads[idx]) {
@@ -571,7 +817,10 @@ function beginStage() {
     dmg: 18,
     reasons: DEATH_REASONS.stage,
     onRound: idx => {
-      S.gold += 90; save(); renderHud(); flashGold();
+      S.gold += 90;
+      flashGold();
+      grow({ flex: 2, knowledge: 1, stamina: 1, direction: 1 }, 1,
+        'ROUND ' + clamp(startIdx + idx, 1, 3) + ' 클리어 · +90G');
       $('#stageRound').textContent = 'ROUND ' + clamp(startIdx + idx + 1, 1, 3);
     },
     onClear: stageClear
@@ -583,16 +832,11 @@ function stageClear() {
   S.round = 3;
   S.stageClear = true;
   S.bossUnlocked = true;
-  S.lv += 1;
-  S.stats.flex += 3; S.stats.knowledge += 2; S.stats.stamina += 3; S.stats.direction += 1;
-  S.hp = maxHp();
-  save(); renderHud();
-  levelUpFx(S.lv);
-  sfx('lvl');
+  grow({ flex: 3, knowledge: 2, stamina: 3, direction: 2 }, 2, '메인 스테이지 클리어 · +260G');
   setTimeout(() => {
     dialog({
       name: '에튜', role: 'Attitude · 에튜', face: 'assets/av_etu.webp',
-      text: '센터는 배신하지 않아. …오늘은 네가 배신하지 않았네.\n\n<b>[SYSTEM] 메인 스테이지 클리어</b>\n+260G · Lv.' + S.lv + ' 달성\n유연성 +3 / 발레 지식 +2 / 체력 +3 / 방향감각 +1\n\n최종 던전 <b>작품반 오디션</b>이 열렸습니다.',
+      text: '센터는 배신하지 않아. …오늘은 네가 배신하지 않았네.\n\n<b>[SYSTEM] 메인 스테이지 클리어</b>\n+260G · Lv.' + S.lv + ' (' + yearTxt(S.lv) + ') 달성\n유연성 +3 / 발레 지식 +2 / 체력 +3 / 방향감각 +2\n\n최종 던전 <b>작품반 오디션</b>이 열렸습니다.',
       buttons: [{ label: '지도로', onClick: () => go('map') }]
     });
   }, 900);
@@ -619,11 +863,8 @@ function beginAudition() {
 
 function auditionClear() {
   S.cleared = true;
-  S.lv += 2;
-  S.stats.flex += 4; S.stats.direction += 2; S.stats.strength += 2;
   S.gold += 1000;
-  save();
-  levelUpFx(S.lv);
+  grow({ flex: 4, direction: 3, strength: 2, knowledge: 3 }, 3, '작품반 오디션 통과 · +1000G');
   sfx('lvl');
   setTimeout(() => go('ending'), 1300);
 }
@@ -663,14 +904,29 @@ $('#quitBtn').onclick = () => {
 /* =============================================================
    POOL — rhythm training
    ============================================================= */
-const pool = { running: false, pos: 0, dir: 1, speed: 0, left: 10, perfect: 0, raf: 0, last: 0, gold: 0 };
+const pool = { running: false, pos: 0, dir: 1, speed: 0, left: 10, perfect: 0, raf: 0, last: 0, gold: 0, power: false };
+function applyPoolPower() {
+  const z = $('#zone'), zc = $('#zoneCore');
+  if (z && zc) {
+    if (pool.power) {
+      z.style.left = '30%'; z.style.width = '40%';
+      zc.style.left = '42%'; zc.style.width = '16%';
+    } else {
+      z.style.left = ''; z.style.width = '';
+      zc.style.left = ''; zc.style.width = '';
+    }
+  }
+  renderBuffs($('#poolBuff'), pool.power ? [['power', false]] : []);
+}
 function resetPool() {
   pool.running = false; pool.left = 10; pool.perfect = 0; pool.gold = 0;
+  pool.power = !!S.buffs.power;
   $('#poolLeft').textContent = 10;
   $('#poolPerfect').textContent = 0;
-  $('#poolMsg').textContent = '초록 존에 들어오면 터치!';
+  $('#poolMsg').textContent = pool.power ? '근력 버프! 초록 존이 넓고 골드 2배 ✨' : '초록 존에 들어오면 터치!';
   $('#poolTap').textContent = '물장구 🏊';
   $('#poolTap').onclick = poolTap;
+  applyPoolPower();
   startRhythm();
 }
 function startRhythm() {
@@ -697,10 +953,15 @@ function stopRhythm() {
 function poolTap() {
   if (!pool.running || pool.left <= 0) return;
   const p = pool.pos;
+  const pw = pool.power;
   let gain = 0, msg = '';
-  if (p >= 46 && p <= 54) { gain = Math.round(55 * goldMult()); pool.perfect++; msg = 'PERFECT! 물보라가 반짝 ✨'; sfx('gold'); }
-  else if (p >= 38 && p <= 62) { gain = Math.round(30 * goldMult()); msg = 'GOOD — 리듬 탔어요'; sfx('ok'); }
-  else { gain = 0; msg = '빗나감… 물만 튀었어요'; sfx('err'); }
+  if (p >= (pw ? 42 : 46) && p <= (pw ? 58 : 54)) {
+    gain = Math.round((pw ? 110 : 55) * goldMult()); pool.perfect++;
+    msg = 'PERFECT! 물보라가 반짝 ✨' + (pw ? ' ×2' : ''); sfx('gold');
+  } else if (p >= (pw ? 30 : 38) && p <= (pw ? 70 : 62)) {
+    gain = Math.round((pw ? 60 : 30) * goldMult());
+    msg = 'GOOD — 리듬 탔어요' + (pw ? ' ×2' : ''); sfx('ok');
+  } else { gain = 0; msg = '빗나감… 물만 튀었어요'; sfx('err'); }
   pool.left--;
   if (gain) { S.gold += gain; pool.gold += gain; }
   renderHud();
@@ -718,16 +979,19 @@ function poolTap() {
 function endPool() {
   stopRhythm();
   S.poolSessions = (S.poolSessions || 0) + 1;
-  if (S.poolSessions <= 3) { S.stats.stamina += 1; S.stats.strength += 2; }
+  const first = S.poolSessions <= 3;
+  const boosted = pool.power;
+  if (boosted) { S.buffs.power = false; pool.power = false; }
   S.hp = maxHp();
   save(); renderHud();
+  grow(first ? { stamina: 2, strength: 2, flex: 1 } : { stamina: 1 }, first ? 1 : 0);
   $('#poolMsg').innerHTML = `<b>훈련 종료</b> · 오늘 +${pool.gold}G`;
   $('#poolTap').textContent = '한 번 더 🏊';
   $('#poolTap').onclick = () => resetPool();
-  const lv = S.poolSessions <= 3;
+  applyPoolPower();
   dialog({
     name: '샹즈', role: 'Changement · 샹즈', face: 'assets/av_shangz.webp',
-    text: `오늘도 반짝이는 걸 찾으러 왔구나! 물장구 10번 중 PERFECT ${pool.perfect}번!\n\n<b>[SYSTEM] 훈련 완료</b>\n+${pool.gold}G${lv ? '\n체력 +1 · 근력 +2' : ''}\n\n${lv ? '체력이 오르면 최대 HP가 늘어납니다.' : '스탯 보너스는 하루 3회까지만!'}`,
+    text: `오늘도 반짝이는 걸 찾으러 왔구나! 물장구 10번 중 PERFECT ${pool.perfect}번!${boosted ? '\n근력 스무디 버프로 골드 2배 적용!' : ''}\n\n<b>[SYSTEM] 훈련 완료</b>\n+${pool.gold}G\nLv.${S.lv} (${yearTxt(S.lv)})${first ? '\n체력 +2 · 근력 +2 · 유연성 +1' : ''}\n\n${first ? '체력이 오르면 최대 HP가 늘어납니다.' : '스탯 보너스는 하루 3회까지만!'}`,
     buttons: [{ label: '또 훈련', onClick: () => resetPool() }, { label: '지도로', ghost: true, onClick: () => go('map') }]
   });
   sfx('gold');
@@ -738,7 +1002,9 @@ function endPool() {
    ============================================================= */
 function prepareEnding() {
   const tries = S.attempts > 0 ? `도전 ${S.attempts}회차` : '무사망 클리어';
-  $('#endingSub').textContent = `Lv.${S.lv} · ${tries} · 로그아웃 해제`;
+  $('#endingSub').textContent = `취발러 Lv.${S.lv} (${yearTxt(S.lv)}) · ${tries} · 로그아웃 해제`;
+  const tn = $('#ticketNo');
+  if (tn) tn.textContent = ticketNo().replace('NO. ', 'NO. ') + ' · 무제한';
   $('#logoutNow').onclick = () => $('#logoutBtn').click();
 }
 
@@ -820,15 +1086,15 @@ async function buildResult(type, reason) {
   // reason / subtitle
   x.font = '400 38px "Pretendard Variable", sans-serif';
   x.fillStyle = clear ? 'rgba(240,225,255,.92)' : 'rgba(240,205,214,.94)';
-  const line = clear ? '취발러 · 16년의 플레이가 완성되었습니다'
+  const line = clear ? '취발러 · ' + S.lv + '년차의 플레이가 완성되었습니다'
                      : `사유: ${reason || '센터에서 발을 헛디뎠습니다'}`;
   const yLine = clear ? 468 : 384;
   wrapText(x, line, W / 2, yLine, W - 170, 50);
 
   x.font = '400 30px "Pretendard Variable", sans-serif';
   x.fillStyle = clear ? 'rgba(210,196,235,.85)' : 'rgba(190,140,155,.9)';
-  x.fillText(clear ? `Lv.${S.lv} · 자유이용권 NO.16-0001`
-                   : (S.attempts > 0 ? `도전 ${S.attempts}회차 · 로그아웃 불가` : '첫 도전 · 로그아웃 불가'), W / 2, yLine + 58);
+  x.fillText(clear ? `Lv.${S.lv} (${yearTxt(S.lv)}) · 자유이용권 ${ticketNo()}`
+                   : (S.attempts > 0 ? `Lv.${S.lv} (${yearTxt(S.lv)}) · 도전 ${S.attempts}회차 · 로그아웃 불가` : `Lv.${S.lv} (${yearTxt(S.lv)}) · 첫 도전 · 로그아웃 불가`), W / 2, yLine + 58);
 
   // stat cards
   const stats = [
@@ -858,7 +1124,8 @@ async function buildResult(type, reason) {
   x.fillText('취발러의 엔딩은 죽음뿐 · @sugarballet0506', W / 2, 1680);
   x.fillStyle = clear ? 'rgba(255,216,138,.95)' : 'rgba(255,150,175,.9)';
   x.font = '700 36px "Pretendard Variable", sans-serif';
-  x.fillText(clear ? 'Lv.' + S.lv + ' · GAME CLEAR' : 'Lv.' + S.lv + ' · TRY AGAIN', W / 2, 1746);
+  x.fillText(clear ? 'Lv.' + S.lv + ' (' + yearTxt(S.lv) + ') · GAME CLEAR'
+                   : 'Lv.' + S.lv + ' (' + yearTxt(S.lv) + ') · TRY AGAIN', W / 2, 1746);
   x.fillStyle = 'rgba(255,255,255,.3)';
   x.font = '400 24px "Pretendard Variable", sans-serif';
   x.fillText('sheeny6-cmyk.github.io/magic-sugar-game/kingdom/', W / 2, 1806);

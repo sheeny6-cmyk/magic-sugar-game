@@ -36,7 +36,7 @@ body{
   overscroll-behavior:none;
 }
 button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer;font-size:inherit}
-img{display:block;max-width:100%}
+img{display:block;max-width:100%;object-fit:contain}
 em{font-style:normal}
 
 #app{
@@ -99,6 +99,7 @@ em{font-style:normal}
 .hud-mid{flex:1;min-width:0}
 .hud-row{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:5px}
 .hud-name{font-size:12.5px;letter-spacing:.02em;color:#efe3ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud-name em{font-size:9.5px;letter-spacing:.02em;color:#c9a7ff;margin-left:2px}
 .hud-gold{font-size:11.5px;color:var(--gold);white-space:nowrap}
 .hud-gold i{font-style:normal;font-size:10px;opacity:.8;margin-right:3px}
 .hpbar{
@@ -175,9 +176,13 @@ em{font-style:normal}
 /* ================= BOOT ================= */
 #s-boot{justify-content:center;text-align:center}
 .boot{display:flex;flex-direction:column;align-items:center;width:100%}
-.boot-art{position:relative;width:150px;height:150px;margin-bottom:4px}
+.boot-art{
+  position:relative;width:100%;max-width:240px;margin:0 auto 2px;
+  display:flex;align-items:center;justify-content:center;padding:6px 8px 0;
+}
 .boot-art img{
-  position:relative;height:210px;width:auto;margin:-30px auto 0;
+  position:relative;height:clamp(148px,22vh,206px);width:auto;max-width:100%;
+  margin:0 auto;object-fit:contain;
   filter:drop-shadow(0 14px 28px rgba(201,167,255,.45));
   animation:floaty 4.6s ease-in-out infinite;
 }
@@ -238,9 +243,15 @@ em{font-style:normal}
   background:radial-gradient(circle,rgba(255,255,255,.16),transparent 70%);pointer-events:none;
 }
 .area.cafe{background:linear-gradient(160deg,rgba(255,184,217,.2),rgba(255,255,255,.03))}
+.area.snack{background:linear-gradient(160deg,rgba(255,216,138,.2),rgba(255,255,255,.03))}
 .area.stage{background:linear-gradient(160deg,rgba(201,167,255,.22),rgba(255,255,255,.03))}
 .area.pool{background:linear-gradient(160deg,rgba(157,232,205,.18),rgba(255,255,255,.03))}
 .area.boss{background:linear-gradient(160deg,rgba(255,216,138,.18),rgba(255,255,255,.03))}
+.area.boss{grid-column:1 / -1;min-height:88px;flex-direction:row;align-items:center;gap:12px;padding:12px 14px}
+.area.boss .area-ico{margin:0;font-size:26px}
+.area.boss b{font-size:17px}
+.area.boss small{max-width:58%}
+.area.boss .area-tag{right:12px;bottom:auto;top:50%;transform:translateY(-50%)}
 .area.locked{filter:grayscale(.55) brightness(.72)}
 .area b{font-family:var(--serif);font-size:16px;letter-spacing:-.01em}
 .area small{font-size:9.5px;color:#b7a7c8;letter-spacing:.02em}
@@ -282,7 +293,7 @@ em{font-style:normal}
   background:#2a1a3d;
 }
 .npc-head.small .npc-face{width:44px;height:44px}
-.npc-face img{width:100%;height:100%;object-fit:cover}
+.npc-face img{width:100%;height:100%;object-fit:contain;object-position:center}
 .npc-say{flex:1;min-width:0}
 .npc-say p{overflow-wrap:anywhere}
 .npc-name{display:block;font-size:13px;color:var(--c,#fff);font-family:var(--serif)}
@@ -360,11 +371,11 @@ em{font-style:normal}
   filter:blur(6px);pointer-events:none;
 }
 .pose-show{
-  position:relative;flex:1;display:flex;align-items:center;justify-content:center;width:100%;
-  padding:8px 0 0;
+  position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;width:100%;
+  padding:12px 14px 6px;
 }
 .pose-show img{
-  height:min(42vh,330px);width:auto;max-width:82%;
+  height:min(40vh,320px);width:auto;max-width:100%;max-height:100%;
   object-fit:contain;
   filter:drop-shadow(0 16px 26px rgba(0,0,0,.5));
   opacity:0;transform:translateY(6px) scale(.98);
@@ -398,13 +409,13 @@ em{font-style:normal}
 }
 .pad{
   position:relative;display:flex;align-items:center;gap:8px;
-  height:74px;padding:6px 8px;border-radius:15px;
+  height:74px;padding:7px 9px;border-radius:15px;
   background:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
   border:1px solid rgba(255,255,255,.13);
   box-shadow:0 8px 18px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08);
   overflow:hidden;transition:transform .1s,border-color .16s,box-shadow .2s,background .2s;
 }
-.pad img{height:100%;width:auto;max-width:46%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
+.pad img{height:100%;width:auto;max-width:46%;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45))}
 .pad span{font-family:var(--serif);font-size:13.5px;letter-spacing:.01em;flex:1;text-align:left}
 .pad:active{transform:scale(.96)}
 .pad.lit{
@@ -417,6 +428,11 @@ em{font-style:normal}
   box-shadow:0 0 24px rgba(255,111,142,.5);
 }
 .pad.dim{opacity:.45}
+.pad.fixed{
+  border-color:rgba(157,232,205,.95);
+  background:linear-gradient(150deg,rgba(157,232,205,.34),rgba(201,167,255,.14));
+  box-shadow:0 0 26px rgba(157,232,205,.6),inset 0 0 20px rgba(157,232,205,.25);
+}
 .pad-num{
   position:absolute;right:7px;top:6px;font-size:8px;letter-spacing:.1em;color:#9d8eb0;
 }
@@ -494,19 +510,20 @@ em{font-style:normal}
     radial-gradient(circle at 50% 40%,rgba(255,255,255,.06),transparent 60%);
 }
 .death-art{
-  position:absolute;left:50%;top:7%;transform:translateX(-50%);
-  height:54vh;max-height:460px;opacity:.95;
+  position:relative;z-index:1;width:100%;margin:auto auto 0;
+  padding:6px 12px 0;display:flex;align-items:flex-end;justify-content:center;
+  opacity:.95;
   filter:saturate(.9) brightness(.96) contrast(1.05) drop-shadow(0 24px 48px rgba(0,0,0,.85));
   animation:dropIn .9s cubic-bezier(.2,.8,.3,1);
 }
-.death-art img{height:100%;width:auto;max-width:88vw;object-fit:contain}
+.death-art img{height:min(46vh,420px);width:auto;max-width:92vw;object-fit:contain}
 .death-art:after{
-  content:'';position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);
-  width:62%;height:26px;border-radius:50%;
+  content:'';position:absolute;left:50%;bottom:-10px;transform:translateX(-50%);
+  width:58%;height:24px;border-radius:50%;
   background:radial-gradient(ellipse,rgba(255,80,110,.28),rgba(255,80,110,0) 70%);
   filter:blur(4px);
 }
-@keyframes dropIn{from{opacity:0;transform:translateX(-50%) translateY(-24px) scale(.94)}to{opacity:.9}}
+@keyframes dropIn{from{opacity:0;transform:translateY(-24px) scale(.94)}to{opacity:.9}}
 .death-card{
   position:relative;z-index:2;padding:26px 20px calc(env(safe-area-inset-bottom,0px) + 30px);
   background:linear-gradient(180deg,rgba(12,4,9,0),rgba(10,3,7,.86) 18%,rgba(8,2,6,.97));
@@ -539,11 +556,12 @@ em{font-style:normal}
     radial-gradient(50% 40% at 85% 60%,rgba(255,184,217,.24),transparent 70%);
 }
 .ending-art{
-  position:absolute;left:0;right:0;top:5%;margin:0 auto;
-  width:min(60vw,246px);
+  position:absolute;left:0;right:0;top:4%;margin:0 auto;
+  width:min(54vw,222px);
   filter:drop-shadow(0 20px 44px rgba(255,216,138,.35));
   animation:floaty 5s ease-in-out infinite;
 }
+.ending-art img{width:100%;height:auto;object-fit:contain}
 .ending-card{
   position:relative;z-index:2;padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 22px);
   background:linear-gradient(180deg,rgba(26,17,48,0),rgba(24,16,44,.88) 16%,rgba(20,13,36,.97));
@@ -610,9 +628,10 @@ em{font-style:normal}
 /* ================= TOAST / LEVELUP ================= */
 .toast{
   position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 74px);transform:translateX(-50%);
-  z-index:95;padding:10px 16px;border-radius:99px;font-size:12px;
+  z-index:95;padding:10px 15px;border-radius:16px;font-size:12px;line-height:1.5;
   background:rgba(10,8,16,.94);border:1px solid rgba(157,232,205,.4);color:#d8fff2;
-  box-shadow:0 12px 30px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;
+  box-shadow:0 12px 30px rgba(0,0,0,.6);
+  width:max-content;max-width:min(92vw,420px);text-align:center;
   animation:toastIn .3s cubic-bezier(.2,.9,.3,1);
 }
 .toast[hidden]{display:none}
@@ -620,21 +639,83 @@ em{font-style:normal}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
 .levelup{
   position:fixed;inset:0;z-index:96;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:4px;pointer-events:none;background:radial-gradient(circle at 50% 45%,rgba(255,216,138,.24),transparent 55%);
+  gap:4px;pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 45%,rgba(24,14,36,.72) 0%,rgba(24,14,36,.5) 26%,rgba(255,216,138,.18) 48%,transparent 66%);
   animation:lvlIn .5s;
 }
 .levelup[hidden]{display:none}
 .levelup span{font-size:11px;letter-spacing:.34em;color:#ffeebd}
 .levelup b{font-family:var(--serif);font-size:44px;font-weight:800;color:#fff;
-  text-shadow:0 0 30px rgba(255,216,138,.9);animation:lvlPop .7s cubic-bezier(.2,1.2,.3,1)}
+  text-shadow:0 2px 10px rgba(20,10,30,.9),0 0 30px rgba(255,216,138,.9);animation:lvlPop .7s cubic-bezier(.2,1.2,.3,1)}
+.levelup span,.levelup i{text-shadow:0 2px 8px rgba(20,10,30,.9)}
+.levelup i{font-style:normal;font-size:13px;letter-spacing:.14em;color:#ffe3b0}
 @keyframes lvlPop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
 @keyframes lvlIn{from{opacity:0}to{opacity:1}}
+
+/* ================= BUFF BADGES (음료 기믹) ================= */
+.buffbar{display:flex;flex-wrap:wrap;gap:6px;flex:0 0 auto;margin:-2px 0 9px}
+.buffbar.boss{margin-top:-2px}
+.buff-chip{
+  display:inline-flex;align-items:center;gap:6px;padding:6px 10px 6px 8px;border-radius:99px;
+  background:linear-gradient(100deg,rgba(255,216,138,.2),rgba(157,232,205,.12));
+  border:1px solid rgba(255,216,138,.5);
+  box-shadow:0 0 18px rgba(255,216,138,.22);
+  animation:buffIn .4s cubic-bezier(.2,.9,.3,1);
+}
+.buff-chip i{font-style:normal;font-size:13px}
+.buff-chip b{font-size:11px;color:#ffeec6;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.buff-chip small{font-size:9px;color:#c9e9dc;white-space:nowrap}
+.buff-chip.used{opacity:.5;border-color:rgba(255,255,255,.16);box-shadow:none;filter:grayscale(.5)}
+.buff-chip.used small{color:#b9a9cd}
+@keyframes buffIn{from{opacity:0;transform:translateY(-4px) scale(.96)}to{opacity:1;transform:none}}
+
+/* 포카리 수분 충전 (물보라 오버레이 — pool-art의 .splash와 이름 충돌 방지) */
+.pocasplash{
+  position:fixed;inset:0;z-index:97;display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 46%,rgba(120,210,235,.22),transparent 58%);
+}
+.pocasplash[hidden]{display:none}
+.pocasplash span{
+  font-size:17px;font-weight:800;letter-spacing:.02em;color:#e8fbff;
+  padding:12px 20px;border-radius:99px;
+  background:linear-gradient(120deg,rgba(24,74,96,.9),rgba(28,52,84,.92));
+  border:1px solid rgba(140,226,255,.65);
+  box-shadow:0 18px 44px rgba(60,180,220,.35),inset 0 0 24px rgba(140,226,255,.18);
+}
+.pocasplash.go span{animation:splashPop 1.25s cubic-bezier(.2,.9,.3,1) both}
+@keyframes splashPop{
+  0%{opacity:0;transform:scale(.8) translateY(8px)}
+  18%{opacity:1;transform:scale(1.04)}
+  72%{opacity:1;transform:scale(1)}
+  100%{opacity:0;transform:scale(1.02) translateY(-10px)}
+}
+
+/* ================= SHOP: 다음 미션 · 추천 ================= */
+.shop-next{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  padding:8px 11px;border-radius:12px;margin-bottom:10px;flex:0 0 auto;
+  background:linear-gradient(100deg,rgba(255,184,217,.14),rgba(255,255,255,.03));
+  border:1px solid rgba(255,184,217,.3);
+}
+.shop-next span{font-size:9px;letter-spacing:.16em;color:#e9b7cb}
+.shop-next b{font-size:11.5px;color:#ffe6f0;font-weight:700}
+.shop-next i{font-style:normal;font-size:10px;color:#ffd88a;margin-left:auto;white-space:nowrap}
+.item.rec{border-color:rgba(255,216,138,.6);background:linear-gradient(120deg,rgba(255,216,138,.14),rgba(255,255,255,.03));box-shadow:0 0 22px rgba(255,216,138,.14)}
+.item{position:relative}
+.rec-tag{
+  position:absolute;top:-7px;left:44px;
+  font-style:normal;font-size:8px;letter-spacing:.08em;padding:2px 7px 2px 8px;border-radius:99px;
+  background:linear-gradient(120deg,#ffe3a8,#ffb8d9);color:#3a2140;font-weight:800;
+  box-shadow:0 2px 8px rgba(0,0,0,.35);
+}
 
 /* ================= small screens ================= */
 @media (max-height:760px){
   .boot-title{font-size:28px}
-  .boot-art{width:120px;height:120px}
-  .boot-art img{height:172px;margin-top:-26px}
+  .boot-art{max-width:200px}
+  .boot-art img{height:clamp(120px,18vh,168px)}
   .boot-log{font-size:11px;line-height:1.8;min-height:104px}
   .map-title{font-size:22px}
   .area{min-height:104px;padding:11px 11px 11px}
