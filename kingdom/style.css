@@ -253,11 +253,11 @@ em{font-style:normal}
 .area.boss small{max-width:58%}
 .area.boss .area-tag{right:12px;bottom:auto;top:50%;transform:translateY(-50%)}
 .area.locked{filter:grayscale(.55) brightness(.72)}
-.area b{font-family:var(--serif);font-size:16px;letter-spacing:-.01em}
-.area small{font-size:9.5px;color:#b7a7c8;letter-spacing:.02em}
+.area b{font-family:var(--serif);font-size:16px;letter-spacing:-.01em;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.area small{font-size:9.5px;color:#b7a7c8;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .area-ico{font-size:22px;margin-bottom:2px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4))}
 .area-tag{
-  position:absolute;right:10px;bottom:10px;font-style:normal;font-size:8.5px;letter-spacing:.1em;
+  position:absolute;right:9px;top:9px;font-style:normal;font-size:8.5px;letter-spacing:.1em;
   padding:3px 7px;border-radius:99px;background:rgba(0,0,0,.35);color:#e8ddff;
   border:1px solid rgba(255,255,255,.14);
 }
