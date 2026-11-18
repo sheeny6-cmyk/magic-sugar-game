@@ -592,7 +592,7 @@ em{font-style:normal}
 
 /* ================= TOAST / LEVELUP ================= */
 .toast{
-  position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 88px);transform:translateX(-50%);
+  position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 74px);transform:translateX(-50%);
   z-index:95;padding:10px 16px;border-radius:99px;font-size:12px;
   background:rgba(10,8,16,.94);border:1px solid rgba(157,232,205,.4);color:#d8fff2;
   box-shadow:0 12px 30px rgba(0,0,0,.6);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;
@@ -600,7 +600,7 @@ em{font-style:normal}
 }
 .toast[hidden]{display:none}
 .toast.bad{border-color:rgba(255,125,158,.5);color:#ffd2dc}
-@keyframes toastIn{from{opacity:0;transform:translate(-50%,10px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,-8px)}to{opacity:1;transform:translate(-50%,0)}}
 .levelup{
   position:fixed;inset:0;z-index:96;display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:4px;pointer-events:none;background:radial-gradient(circle at 50% 45%,rgba(255,216,138,.24),transparent 55%);

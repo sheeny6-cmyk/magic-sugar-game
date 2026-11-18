@@ -424,6 +424,8 @@ async function playRound() {
   m.ui.timer.classList.remove('on');
   m.ui.msg.classList.remove('bad');
   m.ui.msg.innerHTML = c.intro || `동작 <b>${c.len}개</b>를 외우세요.`;
+  const goal = $('#stageGoal');
+  if (goal) goal.textContent = c.len + '동작';
   hidePose(m.ui);
   await sleep(560);
   if (m.canceled) return;
