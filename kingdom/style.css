@@ -28,6 +28,7 @@ body{
   color:var(--ink);
   font-family:var(--sans);
   font-size:15px;
+  word-break:keep-all;overflow-wrap:anywhere;
   line-height:1.45;
   overflow:hidden;
   -webkit-font-smoothing:antialiased;
