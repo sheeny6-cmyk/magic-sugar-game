@@ -159,3 +159,17 @@
 .studio .cls .eff span{font-size:.75rem}
 .studio .cls .fee b{font-size:.94rem}
 .cls .info>strong,.cls .info>.sub{display:block}
+
+.practice-kit{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 14px 0;padding:12px 14px;min-height:46px;border:1px solid #d7c7a7;border-radius:14px;background:#fff9ec;color:#624c36;text-decoration:none;font-weight:750;font-size:.9rem}
+.studio #rPotion{color:#356952;font-weight:700;margin-top:8px}
+.studio #rRefund{color:#745830;margin-top:6px}
+.studio-home{display:inline-flex;align-items:center;min-height:44px;font-size:.86rem;color:#705579;text-underline-offset:3px}
+.studio .attend-kicker{font-family:inherit;letter-spacing:.08em;color:#695175;font-size:.8rem}
+.studio #lNext,.studio .r-btns .primary,.studio .c-btns .primary{background:#573b68;color:#fff}
+
+.studio .attend{background:#dfd0d4 url('../assets/palace-court.webp') center 56%/cover;border:1px solid #d0bb9e}
+.studio .attend::after{background:linear-gradient(90deg,#fbf5e8fc 9%,#fbf5e8f0 41%,#fbf5e81a 74%)}
+.studio .attend-sugar{z-index:3;right:7%;bottom:4%;height:90%;max-width:38%;object-fit:contain;mix-blend-mode:normal;mask-image:none;-webkit-mask-image:none;filter:drop-shadow(0 3px 3px #57495645)}
+.studio .attend-txt h2{font-family:'Nanum Myeongjo','Noto Serif CJK KR',serif;font-size:1.05rem}
+.studio .attend-txt h2 b{color:#60445d}.studio .attend-link{font-size:.78rem;min-height:36px;align-content:center}
+.studio .teacher img{object-fit:contain;background:#f6efe8}

@@ -3,8 +3,14 @@
   'use strict';
 
   var KEY = 'sugartown.v1';
-  var V = '20261121b';
-  var CLASS_FEES = { bar: 100, center: 150, piece: 250 };
+  var COURT_BACKUP = KEY + '.court';
+  var V = '20261121c';
+  var PRACTICE = {
+    bar: { fee: 0, coins: 50, life: 1 },
+    center: { fee: 150, coins: 80, life: 2 },
+    piece: { fee: 250, coins: 120, life: 3 }
+  };
+  var GRANT = 60, POTION_PRICE = 30, ORDERS_PER_LEVEL = 3;
 
   /* town/ 루트 경로 (assets/town.js 위치 기준) — 하위 페이지에서도 사진 경로가 맞도록 */
   var ROOT = (function () {
@@ -26,12 +32,30 @@
 
   var SPIRITS = {
     ara:    { id: 'ara',    name: '아라', role: '아라베스크 · 선',        color: '#7d9ad8', img: A(SUP + 'ara.webp') },
-    alle:   { id: 'alle',   name: '알레', role: '알레그로 · 점프',        color: '#77c2a7', img: A(SUP + 'alle.webp') },
-    etu:    { id: 'etu',    name: '에튜', role: '아티튜드 · 균형',        color: '#ab8fdb', img: A(SUP + 'etu.webp') },
-    shangz: { id: 'shangz', name: '상즈', role: '상즈망 · 도약',          color: '#e0b465', img: A(SUP + 'shangz.webp') },
+    alle:   { id: 'alle',   name: '알레', role: '음악 · 리듬',        color: '#77c2a7', img: A(SUP + 'alle.webp') },
+    etu:    { id: 'etu',    name: '에튜', role: '에티튜드 · 균형',        color: '#ab8fdb', img: A(SUP + 'etu.webp') },
+    shangz: { id: 'shangz', name: '샹즈', role: '샹주망 · 도약',          color: '#e0b465', img: A(SUP + 'shangz.webp') },
     piru:   { id: 'piru',   name: '피루', role: '피루엣 · 회전',          color: '#e5899f', img: A(SUP + 'piru.webp') },
     sugar:  { id: 'sugar',  name: '슈가 공주', role: '발레 왕국의 주인공', color: '#b98fd8', img: A(SUP + 'sugar.webp') }
   };
+
+  var STAFF = {
+    etu: { name: '에티튜드 밸런스', gift: 'axis', unit: 4, line: '음악이 멈춰도 한 박자 더 머물 수 있게, 중심을 한 방울 담았어.' },
+    ara: { name: '아라베스크 이슬', gift: 'flex', unit: 4, line: '손끝에서 발끝까지, 슈가의 선이 길게 이어지길.' },
+    piru: { name: '피루엣 스파이럴', gift: 'coins', unit: 12, line: '한 바퀴 돌고 제자리! 슈가의 연습 보상에 코인을 더할게.' },
+    shangz: { name: '그랑 제떼 구름', gift: 'stam', unit: 4, line: '마지막 점프까지 가볍게! 구름 한 조각을 녹였어.' },
+    alle: { name: '세 박자 왈츠', gift: 'life', unit: 1, line: '하나, 둘, 셋. 슈가의 박자에 왕국의 생명력도 차올라.' }
+  };
+
+  function staffLevel(orders) { return 1 + Math.floor(orders / ORDERS_PER_LEVEL); }
+  function effectFor(id, level) {
+    var staff = STAFF[id], amount = staff.unit * level;
+    var label = staff.gift === 'coins' ? '연습 코인' : staff.gift === 'life' ? '왕국 생명력' : STATS[staff.gift].label;
+    return { key: staff.gift, amount: amount, label: label + ' +' + amount };
+  }
+  function spiritArt(id, portrait) {
+    return A('../kingdom/assets/' + (portrait ? 'av_' + id : id + '_hero') + '.webp');
+  }
 
   /* ---------- 마법 분식 메뉴 8종 ---------- */
   var MENU = [
@@ -123,7 +147,8 @@
   ];
 
   var DEFAULT = {
-    v: 1, coins: 0,
+    v: 1, coins: GRANT,
+    kingdom: { charter: 1, life: 1, orders: { etu: 0, ara: 0, piru: 0, shangz: 0, alle: 0 }, prepared: null, receipt: null },
     stats: { flex: 0, stam: 0, axis: 0, turn: 0 },
     owned: ['basic'], worn: 'basic',
     stamps: { bar: 0, center: 0, piece: 0 },
@@ -137,6 +162,24 @@
     var s = clone(DEFAULT);
     if (!raw || typeof raw !== 'object') return s;
     if (typeof raw.coins === 'number' && isFinite(raw.coins)) s.coins = Math.max(0, Math.round(raw.coins));
+    var kingdom = raw.kingdom;
+    if (kingdom && kingdom.charter === 1) {
+      if (Number.isSafeInteger(kingdom.life)) s.kingdom.life = Math.max(0, kingdom.life);
+      Object.keys(STAFF).forEach(function (id) {
+        var n = kingdom.orders && kingdom.orders[id];
+        if (Number.isSafeInteger(n) && n >= 0) s.kingdom.orders[id] = n;
+      });
+      var potion = kingdom.prepared;
+      if (potion && Object.hasOwn(STAFF, potion.id) && Number.isSafeInteger(potion.level) && potion.level > 0) {
+        s.kingdom.prepared = { id: potion.id, level: potion.level };
+      }
+      var receipt = kingdom.receipt;
+      if (receipt && Object.hasOwn(PRACTICE, receipt.kind) && Array.isArray(receipt.keys) && receipt.keys.length === 3) {
+        s.kingdom.receipt = receipt;
+      }
+    } else {
+      s.coins = (typeof raw.coins === 'number' && isFinite(raw.coins) ? s.coins : 0) + GRANT;
+    }
     if (raw.stats && typeof raw.stats === 'object') {
       Object.keys(s.stats).forEach(function (k) {
         var n = raw.stats[k];
@@ -160,35 +203,45 @@
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
     var lesson = raw.lesson;
-    if (lesson && Object.hasOwn(CLASS_FEES, lesson.kind) && typeof lesson.id === 'string' &&
+    if (lesson && Object.hasOwn(PRACTICE, lesson.kind) && typeof lesson.id === 'string' &&
         Array.isArray(lesson.rounds) && lesson.rounds.length === 3 &&
         Number.isInteger(lesson.index) && lesson.index >= 0 && lesson.index < lesson.rounds.length &&
         lesson.rounds.every(function (r) { return r && typeof r.key === 'string' && Array.isArray(r.choices) && Array.isArray(r.picks); })) {
       s.lesson = lesson;
     }
-    Object.keys(CLASS_FEES).forEach(function (kind) {
+    Object.keys(PRACTICE).forEach(function (kind) {
       if (raw.lastLessons && Array.isArray(raw.lastLessons[kind])) s.lastLessons[kind] = raw.lastLessons[kind];
     });
     if (typeof raw.createdAt === 'number') s.createdAt = raw.createdAt;
     return s;
   }
 
-  var S = null, memoryOnly = false, inTransaction = false;
+  var S = null, memoryOnly = false, inTransaction = false, needsCharter = false;
   function load() {
     if (memoryOnly && S) return S;
     try {
       var raw = localStorage.getItem(KEY);
-      S = normalize(raw ? JSON.parse(raw) : null);
+      var saved = raw ? JSON.parse(raw) : null;
+      needsCharter = !saved || !saved.kingdom || saved.kingdom.charter !== 1;
+      // A still-open older town page writes only the original wallet fields.
+      if (needsCharter && saved && saved.createdAt) {
+        try {
+          var previous = JSON.parse(localStorage.getItem(COURT_BACKUP) || 'null');
+          if (previous && previous.createdAt === saved.createdAt) saved.kingdom = previous.kingdom;
+        } catch (e) { /* The primary wallet remains usable. */ }
+      }
+      S = normalize(saved);
     } catch (e) {
       memoryOnly = true;
       S = S || normalize(null);
     }
-    if (!S.createdAt) { S.createdAt = Date.now(); persist(); }
+    if (!S.createdAt) S.createdAt = Date.now();
     return S;
   }
   function persist() {
     if (inTransaction || memoryOnly) return;
-    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { memoryOnly = true; }
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { memoryOnly = true; return; }
+    try { localStorage.setItem(COURT_BACKUP, JSON.stringify({ createdAt: S.createdAt, kingdom: S.kingdom })); } catch (e) { /* Optional compatibility copy. */ }
   }
   function get() { if (!S) load(); return S; }
 
@@ -207,7 +260,53 @@
   }
 
   function classFee(kind) {
-    return kind === 'bar' && get().stamps.bar === 0 ? 0 : CLASS_FEES[kind];
+    return PRACTICE[kind].fee;
+  }
+
+  function orderPotion(id) {
+    return updateWallet(function (s) {
+      var k = s.kingdom;
+      if (!Object.hasOwn(STAFF, id) || k.prepared || s.coins < POTION_PRICE || k.life < 1) return null;
+      var oldLevel = staffLevel(k.orders[id]);
+      s.coins -= POTION_PRICE;
+      k.life -= 1;
+      k.orders[id] += 1;
+      var level = staffLevel(k.orders[id]);
+      k.prepared = { id: id, level: level };
+      return { level: level, leveled: level > oldLevel };
+    });
+  }
+
+  // Called inside the lesson transaction after the final answer is verified.
+  function finishPractice(s, classStats) {
+    var run = s.lesson;
+    if (!run || run.index !== run.rounds.length - 1 || !run.rounds.every(function (r) { return r.picks.includes(r.key); })) return null;
+    var rules = PRACTICE[run.kind], k = s.kingdom, potion = k.prepared;
+    var stats = Object.assign({}, classStats), coins = rules.coins, life = rules.life;
+    if (potion) {
+      var effect = effectFor(potion.id, potion.level);
+      if (effect.key === 'coins') coins += effect.amount;
+      else if (effect.key === 'life') life += effect.amount;
+      else stats[effect.key] = (stats[effect.key] || 0) + effect.amount;
+    }
+    // Old bookings charged a tuition fee without recording it on the lesson.
+    var legacyFee = run.kind === 'bar' ? (s.stamps.bar ? 100 : 0) : rules.fee;
+    var refund = Number.isSafeInteger(run.paidFee) ? run.paidFee : legacyFee;
+    var receipt = {
+      kind: run.kind, keys: run.rounds.map(function (r) { return r.key; }),
+      first: run.rounds.filter(function (r) { return r.picks.length === 1; }).length,
+      levelBefore: level().n, coins: coins, life: life, refund: refund, stats: stats, potion: potion
+    };
+    s.coins += coins + refund;
+    k.life += life;
+    k.prepared = null;
+    Object.keys(stats).forEach(function (key) { s.stats[key] += stats[key]; });
+    s.classes += 1;
+    s.stamps[run.kind] += 1;
+    s.lastLessons[run.kind] = receipt.keys;
+    k.receipt = receipt;
+    s.lesson = null;
+    return receipt;
   }
 
   /* ---------- 레벨 ---------- */
@@ -241,6 +340,7 @@
     var r = root || document;
     var s = get();
     Array.prototype.forEach.call(r.querySelectorAll('[data-coin]'), function (el) { el.textContent = fmt(s.coins); });
+    Array.prototype.forEach.call(r.querySelectorAll('[data-life]'), function (el) { el.textContent = fmt(s.kingdom.life); });
     Object.keys(STATS).forEach(function (k) {
       Array.prototype.forEach.call(r.querySelectorAll('[data-stat="' + k + '"]'), function (el) { el.textContent = s.stats[k]; });
       Array.prototype.forEach.call(r.querySelectorAll('[data-bar="' + k + '"]'), function (el) {
@@ -373,7 +473,9 @@
     KEY: KEY, V: V, ROOT: ROOT, asset: A, STATS: STATS, SPIRITS: SPIRITS, MENU: MENU, DRESS: DRESS,
     load: load, get: get, save: persist, reset: function () { S = clone(DEFAULT); S.createdAt = Date.now(); persist(); syncUI(); },
     syncUI: syncUI, fmt: fmt, addCoins: addCoins, spend: spend, addStats: addStats,
-    updateWallet: updateWallet, classFee: classFee,
+    updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF,
+    GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
+    staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, finishPractice: finishPractice,
     level: level, LEVELS: LEVELS, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
     dressOf: dressOf, dressHTML: dressHTML, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast
@@ -386,6 +488,7 @@
     load(); syncUI();
     window.dispatchEvent(new Event('sugartown:refresh'));
   }
+  if (needsCharter) updateWallet(function () {}).then(refreshFromStorage);
   window.addEventListener('pageshow', refreshFromStorage);
   window.addEventListener('storage', function (e) { if (e.key === KEY || e.key === null || e.key === 'sugarcafe.best') refreshFromStorage(); });
   document.addEventListener('visibilitychange', function () {

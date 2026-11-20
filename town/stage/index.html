@@ -8,14 +8,14 @@
 <title>🎭 무대 · 발레 왕국 마을</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../style.css?v=20261121b" />
-<link rel="stylesheet" href="stage.css?v=20261121b" />
+<link rel="stylesheet" href="../style.css?v=20261121c" />
+<link rel="stylesheet" href="stage.css?v=20261121c" />
 </head>
 <body class="sub stage">
 <div class="app">
 
   <header class="subbar">
-    <a class="back" href="../" aria-label="마을로 돌아가기">←</a>
+    <a class="back" href="../?v=20261121c" aria-label="마을로 돌아가기">←</a>
     <div class="title">🎭 무대<small>BALLET&nbsp; KINGDOM&nbsp; STAGE</small></div>
     <span class="coin"><span class="ic">🪙</span><b data-coin>0</b></span>
   </header>
@@ -52,7 +52,7 @@
       <b>리허설 초대장이 아직 오지 않았어요</b>
       <p>스튜디오에서 수업을 마치면 초대장을 받을 수 있어요.</p>
     </div>
-    <a class="btn ghost sm" href="../studio/">수업 가기</a>
+    <a class="btn ghost sm" href="../studio/?v=20261121c">수업 가기</a>
   </section>
 
   <section class="cast">
@@ -71,7 +71,7 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../assets/town.js?v=20261121b"></script>
+<script src="../assets/town.js?v=20261121c"></script>
 <script>
 (function () {
   var T = window.SugarTown, $ = function (id) { return document.getElementById(id); };
@@ -93,7 +93,7 @@
       $('goalNote').textContent = '수업 5번을 채웠어요. 초대장이 도착했고, 다음 업데이트에서 공연이 열려요.';
       $('invite').innerHTML = '<span class="iv-em">💌</span><div><b>첫 공연 「잠자는 숲속의 슈가」 리허설 초대</b>' +
         '<p>' + T.dressOf(s.worn).name + ' 입고 무대에 올라요. 공연은 다음 업데이트에서!</p></div>' +
-        '<a class="btn ghost sm" href="../studio/">더 연습하기</a>';
+        '<a class="btn ghost sm" href="../studio/?v=20261121c">더 연습하기</a>';
     } else {
       $('invite').innerHTML = initialInvite;
       $('goalNote').textContent = initialNote;

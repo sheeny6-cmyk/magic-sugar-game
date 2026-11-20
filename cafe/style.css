@@ -595,3 +595,6 @@ body{
 #s-end{padding:calc(10px + env(safe-area-inset-top,0px)) 12px calc(10px + var(--safe-b))}
 .result{max-height:100%;overflow-y:auto;overscroll-behavior:contain;min-height:0}
 @media(max-width:360px){.hud{gap:4px}.town-actions{gap:8px}}
+.start-foot{column-gap:4px;flex-wrap:wrap}
+.start-foot .town-link{font-size:.79rem;padding-inline:4px;color:#644976}
+@media(max-width:380px){.start-foot .best{font-size:.65rem}.start-foot .mini{padding-inline:3px}}

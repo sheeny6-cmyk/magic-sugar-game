@@ -23,4 +23,10 @@ def finish_lesson(page):
     after = wallet()
     assert after["lesson"] is None and after["classes"] == before["classes"] + 1
     assert after["stamps"][run["kind"]] == before["stamps"][run["kind"]] + 1
-    assert after["coins"] == before["coins"] and after["worn"] == before["worn"]
+    reward = {"bar": (50, 1), "center": (80, 2), "piece": (120, 3)}[run["kind"]]
+    potion = before["kingdom"]["prepared"]
+    extra_coins = 12 * potion["level"] if potion and potion["id"] == "piru" else 0
+    extra_life = potion["level"] if potion and potion["id"] == "alle" else 0
+    assert after["coins"] == before["coins"] + run["paidFee"] + reward[0] + extra_coins
+    assert after["kingdom"]["life"] == before["kingdom"]["life"] + reward[1] + extra_life
+    assert after["kingdom"]["prepared"] is None and after["worn"] == before["worn"]

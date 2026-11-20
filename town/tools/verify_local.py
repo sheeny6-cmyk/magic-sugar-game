@@ -78,7 +78,7 @@ with sync_playwright() as p:
 
     # ---------- 드레스룸 ----------
     pg.goto(BASE + "/town/dressroom/?t=1", wait_until="load")
-    seed(pg, base_state(coins=120))
+    seed(pg, base_state(coins=70))
     pg.reload(wait_until="load"); pg.wait_for_timeout(400)
     print("DRESS overflow:", json.dumps(overflow_report(pg), ensure_ascii=False))
     pg.screenshot(path=str(OUT/"dress-360.png"), full_page=True)

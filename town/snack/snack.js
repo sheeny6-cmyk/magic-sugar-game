@@ -14,7 +14,7 @@
       react: '라인이 쭉 이어져요… 아라베스크가 길어졌어요!'
     },
     {
-      id: 'alle', name: '알레', role: '알레그로 · 점프 정령', img: A('assets/chars/alle.webp'), color: '#77c2a7',
+      id: 'alle', name: '알레', role: '음악 · 리듬 정령', img: A('assets/chars/alle.webp'), color: '#77c2a7',
       line: '점프할 때 발이 너무 무거워요! 착지도 자꾸 흔들리고요.',
       tags: ['점프', '체력'], need: ['fried'],
       react: '발이 깃털처럼 가벼워요! 점프가 두 배!'
@@ -26,7 +26,7 @@
       react: '축이… 안 흔들려요! 이제 아티튜드도 붙어요!'
     },
     {
-      id: 'shangz', name: '상즈', role: '상즈망 · 도약 정령', img: A('assets/chars/shangz.webp'), color: '#e0b465',
+      id: 'shangz', name: '샹즈', role: '샹주망 · 도약 정령', img: A('assets/chars/shangz.webp'), color: '#e0b465',
       line: '오늘 연속 도약하느라 체력이 완전 방전됐어요!',
       tags: ['체력'], need: ['sundae'], alt: [['fried']],
       react: '체력이 무한 충전됐어요! 한 번 더 뛸 수 있어요!'
