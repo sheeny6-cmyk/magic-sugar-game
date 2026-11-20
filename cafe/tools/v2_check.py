@@ -64,8 +64,9 @@ def cup_center(pg):
         return {x: b.x + b.width / 2, y: b.y + b.height / 2, w: b.width, h: b.height}; }""")
 
 
-def rub(pg, loops=5, steps=40, gap_ms=7, radius=0.42, until_full=False):
-    """컵 위를 손가락으로 원을 그리며 문지른다. (걸린 시간, 도달 게이지) 반환."""
+def rub(pg, loops=5, steps=40, gap_ms=7, radius=0.42, until_full=False, shot_at=None, shot_path=None):
+    """컵 위를 손가락으로 원을 그리며 문지른다. (걸린 시간, 도달 게이지) 반환.
+    shot_at(스텝 수)을 주면 손을 대고 있는 중간에 화면을 찍는다."""
     c = cup_center(pg)
     r = min(c["w"], c["h"]) * radius
     pg.mouse.move(c["x"] + r, c["y"])
@@ -77,6 +78,8 @@ def rub(pg, loops=5, steps=40, gap_ms=7, radius=0.42, until_full=False):
         pg.mouse.move(c["x"] + r * math.cos(a), c["y"] + r * math.sin(a))
         if gap_ms:
             pg.wait_for_timeout(gap_ms)
+        if shot_at is not None and i == shot_at and shot_path:
+            pg.screenshot(path=str(shot_path))
         if until_full and i % 5 == 0 and pg.evaluate("() => window.__cafe.S.stir") >= 100:
             break
     pg.mouse.up()
@@ -165,12 +168,13 @@ def main():
             print("  섞기 전 서빙 시도 →", toast_txt)
 
             # ---------- 2) 스와이프로 섞기 ----------
-            mid_t, mid_pct = rub(pg, loops=1)
+            mid_t, mid_pct = rub(pg, loops=1,
+                                 shot_at=32 if (SHOT and (w, h) == (360, 640)) else None,
+                                 shot_path=(OUT / "ballet-cafe-v2-stir.png") if (SHOT and (w, h) == (360, 640)) else None)
             print(f"  섞기 1차: {mid_t:.2f}s → {mid_pct:.0f}%")
             if not (0 < mid_pct < 100):
                 problems.append(f"{w}x{h}: 한 번 문질렀는데 게이지가 {mid_pct:.0f}%")
             if SHOT and (w, h) == (360, 640):
-                pg.screenshot(path=str(OUT / "ballet-cafe-v2-stir.png"))
                 print("  saved", OUT / "ballet-cafe-v2-stir.png")
 
             elapsed, pct = rub(pg, until_full=True)
