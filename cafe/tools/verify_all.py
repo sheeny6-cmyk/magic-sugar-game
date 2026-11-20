@@ -5,7 +5,8 @@ import sys
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-URL = (ROOT / "index.html").as_uri() + "?debug"
+# 기본은 로컬 파일, 인자로 URL을 주면 배포본을 검사한다.
+URL = sys.argv[1] if len(sys.argv) > 1 else (ROOT / "index.html").as_uri() + "?debug"
 OUT = pathlib.Path("/workspace/downloads")
 
 SIZES = [(320, 568), (360, 640), (384, 700), (390, 844)]

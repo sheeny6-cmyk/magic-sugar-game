@@ -6,7 +6,7 @@ import time
 from playwright.sync_api import sync_playwright
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-URL = (ROOT / "index.html").as_uri() + "?debug"
+URL = sys.argv[1] if len(sys.argv) > 1 else (ROOT / "index.html").as_uri() + "?debug"
 SHOT_DIR = pathlib.Path("/workspace/downloads")
 
 EXPECT = {
