@@ -2,6 +2,7 @@
 """발레 왕국 마을 로컬 검증: 레이아웃 오버플로우 + 흐름 + 스크린샷."""
 import json, pathlib, subprocess, sys, time
 from playwright.sync_api import sync_playwright
+from lesson_flow import finish_lesson
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8123"
 OUT = pathlib.Path("/workspace/tmp/town-test"); OUT.mkdir(parents=True, exist_ok=True)
@@ -106,9 +107,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(700)
     pg.screenshot(path=str(OUT/"studio-lesson-360.png"))
     # 수업 끝까지
-    for _ in range(5):
-        pg.evaluate("() => document.getElementById('lNext').click()")
-        pg.wait_for_timeout(250)
+    finish_lesson(pg)
     pg.wait_for_timeout(500)
     pg.screenshot(path=str(OUT/"studio-result-360.png"))
     print("after class:", pg.evaluate("() => JSON.parse(localStorage.getItem('sugartown.v1'))"))
@@ -121,9 +120,7 @@ with sync_playwright() as p:
     pg.wait_for_timeout(300)
     pg.evaluate("() => document.getElementById('cGo').click()")
     pg.wait_for_timeout(500)
-    for _ in range(5):
-        pg.evaluate("() => document.getElementById('lNext').click()")
-        pg.wait_for_timeout(200)
+    finish_lesson(pg)
     pg.wait_for_timeout(400)
     pg.screenshot(path=str(OUT/"studio-stage-ready-360.png"))
 

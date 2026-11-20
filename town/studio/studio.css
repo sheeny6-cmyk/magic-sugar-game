@@ -42,7 +42,7 @@
 .cls:active{transform:scale(.985)}
 .cls .tile{width:46px;height:46px;border-radius:13px;flex:none;display:grid;place-items:center;font-size:21px;border:1px solid rgba(255,255,255,.7)}
 .cls .info{flex:1;min-width:0}
-.cls h3{font-size:13px;letter-spacing:-.03em;line-height:1.2}
+.cls .info>strong{font-size:13px;letter-spacing:-.03em;line-height:1.2}
 .cls .sub{font-size:9.5px;color:#a491b3;margin-top:2px;line-height:1.45;word-break:keep-all}
 .cls .eff{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
 .cls .eff span{font-size:8.5px;font-weight:800;color:#7a5a9c;background:#f5ebfc;border-radius:6px;padding:2px 6px}
@@ -76,28 +76,54 @@
 .c-gain span{font-size:9.5px;font-weight:800;color:#6d4e90;background:#f5ebfc;border-radius:7px;padding:3px 7px}
 .c-btns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
 
-/* ---------- 수업 ---------- */
-.lesson{position:fixed;inset:0;z-index:90;display:none;place-items:center;padding:18px;
-  background:radial-gradient(60% 50% at 50% 30%,rgba(120,80,150,.5),rgba(35,20,48,.86))}
-.lesson.on{display:grid}
-.lcard{width:100%;max-width:370px;background:linear-gradient(180deg,#fffdfa,#fdf6ff);border-radius:24px;padding:16px 15px 15px;
-  box-shadow:0 26px 60px rgba(30,10,45,.55);text-align:center}
-.l-kicker{font-family:Georgia,serif;font-size:8px;letter-spacing:.22em;color:#b295bd}
-.lcard h3{font-size:17px;letter-spacing:-.03em;margin-top:3px}
-.l-dots{display:flex;justify-content:center;gap:5px;margin-top:9px}
-.l-dots i{width:6px;height:6px;border-radius:50%;background:#e8d9f0}
-.l-dots i.on{background:linear-gradient(135deg,#8B6BAE,#e0a8c8);transform:scale(1.25)}
-.lstage{position:relative;margin:12px 0 4px;padding:18px 10px 14px;border-radius:18px;
-  background:linear-gradient(150deg,#f7edff,#fdeef6 60%,#fff4e9);border:1px solid #f2e5f4;overflow:hidden}
-.l-ring{ position:absolute;left:50%;top:50%;width:150px;height:150px;margin:-95px 0 0 -75px;border-radius:50%;
-  border:1.5px dashed rgba(139,107,174,.28);animation:spin 9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.l-icon{display:block;font-size:34px;line-height:1.2;animation:float 2.4s ease-in-out infinite}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.l-step{font-size:15px;font-weight:800;letter-spacing:-.03em;margin-top:6px;position:relative}
-.l-line{font-size:10.5px;color:#7d6982;margin-top:3px;line-height:1.5;position:relative;min-height:31px}
-.lbar{height:5px;border-radius:3px;background:#efe3f5;overflow:hidden;margin:6px 0 11px}
-.lbar i{display:block;height:100%;width:0;border-radius:3px;background:linear-gradient(90deg,#b48fd0,#f0a9c8);transition:width .4s ease}
+/* ---------- 수업 노트 ---------- */
+.studio [hidden]{display:none!important}
+.studio dialog{position:fixed;inset:0;margin:0;width:100%;height:100%;max-width:none;max-height:none;border:0;color:var(--ink)}
+.studio dialog::backdrop{background:transparent}
+.sheet[open]{display:flex}
+.lesson[open],.result[open]{display:grid}
+.studio dialog{padding:calc(12px + var(--safe-t)) 14px calc(12px + var(--safe-b))}
+.sheet-card,.lcard,.rcard2{max-height:100%;overflow-y:auto;overscroll-behavior:contain}
+.sheet-card{padding-bottom:16px}
+.sheet-card p,.c-fee span,.c-gain span{font-size:.875rem}
+.c-fee b{font-size:1rem}
+.c-btns .btn,.r-btns .btn{min-height:44px}
+.sheet-card #cNote{color:#705977;margin-top:10px}
+.resume-lesson{display:block;width:calc(100% - 28px);margin:12px 14px 0;padding:13px;border:1px solid #dac5e8;border-radius:14px;background:#f6edfb;color:#65437b;font:inherit;font-size:.94rem;font-weight:700;cursor:pointer}
+.lesson{z-index:90;display:none;place-items:center;background:rgba(45,27,52,.67)}
+.lcard{width:100%;max-width:392px;background:#fffdfa;border-radius:23px;padding:22px 20px 18px;box-shadow:0 22px 64px rgba(36,16,48,.35)}
+.lesson-heading,.choice-title,.teacher{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.lesson-heading p{color:#7c6488;font-size:.8rem;font-weight:700}
+.lesson-heading h2{font-size:1.45rem;line-height:1.25;letter-spacing:-.045em}
+.lesson-pause,.choice-title button{min-height:44px;background:none;border:0;color:#745887;font:inherit;font-size:.875rem;cursor:pointer}
+.lesson-pause{padding:0 4px}
+.lesson-progress{display:flex;gap:5px;margin:12px 0 16px}
+.lesson-progress i{flex:1;height:4px;border-radius:8px;background:#e9e0ed}
+.lesson-progress .current{background:#ba9bd0}
+.lesson-progress .done{background:#79538e}
+.cue-card{border:1px solid #e6d7ee;border-radius:15px;padding:14px 15px 18px;background:linear-gradient(125deg,#f5edf9,#fcf4f7)}
+.teacher{justify-content:flex-start;font-size:.875rem;font-weight:700;color:#70577d}
+.teacher img{width:36px;height:36px;object-fit:cover;object-position:50% 12%;border-radius:50%;background:#fff}
+.lesson-cue{font-size:1.08rem;line-height:1.72;font-weight:650;letter-spacing:-.035em;word-break:keep-all;overflow-wrap:anywhere;margin-top:8px}
+.lesson-cue:focus{outline:none}
+.term-blank{display:inline-block;min-width:3.4em;padding:0 .35em;border-bottom:2px solid #9573a9;color:#775189;text-align:center;line-height:1.38;background:#ffffffa8;border-radius:4px 4px 0 0}
+.term-blank.filled{color:#396b57;border-color:#6e9f83;background:#eff8ef}
+.choice-title{margin-top:7px;color:#684d77;font-size:.875rem}
+.choice-title button{padding:0 2px;text-decoration:underline;text-underline-offset:3px}
+.lesson-choices{display:grid;gap:7px}
+.term-choice{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:46px;width:100%;padding:9px 14px;border:1px solid #d9cadd;border-radius:12px;background:#fff;color:#4b3655;font:inherit;font-weight:700;font-size:1rem;text-align:left;cursor:pointer}
+.term-choice:active:enabled{background:#f8f0fb}
+.term-choice.wrong{background:#fbf2f0;color:#86564e;border-color:#e4c4bd}
+.term-choice.correct{background:#eef7f0;color:#35644e;border-color:#94b59e}
+.term-choice small{font-size:.8rem;font-weight:650}
+.lesson-feedback{margin:10px 0 0;font-size:.91rem;color:#6a5376;line-height:1.5;word-break:keep-all}
+.lesson-feedback:empty{display:none}
+.lesson-feedback b{display:block;color:#365c48}
+#lNext{margin-top:12px;min-height:46px;background:#79558d}
+.studio :focus-visible{outline:3px solid #805aa4;outline-offset:2px}
+#classList{scroll-margin-top:70px}
+@media (max-height:620px){.lcard{padding:14px}.cue-card{padding:10px 12px}.lesson-progress{margin:8px 0}.lesson-choices{gap:4px}}
+@media (prefers-reduced-motion:reduce){.studio dialog *{animation:none!important;transition:none!important}}
 
 /* ---------- 결과 ---------- */
 .result{position:fixed;inset:0;z-index:95;display:none;place-items:center;padding:16px;
@@ -124,3 +150,12 @@
   .attend-txt h2{font-size:13px}
   .cls .sub{font-size:9px}
 }
+
+.studio .rcard2{max-height:100%}
+.rcard2 p{font-size:.875rem}
+.rcard2 .r-terms{margin:8px 0;color:#634875;font-weight:700}
+.studio .cls .info>strong{font-size:1rem}
+.studio .cls .sub,.studio .cls .fee span{font-size:.8rem;color:#79677f}
+.studio .cls .eff span{font-size:.75rem}
+.studio .cls .fee b{font-size:.94rem}
+.cls .info>strong,.cls .info>.sub{display:block}

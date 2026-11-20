@@ -4,12 +4,12 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="theme-color" content="#fff8f4" />
-<meta name="description" content="수강료를 내고 바 워크·센터·작품반 수업을 듣는 발레 왕국 스튜디오. 드레스룸에서 입은 옷으로 출석해요." />
+<meta name="description" content="선생님의 말에 알맞은 발레 용어를 골라 빈칸 세 곳을 채워요. 첫 바 수업은 무료예요." />
 <title>🩰 발레 스튜디오 · 발레 왕국 마을</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../style.css?v=20261121a" />
-<link rel="stylesheet" href="studio.css?v=20261121a" />
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="../style.css?v=20261121b" />
+<link rel="stylesheet" href="studio.css?v=20261121b" />
 </head>
 <body class="sub studio">
 <div class="app">
@@ -19,6 +19,8 @@
     <div class="title">🩰 발레 스튜디오<small>BALLET&nbsp; SCHOOL</small></div>
     <span class="coin"><span class="ic">🪙</span><b data-coin>0</b></span>
   </header>
+
+  <button class="resume-lesson" id="resumeLesson" type="button" hidden></button>
 
   <section class="attend">
     <img class="attend-sugar" src="../assets/chars/sugar-pose.webp" alt="수업에 나온 슈가 공주" />
@@ -43,7 +45,7 @@
     <div class="stamps" id="stamps"></div>
   </section>
 
-  <h2 class="sec">수업 선택</h2>
+  <h2 class="sec" id="classList">수업 선택</h2>
   <div class="classes" id="classes"></div>
 
   <section class="to-stage">
@@ -55,71 +57,73 @@
     <a class="btn ghost sm" href="../stage/">무대 보기</a>
   </section>
 
-  <p class="wallet-note"><span>🪙</span><span>수강료는 <b>발레 분식집</b>에서 버는 코인으로 내요. 수업을 마치면 스탯과 도장이 쌓이고, 5번째 수업에서 무대가 열려요.</span></p>
+  <p class="wallet-note"><span>🪙</span><span>수업마다 빈칸 세 곳을 채우면 출석 도장을 받아요. 수강료는 <a href="../../cafe/">슈가 발레 카페</a>와 <a href="../snack/">발레 분식집</a>에서 벌 수 있어요.</span></p>
 
   <footer class="foot">
     © 신정화 · 캐릭터 IP 「슈가」
     <span class="cc">BALLET&nbsp; IN&nbsp; MY&nbsp; STORY</span>
   </footer>
 
-  <!-- 수강 확인 -->
-  <div class="sheet" id="confirm" aria-hidden="true">
+  <dialog class="sheet" id="confirm" aria-labelledby="cName">
     <div class="sheet-card">
-      <span class="sheet-kicker" id="cKicker">BARRE&nbsp; WORK</span>
-      <h3 id="cName">바 워크</h3>
+      <span class="sheet-kicker" id="cKicker"></span>
+      <h3 id="cName"></h3>
       <p id="cDesc"></p>
-      <div class="c-fee"><span>수강료</span><b id="cFee">100 🪙</b></div>
+      <div class="c-fee"><span>수강료</span><b id="cFee"></b></div>
       <div class="c-gain" id="cGain"></div>
+      <p id="cNote"></p>
       <div class="c-btns">
-        <button class="btn ghost" id="cCancel">취소</button>
-        <button class="btn primary" id="cGo">수강하기</button>
+        <button type="button" class="btn ghost" id="cCancel">닫기</button>
+        <button type="button" class="btn primary" id="cGo">수업 시작</button>
+        <a class="btn primary" id="cCafe" href="../../cafe/" hidden>카페에서 코인 벌기</a>
       </div>
     </div>
-  </div>
+  </dialog>
 
-  <!-- 수업 -->
-  <div class="lesson" id="lesson" aria-hidden="true">
+  <dialog class="lesson" id="lesson" aria-labelledby="lTitle">
     <div class="lcard">
-      <div class="lhead">
-        <span class="l-kicker" id="lKicker">BARRE&nbsp; WORK</span>
-        <h3 id="lTitle">바 워크</h3>
-        <div class="l-dots" id="lDots"></div>
+      <div class="lesson-heading">
+        <div><p id="lCount"></p><h2 id="lTitle">바 워크</h2></div>
+        <button type="button" class="lesson-pause" id="lPause" aria-label="수업 저장하고 잠시 나가기">잠시 나가기</button>
       </div>
-      <div class="lstage" id="lStage">
-        <span class="l-ring"></span>
-        <span class="l-icon" id="lIcon">🩰</span>
-        <p class="l-step" id="lStep">바 잡기</p>
-        <p class="l-line" id="lLine">등을 곧게, 어깨는 내리고.</p>
+      <div class="lesson-progress" id="lDots" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="cue-card">
+        <div class="teacher"><img id="lPortrait" alt="" /><span id="lTeacher"></span></div>
+        <p class="lesson-cue" id="lCue" tabindex="-1"></p>
       </div>
-      <div class="lbar"><i id="lBar"></i></div>
-      <button class="btn primary block" id="lNext">다음 동작 ♪</button>
+      <div class="choice-title"><b id="lInstruction">빈칸에 들어갈 말은?</b><button type="button" id="lHint">힌트 보기</button></div>
+      <div class="lesson-choices" id="lChoices" role="group" aria-labelledby="lInstruction"></div>
+      <p id="lFeedback" class="lesson-feedback" role="status" aria-live="polite"></p>
+      <button type="button" class="btn primary block" id="lNext" hidden>다음 문제</button>
     </div>
-  </div>
+  </dialog>
 
-  <!-- 수업 결과 -->
-  <div class="result" id="result" aria-hidden="true">
+  <dialog class="result" id="result" aria-labelledby="rTitle">
     <div class="rcard2">
       <span class="r-kicker">CLASS&nbsp; CLEAR</span>
       <h3 id="rTitle">출석 도장 +1</h3>
-      <p id="rSub">오늘도 바를 잡고 끝까지 해냈어요.</p>
-      <div class="r-stamp" id="rStamp">🩰</div>
+      <p id="rSub"></p>
+      <div class="r-stamp" id="rStamp"></div>
+      <p class="r-terms" id="rTerms"></p>
       <div class="r-gains" id="rGains"></div>
       <div class="r-level">
-        <div class="r-lv-top"><b id="rLv">Lv.1 입문 발레리나</b><span id="rLvNote"></span></div>
+        <div class="r-lv-top"><b id="rLv"></b><span id="rLvNote"></span></div>
         <div class="lv-bar"><i id="rBar" style="width:0%"></i></div>
       </div>
       <div class="r-btns">
-        <button class="btn primary" id="rAgain">한 번 더</button>
+        <button type="button" class="btn primary" id="rAgain">한 번 더</button>
+        <a class="btn primary" id="rCafe" href="../../cafe/" hidden>카페에서 코인 벌기</a>
         <a class="btn ghost" href="../">마을로</a>
       </div>
-      <a class="btn ghost block sm" id="rStage" href="../stage/">🎭 무대 목표 보기</a>
+      <a class="btn ghost block sm" id="rStage" href="../stage/" hidden>리허설 초대장 보기</a>
     </div>
-  </div>
+  </dialog>
 
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../assets/town.js?v=20261121a"></script>
-<script src="studio.js?v=20261121a"></script>
+<script src="../assets/town.js?v=20261121b"></script>
+<script src="lessons.js?v=20261121b"></script>
+<script src="studio.js?v=20261121b"></script>
 </body>
 </html>

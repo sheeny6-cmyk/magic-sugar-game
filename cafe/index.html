@@ -11,8 +11,8 @@
 <meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/assets/bg-entrance.webp" />
 <title>☕ 슈가 발레 카페</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="style.css?v=20261120d" />
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="style.css?v=20261121b" />
 </head>
 <body>
 <div id="app">
@@ -25,7 +25,7 @@
     <div class="start-top">
       <span class="tag">SUGAR&nbsp; BALLET&nbsp; CAFÉ</span>
       <h1>슈가<br /><em>발레 카페</em></h1>
-      <p class="lead">75초 영업, 주문을 톡톡 담고 컵을 쓱쓱 섞어<br />마법 같은 음료를 완성해요. 깜짝 손님도 와요!</p>
+      <p class="lead">75초 동안 마법 라떼를 만들어요.<br />게임 매출 200원마다 마을 지갑에 1코인!</p>
     </div>
 
     <div class="start-bottom">
@@ -36,6 +36,7 @@
       </ul>
       <button class="start-btn" id="startBtn">☕ 영업 시작</button>
       <div class="start-foot">
+        <a class="mini town-link" href="../town/">마을로</a>
         <button class="mini" id="muteStart" aria-label="소리 켜기/끄기">🔊 소리 켜짐</button>
         <span class="best" id="bestStart">최고 매출 —</span>
       </div>
@@ -50,8 +51,9 @@
         <div class="bar"><i id="timeBar"></i></div>
       </div>
       <div class="combo-chip" id="comboChip"><b>×2</b> COMBO</div>
-      <div class="hud-money" id="money">₩0</div>
+      <div class="hud-money" id="money" aria-label="이번 영업에서 번 코인">🪙 +0</div>
       <button class="icon" id="mutePlay" aria-label="소리 켜기/끄기">🔊</button>
+      <button class="close-shift" id="closeShift" aria-label="지금 영업 마감하기">마감</button>
     </header>
 
     <div class="stage">
@@ -130,6 +132,7 @@
       <p class="result-msg" id="gradeMsg">오늘도 정말 잘했어요!</p>
 
       <div class="receipt" id="receipt">
+        <div class="rline coin-row"><span>지갑에 적립한 코인</span><b id="rCoins">+0코인</b></div>
         <div class="rline total"><span>오늘의 매출</span><b id="rRevenue">₩0</b></div>
         <div class="rline"><span>서빙한 잔</span><b id="rServed">0잔</b></div>
         <div class="rline"><span>최고 콤보</span><b id="rCombo">0</b></div>
@@ -151,10 +154,16 @@
         <button class="btn ghost" id="homeBtn">카페 입구로</button>
         <button class="btn primary" id="againBtn">다시 영업하기</button>
       </div>
+      <div class="town-actions">
+        <a href="../town/studio/">발레 수업 가기</a>
+        <a href="../town/">마을로</a>
+        <span>지갑 <b data-coin>0</b>코인</span>
+      </div>
     </div>
   </section>
 
 </div>
-<script src="game.js?v=20261120d"></script>
+<script src="../town/assets/town.js?v=20261121b"></script>
+<script src="game.js?v=20261121b"></script>
 </body>
 </html>

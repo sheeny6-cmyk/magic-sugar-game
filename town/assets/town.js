@@ -3,7 +3,8 @@
   'use strict';
 
   var KEY = 'sugartown.v1';
-  var V = '20261121a';
+  var V = '20261121b';
+  var CLASS_FEES = { bar: 100, center: 150, piece: 250 };
 
   /* town/ 루트 경로 (assets/town.js 위치 기준) — 하위 페이지에서도 사진 경로가 맞도록 */
   var ROOT = (function () {
@@ -127,7 +128,7 @@
     owned: ['basic'], worn: 'basic',
     stamps: { bar: 0, center: 0, piece: 0 },
     classes: 0, served: 0, best: 0, bestRound: 0, seen: [],
-    lastServe: null, createdAt: 0
+    lastServe: null, createdAt: 0, lesson: null, lastLessons: {}
   };
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
@@ -158,25 +159,56 @@
     });
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
+    var lesson = raw.lesson;
+    if (lesson && Object.hasOwn(CLASS_FEES, lesson.kind) && typeof lesson.id === 'string' &&
+        Array.isArray(lesson.rounds) && lesson.rounds.length === 3 &&
+        Number.isInteger(lesson.index) && lesson.index >= 0 && lesson.index < lesson.rounds.length &&
+        lesson.rounds.every(function (r) { return r && typeof r.key === 'string' && Array.isArray(r.choices) && Array.isArray(r.picks); })) {
+      s.lesson = lesson;
+    }
+    Object.keys(CLASS_FEES).forEach(function (kind) {
+      if (raw.lastLessons && Array.isArray(raw.lastLessons[kind])) s.lastLessons[kind] = raw.lastLessons[kind];
+    });
     if (typeof raw.createdAt === 'number') s.createdAt = raw.createdAt;
     return s;
   }
 
-  var S = null;
+  var S = null, memoryOnly = false, inTransaction = false;
   function load() {
+    if (memoryOnly && S) return S;
     try {
       var raw = localStorage.getItem(KEY);
       S = normalize(raw ? JSON.parse(raw) : null);
     } catch (e) {
-      S = normalize(null);
+      memoryOnly = true;
+      S = S || normalize(null);
     }
     if (!S.createdAt) { S.createdAt = Date.now(); persist(); }
     return S;
   }
   function persist() {
-    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* 저장 불가 환경 */ }
+    if (inTransaction || memoryOnly) return;
+    try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { memoryOnly = true; }
   }
   function get() { if (!S) load(); return S; }
+
+  // Each visit can have its own tab. Settle against the latest wallet in one write.
+  function updateWallet(change) {
+    function apply() {
+      var s = load(), result;
+      inTransaction = true;
+      try { result = change(s); } finally { inTransaction = false; }
+      persist();
+      syncUI();
+      return result;
+    }
+    if (navigator.locks && navigator.locks.request) return navigator.locks.request(KEY, apply);
+    return Promise.resolve(apply());
+  }
+
+  function classFee(kind) {
+    return kind === 'bar' && get().stamps.bar === 0 ? 0 : CLASS_FEES[kind];
+  }
 
   /* ---------- 레벨 ---------- */
   var LEVELS = [
@@ -341,6 +373,7 @@
     KEY: KEY, V: V, ROOT: ROOT, asset: A, STATS: STATS, SPIRITS: SPIRITS, MENU: MENU, DRESS: DRESS,
     load: load, get: get, save: persist, reset: function () { S = clone(DEFAULT); S.createdAt = Date.now(); persist(); syncUI(); },
     syncUI: syncUI, fmt: fmt, addCoins: addCoins, spend: spend, addStats: addStats,
+    updateWallet: updateWallet, classFee: classFee,
     level: level, LEVELS: LEVELS, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
     dressOf: dressOf, dressHTML: dressHTML, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast
@@ -349,9 +382,13 @@
   load();
 
   /* 여러 탭/뒤로가기에서 지갑 동기화 */
-  window.addEventListener('pageshow', function () { load(); syncUI(); });
-  window.addEventListener('storage', function (e) { if (e.key === KEY) { load(); syncUI(); } });
+  function refreshFromStorage() {
+    load(); syncUI();
+    window.dispatchEvent(new Event('sugartown:refresh'));
+  }
+  window.addEventListener('pageshow', refreshFromStorage);
+  window.addEventListener('storage', function (e) { if (e.key === KEY || e.key === null || e.key === 'sugarcafe.best') refreshFromStorage(); });
   document.addEventListener('visibilitychange', function () {
-    if (document.visibilityState === 'visible') { load(); syncUI(); }
+    if (document.visibilityState === 'visible') refreshFromStorage();
   });
 })();

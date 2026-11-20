@@ -183,7 +183,7 @@
   }
   function menuOf(id) { return T.MENU.filter(function (m) { return m.id === id; })[0]; }
 
-  function serve() {
+  async function serve() {
     if (state.busy || !state.pick.length) return;
     state.busy = true;
     var order = state.order;
@@ -192,13 +192,10 @@
     var earned = 0;
     var gained = {};
 
-    pick.forEach(function (id) { T.seeMenu(id); });
-
     if (ok) {
       state.streak += 1;
       state.bestStreak = Math.max(state.bestStreak, state.streak);
       state.served += 1;
-      T.get().served += 1;
       var base = 22 + Math.min(4, state.streak - 1) * 6;
       if (order.need.length > 1) base += 12;
       if (order.need[0] === 'fullset') base += 8;
@@ -210,14 +207,20 @@
           state.gained[k] = (state.gained[k] || 0) + m.stats[k];
         });
       });
-      T.addStats(gained);
-      T.addCoins(earned);
       state.earned += earned;
     } else {
       state.streak = 0;
       state.miss += 1;
     }
 
+    await T.updateWallet(function (s) {
+      pick.forEach(function (id) { T.seeMenu(id); });
+      if (ok) {
+        s.served += 1;
+        T.addStats(gained);
+        T.addCoins(earned);
+      }
+    });
     showReact(ok, order, pick, earned, gained);
   }
 
@@ -278,12 +281,11 @@
     renderRound();
   }
 
-  function finish() {
-    var s = T.get();
-    s.best = Math.max(s.best, state.earned);
-    s.bestRound = Math.max(s.bestRound, state.served);
-    T.save();
-    T.syncUI();
+  async function finish() {
+    await T.updateWallet(function (s) {
+      s.best = Math.max(s.best, state.earned);
+      s.bestRound = Math.max(s.bestRound, state.served);
+    });
 
     $('endCoins').textContent = '+' + T.fmt(state.earned) + ' 🪙';
     $('endSolved').textContent = state.served + ' / ' + state.total;

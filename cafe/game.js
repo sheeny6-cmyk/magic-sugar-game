@@ -6,6 +6,9 @@
 
   /* 섞는 손맛이 더해져 영업 시간을 60초 → 75초로 넉넉하게 */
   const ROUND = 75;
+  const WON_PER_COIN = 200;
+  const town = window.SugarTown;
+  let pendingCredit = Promise.resolve();
   const STIR_DIST = 700;   // 컵 위를 이만큼(px) 문지르면 100% (약 0.6~0.8초의 경쾌한 스와이프)
   const STIR_HOLD = 30;    // 꾹 누르고만 있어도 1초에 차오르는 %
   const SERVE_MS = 1200;   // 반응 카드 노출 (탭하면 바로 스킵)
@@ -175,7 +178,7 @@
     try { muted = localStorage.getItem('sugarcafe.mute') === '1'; } catch (e) {}
 
     function ensure() {
-      if (muted) return null;
+      if (muted || document.hidden) return null;
       if (!ctx) {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return null;
@@ -227,6 +230,11 @@
         try { localStorage.setItem('sugarcafe.mute', v ? '1' : '0'); } catch (e) {}
       },
       warm() { ensure(); },
+      onVisibility() {
+        if (!ctx) return;
+        if (document.hidden) ctx.suspend().catch(() => {});
+        else if (!muted) ctx.resume().catch(() => {});
+      },
       add(n) { tone(500 + n * 60, 0.09, 'sine', 0.10); },
       stir() { const c = ensure(); if (!c) return; swish(c); },
       ready() { [1047, 1319, 1568].forEach((f, i) => tone(f, 0.12, 'triangle', 0.075, null, i * 0.055)); },
@@ -250,7 +258,7 @@
 
   /* ---------------- 상태 ---------------- */
   const S = {
-    phase: 'start', time: ROUND, revenue: 0, served: 0, miss: 0,
+    phase: 'start', time: ROUND, revenue: 0, coins: 0, served: 0, miss: 0,
     combo: 0, maxCombo: 0, sold: {}, cup: [], order: null, upcoming: [],
     locked: false, raf: 0, last: 0, lastTick: -1,
     stir: 0, stirHintShown: false,
@@ -636,9 +644,11 @@
   }
 
   function nextOrder() {
+    if (S.phase !== 'play') return;
     S.locked = true;
     el.order.classList.add('out');
-    setTimeout(() => {
+    clearTimeout(orderT);
+    orderT = setTimeout(() => {
       el.order.classList.remove('out');
       S.order = S.upcoming.shift();
       if (!S.order) S.order = makeOrder();
@@ -655,7 +665,7 @@
   }
 
   /* ---------------- 반응 카드 ---------------- */
-  let serveHideT = 0, nextT = 0;
+  let serveHideT = 0, nextT = 0, orderT = 0;
 
   function serveMarkup(d) {
     if (d.img) return '<img src="' + d.img + '" alt="' + d.name + '">';
@@ -747,7 +757,7 @@
     if (sameBag(S.cup, S.order.drink.recipe)) success(); else fail();
   }
 
-  function success() {
+  async function success() {
     S.locked = true;
     const o = S.order;
     const surprise = !!o.customer.surprise;
@@ -759,13 +769,19 @@
     let amount = Math.round((o.drink.price * mult + tip) / 100) * 100;
     if (surprise) { amount += o.customer.bonus || 0; S.stats.surprise++; }
     S.revenue += amount;
+    const totalCoins = Math.floor(S.revenue / WON_PER_COIN);
+    const earned = totalCoins - S.coins;
+    S.coins = totalCoins;
     S.served++;
     S.sold[o.drink.id] = (S.sold[o.drink.id] || 0) + 1;
+    pendingCredit = town.updateWallet(s => { s.coins += earned; });
+    await pendingCredit;
+    if (S.phase !== 'play' || S.order !== o) return;
 
     SFX.serve();
     buzz(26);
-    floatText('+' + won(amount));
-    el.money.textContent = won(S.revenue);
+    floatText('🪙 +' + earned);
+    el.money.textContent = '🪙 +' + town.fmt(S.coins);
     el.money.classList.remove('bump');
     void el.money.offsetWidth;
     el.money.classList.add('bump');
@@ -779,7 +795,7 @@
       drinkName: o.drink.name,
       who: (o.customer.surprise ? '깜짝 손님 · ' : o.customer.role + ' ') + o.customer.name,
       line: surprise ? o.customer.react : o.drink.react,
-      bonus: surprise ? '🎁 깜짝 보너스 +' + won(o.customer.bonus || 0) : ''
+      bonus: (surprise ? '🎁 깜짝 보너스 +' + won(o.customer.bonus || 0) + ' · ' : '') + '지갑에 +' + earned + '코인'
     });
 
     if (S.combo >= 2) {
@@ -796,6 +812,7 @@
       toast('콤보 보너스! 영업 시간 +3초 ⏱', 'good');
     }
     setTimeout(() => {
+      if (S.phase !== 'play' || S.order !== o || !S.locked) return;
       S.cup = [];
       el.layers.innerHTML = '';
       refreshTray();
@@ -857,7 +874,7 @@
     refreshTray();
     steamOn(false);
     resetStir();
-    setTimeout(nextOrder, 600);
+    orderT = setTimeout(nextOrder, 600);
   }
 
   /* ---------------- 타이머 ---------------- */
@@ -891,7 +908,7 @@
   }
 
   function loop(t) {
-    if (S.phase !== 'play') return;
+    if (S.phase !== 'play' || document.hidden) return;
     if (!S.last) S.last = t;
     let dt = (t - S.last) / 1000;
     S.last = t;
@@ -913,7 +930,7 @@
   function startGame() {
     SFX.warm();
     S.phase = 'play';
-    S.time = ROUND; S.revenue = 0; S.served = 0; S.miss = 0;
+    S.time = ROUND; S.revenue = 0; S.coins = 0; S.served = 0; S.miss = 0;
     S.combo = 0; S.maxCombo = 0; S.sold = {}; S.cup = []; S.locked = false;
     S.last = 0; S.lastTick = -1;
     S.stir = 0; S.stirHintShown = false;
@@ -923,7 +940,8 @@
     lastResult = null; resultBlob = null;
     S.order = makeOrder();
     S.upcoming = [makeOrder(), makeOrder()];
-    el.money.textContent = won(0);
+    el.money.textContent = '🪙 +0';
+    el.order.classList.remove('out');
     el.comboChip.classList.remove('on');
     el.layers.innerHTML = '';
     refreshTray();
@@ -1100,13 +1118,14 @@
     c.setLineDash([]);
 
     const rows = [
+      ['적립한 발레 코인', '+' + (d.coins || 0) + '코인'],
       ['서빙한 잔', (d.served || 0) + '잔'],
       ['최고 콤보', '×' + (d.combo || 0)],
       ['놓친 주문', (d.miss || 0) + '건'],
       ['오늘의 인기 메뉴', d.best || '—']
     ];
     rows.forEach((row, i) => {
-      const ry2 = ry + 168 + i * 54;
+      const ry2 = ry + 151 + i * 46;
       c.fillStyle = '#7A6688';
       c.font = '500 27px ' + F();
       c.fillText(row[0], rx + 40, ry2);
@@ -1188,7 +1207,7 @@
   function resultText() {
     if (!lastResult) return '';
     return '☕ 슈가 발레 카페\n' + lastResult.title +
-      '\n매출 ' + won(lastResult.revenue) + ' · ' + lastResult.served + '잔 · 최고 콤보 ×' + lastResult.combo +
+      '\n매출 ' + won(lastResult.revenue) + ' · +' + lastResult.coins + '코인 · ' + lastResult.served + '잔 · 최고 콤보 ×' + lastResult.combo +
       '\n' + lastResult.journal + '\n' + SHARE_URL;
   }
 
@@ -1293,12 +1312,15 @@
     return base + '. 들쭉날쭉했지만 손님들은 다 웃으면서 갔어요. 내일은 한 잔 더 침착하게 🩰';
   }
 
-  function endGame() {
+  async function endGame() {
+    if (S.phase !== 'play') return;
     S.phase = 'end';
     cancelAnimationFrame(S.raf);
     clearTimeout(nextT); nextT = 0;
+    clearTimeout(orderT); orderT = 0;
     hideServe();
     onStirUp();
+    await pendingCredit;
     SFX.end();
 
     const t = titleFor();
@@ -1307,6 +1329,7 @@
     $('#gradeMsg').textContent = t.msg;
     $('#journalLine').textContent = journal;
     $('#rRevenue').textContent = won(S.revenue);
+    $('#rCoins').textContent = '+' + town.fmt(S.coins) + '코인';
     $('#rServed').textContent = S.served + '잔';
     $('#rCombo').textContent = '×' + S.maxCombo;
     $('#rMiss').textContent = S.miss + '건';
@@ -1326,7 +1349,7 @@
 
     lastResult = {
       title: t.name, msg: t.msg, journal: journal,
-      revenue: S.revenue, served: S.served, combo: S.maxCombo, miss: S.miss,
+      revenue: S.revenue, coins: S.coins, served: S.served, combo: S.maxCombo, miss: S.miss,
       best: bestDrink ? bestDrink.name + ' ' + bestN + '잔' : '—'
     };
     // 공유 버튼을 누르는 순간 바로 공유창을 열 수 있도록 미리 카드를 만들어 둔다.
@@ -1360,6 +1383,7 @@
   /* ---------------- 이벤트 ---------------- */
   $('#startBtn').addEventListener('click', startGame);
   $('#againBtn').addEventListener('click', startGame);
+  $('#closeShift').addEventListener('click', endGame);
   $('#homeBtn').addEventListener('click', () => {
     S.phase = 'start';
     cancelAnimationFrame(S.raf);
@@ -1378,8 +1402,17 @@
   window.addEventListener('pointerup', onStirUp, { passive: true });
   window.addEventListener('pointercancel', onStirUp, { passive: true });
   window.addEventListener('blur', onStirUp);
+  document.addEventListener('visibilitychange', () => {
+    SFX.onVisibility();
+    if (S.phase !== 'play') return;
+    cancelAnimationFrame(S.raf);
+    onStirUp();
+    S.last = 0;
+    if (!document.hidden) S.raf = requestAnimationFrame(loop);
+  });
 
   document.addEventListener('keydown', e => {
+    if (e.target.closest && e.target.closest('a, button') && e.key === 'Enter') return;
     if (e.key === 'Enter' && S.phase === 'play') {
       if (el.flash.classList.contains('on')) skipServe(); else serve();
     }

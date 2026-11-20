@@ -44,24 +44,24 @@
     T.syncUI();
   }
 
-  $('shop').addEventListener('click', function (e) {
+  $('shop').addEventListener('click', async function (e) {
     var buy = e.target.closest('[data-buy]');
     var wear = e.target.closest('[data-wear]');
     if (buy) {
       var id = buy.getAttribute('data-buy');
       var d = T.dressOf(id);
-      var r = T.buy(id);
+      var r = await T.updateWallet(function () { return T.buy(id); });
       if (r.ok) {
         T.toast(d.name + ' 구매 완료! 바로 입었어요 ✨');
         refresh();
       } else if (r.reason === 'coins') {
         var card = document.querySelector('[data-card="' + id + '"]');
         if (card) { card.classList.remove('shake'); void card.offsetWidth; card.classList.add('shake'); }
-        T.toast('코인이 ' + T.fmt(r.need) + '개 부족해요. 분식집에서 손님 고민을 해결해 볼까요? 🍢');
+        T.toast(T.fmt(r.need) + '코인 더 모으면 살 수 있어요. 카페와 분식집에서 벌어 보세요.');
       }
     }
     if (wear) {
-      var wr = T.wear(wear.getAttribute('data-wear'));
+      var wr = await T.updateWallet(function () { return T.wear(wear.getAttribute('data-wear')); });
       if (wr.ok) {
         T.toast(wr.item.name + '으로 갈아입었어요 👗');
         refresh();
@@ -69,5 +69,6 @@
     }
   });
 
+  window.addEventListener('sugartown:refresh', refresh);
   refresh();
 })();

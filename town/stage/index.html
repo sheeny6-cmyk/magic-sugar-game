@@ -7,9 +7,9 @@
 <meta name="description" content="발레 왕국 무대 — 스튜디오 수업과 도장을 모으면 열리는 첫 공연 목표" />
 <title>🎭 무대 · 발레 왕국 마을</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../style.css?v=20261121a" />
-<link rel="stylesheet" href="stage.css?v=20261121a" />
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="../style.css?v=20261121b" />
+<link rel="stylesheet" href="stage.css?v=20261121b" />
 </head>
 <body class="sub stage">
 <div class="app">
@@ -34,7 +34,7 @@
 
   <section class="goal">
     <div class="goal-top">
-      <b id="goalTitle">무대까지 수업 5번</b>
+      <b id="goalTitle">초대장까지 수업 5번</b>
       <span id="goalNow">0 / 5</span>
     </div>
     <div class="goal-bar"><i id="goalBar" style="width:0%"></i></div>
@@ -43,7 +43,7 @@
       <li id="reqLevel"><span class="k">⭐ 스튜디오 레벨</span><b>Lv.1 / Lv.3</b></li>
       <li id="reqDress"><span class="k">👗 오늘의 코디</span><b>기본 핑크 레오타드</b></li>
     </ul>
-    <p class="goal-note" id="goalNote">수업을 들을 때마다 도장이 쌓여요. 5번째 수업에서 무대 문이 열려요.</p>
+    <p class="goal-note" id="goalNote">수업을 들을 때마다 도장이 쌓여요. 5번째 수업을 마치면 리허설 초대장이 와요.</p>
   </section>
 
   <section class="invite" id="invite">
@@ -71,27 +71,35 @@
   <div class="toast" id="toast"></div>
 </div>
 
-<script src="../assets/town.js?v=20261121a"></script>
+<script src="../assets/town.js?v=20261121b"></script>
 <script>
 (function () {
   var T = window.SugarTown, $ = function (id) { return document.getElementById(id); };
-  var s = T.get(), lv = T.level(), ready = T.stageReady();
-  var n = Math.min(5, s.classes), pct = Math.round((n / 5) * 100);
+  var initialInvite = $('invite').innerHTML, initialNote = $('goalNote').textContent;
+  function refresh() {
+    var s = T.get(), lv = T.level(), ready = T.stageReady();
+    var n = Math.min(5, s.classes), pct = Math.round((n / 5) * 100);
 
-  $('goalTitle').textContent = ready ? '무대 문이 열렸어요!' : '무대까지 수업 ' + T.stageLeft() + '번';
-  $('goalNow').textContent = n + ' / 5';
-  $('goalBar').style.width = pct + '%';
+    $('goalTitle').textContent = ready ? '리허설 초대장이 왔어요!' : '초대장까지 수업 ' + T.stageLeft() + '번';
+    $('goalNow').textContent = n + ' / 5';
+    $('goalBar').style.width = pct + '%';
 
-  $('reqClass').innerHTML = '<span class="k">🩰 수업 출석</span><b class="' + (s.classes >= 5 ? 'ok' : '') + '">' + Math.min(5, s.classes) + ' / 5' + (s.classes >= 5 ? ' ✓' : '') + '</b>';
-  $('reqLevel').innerHTML = '<span class="k">⭐ 스튜디오 레벨</span><b class="' + (lv.n >= 3 ? 'ok' : '') + '">Lv.' + lv.n + ' / Lv.3' + (lv.n >= 3 ? ' ✓' : '') + '</b>';
-  $('reqDress').innerHTML = '<span class="k">👗 오늘의 코디</span><b class="ok">' + T.dressOf(s.worn).name + '</b>';
+    $('reqClass').innerHTML = '<span class="k">🩰 수업 출석</span><b class="' + (s.classes >= 5 ? 'ok' : '') + '">' + Math.min(5, s.classes) + ' / 5' + (s.classes >= 5 ? ' ✓' : '') + '</b>';
+    $('reqLevel').innerHTML = '<span class="k">⭐ 스튜디오 레벨</span><b class="' + (lv.n >= 3 ? 'ok' : '') + '">Lv.' + lv.n + ' / Lv.3' + (lv.n >= 3 ? ' ✓' : '') + '</b>';
+    $('reqDress').innerHTML = '<span class="k">👗 오늘의 코디</span><b class="ok">' + T.dressOf(s.worn).name + '</b>';
 
-  if (ready) {
-    $('goalNote').textContent = '수업 5번을 채웠어요. 초대장이 도착했고, 다음 업데이트에서 공연이 열려요.';
-    $('invite').classList.add('on');
-    $('invite').innerHTML = '<span class="iv-em">💌</span><div><b>첫 공연 「잠자는 숲속의 슈가」 리허설 초대</b>' +
-      '<p>' + T.dressOf(s.worn).name + ' 입고 무대에 올라요. 공연은 다음 업데이트에서!</p></div>' +
-      '<a class="btn ghost sm" href="../studio/">더 연습하기</a>';
+    $('invite').classList.toggle('on', ready);
+    if (ready) {
+      $('goalNote').textContent = '수업 5번을 채웠어요. 초대장이 도착했고, 다음 업데이트에서 공연이 열려요.';
+      $('invite').innerHTML = '<span class="iv-em">💌</span><div><b>첫 공연 「잠자는 숲속의 슈가」 리허설 초대</b>' +
+        '<p>' + T.dressOf(s.worn).name + ' 입고 무대에 올라요. 공연은 다음 업데이트에서!</p></div>' +
+        '<a class="btn ghost sm" href="../studio/">더 연습하기</a>';
+    } else {
+      $('invite').innerHTML = initialInvite;
+      $('goalNote').textContent = initialNote;
+    }
+
+    T.syncUI();
   }
 
   $('castRow').innerHTML = ['ara', 'alle', 'etu', 'shangz', 'piru'].map(function (k) {
@@ -99,7 +107,8 @@
     return '<figure class="cast-c"><img src="' + sp.img + '" alt="' + sp.name + '"><figcaption><b>' + sp.name + '</b><span>' + sp.role + '</span></figcaption></figure>';
   }).join('');
 
-  T.syncUI();
+  window.addEventListener('sugartown:refresh', refresh);
+  refresh();
 })();
 </script>
 </body>

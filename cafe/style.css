@@ -582,3 +582,16 @@ body{
   .journal{padding:6px 9px}
   .journal p{font-size:9.5px;line-height:1.42}
 }
+
+.town-link,.town-actions a{display:inline-flex;align-items:center;text-decoration:none;min-height:44px}
+.town-link{box-shadow:none;background:transparent;font-size:.86rem;padding:0 8px}
+.close-shift{flex:none;min-width:44px;min-height:44px;border:0;background:transparent;color:#fff;font:inherit;font-size:.84rem;font-weight:700;cursor:pointer}
+.hud-money{color:#ffebbc}
+.coin-row{font-size:.94rem;font-weight:750;color:#6a501e}
+.coin-row b{font-size:1.15rem;color:#76561b}
+.town-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:4px;color:#6a517b;font-size:.83rem}
+.town-actions a{font-weight:750;text-decoration:underline;text-underline-offset:3px}
+.town-actions span{font-variant-numeric:tabular-nums}
+#s-end{padding:calc(10px + env(safe-area-inset-top,0px)) 12px calc(10px + var(--safe-b))}
+.result{max-height:100%;overflow-y:auto;overscroll-behavior:contain;min-height:0}
+@media(max-width:360px){.hud{gap:4px}.town-actions{gap:8px}}

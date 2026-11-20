@@ -124,6 +124,7 @@ def main():
             pg.on("console", lambda m: errs.append("console.error: " + m.text) if m.type == "error" else None)
             pg.goto(URL, wait_until="load")
             pg.wait_for_timeout(400)
+            starting_wallet = pg.evaluate("SugarTown.get().coins")
             pg.click("#startBtn")
             pg.wait_for_timeout(1300)
 
@@ -199,6 +200,9 @@ def main():
             pg.wait_for_selector("#serveFlash.on", timeout=1500)
             pg.wait_for_timeout(200)
             card = pg.evaluate(CARD)
+            def expected_wallet():
+                return starting_wallet + pg.evaluate("Math.floor(__cafe.S.revenue / 200)")
+            assert pg.evaluate("SugarTown.get().coins") == expected_wallet() > starting_wallet
             print("  성공 카드:", card["tag"], "|", card["drink"], "|", card["line"])
             if card["tag"] != "성공 ✨":
                 problems.append(f"{w}x{h}: 성공 카드 태그 {card['tag']}")
@@ -224,6 +228,7 @@ def main():
             pg.wait_for_selector("#serveFlash.on", timeout=1500)
             pg.wait_for_timeout(200)
             bad = pg.evaluate(CARD)
+            assert pg.evaluate("SugarTown.get().coins") == expected_wallet()
             print("  사고 카드:", bad["tag"], "|", bad["drink"], "|", bad["line"])
             if not bad["accident"]:
                 problems.append(f"{w}x{h}: 사고 카드 클래스 없음")
@@ -250,6 +255,7 @@ def main():
             pg.wait_for_selector("#serveFlash.on", timeout=1500)
             pg.wait_for_timeout(200)
             g = pg.evaluate(CARD)
+            assert pg.evaluate("SugarTown.get().coins") == expected_wallet()
             print("  깜짝 카드:", g["tag"], "|", g["who"], "|", g["line"], "|", g["bonus"])
             if not g["surprise"] or "깜짝" not in g["tag"] or "보너스" not in g["bonus"]:
                 problems.append(f"{w}x{h}: 깜짝 손님 카드 {g}")
@@ -262,6 +268,8 @@ def main():
             pg.evaluate("() => { window.__cafe.S.time = 0.3; }")
             pg.wait_for_function("() => document.querySelector('#s-end').classList.contains('on')", timeout=5000)
             pg.wait_for_timeout(700)
+            assert pg.evaluate("SugarTown.get().coins") == expected_wallet()
+            assert pg.locator("#rCoins").inner_text() == f"+{expected_wallet() - starting_wallet:,}코인"
             res = pg.evaluate("""() => {
               const R = e => { const b = e.getBoundingClientRect(); return {l:+b.left.toFixed(1), r:+b.right.toFixed(1), t:+b.top.toFixed(1), b:+b.bottom.toFixed(1)}; };
               return {
