@@ -209,6 +209,10 @@ body{
 @keyframes cupPop{45%{transform:scale(1.05) translateY(-3px)}}
 .cup.bad{animation:cupBad .4s ease}
 @keyframes cupBad{15%{transform:rotate(-6deg)}30%{transform:rotate(6deg)}45%{transform:rotate(-4deg)}60%{transform:rotate(4deg)}}
+.cup.stirring{animation:cupRub .26s ease-in-out infinite}
+@keyframes cupRub{0%,100%{transform:rotate(-1.2deg)}50%{transform:rotate(1.2deg) translateY(-1px)}}
+.cup.stirring .layers{animation:slosh .34s ease-in-out infinite}
+@keyframes slosh{0%,100%{transform:skewX(-5deg) translateX(-2px)}50%{transform:skewX(5deg) translateX(2px)}}
 .cup-glass{
   position:relative;width:clamp(104px,28vw,126px);height:clamp(132px,35vw,164px);
   border-radius:9px 9px 30px 30px;overflow:hidden;
@@ -270,14 +274,14 @@ body{
 .swirl{position:absolute;z-index:3;left:50%;top:52%;width:152%;aspect-ratio:1;pointer-events:none;
   transform:translate(-50%,-50%) scale(.6);opacity:0;
   transition:opacity .18s ease,transform .24s ease}
-.cup .swirl{opacity:calc(var(--e,0) * .95);transform:translate(-50%,-50%) scale(calc(.6 + var(--e,0) * .45))}
+.cup .swirl{opacity:calc(var(--e,0));transform:translate(-50%,-50%) scale(calc(.6 + var(--e,0) * .45))}
 .swirl i{position:absolute;inset:0;border-radius:50%;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 46 C 58 38 72 42 73 54 C 74 68 58 76 46 72 C 32 67 27 52 35 41 C 44 28 63 27 73 37' fill='none' stroke='%23ffffff' stroke-width='6' stroke-linecap='round' opacity='0.95'/></svg>") center/90% no-repeat;
-  filter:drop-shadow(0 1px 2px rgba(80,45,35,.22));
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 46 C 58 38 72 42 73 54 C 74 68 58 76 46 72 C 32 67 27 52 35 41 C 44 28 63 27 73 37' fill='none' stroke='%23ffffff' stroke-width='7.5' stroke-linecap='round' opacity='1'/></svg>") center/92% no-repeat;
+  filter:drop-shadow(0 1px 2px rgba(80,45,35,.28)) drop-shadow(0 0 3px rgba(255,255,255,.7));
   animation:swirlSpin 1.15s linear infinite}
 .swirl i:nth-child(2){
   --s:.68;
-  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M52 55 C 60 49 68 52 68 59 C 68 68 56 72 48 69 C 39 65 37 54 44 48 C 51 42 62 44 67 51' fill='none' stroke='%235c3474' stroke-width='5' stroke-linecap='round' opacity='0.5'/></svg>") center/80% no-repeat;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M52 55 C 60 49 68 52 68 59 C 68 68 56 72 48 69 C 39 65 37 54 44 48 C 51 42 62 44 67 51' fill='none' stroke='%235c3474' stroke-width='6' stroke-linecap='round' opacity='0.85'/></svg>") center/84% no-repeat;
   animation-duration:.82s;animation-direction:reverse}
 @keyframes swirlSpin{from{transform:scale(var(--s,1)) rotate(0deg)}to{transform:scale(var(--s,1)) rotate(360deg)}}
 

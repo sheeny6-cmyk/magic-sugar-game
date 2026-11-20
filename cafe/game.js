@@ -465,6 +465,7 @@
   function completeStir() {
     S.stir = 100;
     stirPtr.on = false;
+    el.cup.classList.remove('stirring');
     if (stirPtr.raf) { cancelAnimationFrame(stirPtr.raf); stirPtr.raf = 0; }
     stirPtr.snd = 0;
     paintStir(true);
@@ -494,6 +495,7 @@
     stirPtr.on = true;
     stirPtr.x = ev.clientX; stirPtr.y = ev.clientY;
     stirPtr.last = performance.now();
+    el.cup.classList.add('stirring');
     try { el.cupArea.setPointerCapture(ev.pointerId); } catch (e) {}
     if (!stirPtr.raf) stirPtr.raf = requestAnimationFrame(stirHold);
   }
@@ -509,6 +511,7 @@
   function onStirUp() {
     if (!stirPtr.on) return;
     stirPtr.on = false;
+    el.cup.classList.remove('stirring');
     if (stirPtr.raf) { cancelAnimationFrame(stirPtr.raf); stirPtr.raf = 0; }
   }
 
