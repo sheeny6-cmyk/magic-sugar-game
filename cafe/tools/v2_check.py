@@ -168,13 +168,14 @@ def main():
             print("  섞기 전 서빙 시도 →", toast_txt)
 
             # ---------- 2) 스와이프로 섞기 ----------
+            shot = (SHOT and (w, h) == (390, 844))
             mid_t, mid_pct = rub(pg, loops=1,
-                                 shot_at=32 if (SHOT and (w, h) == (360, 640)) else None,
-                                 shot_path=(OUT / "ballet-cafe-v2-stir.png") if (SHOT and (w, h) == (360, 640)) else None)
+                                 shot_at=34 if shot else None,
+                                 shot_path=(OUT / "ballet-cafe-v2-stir.png") if shot else None)
             print(f"  섞기 1차: {mid_t:.2f}s → {mid_pct:.0f}%")
             if not (0 < mid_pct < 100):
                 problems.append(f"{w}x{h}: 한 번 문질렀는데 게이지가 {mid_pct:.0f}%")
-            if SHOT and (w, h) == (360, 640):
+            if shot:
                 print("  saved", OUT / "ballet-cafe-v2-stir.png")
 
             elapsed, pct = rub(pg, until_full=True)
@@ -193,7 +194,6 @@ def main():
                 problems.append(f"{w}x{h}: 100%인데 완성 표시 안 됨 {ready}")
             if SHOT and (w, h) == (390, 844):
                 pg.screenshot(path=str(OUT / "ballet-cafe-v2-ready-390.png"))
-
             # ---------- 3) 성공 반응 카드 ----------
             pg.click("#serveBtn")
             pg.wait_for_selector("#serveFlash.on", timeout=1500)
