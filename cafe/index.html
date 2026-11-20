@@ -81,13 +81,20 @@
         </div>
       </div>
 
-      <div class="serve-flash" id="serveFlash">
-        <img class="actor" id="actor" src="assets/serve-sq.webp" alt="슈가가 서빙하는 모습" />
-        <div class="actor-cap" id="actorCap">맛있게 드세요 🩰</div>
-      </div>
       <div class="floaters" id="floaters"></div>
       <div class="combo-pop" id="comboPop"></div>
       <div class="toast" id="toast"></div>
+    </div>
+
+    <!-- 서빙 연출 카드: 무대 밖(화면 기준)에 두어 작은 화면에서도 잘리지 않게 함 -->
+    <div class="serve-flash" id="serveFlash">
+      <div class="serve-card" id="serveCard" role="button" tabindex="0" aria-label="탭하면 다음 손님으로">
+        <div class="serve-pic" id="servePic"></div>
+        <div class="serve-drink" id="serveDrinkName">턴아웃 라떼</div>
+        <div class="serve-line" id="serveLine">오늘 180도 턴아웃이 잘 되는 라떼입니다!</div>
+        <div class="serve-skip">탭하면 다음 손님 →</div>
+      </div>
+      <img class="serve-actor" id="actor" src="assets/serve-sq.webp" alt="슈가" />
     </div>
 
     <div class="tray" id="tray"></div>

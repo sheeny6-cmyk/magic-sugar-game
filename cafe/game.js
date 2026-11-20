@@ -6,16 +6,18 @@
   const ROUND = 60;
 
   /* ---------------- 재료 ---------------- */
+  // 이름은 주문 카드 칩과 트레이 버튼에 똑같이 쓰는 하나의 값(n)만 둡니다.
+  // 두 곳에 다른 이름을 쓰면 찾기 어려워지므로 절대 따로 적지 마세요.
   const ING = {
-    ice:       { n: '얼음',        s: '얼음',   i: '🧊', c: '#d3ecfa', fill: 26 },
-    espresso:  { n: '에스프레소',  s: '에스프레소', i: '☕', c: '#4a2a1a', fill: 30 },
-    milk:      { n: '스팀밀크',    s: '스팀밀크', i: '🥛', c: '#fbf5ec', fill: 40, foam: true },
-    matcha:    { n: '말차 샷',     s: '말차',   i: '🍵', c: '#7fa650', fill: 30 },
-    lavender:  { n: '라벤더 시럽', s: '라벤더', i: '💜', c: '#a98bd0', fill: 14 },
-    protein:   { n: '프로틴 파우더', s: '프로틴', i: '💪', c: '#e4d5bf', fill: 12 },
-    caramel:   { n: '카라멜 드리즐', s: '카라멜', i: '🍯', c: '#c98a36', fill: 7, topping: true },
-    arabesque: { n: '아라베스크 아트', s: '아라베스크', i: '🩰', c: '#cbb4e8', fill: 5, topping: true },
-    cinnamon:  { n: '턴아웃 시나몬 아트', s: '시나몬', i: '🍂', c: '#b0793f', fill: 5, topping: true }
+    ice:       { n: '얼음',       i: '🧊', c: '#d3ecfa', fill: 26 },
+    espresso:  { n: '에스프레소', i: '☕', c: '#4a2a1a', fill: 30 },
+    milk:      { n: '스팀밀크',   i: '🥛', c: '#fbf5ec', fill: 40, foam: true },
+    matcha:    { n: '말차',       i: '🍵', c: '#7fa650', fill: 30 },
+    lavender:  { n: '라벤더',     i: '💜', c: '#a98bd0', fill: 14 },
+    protein:   { n: '프로틴',     i: '💪', c: '#e4d5bf', fill: 12 },
+    caramel:   { n: '카라멜',     i: '🍯', c: '#c98a36', fill: 7, topping: true },
+    arabesque: { n: '아라베스크', i: '🩰', c: '#cbb4e8', fill: 5, topping: true },
+    cinnamon:  { n: '시나몬',     i: '🍂', c: '#b0793f', fill: 5, topping: true }
   };
   const TRAY = ['ice', 'espresso', 'milk', 'matcha', 'lavender', 'protein', 'caramel', 'arabesque', 'cinnamon'];
   const CAPACITY = 96;
@@ -25,6 +27,7 @@
     {
       id: 'americano', name: '아이스 아메리카노', price: 4500,
       img: 'assets/drink-americano.webp', recipe: ['ice', 'espresso'],
+      serve: '선생님 잔소리도 이겨내는 시원한 아아 나왔습니다!',
       lines: [
         '선생님 눈치 보느라 기 빨렸어요… 아이스 아메리카노 급해요!',
         '바에서 5분 서 있었더니 목말라요ㅠ 아아 하나 주세요!',
@@ -34,6 +37,7 @@
     {
       id: 'arabesque', name: '아라베스크 밀크', price: 6000,
       img: 'assets/drink-arabesque.webp', recipe: ['milk', 'lavender', 'arabesque'],
+      serve: '팔이 하늘까지 올라가는 라벤더 힐링, 아라베스크 밀크입니다!',
       lines: [
         '아라베스크 연습하다 팔이 안 올라가요… 라벤더 향으로 힐링할래요',
         '오늘은 발레보다 향이 필요해요. 아라베스크 밀크 주세요!',
@@ -43,6 +47,7 @@
     {
       id: 'battement', name: '바뜨망 프로틴 라떼', price: 6500,
       img: 'assets/drink-battement.webp', recipe: ['espresso', 'protein', 'milk'],
+      serve: '근손실 방지 차원에서! 단백질 가득 프로틴 라떼 나왔어요!',
       lines: [
         '근손실 방지 차원에서 바뜨망 프로틴 라떼요!',
         '바뜨망 100개 하고 왔어요. 단백질 충전이 필요해요!',
@@ -52,6 +57,7 @@
     {
       id: 'turnout', name: '턴아웃 라떼', price: 5500,
       img: 'assets/drink-turnout.webp', recipe: ['espresso', 'milk', 'cinnamon'],
+      serve: '오늘 180도 턴아웃이 잘 되는 라떼입니다!',
       lines: [
         '턴아웃이 안 돼서 속상해요. 시나몬 향으로 달래주세요',
         '오늘 턴아웃 180도 성공! 턴아웃 라떼로 자축할래요',
@@ -60,7 +66,8 @@
     },
     {
       id: 'pirouette', name: '피루엣 라떼', price: 6000,
-      img: null, fill: '#b97c3c', top: '#f2ddc4', recipe: ['espresso', 'caramel', 'milk'],
+      img: null, fill: '#b97c3c', top: '#f2ddc4', garnish: '🍯', recipe: ['espresso', 'caramel', 'milk'],
+      serve: '3회전도 거뜬한 달콤함, 피루엣 라떼입니다!',
       lines: [
         '피루엣 3회전 하다 어질어질… 카라멜 달콤한 거 주세요',
         '무대에서 피루엣 성공했어요! 피루엣 라떼 주세요!',
@@ -69,7 +76,8 @@
     },
     {
       id: 'pointe', name: '포인 말차 라떼', price: 6500,
-      img: null, fill: '#7fa650', top: '#eaf3da', recipe: ['matcha', 'milk', 'ice'],
+      img: null, fill: '#7fa650', top: '#eaf3da', garnish: '🍃', recipe: ['matcha', 'milk', 'ice'],
+      serve: '발끝 포인에 힘 딱 들어가는 말차 라떼 나왔어요!',
       lines: [
         '포인 슈즈 새로 샀어요! 말차로 기념하고 싶어요',
         '발끝이 아파요… 포인 말차 라떼로 위로받을래요',
@@ -161,7 +169,9 @@
     cusDrink: $('#cusDrink'), cusLine: $('#cusLine'), recipe: $('#recipe'),
     patience: $('#patienceBar'), queue: $('#queue'),
     layers: $('#layers'), cup: $('#cup'), cupTag: $('#cupTag'),
-    tray: $('#tray'), actor: $('#actor'), actorCap: $('#actorCap'), flash: $('#serveFlash'),
+    tray: $('#tray'),
+    flash: $('#serveFlash'), serveCard: $('#serveCard'), servePic: $('#servePic'),
+    serveDrinkName: $('#serveDrinkName'), serveLine: $('#serveLine'),
     floaters: $('#floaters'), comboPop: $('#comboPop'), toast: $('#toast'),
     stage: $('.stage')
   };
@@ -340,7 +350,7 @@
     el.cusDrink.textContent = o.drink.name;
     el.cusLine.textContent = o.line;
     el.recipe.innerHTML = o.drink.recipe.map(k =>
-      '<span class="chip" data-k="' + k + '"><i>' + ING[k].i + '</i>' + ING[k].s + '</span>'
+      '<span class="chip" data-k="' + k + '"><i>' + ING[k].i + '</i>' + ING[k].n + '</span>'
     ).join('');
     el.patience.style.width = '100%';
     el.patience.classList.remove('low');
@@ -381,6 +391,43 @@
       fillOrder();
       S.locked = false;
     }, 210);
+  }
+
+  /* ---------------- 서빙 연출 카드 ---------------- */
+  // 60초 영업 리듬을 끊지 않도록 1초만 뜨고, 손으로 탭하면 바로 다음 손님.
+  const SERVE_MS = 1000;
+  let serveHideT = 0, nextT = 0;
+
+  function serveMarkup(d) {
+    if (d.img) return '<img src="' + d.img + '" alt="' + d.name + '">';
+    return '<div class="bigcup" style="--fill:' + d.fill + ';--top:' + d.top + '">' +
+      '<span class="bigcup-steam"><b></b><b></b></span>' +
+      '<div class="bigcup-glass"><div class="bigcup-art"></div><div class="bigcup-shine"></div></div>' +
+      '<div class="bigcup-plate"></div>' +
+      '<span class="bigcup-garnish">' + (d.garnish || '🩰') + '</span></div>';
+  }
+
+  function showServe(d) {
+    el.servePic.innerHTML = serveMarkup(d);
+    el.servePic.classList.toggle('css', !d.img);
+    el.serveDrinkName.textContent = d.name;
+    el.serveLine.textContent = d.serve || '맛있게 드세요 🩰';
+    el.flash.classList.add('on');
+    clearTimeout(serveHideT);
+    serveHideT = setTimeout(hideServe, SERVE_MS);
+  }
+
+  function hideServe() {
+    clearTimeout(serveHideT); serveHideT = 0;
+    el.flash.classList.remove('on');
+  }
+
+  function skipServe() {
+    // 카드를 탭하면 다음 손님으로: 예약된 전환을 취소하고 바로 넘긴다(한 번만).
+    if (!nextT) return;
+    clearTimeout(nextT); nextT = 0;
+    hideServe();
+    nextOrder();
   }
 
   /* ---------------- 점수 ---------------- */
@@ -428,8 +475,10 @@
     void el.money.offsetWidth;
     el.money.classList.add('bump');
 
-    el.flash.classList.add('on');
-    setTimeout(() => { el.flash.classList.remove('on'); }, 1200);
+    // 완성된 음료 카드 + 음료별 발레 재치 대사 (약 1초 뒤 자동으로 다음 손님)
+    clearTimeout(nextT);
+    nextT = setTimeout(() => { nextT = 0; hideServe(); nextOrder(); }, SERVE_MS);
+    showServe(o.drink);
 
     if (S.combo >= 2) {
       el.comboChip.innerHTML = '<b>×' + S.combo + '</b> COMBO';
@@ -454,7 +503,6 @@
       updateCupTag();
       steamOn(false);
     }, 600);
-    setTimeout(nextOrder, 1000);
   }
 
   function fail() {
@@ -558,7 +606,8 @@
     steamOn(false);
     fillOrder();
     updateHud();
-    el.flash.classList.remove('on');
+    clearTimeout(nextT); nextT = 0;
+    hideServe();
     show(el.play);
     setTimeout(() => toast('레시피 칩을 보고 재료를 톡톡! 순서는 상관없어요'), 450);
     cancelAnimationFrame(S.raf);
@@ -576,6 +625,8 @@
   function endGame() {
     S.phase = 'end';
     cancelAnimationFrame(S.raf);
+    clearTimeout(nextT); nextT = 0;
+    hideServe();
     SFX.end();
 
     let grade = GRADES[0];
@@ -637,10 +688,14 @@
   $('#clearBtn').addEventListener('click', () => clearCup(false));
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && S.phase === 'play') serve();
+    if (e.key === 'Enter' && S.phase === 'play') {
+      if (el.flash.classList.contains('on')) skipServe(); else serve();
+    }
     if (e.key === 'Backspace' && S.phase === 'play') { e.preventDefault(); clearCup(false); }
     if (e.key === '1' && S.phase === 'play') serve();
   });
+
+  el.serveCard.addEventListener('pointerdown', ev => { ev.preventDefault(); skipServe(); });
 
   window.addEventListener('resize', () => { if (S.phase === 'play') renderCup(); });
 
