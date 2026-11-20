@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#F5EFFA" />
+<meta name="description" content="발레 왕국 마을 — 0kcal 꿈속 심야 발레 분식집에서 코인을 벌고, 드레스룸에서 레오타드를 사고, 발레 스튜디오에 다니고, 무대에 서는 미니게임 마을" />
+<meta property="og:title" content="🩰 발레 왕국 마을" />
+<meta property="og:description" content="코인을 모아 레오타드를 사고, 학원에 다니고, 무대에 서요. 발레 왕국 마을에서 만나요!" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/assets/bg-entrance.webp" />
+<title>🩰 발레 왕국 마을</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="style.css?v=20261121a" />
+</head>
+<body class="hub">
+<div class="app">
+
+  <header class="bar">
+    <div class="me">
+      <img src="assets/chars/sugar-face.webp" alt="슈가 공주" />
+      <div>
+        <b>슈가 공주</b>
+        <small>BALLET&nbsp; KINGDOM</small>
+      </div>
+    </div>
+    <a class="coin" href="snack/" aria-label="발레 코인 지갑, 분식집에서 벌기">
+      <span class="ic">🪙</span><span data-coin>0</span>
+    </a>
+  </header>
+
+  <section class="stats" aria-label="발레 스탯">
+    <div class="st"><span class="ic">💫</span><b data-stat="flex">0</b><span>유연성</span><em><i data-bar="flex" style="width:0%"></i></em></div>
+    <div class="st"><span class="ic">🔥</span><b data-stat="stam">0</b><span>체력</span><em><i data-bar="stam" style="width:0%"></i></em></div>
+    <div class="st"><span class="ic">⚖️</span><b data-stat="axis">0</b><span>중심축</span><em><i data-bar="axis" style="width:0%"></i></em></div>
+    <div class="st"><span class="ic">🌀</span><b data-stat="turn">0</b><span>턴아웃</span><em><i data-bar="turn" style="width:0%"></i></em></div>
+  </section>
+
+  <section class="hero">
+    <div class="sp"><img src="assets/chars/sugar.webp" alt="슈가 공주" /></div>
+    <div class="txt">
+      <span class="kicker">SUGAR'S&nbsp; WORLD</span>
+      <h1>발레 <em>왕국</em><br />마을</h1>
+      <p>코인을 모아 레오타드를 사고, 학원에 다니고, 무대에 서요. 오늘도 발레처럼.</p>
+    </div>
+  </section>
+
+  <h2 class="sec">마을 지도</h2>
+
+  <a class="place" href="snack/">
+    <span class="badge open">지금 영업 중</span>
+    <div class="ph"><img src="assets/full/tteokbokki.webp" alt="발레 분식집 다리 쫙 떡볶이" /></div>
+    <div class="body">
+      <span class="em">🍢</span>
+      <div class="tx">
+        <h3>발레 분식집</h3>
+        <p>꿈속 심야 분식집 · 손님 고민을 마법 분식으로 해결해요</p>
+      </div>
+      <span class="go">입장 →</span>
+    </div>
+  </a>
+
+  <a class="place" href="../cafe/?v=20261120d">
+    <span class="badge">오픈</span>
+    <div class="ph"><img src="../cafe/assets/bg-entrance.webp" alt="슈가 발레 카페 입구" /></div>
+    <div class="body">
+      <span class="em">☕</span>
+      <div class="tx">
+        <h3>슈가 발레 카페</h3>
+        <p>75초 영업 · 라떼를 섞어 서빙하는 카페<span id="cafeBest"></span></p>
+      </div>
+      <span class="go">입장 →</span>
+    </div>
+  </a>
+
+  <div class="grid2">
+    <a class="place" href="studio/">
+      <span class="badge gold">수업 중</span>
+      <div class="ph"><img src="assets/chars/sugar-pose.webp" alt="발레 스튜디오" style="object-position:50% 26%" /></div>
+      <div class="body">
+        <span class="em">🩰</span>
+        <h3>발레 스튜디오</h3>
+        <p>수강료 내고 바 워크·센터·작품반</p>
+        <span class="go">수업 들으러 →</span>
+      </div>
+    </a>
+    <a class="place" href="dressroom/">
+      <span class="badge">상점 · 옷장</span>
+      <div class="ph wardrobe"><span class="wr-fig" id="wardrobeFig"></span><span class="wr-word">DRESS&nbsp; ROOM</span></div>
+      <div class="body">
+        <span class="em">👗</span>
+        <h3>드레스룸</h3>
+        <p>코인으로 레오타드 사고 입기</p>
+        <span class="go">옷 보러 →</span>
+      </div>
+    </a>
+  </div>
+
+  <a class="place stage" href="stage/">
+    <span class="badge soon" id="stageBadge">준비 중</span>
+    <div class="ph">
+      <span class="drape"></span>
+      <span class="glow"></span>
+      <span class="curtain-word">BALLET<br />KINGDOM<br />STAGE</span>
+    </div>
+    <div class="body">
+      <span class="em">🎭</span>
+      <div class="tx">
+        <h3>무대</h3>
+        <p id="stageLine">스튜디오 도장을 모으면 열려요</p>
+      </div>
+      <span class="go">목표 보기 →</span>
+    </div>
+  </a>
+
+  <h2 class="sec">오늘의 슈가</h2>
+
+  <section class="panel">
+    <div class="ph-row" id="dressPanel"></div>
+  </section>
+
+  <section class="panel">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div style="min-width:0">
+        <h4>STUDIO LEVEL</h4>
+        <div class="on" id="lvName">Lv.1 입문 발레리나</div>
+      </div>
+      <a class="btn ghost sm mini-btn" href="studio/">수업 가기</a>
+    </div>
+    <div style="margin-top:9px;height:6px;border-radius:4px;background:#f1e6f5;overflow:hidden">
+      <i id="lvBar" style="display:block;height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,#b48fd0,#f0a9c8);transition:width .5s"></i>
+    </div>
+    <p class="sub" id="lvNote">수업 2번 더 들으면 다음 레벨이에요.</p>
+  </section>
+
+  <p class="wallet-note">
+    <span>🪙</span>
+    <span>코인은 <b>발레 분식집</b>에서 손님 고민을 해결할 때 쌓여요. 카페 매출은 카페 기록에 따로 남고, 여기 지갑은 레오타드·수강료에 써요.</span>
+  </p>
+
+  <footer class="foot">
+    © 신정화 · 캐릭터 IP 「슈가」
+    <span class="cc">BALLET IN MY STORY</span>
+  </footer>
+</div>
+
+<script src="assets/town.js?v=20261121a"></script>
+<script>
+(function () {
+  var T = window.SugarTown, S = T.get();
+
+  /* 오늘의 코디 */
+  var worn = T.dressOf(S.worn);
+  var wf = document.getElementById('wardrobeFig');
+  if (wf) wf.outerHTML = T.dressHTML(S.worn, 'wr-lg');
+  document.getElementById('dressPanel').innerHTML =
+    T.dressHTML(worn.id, '') +
+    '<div style="min-width:0">' +
+      '<h4>TODAY\'S COSTUME</h4>' +
+      '<div class="on">' + worn.name + '</div>' +
+      '<div class="sub">' + worn.desc + '</div>' +
+    '</div>' +
+    '<a class="btn ghost sm mini-btn" href="dressroom/">갈아입기</a>';
+
+  /* 카페 최고 매출 */
+  var cb = T.cafeBest();
+  document.getElementById('cafeBest').textContent = cb ? (' · 최고 매출 ₩' + T.fmt(cb)) : '';
+
+  /* 스튜디오 레벨 / 무대 */
+  var lv = T.level();
+  document.getElementById('lvName').textContent = 'Lv.' + lv.n + ' ' + lv.name;
+  document.getElementById('lvBar').style.width = lv.pct + '%';
+  document.getElementById('lvNote').textContent = lv.next
+    ? '수업 ' + (lv.need - lv.have) + '번 더 들으면 Lv.' + lv.next.n + ' ' + lv.next.name + '이에요.'
+    : '발레 왕국 스타! 이제 무대만 남았어요.';
+
+  if (T.stageReady()) {
+    document.getElementById('stageBadge').textContent = '도착';
+    document.getElementById('stageBadge').className = 'badge open';
+    document.getElementById('stageLine').textContent = '첫 공연 리허설 초대장이 도착했어요';
+  } else {
+    document.getElementById('stageLine').textContent = '수업 ' + T.stageLeft() + '번 더 들으면 무대가 열려요';
+  }
+
+  T.syncUI();
+})();
+</script>
+</body>
+</html>

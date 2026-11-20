@@ -1,0 +1,66 @@
+/* ===== 🎭 무대 ===== */
+.stage .app{background:linear-gradient(180deg,#3a2749 0%,#4a3259 34%,#fdf4f6 34.2%,#fffaf5 100%)}
+.stage .subbar{background:rgba(52,34,66,.86);border-bottom-color:rgba(255,255,255,.08)}
+.stage .subbar .title{color:#fff}
+.stage .subbar .title small{color:#c9b4d6}
+.stage .back{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22);color:#fff}
+.stage .coin{background:linear-gradient(135deg,#fff3d6,#ffe0a9);border-color:#e8c98a;color:#6d4a0c}
+
+.stage-hero{position:relative;margin:0;height:264px;overflow:hidden;background:
+  radial-gradient(70% 60% at 50% 8%,#a877c0 0%,#6b4382 45%,#3a2749 100%)}
+.stage-hero .drape{position:absolute;inset:0;background:
+  linear-gradient(90deg,rgba(38,20,50,.92) 0 10%,rgba(38,20,50,.2) 20% 80%,rgba(38,20,50,.92) 90% 100%),
+  repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 4px,transparent 4px 26px)}
+.stage-hero .light{position:absolute;left:50%;top:-40px;width:220px;height:260px;margin-left:-110px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,246,224,.55),rgba(255,246,224,0) 68%);filter:blur(2px)}
+.stage-hero .sh-floor{position:absolute;left:0;right:0;bottom:0;height:40px;
+  background:linear-gradient(180deg,rgba(60,34,74,0),rgba(60,34,74,.85))}
+.sh-txt{position:absolute;left:18px;top:26px;z-index:3;max-width:60%}
+.sh-kicker{display:inline-block;font-family:Georgia,serif;font-size:8.5px;letter-spacing:.26em;color:#ffe9c4;
+  border:1px solid rgba(255,233,196,.5);border-radius:999px;padding:3px 9px}
+.sh-txt h1{font-family:Georgia,'Nanum Myeongjo',serif;color:#fff6e8;font-size:26px;line-height:1.24;letter-spacing:-.01em;margin-top:9px;
+  text-shadow:0 3px 16px rgba(25,10,35,.5)}
+.sh-txt h1 em{font-style:normal;color:#ffd7ec}
+.sh-txt p{font-size:10px;color:rgba(255,240,250,.8);margin-top:6px;letter-spacing:.04em}
+.sh-sugar{position:absolute;right:8px;bottom:-18px;height:228px;max-width:none;z-index:2;
+  border:4px solid #fffaf2;border-radius:3px;transform:rotate(-2.2deg);
+  box-shadow:0 14px 30px rgba(18,6,28,.55)}
+
+.goal{margin:-18px 14px 0;position:relative;z-index:4;background:#fff;border:1px solid #f1e5f0;border-radius:18px;
+  padding:13px 14px;box-shadow:0 14px 28px rgba(70,40,90,.18)}
+.goal-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.goal-top b{font-size:13px;letter-spacing:-.03em}
+.goal-top span{font-size:10.5px;color:#a491b3;font-weight:800}
+.goal-bar{height:7px;border-radius:4px;background:#f2e7f6;overflow:hidden;margin-top:8px}
+.goal-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#8B6BAE,#e0a0c4);transition:width .6s ease}
+.goal-list{list-style:none;margin-top:11px;display:grid;gap:6px}
+.goal-list li{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:10.5px;
+  background:#fcf7fd;border:1px solid #f3e9f7;border-radius:9px;padding:7px 9px}
+.goal-list .k{color:#8d7a9b;font-weight:700}
+.goal-list b{color:#6d4e90;font-size:10.5px;letter-spacing:-.02em;text-align:right}
+.goal-list b.ok{color:#3f8a67}
+.goal-note{font-size:9.5px;color:#a491b3;margin-top:9px;line-height:1.55}
+
+.invite{display:none;align-items:center;gap:10px;margin:10px 14px 0;padding:12px 13px;border-radius:16px;
+  background:linear-gradient(135deg,#fff4e2,#ffe9f2);border:1px solid #f5ddc8;box-shadow:0 8px 18px rgba(170,130,110,.14)}
+.invite.on{display:flex}
+.iv-em{font-size:20px}
+.invite b{display:block;font-size:11px;letter-spacing:-.02em;line-height:1.4}
+.invite p{font-size:9.5px;color:#8d7a8d;margin-top:2px;line-height:1.45}
+.invite .btn{margin-left:auto;flex:none;font-size:10px;padding:7px 9px}
+
+.cast{margin:16px 14px 0;background:#fff;border:1px solid #f2e7f2;border-radius:18px;padding:13px 12px;box-shadow:0 8px 20px rgba(140,105,160,.09)}
+.cast h2{font-size:12.5px;letter-spacing:-.02em}
+.cast-sub{font-size:9.5px;color:#a491b3;margin-top:3px;line-height:1.5}
+.cast-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-top:10px}
+.cast-c{margin:0;text-align:center;min-width:0}
+.cast-c img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:50% 6%;border-radius:10px;background:#f7eefb}
+.cast-c figcaption b{display:block;font-size:9px;margin-top:4px;letter-spacing:-.02em}
+.cast-c figcaption span{display:none}
+
+.foot-note{margin:12px 16px 0;font-size:9px;color:#a995b4;line-height:1.6;text-align:center}
+
+@media (max-width:339px){
+  .sh-txt h1{font-size:23px}
+  .sh-sugar{height:215px}
+}

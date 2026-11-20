@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#fff8f4" />
+<meta name="description" content="0kcal 꿈속 심야 발레 분식집 — 발레 고민을 들고 온 손님에게 딱 맞는 마법 분식을 골라 서빙하는 미니게임" />
+<title>🍢 발레 분식집 · 발레 왕국 마을</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="../style.css?v=20261121a" />
+<link rel="stylesheet" href="snack.css?v=20261121a" />
+</head>
+<body class="sub snack">
+<div class="app">
+
+  <header class="subbar">
+    <a class="back" href="../" aria-label="마을로 돌아가기">←</a>
+    <div class="title">🍢 발레 분식집<small>MIDNIGHT&nbsp; BALLET&nbsp; SNACK</small></div>
+    <span class="coin"><span class="ic">🪙</span><b data-coin>0</b></span>
+  </header>
+
+  <!-- ============ 시작 ============ -->
+  <section class="screen on" id="scStart">
+    <div class="start-scroll">
+      <div class="shop-sign">
+        <span class="crown">♛</span>
+        <h1>발레 분식집</h1>
+        <p>BALLET&nbsp; KINGDOM&nbsp; SNACK</p>
+        <span class="sign-note">0kcal · 꿈속 심야 영업</span>
+      </div>
+
+      <div class="board">
+        <img src="../assets/full/menu-board-front.webp" alt="발레 분식집 메뉴판과 주방 일러스트" />
+      </div>
+
+      <div class="owner">
+        <img class="owner-face" src="../assets/chars/sugar-face.webp" alt="사장님 슈가 공주" />
+        <div class="owner-bubble">
+          <b>사장님 슈가 공주</b>
+          <p>“어서 오세요! 오늘도 발레처럼 맛있게. 손님 고민은 제가 마법 분식으로 해결해 드릴게요.”</p>
+        </div>
+      </div>
+
+      <p class="lead">피곤한 다리, 흔들리는 축, 느린 턴… 발레 고민을 들고 온 손님에게 <b>딱 맞는 마법 분식</b>을 골라 주세요. 그 자리에서 몸이 가벼워지고, 코인이 쌓여요.</p>
+
+      <div class="start-btns">
+        <div class="row2">
+          <button class="btn ghost" id="dexBtn">📖 메뉴 도감 <b>9</b></button>
+          <a class="btn ghost" href="../dressroom/">👗 드레스룸</a>
+        </div>
+      </div>
+      <p class="tiny">손님 6명 · 맞히면 코인 · 도감은 언제든 열 수 있어요</p>
+    </div>
+    <div class="start-cta">
+      <button class="btn primary block" id="startBtn">🍢 영업 시작</button>
+    </div>
+  </section>
+
+  <!-- ============ 플레이 ============ -->
+  <section class="screen" id="scPlay">
+    <div class="play-head">
+      <span class="step" id="stepTxt">1 / 6</span>
+      <span class="streak" id="streakTxt">연속 0</span>
+      <button class="dexlink" id="dexBtn2">도감</button>
+    </div>
+
+    <div class="play-body">
+      <div class="cust" id="custCard">
+        <div class="cust-top">
+          <span class="ava" id="custAva"></span>
+          <div class="who"><b id="custName">아라</b><span id="custRole">아라베스크 · 선</span></div>
+        </div>
+        <p class="bubble" id="custLine"></p>
+        <div class="tags" id="custTags"></div>
+      </div>
+
+      <div class="pick-head">
+        <b>어떤 마법 분식을 낼까요?</b>
+        <span id="pickCount">0 / 1</span>
+      </div>
+      <div class="tray" id="tray"></div>
+      <p class="hint" id="hintTxt">사진을 눌러 담고, 아래 서빙 버튼을 눌러요.</p>
+    </div>
+
+    <div class="cta">
+      <button class="btn ghost sm" id="clearBtn">비우기</button>
+      <button class="btn primary" id="serveBtn" disabled>서빙하기</button>
+    </div>
+  </section>
+
+  <!-- ============ 마감 ============ -->
+  <section class="screen" id="scEnd">
+    <div class="end-scroll">
+      <div class="end-card">
+        <span class="end-kicker">TODAY'S&nbsp; SNACK&nbsp; BAR</span>
+        <h2>오늘 영업 끝!</h2>
+        <p class="end-sub" id="endMsg">손님 6명의 고민을 해결했어요.</p>
+
+        <div class="receipt">
+          <div class="rrow big"><span>번 코인</span><b id="endCoins">+0 🪙</b></div>
+          <div class="rrow"><span>해결한 고민</span><b id="endSolved">0 / 6</b></div>
+          <div class="rrow"><span>최고 연속</span><b id="endStreak">0</b></div>
+          <div class="rrow"><span>오늘 오른 스탯</span><b id="endStats">—</b></div>
+          <div class="rrow"><span>지갑 잔액</span><b id="endWallet">0 🪙</b></div>
+          <div class="receipt-edge"></div>
+        </div>
+
+        <div class="end-btns">
+          <a class="btn ghost" href="../">마을로</a>
+          <button class="btn primary" id="againBtn">한 번 더</button>
+        </div>
+        <div class="end-btns">
+          <a class="btn ghost sm block" href="../dressroom/">👗 번 코인으로 드레스룸 가기</a>
+        </div>
+      </div>
+      <p class="tiny">© 신정화 · 캐릭터 IP 「슈가」</p>
+    </div>
+  </section>
+
+  <!-- ============ 서빙 반응 ============ -->
+  <div class="react" id="react" aria-hidden="true">
+    <div class="rcard" id="rcard" role="dialog" aria-modal="true" aria-labelledby="rDish">
+      <div class="rphoto">
+        <img id="rImg" alt="" />
+        <span class="rtag" id="rTag">마법 발동 ✨</span>
+        <span class="rwho" id="rWho"></span>
+      </div>
+      <div class="rbody">
+        <h3 id="rDish">다리 쫙 떡볶이</h3>
+        <p class="rline" id="rLine"></p>
+        <div class="gains" id="rGains"></div>
+        <div class="gcoin" id="rCoin">+30 🪙</div>
+        <button class="btn primary block" id="rNext">다음 손님 →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 도감 ============ -->
+  <div class="dex" id="dex" aria-hidden="true">
+    <div class="dex-sheet">
+      <div class="dex-head">
+        <b>📖 메뉴 도감</b>
+        <span>마법 분식 8종 + 원본 메뉴판</span>
+        <button class="dex-x" id="dexClose" aria-label="닫기">✕</button>
+      </div>
+      <div class="dex-body">
+        <figure class="dex-board">
+          <img src="../assets/full/menu-board.webp" alt="발레 분식집 메뉴판 일러스트 원본" />
+          <span class="board-sign">발레 분식집<small>BALLET&nbsp; SNACK</small></span>
+          <figcaption>원본 메뉴판 일러스트</figcaption>
+        </figure>
+        <div class="dex-grid" id="dexGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="../assets/town.js?v=20261121a"></script>
+<script src="snack.js?v=20261121a"></script>
+</body>
+</html>
