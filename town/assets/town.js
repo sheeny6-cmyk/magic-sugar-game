@@ -194,7 +194,8 @@
     }
     var have = c - cur.at;
     var need = next ? next.at - cur.at : 0;
-    return { n: cur.n, name: cur.name, have: have, need: need, next: next, classes: c, pct: next ? Math.min(100, Math.round((have / need) * 100)) : 100 };
+    var pct = next ? Math.min(100, Math.round((c / next.at) * 100)) : 100;
+    return { n: cur.n, name: cur.name, have: have, need: need, next: next, classes: c, pct: pct };
   }
   function stampsTotal() {
     var s = get().stamps;

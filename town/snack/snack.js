@@ -129,6 +129,16 @@
 
     renderTray();
     updateServe();
+
+    var tips = [
+      '손님 말 속 #태그가 원하는 스탯 힌트예요.',
+      '콜라는 턴아웃, 쫄면은 중심축! 둘 다 필요하면 2개까지 담아요.',
+      '전메뉴 풀세트는 네 스탯을 한 번에 올려 줘요.',
+      '주문서 세트는 골고루, 라인 떡꼬치는 아라베스크 라인에 딱.',
+      '같은 손님을 연속으로 맞히면 코인이 점점 커져요.'
+    ];
+    var tipEl = $('tipTxt');
+    if (tipEl) tipEl.textContent = tips[state.round % tips.length];
   }
 
   function renderTray() {
