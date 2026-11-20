@@ -1,4 +1,4 @@
-/* ===== ☕ 슈가 발레 카페 타이쿤 · v2 (섞기 손맛 · 손님 반응 · 다시 해볼 이유) ===== */
+/* ===== ☕ 슈가 발레 카페 · v2 (섞기 손맛 · 손님 반응 · 다시 해볼 이유) ===== */
 (function () {
   'use strict';
 
@@ -940,7 +940,7 @@
   }
 
   /* ---------------- 결과 카드 이미지(공유·저장) ---------------- */
-  const SHARE_URL = 'sheeny6-cmyk.github.io/magic-sugar-game/cafe';
+  const SHARE_URL = 'is.gd/sugarcafe';
   let lastResult = null;
   let resultBlob = null;
 
@@ -1137,7 +1137,7 @@
     c.fillText(SHARE_URL, W / 2, 1196);
     c.fillStyle = '#B394CC';
     c.font = '500 21px ' + F();
-    c.fillText('☕ 슈가 발레 카페 타이쿤 · 매일 75초 영업', W / 2, 1244);
+    c.fillText('☕ 슈가 발레 카페 · 매일 75초 영업', W / 2, 1244);
     c.textAlign = 'left';
 
     star(c, 132, 430, 16, 'rgba(201,161,95,.75)');
@@ -1187,7 +1187,7 @@
 
   function resultText() {
     if (!lastResult) return '';
-    return '☕ 슈가 발레 카페 타이쿤\n' + lastResult.title +
+    return '☕ 슈가 발레 카페\n' + lastResult.title +
       '\n매출 ' + won(lastResult.revenue) + ' · ' + lastResult.served + '잔 · 최고 콤보 ×' + lastResult.combo +
       '\n' + lastResult.journal + '\n' + SHARE_URL;
   }
@@ -1205,7 +1205,7 @@
       const file = new File([blob], 'sugar-ballet-cafe.png', { type: 'image/png' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
         try {
-          await navigator.share({ files: [file], title: '☕ 슈가 발레 카페 타이쿤', text: text });
+          await navigator.share({ files: [file], title: '☕ 슈가 발레 카페', text: text });
           shareNote('공유 창을 열었어요 📸');
           return;
         } catch (e) {
@@ -1226,7 +1226,7 @@
     // 이미지 생성이 안 되면 문구라도 공유/복사
     try {
       if (navigator.share) {
-        await navigator.share({ title: '☕ 슈가 발레 카페 타이쿤', text: text });
+        await navigator.share({ title: '☕ 슈가 발레 카페', text: text });
         shareNote('공유 창을 열었어요 📸');
       } else {
         await navigator.clipboard.writeText(text);
