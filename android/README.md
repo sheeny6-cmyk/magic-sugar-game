@@ -1,6 +1,6 @@
 # 슈가의 발레왕국 — Android 앱
 
-`town/`(왕국)과 `cafe/`(발레 카페) 웹 자산을 앱 안에 그대로 넣고, WebView로 띄우는 얇은 래퍼입니다.
+`town/`(왕국), `cafe/`(발레 카페), `kingdom/`(정령 초상화) 웹 자산을 앱 안에 그대로 넣고, WebView로 띄우는 얇은 래퍼입니다.
 
 | 항목 | 값 |
 | --- | --- |
@@ -9,7 +9,7 @@
 | 버전 | versionCode `1` / versionName `1.0.0` |
 | SDK | minSdk 24, targetSdk 35, compileSdk 35 |
 | 화면 | 세로 고정, 안드로이드 15+ 시스템 바 인셋 대응 |
-| 웹 자산 | `town/`, `cafe/` 를 빌드 시 `app/src/main/assets/www/` 로 복사(`syncWebAssets` 태스크) |
+| 웹 자산 | `town/`, `cafe/`, `kingdom/` 를 빌드 시 `app/src/main/assets/www/` 로 복사(`syncWebAssets` 태스크) |
 | 표시 방식 | `WebViewAssetLoader` → `https://appassets.androidplatform.net/assets/www/town/index.html` |
 
 `file://` 대신 `https://appassets.androidplatform.net` 오리진을 쓰는 이유: `localStorage`가 안정적으로 유지되고,

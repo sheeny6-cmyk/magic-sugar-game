@@ -11,7 +11,8 @@ if (hasKeystore) {
     keystorePropsFile.withInputStream { keystoreProps.load(it) }
 }
 
-// 저장소 루트의 웹 자산(town/, cafe/)을 앱 내부 assets/www 로 복사한다.
+// 저장소 루트의 웹 자산(town/, cafe/, kingdom/)을 앱 내부 assets/www 로 복사한다.
+// town·cafe 페이지가 ../kingdom/assets/ 의 정령 초상화를 참조하므로 kingdom도 함께 넣는다.
 // 개발용 도구 폴더(tools/)는 앱 번들에서 제외한다.
 def repoRoot = rootProject.projectDir.parentFile
 def wwwOut = file('src/main/assets/www')
@@ -28,8 +29,13 @@ tasks.register('syncWebAssets', Sync) {
         exclude 'tools/**'
         exclude '**/.DS_Store'
     }
+    from(new File(repoRoot, 'kingdom')) {
+        into 'kingdom'
+        exclude 'tools/**'
+        exclude '**/.DS_Store'
+    }
     doFirst {
-        logger.lifecycle("웹 자산 복사: ${repoRoot}/town, ${repoRoot}/cafe -> ${wwwOut}")
+        logger.lifecycle("웹 자산 복사: ${repoRoot}/{town,cafe,kingdom} -> ${wwwOut}")
     }
 }
 
