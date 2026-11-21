@@ -18,7 +18,7 @@
 .mirror-stage{position:absolute;inset:12px 6px 0;z-index:1}
 .mirror-stage img{position:absolute;inset:0;width:100%;height:97%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 5px #644b4a25);animation:softAppear .22s ease}
 @keyframes softAppear{from{opacity:.65;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.look-status{position:absolute;z-index:3;left:18px;top:30px;border-radius:999px;background:#513d59e6;color:#fff9f3;padding:6px 11px;font-size:.72rem;font-weight:800}
+.look-status{position:absolute;z-index:3;left:22px;top:98px;max-width:calc(100% - 44px);border-radius:999px;background:#513d59e6;color:#fff9f3;padding:6px 11px;font-size:.72rem;font-weight:800;line-height:1.35;white-space:normal;overflow-wrap:anywhere;text-align:center}
 .mirror-sign{position:absolute;right:20px;bottom:14px;z-index:3;color:#765a5b;font:700 .57rem Georgia,serif;letter-spacing:.14em;text-shadow:0 1px 3px white}
 .fitting-poses{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:11px 11px 0}
 .fitting-poses button{border:1px solid #dfcedd;border-radius:999px;padding:10px 3px;background:#f8f1f6;color:#654d69;font:inherit;font-size:.73rem;font-weight:650;cursor:pointer;min-height:39px;white-space:normal;overflow-wrap:anywhere}
