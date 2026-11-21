@@ -32,6 +32,7 @@
     $('lookGo').href = '../studio/?v=' + T.V + (state.lesson ? '#lesson' : '#first-bar');
     $('lookGo').textContent = state.lesson ? '수업 이어 하기' : wearing ? '이 옷 입고 연습하기' : !owned && d.giftAt ? '무료 수업에서 선물 받기' : '연습하러 가기';
     $('ownCount').textContent = '보유 ' + state.owned.length + ' / ' + T.DRESS.length;
+    $('previewHelp').textContent = T.nick() + '님이 먼저 입어 보여줘요.';
     $('shop').querySelectorAll('button').forEach(function (button) {
       var item = T.dressOf(button.dataset.preview), open = !!item.levelAt && lv >= item.levelAt;
       var worn = item.id === state.worn, mine = T.isOwned(item.id);

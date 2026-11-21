@@ -4,7 +4,8 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121g';
+  var V = '20261121h';
+  var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
     center: { fee: 0, coins: 80, life: 2 },
@@ -50,10 +51,10 @@
 
   var STAFF = {
     etu: { name: '에티튜드 밸런스', gift: 'axis', unit: 4, line: '음악이 멈춰도 한 박자 더 머물 수 있게, 중심을 한 방울 담았어.' },
-    ara: { name: '아라베스크 이슬', gift: 'flex', unit: 4, line: '손끝에서 발끝까지, 슈가의 선이 길게 이어지길.' },
-    piru: { name: '피루엣 스파이럴', gift: 'coins', unit: 12, line: '한 바퀴 돌고 제자리! 슈가의 연습 보상에 코인을 더할게.' },
+    ara: { name: '아라베스크 이슬', gift: 'flex', unit: 4, line: '손끝에서 발끝까지, 선이 길게 이어지길.' },
+    piru: { name: '피루엣 스파이럴', gift: 'coins', unit: 12, line: '한 바퀴 돌고 제자리! 오늘 연습 보상에 코인을 더할게.' },
     shangz: { name: '그랑 제떼 구름', gift: 'stam', unit: 4, line: '마지막 점프까지 가볍게! 구름 한 조각을 녹였어.' },
-    alle: { name: '세 박자 왈츠', gift: 'life', unit: 1, line: '하나, 둘, 셋. 슈가의 박자에 왕국의 생명력도 차올라.' }
+    alle: { name: '세 박자 왈츠', gift: 'life', unit: 1, line: '하나, 둘, 셋. 이 박자에 왕국의 생명력도 차올라.' }
   };
 
   function staffLevel(orders) { return 1 + Math.floor(orders / ORDERS_PER_LEVEL); }
@@ -156,7 +157,7 @@
   ];
 
   var DEFAULT = {
-    v: 1, coins: GRANT,
+    v: 1, coins: GRANT, nick: '', named: false, shows: 0, bestGrade: '',
     kingdom: { charter: 1, life: 1, orders: { etu: 0, ara: 0, piru: 0, shangz: 0, alle: 0 }, prepared: null, receipt: null, debutOutfit: null },
     stats: { flex: 0, stam: 0, axis: 0, turn: 0 },
     owned: ['basic'], worn: 'basic',
@@ -167,6 +168,32 @@
   };
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
+
+  /* ---------- 주인공 닉네임 ---------- */
+  // 무대 포스터와 대사에 그대로 들어가므로 태그·따옴표는 걷어 내고 여덟 자로 자른다.
+  function cleanNick(value) {
+    var out = String(value == null ? '' : value).replace(/[<>"'`\\&]/g, '').replace(/\s+/g, ' ').trim();
+    return out.slice(0, NICK_MAX);
+  }
+  function nick() { return get().nick || NICK_DEFAULT; }
+  function named() { return !!get().named; }
+  function setNick(value) {
+    var next = cleanNick(value);
+    return updateWallet(function (s) {
+      s.nick = next;
+      s.named = true;
+      return next;
+    });
+  }
+  // 받침 유무에 맞춰 조사를 고른다. (루네와 / 하늘과)
+  function hasBatchim(word) {
+    var text = String(word || ''), code = text.charCodeAt(text.length - 1);
+    if (!(code >= 0xAC00 && code <= 0xD7A3)) return false;
+    return (code - 0xAC00) % 28 !== 0;
+  }
+  function josa(word, afterConsonant, afterVowel) {
+    return String(word || '') + (hasBatchim(word) ? afterConsonant : afterVowel);
+  }
 
   var NOTE_TYPES = { beat: 1, cat: 1, jump: 1 };
   function validChart(chart) {
@@ -231,11 +258,21 @@
         Number.isFinite(pending.coins)) {
       s.levelUp = { level: pending.level, name: String(pending.name || LEVELS[pending.level - 1].name), coins: Math.max(0, Math.round(pending.coins)), dress: DRESS.some(function (d) { return d.id === pending.dress; }) ? pending.dress : null, gift: pending.gift === 'coins' ? 'coins' : null };
     }
+    if (raw.named === true) s.named = true;
+    if (typeof raw.nick === 'string') {
+      var nickname = cleanNick(raw.nick);
+      if (nickname) { s.nick = nickname; s.named = true; }
+    }
+    if (typeof raw.shows === 'number' && isFinite(raw.shows)) s.shows = Math.max(0, Math.round(raw.shows));
+    if (typeof raw.bestGrade === 'string' && /^[SABC]/.test(raw.bestGrade)) s.bestGrade = raw.bestGrade.charAt(0);
     if (typeof raw.fame === 'number' && isFinite(raw.fame)) s.fame = Math.max(0, Math.round(raw.fame));
     var show = raw.show;
     if (show && typeof show.grade === 'string' && Number.isFinite(show.score)) {
       s.show = { grade: show.grade.slice(0, 2), score: Math.max(0, Math.round(show.score)), coins: Math.max(0, Math.round(show.coins || 0)), notes: Math.max(0, Math.round(show.notes || 0)), perfect: Math.max(0, Math.round(show.perfect || 0)), at: Number.isFinite(show.at) ? show.at : Date.now(), outfit: DRESS.some(function (d) { return d.id === show.outfit; }) ? show.outfit : null };
       if (!s.kingdom.debutOutfit && s.show.outfit) s.kingdom.debutOutfit = s.show.outfit;
+      // 공연 횟수를 세기 전에 저장된 지갑은 마지막 공연 한 번으로 시작한다.
+      if (!s.shows) s.shows = 1;
+      if (!s.bestGrade) s.bestGrade = s.show.grade;
     }
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
@@ -278,7 +315,7 @@
       // 이미 오른 레벨의 보상을 아직 못 받은 지갑은 한 번만 채워 준다.
       needsLevelGift = false;
       if (!needsCharter) {
-        var top = levelOf(S.classes).n;
+        var top = rankOf(S).n;
         for (var n = 2; n <= top; n++) if (S.gifts.indexOf(n) < 0) { needsLevelGift = true; break; }
       }
     } catch (e) {
@@ -346,7 +383,6 @@
     var legacyFee = run.kind === 'bar' && !s.stamps.bar ? 0 : OLD_TUITION[run.kind];
     var refund = Number.isSafeInteger(run.paidFee) ? Math.max(0, run.paidFee) : legacyFee;
     var gift = !s.owned.includes('lilac') ? 'lilac' : null;
-    var classesBefore = s.classes;
     var receipt = {
       lessonId: run.id, kind: run.kind, keys: run.rounds ? run.rounds.map(function (r) { return r.key; }) : [],
       first: run.rounds ? run.rounds.filter(function (r) { return r.picks.length === 1; }).length : 0,
@@ -371,7 +407,7 @@
     s.lastLessons[run.kind] = receipt.keys;
     k.receipt = receipt;
     s.lesson = null;
-    var gifts = grantGifts(s, classesBefore);
+    var gifts = grantGifts(s);
     if (gifts.length) { receipt.levelUp = clone(s.levelUp); receipt.after = s.coins; }
     return receipt;
   }
@@ -390,15 +426,56 @@
     return settlePractice(s, run, classStats, score);
   }
 
-  /* ---------- 레벨 ---------- */
-  function levelOf(classes) {
-    var cur = LEVELS[0];
-    for (var i = 0; i < LEVELS.length; i++) if (classes >= LEVELS[i].at) cur = LEVELS[i];
+  /* ---------- 프리마 발레리나 승급 로드맵 ---------- */
+  // 레벨 = 승급 단계. 수료 수업에 더해 능력치와 극장 공연까지 갖춰야 다음 단계로 간다.
+  var RANKS = [
+    { n: 1, at: 0,  short: '입문',   name: '입문 발레리나', tag: '바에 처음 서는 날', icon: '🩰', need: {} },
+    { n: 2, at: 2,  short: '견습',   name: '견습 발레리나', tag: '두 번의 수업', icon: '🎀', need: {} },
+    { n: 3, at: 5,  short: '군무',   name: '코르 드 발레', tag: '군무 발레리나', icon: '🌷', need: { stat: 20 } },
+    { n: 4, at: 9,  short: '솔리스트', name: '솔리스트', tag: '단독 무대', icon: '✨', need: { stat: 40, shows: 1 } },
+    { n: 5, at: 14, short: '프리마',  name: '프리마 발레리나', tag: '왕립 발레단의 별', icon: '👑', crown: true, need: { stat: 65, shows: 3 } }
+  ];
+  var LEVELS = RANKS;
+
+  function statTotal(s) {
+    s = s || get();
+    return s.stats.flex + s.stats.stam + s.stats.axis + s.stats.turn;
+  }
+  // 한 단계의 승급 조건을 진행률까지 담아 돌려준다.
+  function rankReq(s, rank, classes) {
+    s = s || get();
+    var c = typeof classes === 'number' ? classes : s.classes;
+    var list = [{ key: 'classes', label: '수료 수업', have: c, need: rank.at, unit: '회' }];
+    if (rank.need && rank.need.stat) list.push({ key: 'stat', label: '능력치 합계', have: statTotal(s), need: rank.need.stat, unit: '' });
+    if (rank.need && rank.need.shows) list.push({ key: 'shows', label: '극장 공연 완주', have: s.shows || 0, need: rank.need.shows, unit: '회' });
+    list.forEach(function (row) {
+      row.done = row.have >= row.need;
+      row.left = Math.max(0, row.need - row.have);
+      row.pct = row.need ? Math.min(100, Math.round(row.have / row.need * 100)) : 100;
+    });
+    return list;
+  }
+  function rankOf(s, classes) {
+    s = s || get();
+    var c = typeof classes === 'number' ? classes : s.classes;
+    var cur = RANKS[0];
+    for (var i = 1; i < RANKS.length; i++) {
+      if (c < RANKS[i].at) break;
+      if (rankReq(s, RANKS[i], c).every(function (row) { return row.done; })) cur = RANKS[i];
+      else break;
+    }
     return cur;
   }
-  // 새로 오른 레벨의 보상을 한 번만 지급한다. 이미 가진 의상은 코인으로 바꿔 준다.
+  function levelOf(classes) {
+    var c = typeof classes === 'number' ? classes : get().classes;
+    var cur = RANKS[0];
+    for (var i = 0; i < RANKS.length; i++) if (c >= RANKS[i].at) cur = RANKS[i];
+    return cur;
+  }
+  // 새로 오른 승급의 보상을 한 번만 지급한다. 이미 가진 의상은 코인으로 바꿔 준다.
   function grantGifts(s, beforeClasses) {
-    var from = levelOf(beforeClasses).n, to = levelOf(s.classes).n, got = [], total = 0;
+    var from = typeof beforeClasses === 'number' ? rankOf(s, beforeClasses).n : 0;
+    var to = rankOf(s).n, got = [], total = 0;
     for (var n = from + 1; n <= to; n++) {
       var g = LEVEL_GIFTS[n];
       if (!g || s.gifts.indexOf(n) >= 0) continue;
@@ -415,7 +492,7 @@
     if (got.length) {
       var last = got[got.length - 1];
       s.levelUp = {
-        level: last.level, name: LEVELS[last.level - 1].name, coins: total,
+        level: last.level, name: RANKS[last.level - 1].name, coins: total,
         dress: last.dress, gift: last.swapped ? 'coins' : null,
         levels: got.map(function (g) { return g.level; })
       };
@@ -425,24 +502,19 @@
   function ackLevelUp() {
     return updateWallet(function (s) { s.levelUp = null; });
   }
-  var LEVELS = [
-    { n: 1, at: 0, name: '입문 발레리나' },
-    { n: 2, at: 2, name: '견습 발레리나' },
-    { n: 3, at: 5, name: '주역 발레리나' },
-    { n: 4, at: 9, name: '프리마 발레리나' },
-    { n: 5, at: 14, name: '발레 왕국 스타' }
-  ];
   function level() {
-    var c = get().classes, cur = levelOf(c), next = null;
-    for (var i = 0; i < LEVELS.length; i++) {
-      if (c >= LEVELS[i].at) cur = LEVELS[i];
-      else { next = LEVELS[i]; break; }
-    }
-    var have = c - cur.at;
-    var need = next ? next.at - cur.at : 0;
-    var pct = next ? Math.min(100, Math.round((c / next.at) * 100)) : 100;
-    return { n: cur.n, name: cur.name, have: have, need: need, next: next, classes: c, pct: pct };
+    var s = get(), cur = rankOf(s), idx = RANKS.indexOf(cur), next = RANKS[idx + 1] || null;
+    var steps = next ? rankReq(s, next) : [];
+    var pct = next ? Math.round(steps.reduce(function (sum, row) {
+      return sum + Math.min(1, row.have / Math.max(1, row.need));
+    }, 0) / steps.length * 100) : 100;
+    return {
+      n: cur.n, name: cur.name, short: cur.short, icon: cur.icon, crown: !!cur.crown, tag: cur.tag,
+      classes: s.classes, have: Math.max(0, s.classes - cur.at), need: next ? next.at - cur.at : 0,
+      next: next, steps: steps, pct: Math.min(100, pct), stat: statTotal(s), shows: s.shows || 0
+    };
   }
+  function prima() { return !!rankOf(get()).crown; }
   function stampsTotal() {
     var s = get().stamps;
     return s.bar + s.center + s.piece;
@@ -462,6 +534,9 @@
         el.style.width = Math.min(100, s.stats[k]) + '%';
       });
     });
+    var call = nick();
+    Array.prototype.forEach.call(r.querySelectorAll('[data-nick]'), function (el) { el.textContent = call; });
+    Array.prototype.forEach.call(r.querySelectorAll('[data-nick-nim]'), function (el) { el.textContent = call + '님'; });
     r.querySelectorAll('img[data-worn-pose]').forEach(function (img) { showDancer(img, s.worn, img.dataset.wornPose); });
     var dressEls = r.querySelectorAll('[data-worn-name]');
     if (dressEls.length) {
@@ -497,6 +572,8 @@
       if (!s.stats.hasOwnProperty(k)) return;
       s.stats[k] = Math.max(0, Math.round(s.stats[k] + obj[k]));
     });
+    // 분식으로 능력치가 채워져 승급 조건을 넘기면 보상을 여기서 챙긴다.
+    grantGifts(s);
     persist(); syncUI();
     return obj;
   }
@@ -518,7 +595,7 @@
     if (img.getAttribute('src') !== src) img.src = src;
     img.dataset.outfit = id;
     img.dataset.pose = pose;
-    img.alt = dressOf(id).name + ' 차림의 슈가 공주 · ' + POSES[pose];
+    img.alt = dressOf(id).name + ' 차림의 ' + nick() + ' 발레리나 · ' + POSES[pose];
   }
   function nextDress() {
     return DRESS.find(function (dress) { return !get().owned.includes(dress.id); });
@@ -626,8 +703,11 @@
       };
       s.coins += coins;
       s.fame += fame;
+      s.shows = (s.shows || 0) + 1;
+      if (!s.bestGrade || 'SABC'.indexOf(grade) < 'SABC'.indexOf(s.bestGrade)) s.bestGrade = grade;
       s.show = record;
       if (!s.kingdom.debutOutfit) s.kingdom.debutOutfit = s.worn;
+      grantGifts(s);
       return record;
     });
   }
@@ -639,7 +719,9 @@
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
-    level: level, levelOf: levelOf, LEVELS: LEVELS, LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
+    level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
+    LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
+    nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast
   };

@@ -38,7 +38,7 @@
       react: '턴이 빨라졌어요! 3바퀴가 순식간!'
     },
     {
-      id: 'sugar', name: '슈가 공주', role: '발레 왕국의 주인공', img: A('assets/chars/sugar.webp'), color: '#b98fd8',
+      id: 'sugar', name: T.nick(), role: '발레 왕국의 주인공', img: A('assets/chars/sugar.webp'), color: '#b98fd8',
       line: '오늘 연습 끝나고 다 같이 먹을래요! 전메뉴 주세요~',
       tags: ['올스탯'], need: ['fullset'], royal: true,
       react: '전메뉴 클리어! 오늘 발레는 무조건 잘 돼요!'
@@ -384,5 +384,7 @@
 
   /* 지갑 표시 */
   T.syncUI();
+  $('ownerName').textContent = T.nick() + ' 사장님';
+  $('ownerFace').alt = T.nick() + ' 사장님';
   buildDex();
 })();

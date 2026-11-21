@@ -6,7 +6,7 @@ from lesson_flow import play_lesson
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "https://sheeny6-cmyk.github.io/magic-sugar-game"
 OUT = pathlib.Path("/workspace/downloads"); OUT.mkdir(parents=True, exist_ok=True)
-V = "?v=20261121g"
+V = "?v=20261121h"
 
 def overflow(pg):
     return pg.evaluate("""() => {

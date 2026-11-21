@@ -18,12 +18,15 @@
     arabesque: '뒤로 뻗은 선이 무대 끝까지 이어져요.',
     curtsy: '마지막 인사, 르베랑스. 객석이 박수로 답해요.'
   };
-  var IDLE = [
-    { pose: 'plie', name: '플리에', line: '에튜가 고개를 끄덕여요. 슈가가 첫 박자에 맞춰 무릎을 부드럽게 굽혀요.' },
-    { pose: 'releve', name: '를르베', line: '피루의 손짓을 따라 슈가의 뒤꿈치가 떠올라요. 잠든 궁전 창에 불이 켜져요.' },
-    { pose: 'arabesque', name: '아라베스크', line: '아라가 가리킨 숲을 향해 손을 내밀어요. 뒤로 뻗은 발끝까지 달빛이 닿아요.' },
-    { pose: 'curtsy', name: '르베랑스', line: '슈가가 인사를 건네자 객석에 앉은 다섯 정령이 힘껏 박수를 쳐요.' }
-  ];
+  function idleParts() {
+    var n = T.nick();
+    return [
+      { pose: 'plie', name: '플리에', line: '에튜가 고개를 끄덕여요. ' + n + '님이 첫 박자에 맞춰 무릎을 부드럽게 굽혀요.' },
+      { pose: 'releve', name: '를르베', line: '피루의 손짓을 따라 ' + n + '님의 뒤꿈치가 떠올라요. 잠든 궁전 창에 불이 켜져요.' },
+      { pose: 'arabesque', name: '아라베스크', line: '아라가 가리킨 숲을 향해 손을 내밀어요. 뒤로 뻗은 발끝까지 달빛이 닿아요.' },
+      { pose: 'curtsy', name: '르베랑스', line: n + '님이 인사를 건네자 객석에 앉은 다섯 정령이 힘껏 박수를 쳐요.' }
+    ];
+  }
 
   var index = -1, savingDebut = false;
   var actx = null, master = null, band = null, show = null, posterUrl = null, lastInfo = null;
@@ -54,9 +57,14 @@
 
   /* ---------- 대기 화면 ---------- */
   function refresh() {
-    var s = T.get(), ready = T.stageReady(), debut = s.kingdom.debutOutfit;
+    var s = T.get(), ready = T.stageReady(), debut = s.kingdom.debutOutfit, who = T.nick();
+    var parts = idleParts(), crown = T.prima();
     if (!ready) index = -1;
-    var part = IDLE[index], last = index === IDLE.length - 1;
+    var part = parts[index], last = index === parts.length - 1;
+    var title = crown ? '👑 ' + who + '님의 프리마 갈라' : '잠자는 숲속의 ' + who;
+    $('showTitle').textContent = title;
+    $('cTitle').textContent = title;
+    $('castTitle').textContent = T.josa(who, '과', '와') + ' 함께하는 정령들';
     T.showDancer($('stageDancer'), s.worn, part ? part.pose : 'ready');
     $('costume').textContent = T.dressOf(s.worn).name;
     $('scene').dataset.beat = String(index);
@@ -75,18 +83,18 @@
     if (!ready) {
       $('count').textContent = '출석 도장 ' + s.classes + ' / 5';
       $('cueTitle').textContent = '초대장까지 도장 ' + T.stageLeft() + '개';
-      $('cueText').textContent = '수업 하나에 도장 하나. 다섯 번째 도장을 찍으면 슈가가 이 무대에 올라요.';
+      $('cueText').textContent = '수업 하나에 도장 하나. 다섯 번째 도장을 찍으면 ' + who + '님이 이 무대에 올라요.';
       $('toClass').href = '../studio/?v=' + T.V + (s.lesson ? '#lesson' : '#first-bar');
       $('toClass').textContent = s.lesson ? '수업 이어 하기' : '도장 모으러 가기';
       $('billNote').textContent = '도장 ' + s.classes + ' / 5 · 초대장을 기다리는 중';
     } else if (!part) {
       $('count').textContent = '출석 도장 5 / 5';
-      $('cueTitle').textContent = debut ? '슈가의 앙코르 무대' : '슈가 공주님, 무대로 나와 주세요!';
+      $('cueTitle').textContent = debut ? who + '님의 앙코르 무대' : crown ? '👑 프리마 피날레, ' + who + '님 무대로!' : who + '님, 무대로 나와 주세요!';
       $('cueText').textContent = debut
         ? '오늘의 의상으로 한 번 더. 왈츠가 시작되면 링이 겹치는 순간을 탭해요.'
         : '왈츠가 시작되면 링이 겹치는 순간을 탭해요. 열여섯 장면을 지나면 커튼콜과 공연 포스터가 기다려요.';
       $('startShow').textContent = debut ? '다시 공연하기' : '공연 시작';
-      $('billNote').textContent = '3/4 왈츠 · 16장면 · 약 30초';
+      $('billNote').textContent = crown ? '프리마 갈라 · 3/4 왈츠 · 16장면' : '3/4 왈츠 · 16장면 · 약 30초';
     } else {
       $('count').textContent = last ? '리허설 완주 · 4 / 4' : '리허설 · ' + (index + 1) + ' / 4';
       $('cueTitle').textContent = last ? '마지막 인사, 르베랑스' : part.name;
@@ -249,17 +257,22 @@
 
   /* ---------- 커튼콜 카드 ---------- */
   var GRADE_LINE = {
-    S: '객석이 다 같이 일어났어요. 오늘의 주역은 슈가예요!',
+    S: '',
     A: '다섯 정령이 브라보를 외쳤어요. 아주 좋은 무대였어요.',
     B: '박수는 넉넉했어요. 다음 공연은 더 반짝일 거예요.',
     C: '무대는 끝까지 이어졌어요! 한 번 더 추면 더 좋아질 거예요.'
   };
+  function gradeLine(grade) {
+    return grade === 'S'
+      ? '객석이 다 같이 일어났어요. 오늘의 주역은 ' + T.nick() + '님이에요!'
+      : GRADE_LINE[grade] || GRADE_LINE.B;
+  }
   function renderCurtain(info, record) {
     lastInfo = info;
-    $('cKicker').textContent = '막이 내렸어요 · ' + T.fmt(new Date().getMonth() + 1) + '월 ' + new Date().getDate() + '일 공연';
+    $('cKicker').textContent = (T.prima() ? '👑 프리마 갈라 · ' : '막이 내렸어요 · ') + T.fmt(new Date().getMonth() + 1) + '월 ' + new Date().getDate() + '일 공연';
     $('cGrade').textContent = info.grade;
     $('cGrade').className = 'grade ' + info.grade;
-    $('cLine').textContent = GRADE_LINE[info.grade] || GRADE_LINE.B;
+    $('cLine').textContent = gradeLine(info.grade);
     $('cScore').textContent = T.fmt(info.score) + '점';
     $('cPerfect').textContent = String(info.perfect);
     $('cCoins').textContent = record ? '+' + T.fmt(record.coins) : '–';
@@ -284,6 +297,7 @@
       var cv = $('poster'), ctx = cv.getContext('2d');
       var W = cv.width, H = cv.height;
       var s = T.get(), worn = T.dressOf(s.worn);
+      var who = T.nick(), crown = T.prima();
       var g = ctx.createLinearGradient(0, 0, 0, H);
       g.addColorStop(0, '#2b1730'); g.addColorStop(0.55, '#3d2640'); g.addColorStop(1, '#513049');
       ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
@@ -315,6 +329,11 @@
       ctx.font = '400 20px "Nanum Myeongjo","Noto Serif KR",serif';
       ctx.fillStyle = 'rgba(230,205,162,.7)';
       ctx.fillText('ROYAL BALLET THEATRE', W / 2, 186);
+      if (crown) {
+        ctx.font = '600 24px "Nanum Myeongjo","Noto Serif KR",serif';
+        ctx.fillStyle = '#f4d99f';
+        ctx.fillText('👑  P R I M A   B A L L E R I N A', W / 2, 240);
+      }
 
       var img = new Image();
       img.onload = function () {
@@ -326,12 +345,18 @@
         ctx.drawImage(img, box.x + (box.w - dw) / 2, 930 - dh, dw, dh);
         ctx.restore();
 
+        var heading = crown ? who + '님의 프리마 갈라' : '잠자는 숲속의 ' + who;
+        var hsize = 70;
         ctx.fillStyle = '#fff4de';
-        ctx.font = '700 70px "Nanum Myeongjo","Noto Serif KR",serif';
-        ctx.fillText('잠자는 숲속의 슈가', W / 2, 1000);
+        ctx.font = '700 ' + hsize + 'px "Nanum Myeongjo","Noto Serif KR",serif';
+        while (hsize > 38 && ctx.measureText(heading).width > 800) {
+          hsize -= 4;
+          ctx.font = '700 ' + hsize + 'px "Nanum Myeongjo","Noto Serif KR",serif';
+        }
+        ctx.fillText(heading, W / 2, 1000);
         ctx.font = '400 26px "Nanum Myeongjo","Noto Serif KR",serif';
         ctx.fillStyle = 'rgba(255,240,215,.78)';
-        ctx.fillText('왕립 발레단 · 3/4 왈츠', W / 2, 1040);
+        ctx.fillText(crown ? '👑 프리마 발레리나 · 왕립 발레단' : '왕립 발레단 · 3/4 왈츠', W / 2, 1040);
 
         // 등급 배지
         ctx.beginPath(); ctx.arc(200, 1114, 52, 0, Math.PI * 2);
@@ -391,7 +416,7 @@
     cv.toBlob(async function (blob) {
       if (!blob) return;
       var file = new File([blob], 'sugar-royal-theater.png', { type: 'image/png' });
-      var text = '오늘의 왕립 극장 · 잠자는 숲속의 슈가 (' + lastInfo.grade + '등급)';
+      var text = '오늘의 왕립 극장 · ' + (T.prima() ? T.nick() + '님의 프리마 갈라' : '잠자는 숲속의 ' + T.nick()) + ' (' + lastInfo.grade + '등급)';
       try {
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
           await navigator.share({ files: [file], text: text, title: '왕립 극장 공연 포스터' });

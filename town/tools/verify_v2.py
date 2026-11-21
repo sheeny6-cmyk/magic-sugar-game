@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8099"
 OUT = pathlib.Path("/workspace/downloads")
 OUT.mkdir(parents=True, exist_ok=True)
-V = "?v=20261121g"
+V = "?v=20261121h"
 
 STATE = {"v": 1, "coins": 0, "stats": {"flex": 0, "stam": 0, "axis": 0, "turn": 0},
          "owned": ["basic"], "worn": "basic", "stamps": {"bar": 0, "center": 0, "piece": 0},

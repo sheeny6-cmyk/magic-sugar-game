@@ -143,5 +143,10 @@
 .g-outfit-text h3{margin:2px 0 4px;font-size:1.02rem;color:#503449}
 .g-outfit-text small{font-size:.74rem;line-height:1.4;color:#7a6672;display:block;word-break:keep-all}
 .g-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.g-tier{letter-spacing:.28em}
+dialog.levelup.prima .gcard{border-color:#d8ac57;background:linear-gradient(180deg,#fffaf0,#fbecc8);box-shadow:0 18px 54px #1a0f1f55,0 0 0 2px #f0d69b inset}
+dialog.levelup.prima .g-tier{font-size:2rem;letter-spacing:0;filter:drop-shadow(0 3px 8px #c79a3c55)}
+dialog.levelup.prima .g-kicker{color:#a47941}
+dialog.levelup.prima .gcard h2{color:#5a3a12}
 
 .practice-scene.playing #lPrize{display:none}

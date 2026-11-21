@@ -78,7 +78,10 @@
     $('lvName').textContent = 'Lv.' + lv.n + ' ' + lv.name;
     $('lvClasses').textContent = '수료 ' + s.classes + '회';
     $('lvBar').style.width = lv.pct + '%';
-    $('lvNote').textContent = lv.next ? '다음 레벨까지 수업 ' + (lv.need - lv.have) + '번' : '발레 왕국 스타';
+    var openSteps = lv.steps.filter(function (row) { return !row.done; });
+    $('lvNote').textContent = lv.next
+      ? '다음 승급까지 ' + (openSteps.length ? openSteps : lv.steps).map(function (row) { return row.label + ' ' + row.have + '/' + row.need + row.unit; }).join(' · ')
+      : '👑 프리마 발레리나 · 왕립 극장 피날레가 열려 있어요';
     $('stamps').textContent = '출석 도장 · 바 ' + s.stamps.bar + ' · 센터 ' + s.stamps.center + ' · 작품 ' + s.stamps.piece;
     $('stageLink').textContent = T.stageReady() ? '오늘의 의상으로 리허설 하기 →' : '왕립 극장까지 도장 ' + T.stageLeft() + '개 →';
     $('practiceKit').textContent = potion ? T.STAFF[potion.id].name + ' 포션 · ' + T.effectFor(potion.id, potion.level).label : '정령에게 연습 포션 주문하기';
@@ -428,7 +431,7 @@
     if (n.type !== 'beat') bonkProp(n);
     wobble(); flashJudge('삐끗!', 'miss'); tone('miss');
     var jokes = n.type === 'cat'
-      ? ['야웅… 고양이가 밟고 갔어요 🐱', '고양이가 슈가 리본을 물었어요 🎀', '고양이 앞에서 중심을 잃었어요 😹']
+      ? ['야웅… 고양이가 밟고 갔어요 🐱', '고양이가 ' + T.nick() + '님 리본을 물었어요 🎀', '고양이 앞에서 중심을 잃었어요 😹']
       : n.type === 'jump'
         ? ['튜튜가 장애물에 걸렸어요! 🚧', '도약은 했는데 장애물이 더 높았어요 😵', '장애물이 오늘따라 커 보여요 🧱']
         : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
@@ -498,14 +501,16 @@
   var levelBusy = false;
   function showLevelUp(info, done) {
     var spirit = T.SPIRITS[teachers[info.level === 2 ? 'bar' : info.level === 3 ? 'center' : 'piece']];
+    var who = T.nick();
     var lines = {
       2: '두 번의 수업으로 견습 발레리나가 됐어요. 무대가 조금 더 가까워졌어요!',
-      3: '이제 주역 발레리나예요. 왕국의 객석이 슈가를 기다리고 있어요.',
-      4: '프리마 발레리나! 발레 왕국에서 가장 빛나는 무대가 열렸어요.',
-      5: '발레 왕국 스타! 다섯 정령이 모두 박수를 보내고 있어요.'
+      3: '군무를 지나 ' + who + '님이 코르 드 발레로 무대에 서요. 조명이 한 줄 더 켜졌어요.',
+      4: '솔리스트! 이제 단독 무대의 조명이 ' + who + '님을 비춰요.',
+      5: '👑 프리마 발레리나! 왕립 발레단의 별이 ' + who + '님의 이름을 불렀어요. 스튜디오 기록이 가득 찼어요.'
     };
     $('gTitle').textContent = 'Lv.' + info.level + ' ' + info.name;
-    $('gKicker').textContent = info.levels && info.levels.length > 1 ? '밀린 레벨업 보상' : '레벨 업 · ' + T.fmt(T.get().classes) + '번째 수업을 마쳤어요';
+    $('gKicker').textContent = info.level >= 5 ? '👑 프리마 승급 · ' + T.fmt(T.get().classes) + '번째 수업'
+      : info.levels && info.levels.length > 1 ? '밀린 승급 보상' : '승급 · ' + T.fmt(T.get().classes) + '번째 수업을 마쳤어요';
     $('gLine').textContent = (lines[info.level] || '새로운 레벨이에요!') + ' ' + spirit.name + '가 축하 인사를 건네요.';
     $('gCoins').textContent = '+' + T.fmt(info.coins) + ' 코인';
     var dress = info.dress ? T.dressOf(info.dress) : null;
@@ -513,13 +518,14 @@
     if (dress) {
       T.showDancer($('gDancer'), dress.id, 'curtsy');
       $('gOutfitName').textContent = dress.name;
-      $('gOutfitNote').textContent = 'Lv.' + info.level + ' 달성 해금 · 드레스룸에서 바로 입을 수 있어요.';
+      $('gOutfitNote').textContent = 'Lv.' + info.level + ' 승급 해금 · 드레스룸에서 바로 입을 수 있어요.';
       $('gDress').href = '../dressroom/?v=' + T.V + '#' + dress.id;
       $('gDress').textContent = '입어 보기';
     } else if (info.gift === 'coins') {
       $('gOutfit').hidden = true;
     }
-    $('gTier').textContent = new Array(info.level + 1).join('★');
+    $('gTier').textContent = info.level >= 5 ? '👑' : new Array(info.level + 1).join('★');
+    $('levelup').classList.toggle('prima', info.level >= 5);
     if (!$('levelup').open) $('levelup').showModal();
     var button = $('gGo');
     levelBusy = false;
@@ -562,11 +568,11 @@
       var wearing = s.worn === gift.id;
       $('rMilestone').textContent = '첫 수업 선물';
       $('rGoalName').textContent = gift.name;
-      $('rGoalNote').textContent = wearing ? '슈가가 새 스커트로 갈아입었어요.' : '옷장에 도착했어요. 슈가에게 입혀 볼까요?';
+      $('rGoalNote').textContent = wearing ? T.nick() + '님이 새 스커트로 갈아입었어요.' : '옷장에 도착했어요. ' + T.nick() + '님께 입혀 볼까요?';
       $('rWear').hidden = wearing;
     } else if (r.classesAfter === 5 || !goal && T.stageReady()) {
       $('rMilestone').textContent = '왕립 극장 초대장';
-      $('rGoalName').textContent = '잠자는 숲속의 슈가';
+      $('rGoalName').textContent = '잠자는 숲속의 ' + T.nick();
       $('rGoalNote').textContent = '오늘 입은 의상으로 리허설 무대에 올라요.';
       $('rGoalLink').textContent = '리허설 무대로'; $('rGoalLink').href = '../stage/?v=' + T.V + '#rehearsal'; $('rGoalLink').hidden = false;
     } else if (goal) {
@@ -578,7 +584,7 @@
       $('rGoalLink').textContent = left ? '미리 입어보기' : '드레스룸에서 입기';
       $('rGoalLink').href = '../dressroom/?v=' + T.V + '#' + goal.id; $('rGoalLink').hidden = false;
     } else {
-      $('rMilestone').textContent = '슈가의 연습 기록';
+      $('rMilestone').textContent = T.nick() + '의 연습 기록';
       $('rGoalName').textContent = lv.name; $('rGoalNote').textContent = '지금까지 수업 ' + s.classes + '회 수료';
     }
     $('rRecord').textContent = '출석 도장 +1 · 왕국 생명력 +' + r.life + ' · ' + lv.name + (lv.next ? ' (다음 레벨까지 ' + (lv.need - lv.have) + '번)' : '');
@@ -645,7 +651,7 @@
     busy = true;
     var worn;
     try { worn = await T.updateWallet(function () { return T.wear(gift); }); } finally { busy = false; }
-    if (worn.ok) $('rAnnounce').textContent = '슈가가 ' + worn.item.name + ' 차림으로 갈아입었어요.';
+    if (worn.ok) $('rAnnounce').textContent = T.nick() + '님이 ' + worn.item.name + ' 차림으로 갈아입었어요.';
     refresh(); renderRoute();
     $('rAgain').focus({ preventScroll: true });
   });
