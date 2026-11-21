@@ -185,6 +185,38 @@
     $('diaryMore').textContent = diaryOpen ? '접기' : '일기 ' + (rows.length - 4) + '줄 더 보기';
   }
 
+  /* ---------- 한눈에 보이는 첫 보상 ---------- */
+  function renderFirstGift(s) {
+    var kicker, title, detail, outfit;
+    if (!s.classes) {
+      kicker = '첫 연습 완주 선물';
+      title = '라일락 쉬폰 스커트';
+      detail = '첫 곡을 마치면 바로 옷장에 들어와요.';
+      outfit = 'lilac';
+    } else if (!s.shows && !T.stageReady()) {
+      kicker = '다음은 첫 무대';
+      title = '한 번 더 연습하면 공연 초대장!';
+      detail = '오늘 입은 의상으로 첫 공연에 오를 수 있어요.';
+      outfit = s.worn;
+    } else if (!s.shows) {
+      kicker = '첫 공연 보상';
+      title = '내 이름이 들어간 공연 포스터';
+      detail = '왕립 극장에서 공연을 마치고 포스터를 남겨요.';
+      outfit = s.worn;
+    } else {
+      var target = T.nextDress();
+      kicker = target ? '다음에 만날 의상' : '다음 무대를 향해';
+      title = target ? target.name : '나만의 앙코르 무대';
+      detail = target ? '연습으로 성장하고 새 의상을 만나 보세요.' : '원하는 의상으로 새로운 기록에 도전해요.';
+      outfit = target ? target.id : s.worn;
+    }
+    $('firstGiftKicker').textContent = kicker;
+    $('firstGiftTitle').textContent = title;
+    $('firstGiftText').textContent = detail;
+    $('firstGiftImg').src = T.dancerArt(outfit, 'curtsy');
+    $('firstGiftImg').alt = T.dressOf(outfit).name + ' 차림의 발레리나';
+  }
+
   /* ---------- 오늘의 초대장 ---------- */
   function refresh() {
     var s = T.get(), k = s.kingdom, dose = k.prepared, lesson = s.lesson;
@@ -195,16 +227,19 @@
     $('nextGoal').textContent = lesson ? '연습 중이던 노래를 처음부터 다시 틀어 드려요.'
       : '에튜 선생님과 3/4 왈츠에 맞춰 박자를 타요.';
     $('nextReward').innerHTML = '노트 완주 <b>+' + T.fmt(reward.coins) + '코인</b>';
+    renderFirstGift(s);
     $('nextAction').href = lesson ? 'studio/?v=' + T.V + '#lesson' : 'studio/?v=' + T.V + '#first-bar';
     $('nextAction').firstChild.textContent = lesson ? '연습 이어 하기 ' : dose ? '포션 들고 바 연습하기 ' : first ? '첫 바 연습 시작 ' : '바 연습 시작 ';
     var target = T.nextDress();
-    if (!s.classes && !T.isOwned('lilac')) $('ticketNote').textContent = '첫 수업 선물 · 라일락 쉬폰 스커트';
+    if (!s.classes && !T.isOwned('lilac')) $('ticketNote').textContent = '첫 수업은 무료 · 선물은 자동으로 지급돼요';
     else if (dose) $('ticketNote').textContent = T.STAFF[dose.id].name + ' 포션 준비 · ' + T.effectFor(dose.id, dose.level).label;
     else if (target) $('ticketNote').textContent = s.coins >= target.price ? '드레스룸에서 구매 가능 · ' + target.name : '다음 의상 · ' + target.name + '까지 ' + T.fmt(target.price - s.coins) + '코인';
     else $('ticketNote').textContent = '이번 연습복 · ' + T.dressOf(s.worn).name;
     if (!lesson && !s.shows) {
-      $('nextTitle').textContent = T.stageReady() ? '첫 공연 초대장이 도착했어요' : '첫 무대까지 수업 ' + T.stageLeft() + '회';
-      $('nextGoal').textContent = T.stageReady() ? '연습한 동작을 무대에서 보여주고 나만의 공연 포스터를 남겨요.' : '수업 두 번으로 왕립 극장에 데뷔해요. 연습할수록 판정이 쉬워져요.';
+      $('nextTitle').textContent = T.stageReady() ? '첫 공연 초대장이 도착했어요' : !s.classes ? '첫 바 연습으로 출발!' : '첫 공연까지 딱 한 수업!';
+      $('nextGoal').textContent = T.stageReady() ? '연습한 동작을 무대에서 보여주고 나만의 공연 포스터를 남겨요.'
+        : !s.classes ? '에튜 정령과 첫 곡을 완주하고 라일락 쉬폰 스커트를 받아요.'
+        : '한 번 더 연습하면 왕립 극장에서 첫 무대를 열 수 있어요.';
       if (T.stageReady()) {
         $('nextReward').textContent = '공연 보상 · 코인과 첫 공연 포스터';
         $('nextAction').href = 'stage/?v=' + T.V;
