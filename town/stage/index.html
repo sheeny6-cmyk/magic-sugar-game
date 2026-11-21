@@ -4,35 +4,85 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#39253d">
-<meta name="description" content="수업 도장 다섯 개로 왕립 극장의 초대를 받아요. 슈가가 오늘의 의상으로 첫 리허설에 올라요.">
+<meta name="description" content="수업 도장 다섯 개로 왕립 극장의 초대를 받아요. 오늘의 의상으로 그랜드 왈츠를 춤추고, 공연 포스터를 만들어 친구에게 보여 줘요.">
+<meta property="og:title" content="왕립 극장 · 슈가의 발레왕국">
+<meta property="og:description" content="잠자는 숲속의 슈가 · 오늘의 의상으로 무대에 올라 공연 포스터를 남겨요.">
+<meta property="og:type" content="website">
 <title>왕립 극장 · 슈가의 발레왕국</title>
-<link rel="stylesheet" href="../style.css?v=20261121f">
-<link rel="stylesheet" href="stage.css?v=20261121f">
+<link rel="stylesheet" href="../style.css?v=20261121g">
+<link rel="stylesheet" href="stage.css?v=20261121g">
 </head>
 <body class="sub stage">
 <main class="app">
-  <header class="subbar"><a class="back" href="../?v=20261121f" aria-label="왕국으로">←</a><h1 class="title">왕립 극장</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
+  <header class="subbar"><a class="back" href="../?v=20261121g" aria-label="왕국으로">←</a><h1 class="title">왕립 극장</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
+
   <section id="rehearsal" aria-labelledby="showTitle">
-    <div class="playbill"><p>왕립 발레단 · 첫 리허설</p><h2 id="showTitle">잠자는 숲속의 슈가</h2></div>
+    <div class="playbill"><p>왕립 발레단 · 오늘의 무대</p><h2 id="showTitle">잠자는 숲속의 슈가</h2><span id="billNote">3/4 왈츠 · 16장면</span></div>
     <figure class="stage-hero" id="scene">
-      <div class="scenery" aria-hidden="true"></div><div class="boards" aria-hidden="true"></div>
+      <div class="scenery" aria-hidden="true"></div>
+      <div class="lights" id="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="boards" aria-hidden="true"></div>
       <div class="curtain left" aria-hidden="true"></div><div class="curtain right" aria-hidden="true"></div>
       <img id="stageDancer" src="../assets/dancers/basic-ready.webp" alt="무대에 선 슈가 공주">
+      <div class="hearts" id="hearts" aria-hidden="true"></div>
       <figcaption id="costume"></figcaption>
     </figure>
     <div class="cue-panel">
       <div class="beat-line"><span id="count">리허설 초대장</span><div id="beats" aria-hidden="true"><i></i><i></i><i></i><i></i></div></div>
       <div aria-live="polite" aria-atomic="true"><h3 id="cueTitle"></h3><p id="cueText"></p></div>
-      <button type="button" class="btn primary" id="nextBeat" hidden>리허설 시작</button>
-      <a class="btn primary" id="toClass" href="../studio/?v=20261121f#first-bar">도장 모으러 가기</a>
+      <button type="button" class="btn primary" id="startShow">공연 시작</button>
+      <a class="btn primary" id="toClass" href="../studio/?v=20261121g#first-bar">도장 모으러 가기</a>
       <p id="debutLook" hidden></p>
-      <a class="change-costume" href="../dressroom/?v=20261121f">무대 의상 갈아입기 →</a>
+      <p class="fame-line" id="fameLine" hidden></p>
+      <a class="change-costume" href="../dressroom/?v=20261121g">무대 의상 갈아입기 →</a>
     </div>
   </section>
+
   <section class="cast" aria-labelledby="castTitle"><h2 id="castTitle">슈가와 함께하는 정령들</h2><div class="cast-row" id="castRow"></div></section>
   <footer class="foot">© 슈가의 발레왕국</footer>
+
+  <dialog class="show-dialog" id="show" aria-labelledby="sMove">
+    <div class="show-card">
+      <div class="show-top"><p id="sStep">장면 0 / 16</p><button type="button" id="sQuit">그만두기</button></div>
+      <div class="show-scene" id="sScene">
+        <div class="show-lights" aria-hidden="true"></div>
+        <img id="sDancer" alt="">
+        <div class="cue-ring" id="sRing" aria-hidden="true"><i></i></div>
+        <div class="show-hearts" id="sHearts" aria-hidden="true"></div>
+        <p class="show-bubble" id="sBubble" aria-hidden="true"></p>
+        <p class="show-judge" id="sJudge" aria-hidden="true"></p>
+      </div>
+      <h2 id="sMove">플리에</h2>
+      <p class="show-cue" id="sCue">링이 겹치는 순간을 노려 탭!</p>
+      <div class="meter" id="sMeter" aria-hidden="true"><i id="sFill"></i><span class="gate"></span></div>
+      <button type="button" class="tap-btn" id="sTap">박자에 맞춰 탭!</button>
+      <p class="show-score" id="sScore">PERFECT 0 · GOOD 0 · MISS 0</p>
+    </div>
+  </dialog>
+
+  <dialog class="curtain-dialog" id="curtain" aria-labelledby="cTitle">
+    <div class="curtain-card">
+      <p class="curtain-kicker" id="cKicker">막이 내렸어요</p>
+      <p class="grade" id="cGrade">S</p>
+      <h2 id="cTitle">잠자는 숲속의 슈가</h2>
+      <p class="curtain-line" id="cLine"></p>
+      <div class="curtain-score"><div><span>점수</span><b id="cScore">0</b></div><div><span>PERFECT</span><b id="cPerfect">0</b></div><div><span>코인</span><b id="cCoins">+0</b></div></div>
+      <p class="curtain-fame" id="cFame" hidden></p>
+      <figure class="poster-frame" id="posterFrame" hidden>
+        <canvas id="poster" width="1080" height="1350" aria-label="오늘의 왕립 극장 공연 포스터"></canvas>
+      </figure>
+      <button type="button" class="btn primary" id="makePoster">공연 포스터 만들기</button>
+      <div class="poster-btns" id="posterBtns" hidden>
+        <button type="button" class="btn primary" id="sharePoster">포스터 공유하기</button>
+        <a class="btn ghost" id="downloadPoster" download="sugar-royal-theater.png">이미지로 저장</a>
+      </div>
+      <div class="curtain-btns"><button type="button" class="btn ghost" id="againShow">한 번 더 공연</button><a class="btn ghost" href="../?v=20261121g">왕국으로</a></div>
+      <p class="sr-only" id="cAnnounce" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
 </main>
-<script src="../assets/town.js?v=20261121f"></script>
-<script src="stage.js?v=20261121f"></script>
+<script src="../assets/town.js?v=20261121g"></script>
+<script src="../assets/music.js?v=20261121g"></script>
+<script src="stage.js?v=20261121g"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121f';
+  var V = '20261121g';
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
     center: { fee: 0, coins: 80, life: 2 },
@@ -12,6 +12,14 @@
   };
   var OLD_TUITION = { bar: 100, center: 150, piece: 250 };
   var GRANT = 60, POTION_PRICE = 30, ORDERS_PER_LEVEL = 3;
+
+  /* 레벨업 보상: 코인 + 옷장 해금 (한 번만) */
+  var LEVEL_GIFTS = {
+    2: { coins: 100, dress: 'swan' },
+    3: { coins: 200, dress: 'black' },
+    4: { coins: 300, dress: 'sugar' },
+    5: { coins: 500, dress: null }
+  };
 
   /* town/ 루트 경로 (assets/town.js 위치 기준) — 하위 페이지에서도 사진 경로가 맞도록 */
   var ROOT = (function () {
@@ -131,17 +139,17 @@
       tag: '바에서도 사뿐사뿐', desc: '바 워크할 때 스커트가 살랑, 라일락 향이 나요.'
     },
     {
-      id: 'swan', name: '백조 화이트 튜튜', price: 300,
+      id: 'swan', name: '백조 화이트 튜튜', price: 300, levelAt: 2,
       bo: '#FFFDF7', bo2: '#FFFFFF', sk: '#FFFFFF', sk2: '#FBF5EC',
       tag: '지젤 2막의 그 느낌', desc: '하얀 튜튜를 입으면 왠지 발끝이 가벼워져요.'
     },
     {
-      id: 'black', name: '블랙 스완 레오타드', price: 600,
+      id: 'black', name: '블랙 스완 레오타드', price: 600, levelAt: 3,
       bo: '#332B40', bo2: '#4C3F5E', sk: '#3A3048', sk2: '#5A4B6E',
       tag: '오디르의 32 바퀴', desc: '어두운 무대 위에서 더 빛나는 검은 깃털.'
     },
     {
-      id: 'sugar', name: '마법 슈가 드레스', price: 1000, hi: true,
+      id: 'sugar', name: '마법 슈가 드레스', price: 1000, levelAt: 4, hi: true,
       bo: '#B78CD8', bo2: '#F2C4DE', sk: '#E9C9F2', sk2: '#FDE8F3',
       tag: '슈가의 마지막 드레스', desc: '발레 왕국에서 가장 반짝이는 드레스. 무대 위 최고의 날.'
     }
@@ -154,6 +162,7 @@
     owned: ['basic'], worn: 'basic',
     stamps: { bar: 0, center: 0, piece: 0 },
     classes: 0, served: 0, best: 0, bestRound: 0, seen: [],
+    gifts: [], levelUp: null, fame: 0, show: null,
     lastServe: null, createdAt: 0, lesson: null, lastLessons: {}
   };
 
@@ -214,6 +223,20 @@
       if (typeof raw[k] === 'number' && isFinite(raw[k])) s[k] = Math.max(0, Math.round(raw[k]));
     });
     if (s.classes >= 1 && !s.owned.includes('lilac')) s.owned.push('lilac');
+    if (Array.isArray(raw.gifts)) {
+      s.gifts = raw.gifts.filter(function (n) { return Number.isSafeInteger(n) && n >= 2 && n <= LEVELS.length; });
+    }
+    var pending = raw.levelUp;
+    if (pending && Number.isSafeInteger(pending.level) && pending.level > 1 && pending.level <= LEVELS.length &&
+        Number.isFinite(pending.coins)) {
+      s.levelUp = { level: pending.level, name: String(pending.name || LEVELS[pending.level - 1].name), coins: Math.max(0, Math.round(pending.coins)), dress: DRESS.some(function (d) { return d.id === pending.dress; }) ? pending.dress : null, gift: pending.gift === 'coins' ? 'coins' : null };
+    }
+    if (typeof raw.fame === 'number' && isFinite(raw.fame)) s.fame = Math.max(0, Math.round(raw.fame));
+    var show = raw.show;
+    if (show && typeof show.grade === 'string' && Number.isFinite(show.score)) {
+      s.show = { grade: show.grade.slice(0, 2), score: Math.max(0, Math.round(show.score)), coins: Math.max(0, Math.round(show.coins || 0)), notes: Math.max(0, Math.round(show.notes || 0)), perfect: Math.max(0, Math.round(show.perfect || 0)), at: Number.isFinite(show.at) ? show.at : Date.now(), outfit: DRESS.some(function (d) { return d.id === show.outfit; }) ? show.outfit : null };
+      if (!s.kingdom.debutOutfit && s.show.outfit) s.kingdom.debutOutfit = s.show.outfit;
+    }
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
     var lesson = raw.lesson;
@@ -236,7 +259,7 @@
     return s;
   }
 
-  var S = null, memoryOnly = false, inTransaction = false, needsCharter = false, needsGift = false;
+  var S = null, memoryOnly = false, inTransaction = false, needsCharter = false, needsGift = false, needsLevelGift = false;
   function load() {
     if (memoryOnly && S) return S;
     try {
@@ -252,6 +275,12 @@
       }
       needsGift = !!(saved && saved.classes >= 1 && !(Array.isArray(saved.owned) && saved.owned.includes('lilac')));
       S = normalize(saved);
+      // 이미 오른 레벨의 보상을 아직 못 받은 지갑은 한 번만 채워 준다.
+      needsLevelGift = false;
+      if (!needsCharter) {
+        var top = levelOf(S.classes).n;
+        for (var n = 2; n <= top; n++) if (S.gifts.indexOf(n) < 0) { needsLevelGift = true; break; }
+      }
     } catch (e) {
       memoryOnly = true;
       S = S || normalize(null);
@@ -317,6 +346,7 @@
     var legacyFee = run.kind === 'bar' && !s.stamps.bar ? 0 : OLD_TUITION[run.kind];
     var refund = Number.isSafeInteger(run.paidFee) ? Math.max(0, run.paidFee) : legacyFee;
     var gift = !s.owned.includes('lilac') ? 'lilac' : null;
+    var classesBefore = s.classes;
     var receipt = {
       lessonId: run.id, kind: run.kind, keys: run.rounds ? run.rounds.map(function (r) { return r.key; }) : [],
       first: run.rounds ? run.rounds.filter(function (r) { return r.picks.length === 1; }).length : 0,
@@ -341,6 +371,8 @@
     s.lastLessons[run.kind] = receipt.keys;
     k.receipt = receipt;
     s.lesson = null;
+    var gifts = grantGifts(s, classesBefore);
+    if (gifts.length) { receipt.levelUp = clone(s.levelUp); receipt.after = s.coins; }
     return receipt;
   }
 
@@ -359,6 +391,40 @@
   }
 
   /* ---------- 레벨 ---------- */
+  function levelOf(classes) {
+    var cur = LEVELS[0];
+    for (var i = 0; i < LEVELS.length; i++) if (classes >= LEVELS[i].at) cur = LEVELS[i];
+    return cur;
+  }
+  // 새로 오른 레벨의 보상을 한 번만 지급한다. 이미 가진 의상은 코인으로 바꿔 준다.
+  function grantGifts(s, beforeClasses) {
+    var from = levelOf(beforeClasses).n, to = levelOf(s.classes).n, got = [], total = 0;
+    for (var n = from + 1; n <= to; n++) {
+      var g = LEVEL_GIFTS[n];
+      if (!g || s.gifts.indexOf(n) >= 0) continue;
+      s.gifts.push(n);
+      var coins = g.coins, dress = null, swapped = false;
+      if (g.dress) {
+        if (s.owned.indexOf(g.dress) < 0) { s.owned.push(g.dress); dress = g.dress; }
+        else { coins += dressOf(g.dress).price; swapped = true; }
+      }
+      s.coins += coins;
+      total += coins;
+      got.push({ level: n, coins: coins, dress: dress, swapped: swapped });
+    }
+    if (got.length) {
+      var last = got[got.length - 1];
+      s.levelUp = {
+        level: last.level, name: LEVELS[last.level - 1].name, coins: total,
+        dress: last.dress, gift: last.swapped ? 'coins' : null,
+        levels: got.map(function (g) { return g.level; })
+      };
+    }
+    return got;
+  }
+  function ackLevelUp() {
+    return updateWallet(function (s) { s.levelUp = null; });
+  }
   var LEVELS = [
     { n: 1, at: 0, name: '입문 발레리나' },
     { n: 2, at: 2, name: '견습 발레리나' },
@@ -367,7 +433,7 @@
     { n: 5, at: 14, name: '발레 왕국 스타' }
   ];
   function level() {
-    var c = get().classes, cur = LEVELS[0], next = null;
+    var c = get().classes, cur = levelOf(c), next = null;
     for (var i = 0; i < LEVELS.length; i++) {
       if (c >= LEVELS[i].at) cur = LEVELS[i];
       else { next = LEVELS[i]; break; }
@@ -463,6 +529,13 @@
     if (d.id !== id) return { ok: false, reason: 'locked' };
     if (isOwned(id)) return { ok: false, reason: 'owned' };
     if (d.giftAt && s.classes < d.giftAt) return { ok: false, reason: 'lesson' };
+    // 레벨을 올렸으면 옷은 코인 없이 받는다.
+    if (d.levelAt && level().n >= d.levelAt) {
+      s.owned.push(id);
+      s.worn = id;
+      persist(); syncUI();
+      return { ok: true, item: d, free: true, level: d.levelAt };
+    }
     if (s.coins < d.price) return { ok: false, reason: 'coins', need: d.price - s.coins };
     s.coins -= d.price;
     s.owned.push(id);
@@ -539,6 +612,26 @@
     toastTimer = setTimeout(function () { el.classList.remove('on'); }, ms || 2300);
   }
 
+  /* ---------- 왕립 극장 공연 기록 ---------- */
+  function finishShow(score) {
+    return updateWallet(function (s) {
+      var grade = String(score.grade || 'B').slice(0, 1);
+      var base = 60, bonus = { S: 140, A: 100, B: 60, C: 30 }[grade] || 40;
+      var coins = base + bonus + Math.max(0, Math.round(score.perfect || 0)) * 2;
+      var fame = { S: 3, A: 2, B: 1, C: 1 }[grade] || 1;
+      var record = {
+        grade: grade, score: Math.max(0, Math.round(score.score || 0)), coins: coins, fame: fame,
+        notes: Math.max(0, Math.round(score.notes || 0)), perfect: Math.max(0, Math.round(score.perfect || 0)),
+        at: Date.now(), outfit: s.worn
+      };
+      s.coins += coins;
+      s.fame += fame;
+      s.show = record;
+      if (!s.kingdom.debutOutfit) s.kingdom.debutOutfit = s.worn;
+      return record;
+    });
+  }
+
   var API = {
     KEY: KEY, V: V, ROOT: ROOT, asset: A, STATS: STATS, SPIRITS: SPIRITS, MENU: MENU, DRESS: DRESS,
     load: load, get: get, save: persist, reset: function () { S = clone(DEFAULT); S.createdAt = Date.now(); persist(); syncUI(); },
@@ -546,7 +639,7 @@
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
-    level: level, LEVELS: LEVELS, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
+    level: level, levelOf: levelOf, LEVELS: LEVELS, LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast
   };
@@ -558,7 +651,9 @@
     load(); syncUI();
     window.dispatchEvent(new Event('sugartown:refresh'));
   }
-  if (needsCharter || needsGift) updateWallet(function () {}).then(refreshFromStorage);
+  if (needsCharter || needsGift || needsLevelGift) {
+    updateWallet(function (s) { if (!needsCharter) grantGifts(s, 1); }).then(refreshFromStorage);
+  }
   window.addEventListener('pageshow', refreshFromStorage);
   window.addEventListener('storage', function (e) { if (e.key === KEY || e.key === null || e.key === 'sugarcafe.best') refreshFromStorage(); });
   document.addEventListener('visibilitychange', function () {

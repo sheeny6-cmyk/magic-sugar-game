@@ -31,3 +31,76 @@
 .cast-row figcaption b,.cast-row figcaption span{display:block;font-size:.8rem;line-height:1.4}.cast-row figcaption span{color:#78666e;font-size:.7rem}
 .stage :focus-visible{outline:3px solid #8e6887;outline-offset:2px}
 @media(prefers-reduced-motion:reduce){.stage-hero:before{transition:none}}
+
+/* ---------- 무대 조명 · 하트 ---------- */
+.lights{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;mix-blend-mode:screen}
+.lights i{position:absolute;top:-8%;width:34%;height:86%;background:linear-gradient(180deg,rgba(255,246,210,.55),rgba(255,246,210,0));clip-path:polygon(46% 0,54% 0,100% 100%,0 100%);opacity:.5;transform-origin:50% 0;animation:beam 7s ease-in-out infinite}
+.lights i:nth-child(2){left:33%;animation-delay:-2.4s;opacity:.38}
+.lights i:nth-child(3){left:66%;animation-delay:-4.6s}
+@keyframes beam{0%,100%{transform:rotate(-5deg) scaleY(1)}50%{transform:rotate(5deg) scaleY(1.04)}}
+.stage-hero.applause .curtain.left{transition:transform .9s ease;transform:translateX(-18%)}
+.stage-hero.applause .curtain.right{transition:transform .9s ease;transform:scaleX(-1) translateX(-18%)}
+.hearts{position:absolute;inset:0;z-index:4;pointer-events:none;overflow:hidden}
+.hearts span{position:absolute;bottom:16%;font-size:1.1rem;animation:heart-rise 1.5s ease-out forwards;opacity:0}
+@keyframes heart-rise{0%{opacity:0;transform:translateY(10px) scale(.6)}25%{opacity:1}100%{opacity:0;transform:translate(var(--dx,0),-120px) scale(1.1)}}
+.fame-line{margin:9px 0 0;text-align:center;font-size:.8rem;color:#7d6376}
+
+/* ---------- 공연 대화 상자 ---------- */
+.stage dialog{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;padding:calc(10px + var(--safe-t)) 12px calc(10px + var(--safe-b));background:#231326e6;color:inherit;overflow:hidden}
+.stage dialog:not([open]){display:none}
+.stage dialog[open]{display:grid;place-items:center}
+.stage dialog::backdrop{background:transparent}
+.show-card,.curtain-card{width:min(100%,430px);max-height:100%;overflow:auto;overscroll-behavior:contain;border:1px solid #cbae87;border-radius:20px;background:linear-gradient(180deg,#fffaf1,#fbf1e5);padding:14px;box-shadow:0 18px 54px #140b1a66}
+.show-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.show-top p{margin:0;font-size:.78rem;font-weight:750;color:#8a6a54;font-variant-numeric:tabular-nums}
+.show-top button{font:inherit;font-size:.78rem;min-height:34px;border:0;background:none;color:#7c5b70;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.show-scene{position:relative;isolation:isolate;overflow:hidden;border-radius:14px;border:1px solid #7d5c6a;background:radial-gradient(ellipse at 50% 12%,#6a4b68 0%,#3d2743 58%,#26172b 100%);height:clamp(178px,32svh,250px)}
+.show-scene:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 26%,rgba(255,244,208,.5),transparent 62%);opacity:.8;pointer-events:none}
+.show-scene:after{content:"";position:absolute;z-index:2;left:50%;top:52%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;border:2px dashed rgba(255,238,192,.5)}
+.show-lights{position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.05) 0 2px,transparent 2px 26px);opacity:.5}
+#sDancer{position:absolute;left:50%;bottom:4%;width:74%;height:88%;transform:translateX(-50%);object-fit:contain;object-position:center bottom;filter:drop-shadow(0 4px 6px #150a1a88);z-index:3}
+.cue-ring{position:absolute;z-index:4;left:50%;top:52%;width:96px;height:96px;opacity:.78;border-radius:50%;border:3px solid rgba(255,241,205,.9);box-shadow:0 0 14px rgba(255,226,150,.45);pointer-events:none;transform:translate(-50%,-50%) scale(1.6)}
+.cue-ring i{position:absolute;inset:6px;border-radius:50%;border:1px dashed rgba(255,241,205,.4)}
+.cue-ring.near{border-color:#ffe9a8;box-shadow:0 0 22px rgba(255,214,120,.9);opacity:1}
+.show-hearts{position:absolute;inset:0;z-index:5;pointer-events:none;overflow:hidden}
+.show-hearts span{position:absolute;bottom:24%;font-size:1rem;animation:heart-rise 1.4s ease-out forwards;opacity:0}
+.show-bubble{position:absolute;z-index:6;left:6%;top:6%;max-width:64%;margin:0;padding:5px 10px;border-radius:11px 11px 11px 3px;background:#fffaf0e6;color:#6d4a45;font-size:.72rem;font-weight:750;line-height:1.35;word-break:keep-all;box-shadow:0 3px 10px #2a14203a;opacity:0;transition:opacity .2s}
+.show-bubble.on{opacity:1}
+.show-judge{position:absolute;z-index:6;left:50%;top:36%;transform:translateX(-50%);margin:0;font:800 1.35rem/1 "Nanum Myeongjo",serif;opacity:0;pointer-events:none;white-space:nowrap;text-shadow:0 2px 0 #fff8ea,0 0 12px #fff8ea}
+.show-judge.perfect{color:#c78a12;animation:judge-up .8s ease-out forwards}
+.show-judge.good{color:#2f8a76;animation:judge-up .8s ease-out forwards}
+.show-judge.miss{color:#a85162;animation:judge-shake .8s ease-out forwards}
+@keyframes judge-up{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}28%{opacity:1;transform:translate(-50%,-3px) scale(1.08)}100%{opacity:0;transform:translate(-50%,-18px)}}
+@keyframes judge-shake{0%{opacity:0}20%{opacity:1;transform:translate(-51%,0)}45%{transform:translate(-49%,0)}75%{opacity:1}100%{opacity:0}}
+.show-card h2{font-size:1.3rem;margin:9px 0 2px;letter-spacing:-.04em}
+.show-cue{margin:0 0 8px;font-size:.85rem;color:#715a67;line-height:1.45;word-break:keep-all}
+.meter{position:relative;height:10px;border-radius:6px;background:#e6d6cd;overflow:hidden;border:1px solid #d8c3b4}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c9a1cd,#e8b45a);transition:width .04s linear}
+.meter .gate{position:absolute;right:0;top:-1px;bottom:-1px;width:5px;background:#5a3b52}
+.tap-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:58px;margin-top:10px;border:0;border-radius:15px;background:linear-gradient(135deg,#5f3c5d,#9a6382);color:#fff8ec;font:inherit;font-weight:800;font-size:1.05rem;letter-spacing:-.02em;box-shadow:0 8px 18px #43253f44;cursor:pointer;touch-action:manipulation}
+.tap-btn:active{transform:scale(.985)}
+.show-score{margin:8px 0 0;text-align:center;font-size:.76rem;color:#7d6376;font-variant-numeric:tabular-nums}
+
+/* ---------- 커튼콜 ---------- */
+.curtain-kicker{margin:0;font-size:.78rem;font-weight:750;color:#8a6a54}
+.grade{display:grid;place-items:center;width:76px;height:76px;margin:8px auto 4px;border-radius:50%;font:800 2.4rem/1 "Nanum Myeongjo",serif;color:#4a2f16;background:linear-gradient(140deg,#f8e2ae,#d5a44f);box-shadow:0 8px 20px #b98c3a55}
+.grade.A{background:linear-gradient(140deg,#e8e1f6,#b6a3d9);color:#3d2b52;box-shadow:0 8px 20px #7f68a855}
+.grade.B{background:linear-gradient(140deg,#dff0ea,#a7cfc0);color:#25483c;box-shadow:0 8px 20px #5d9d8755}
+.grade.C{background:linear-gradient(140deg,#f3e2e6,#d5b3bd);color:#553039;box-shadow:0 8px 20px #a87f8c55}
+.curtain-card h2{text-align:center;font-size:clamp(1.4rem,6vw,1.75rem);margin:2px 0 4px}
+.curtain-line{text-align:center;font-size:.88rem;color:#6f5966;line-height:1.5;word-break:keep-all;margin:0 0 10px}
+.curtain-score{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.curtain-score div{display:grid;place-items:center;gap:1px;padding:7px 3px;border-radius:10px;background:#f6ece2;border:1px solid #e4d3c1}
+.curtain-score span{font-size:.62rem;color:#8a7180;font-weight:750}
+.curtain-score b{font-size:.98rem;color:#4f3350;font-variant-numeric:tabular-nums}
+.curtain-fame{margin:-4px 0 10px;text-align:center;font-size:.8rem;color:#7b6057}
+.curtain-fame[hidden]{display:none}
+.poster-frame{margin:0 0 10px;border:1px solid #cdb08c;border-radius:12px;overflow:hidden;background:#2a1730}
+.poster-frame[hidden]{display:none}
+.poster-frame canvas{display:block;width:100%;height:auto}
+.poster-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.poster-btns[hidden]{display:none}
+.curtain-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.curtain-card .btn{min-height:46px;font-size:.92rem;width:100%;display:flex;align-items:center;justify-content:center}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(prefers-reduced-motion:reduce){.lights i,.hearts span,.show-hearts span{animation:none!important}}

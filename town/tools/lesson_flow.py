@@ -25,6 +25,10 @@ def play_lesson(page, timeout=30000):
             continue
         page.locator(buttons[upcoming["type"]]).click()
         time.sleep(0.03)
+    # 레벨업 카드가 먼저 뜨면 보상을 받고 결과 카드로 넘어간다.
+    page.wait_for_timeout(200)
+    if page.locator("#levelup").is_visible():
+        page.locator("#gGo").click()
     page.wait_for_selector("#result", state="visible", timeout=15000)
     after = wallet(page)
     assert after["lesson"] is None and after["classes"] == before["classes"] + 1
@@ -33,9 +37,10 @@ def play_lesson(page, timeout=30000):
     base = {"bar": 50, "center": 80, "piece": 120}[run["kind"]]
     potion = before["kingdom"]["prepared"]
     extra = 12 * potion["level"] if potion and potion["id"] == "piru" else 0
+    gift = (receipt.get("levelUp") or {}).get("coins", 0)
     assert receipt["baseCoins"] == base
     assert receipt["coins"] == base + receipt["bonusCoins"] + (12 * potion["level"] if potion and potion["id"] == "piru" else 0)
-    assert after["coins"] == before["coins"] + run["paidFee"] + receipt["coins"]
+    assert after["coins"] == before["coins"] + run["paidFee"] + receipt["coins"] + gift
     assert receipt["perfect"] + receipt["good"] + receipt["miss"] == len(run["chart"]["notes"])
     assert receipt["maxCombo"] <= receipt["perfect"] + receipt["good"]
     assert after["kingdom"]["prepared"] is None and after["worn"] == before["worn"]

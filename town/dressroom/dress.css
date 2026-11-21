@@ -34,3 +34,11 @@
 #lookMessage:empty{display:none}
 @media(min-width:500px){.mirror{min-height:274px}.outfit-info{padding:20px}.fitting,.wardrobe{margin-inline:22px}}
 @media(max-width:335px){.fitting{grid-template-columns:.9fr 1.1fr;margin-inline:9px}.wardrobe{margin-inline:9px}.shop-grid{gap:6px}.outfit-info{padding:12px 8px}}
+
+/* ---------- 레벨 해금 배지 ---------- */
+.outfit-card{position:relative}
+.outfit-card .lv-badge{position:absolute;z-index:2;left:4px;top:4px;font-style:normal;font-size:.62rem;font-weight:800;letter-spacing:-.01em;line-height:1.2;padding:2px 5px;border-radius:999px;background:#4a3350d9;color:#ffeecb;border:1px solid #c9a86a66;box-shadow:0 2px 6px #3d274a33}
+.outfit-card .lv-badge.on{background:linear-gradient(135deg,#f6d693,#dfae55);color:#553a10;border-color:#e9c374}
+.outfit-card .lv-badge[hidden]{display:none}
+.outfit-card.locked .sample{filter:saturate(.82)}
+.outfit-card.locked .sample:after{content:"🔒";position:absolute;right:5px;bottom:5px;z-index:2;font-size:.72rem;opacity:.85}

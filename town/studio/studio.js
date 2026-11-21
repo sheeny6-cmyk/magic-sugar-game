@@ -6,11 +6,11 @@
   var teachers = { bar: 'etu', center: 'piru', piece: 'ara' };
   var dialogs = ['confirm', 'lesson', 'result'];
   var APPROACH = 1700;              // 노트가 트랙을 건너오는 시간(ms)
-  var busy = false, lastReceipt = null, ses = null;
+  var busy = false, lastReceipt = null, ses = null, p0 = 0;
 
   /* ================= 소리 ================= */
   var soundOn = readSound();
-  var actx = null, master = null, musicBus = null, sfxBus = null, a0 = null, p0 = 0, schedTimer = null;
+  var actx = null, master = null, musicBus = null, sfxBus = null;
 
   function readSound() { try { return localStorage.getItem('sugartown.sound') !== '0'; } catch (e) { return true; } }
   function saveSound() { try { localStorage.setItem('sugartown.sound', soundOn ? '1' : '0'); } catch (e) { /* 소리 설정은 남지 않아도 돼요. */ } }
@@ -20,7 +20,7 @@
     if (!AC) return null;
     try { actx = new AC(); } catch (e) { actx = null; return null; }
     master = actx.createGain(); master.gain.value = 0.9; master.connect(actx.destination);
-    musicBus = actx.createGain(); musicBus.gain.value = soundOn ? 0.4 : 0; musicBus.connect(master);
+    musicBus = actx.createGain(); musicBus.gain.value = soundOn ? 0.42 : 0; musicBus.connect(master);
     sfxBus = actx.createGain(); sfxBus.gain.value = soundOn ? 0.5 : 0; sfxBus.connect(master);
     if (actx.state === 'suspended') actx.resume();
     return actx;
@@ -52,48 +52,23 @@
     else { piano(660, at, 0.16, 0.05, sfxBus); }
   }
 
-  var PROG = {
-    bar: [[48, 'maj'], [45, 'min'], [41, 'maj'], [43, 'maj']],
-    center: [[53, 'maj'], [55, 'maj'], [52, 'min'], [57, 'min']],
-    piece: [[45, 'min'], [41, 'maj'], [48, 'maj'], [43, 'maj']]
-  };
-  var CHORD = { maj: [0, 4, 7], min: [0, 3, 7] };
+  var PROG_SONG = { bar: 'bar', center: 'center', piece: 'piece' };
 
-  // 3/4 왈츠 반주: 첫 박은 낮은 베이스, 둘·셋 박은 세 성부 화음.
-  function buildMusic(kind, chart) {
-    var beat = 60000 / chart.bpm, barMs = beat * 3, prog = PROG[kind] || PROG.bar, ev = [], n = 0;
-    for (var t = 0; t < chart.total; t += barMs, n++) {
-      var chord = prog[n % prog.length], triad = CHORD[chord[1]].map(function (i) { return hz(chord[0] + i); });
-      ev.push({ t: t, f: [hz(chord[0] - 12)], d: 1.15, v: 0.16 });
-      ev.push({ t: t + beat, f: triad, d: 0.5, v: 0.095 });
-      ev.push({ t: t + beat * 2, f: triad, d: 0.55, v: 0.08 });
-    }
-    return ev;
-  }
-  function pump() {
-    if (!ses || !actx || a0 == null) return;
-    var until = (actx.currentTime - a0) * 1000 + 260;
-    while (ses.musicAt < ses.music.length && ses.music[ses.musicAt].t <= until) {
-      var ev = ses.music[ses.musicAt++], at = a0 + ev.t / 1000;
-      for (var i = 0; i < ev.f.length; i++) piano(ev.f[i], at + i * 0.007, ev.d, ev.v);
-    }
-  }
+  /* 음악은 assets/music.js 의 왈츠 편곡이 맡는다. 노트는 그 선율 박자에 맞춰 놓인다. */
+  var band = null;
   function startMusic(chart, elapsed) {
     var ctx = audio();
     if (!ctx || ctx.state !== 'running') return false;
-    ses.music = buildMusic(ses.kind, chart);
-    ses.musicAt = 0;
-    a0 = ctx.currentTime - elapsed / 1000;
-    while (ses.musicAt < ses.music.length && ses.music[ses.musicAt].t < elapsed - 30) ses.musicAt++;
-    if (!schedTimer) schedTimer = setInterval(pump, 45);
-    return true;
+    if (!band) band = window.SugarMusic.create(ctx, musicBus);
+    if (!band) return false;
+    return band.start(chart.song || PROG_SONG[ses.kind] || 'bar', elapsed);
   }
-  function stopMusic() { if (schedTimer) { clearInterval(schedTimer); schedTimer = null; } a0 = null; }
+  function stopMusic() { if (band) band.stop(); }
   function applySound() {
     var b = $('lSound');
     b.textContent = soundOn ? '🔊 소리' : '🔇 무음';
     b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
-    if (musicBus) musicBus.gain.value = soundOn ? 0.4 : 0;
+    if (musicBus) musicBus.gain.value = soundOn ? 0.42 : 0;
     if (sfxBus) sfxBus.gain.value = soundOn ? 0.5 : 0;
   }
 
@@ -118,7 +93,7 @@
       var prize = T.rewardFor(kind, waiting ? null : potion).coins;
       return '<button class="cls" data-cls="' + kind + '" type="button"' + (waiting ? ' disabled' : '') + '>' +
         '<img src="' + T.spiritArt(sp, true) + '" alt=""><span class="course-info"><strong>' + c.name + '</strong>' +
-        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.patterns[0].length + '노트</small></span>' +
+        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.count + '노트</small></span>' +
         '<b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
     T.syncUI();
@@ -146,7 +121,8 @@
   }
   function confirmCourse(kind) {
     var c = classes[kind], s = T.get(), potion = s.kingdom.prepared;
-    $('cKicker').textContent = '무료 수업 · ' + c.patterns[0].length + '노트 · ' + c.mood;
+    var song = window.SugarMusic && window.SugarMusic.SONGS ? window.SugarMusic.SONGS[kind] : null;
+    $('cKicker').textContent = '무료 수업 · ' + c.count + '노트' + (song ? ' · ' + song.name : ' · ' + c.mood);
     $('cName').textContent = c.name;
     $('cDesc').textContent = c.desc;
     $('cReward').textContent = '+' + T.fmt(T.rewardFor(kind, potion).coins) + '코인';
@@ -215,6 +191,8 @@
     var s = T.get(), kind = run.kind, c = classes[kind], buffs = buffFor(s.kingdom.prepared, kind);
     var lane = $('lane');
     lane.replaceChildren();
+    var props = $('lProps');
+    props.replaceChildren();
     var notes = chart.notes.map(function (n, i) {
       var el = document.createElement('span');
       el.className = 'note ' + n.type;
@@ -222,10 +200,23 @@
       el.setAttribute('aria-hidden', 'true');
       el.style.display = 'none';
       lane.appendChild(el);
-      return { t: n.t, type: n.type, index: i, judged: false, result: null, el: el };
+      var prop = null;
+      if (n.type !== 'beat') {
+        prop = document.createElement('span');
+        prop.className = 'prop ' + n.type;
+        prop.setAttribute('aria-hidden', 'true');
+        prop.innerHTML = '<i>' + (n.type === 'cat' ? '🐱' : '🚧') + '</i>';
+        prop.style.display = 'none';
+        props.appendChild(prop);
+      }
+      return { t: n.t, type: n.type, index: i, judged: false, result: null, el: el, prop: prop };
     });
     $('lDots').innerHTML = notes.map(function () { return '<i></i>'; }).join('');
     $('lSparks').replaceChildren();
+    $('lScene').classList.add('playing');
+    $('lBubble').className = 'bubble';
+    $('lBubble').textContent = '';
+    $('lDancer').className = 'practice-dancer';
     $('lJudge').textContent = '';
     $('lJudge').className = 'judge-flash';
     $('lCombo').hidden = true;
@@ -247,7 +238,7 @@
       judged: 0, combo: 0, maxCombo: 0, perfect: 0, good: 0, miss: 0,
       shields: buffs.shields, comboRate: buffs.comboRate, noteCoins: buffs.noteCoins, window: buffs.window,
       poses: c.poses, poseIdx: -1, finished: false, sending: false,
-      music: [], musicAt: 0, musicStarted: false, raf: 0, interrupted: false
+      musicStarted: false, raf: 0, interrupted: false
     };
     paintDots();
     paintCount();
@@ -259,6 +250,8 @@
   }
 
   function stopSession() {
+    var scene = $('lScene');
+    if (scene) scene.classList.remove('playing');
     if (ses) {
       ses.finished = true;
       if (ses.raf) cancelAnimationFrame(ses.raf);
@@ -275,18 +268,41 @@
     var targetX = 39, startX = Math.max(targetX + 150, laneW - 46);
     for (var i = 0; i < ses.notes.length; i++) {
       var n = ses.notes[i];
-      if (n.judged) { if (n.el.style.display !== 'none') n.el.style.display = 'none'; continue; }
+      if (n.judged) {
+        if (n.el.style.display !== 'none') n.el.style.display = 'none';
+        if (n.prop && n.prop.dataset.done !== '1') { n.prop.dataset.done = '1'; n.prop.style.display = 'none'; }
+        continue;
+      }
       if (t - n.t > ses.window.good) { missNote(n, 'late'); continue; }
       var p = 1 - (n.t - t) / APPROACH;
-      if (p < -0.02) { if (n.el.style.display !== 'none') n.el.style.display = 'none'; continue; }
+      if (p < -0.02) {
+        if (n.el.style.display !== 'none') n.el.style.display = 'none';
+        if (n.prop) n.prop.style.display = 'none';
+        continue;
+      }
       if (n.el.style.display !== 'grid') n.el.style.display = 'grid';
       var x = startX + (targetX - startX) * p;
       n.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
       n.el.style.opacity = p > 1 ? Math.max(0, 1 - (p - 1) / 0.32).toFixed(2) : Math.min(1, Math.max(0, p / 0.12 + 0.25)).toFixed(2);
       n.el.classList.toggle('near', Math.abs(p - 1) < 0.085);
+      if (n.prop && n.prop.dataset.done !== '1') paintProp(n.prop, n.type, p);
     }
     if (t > ses.chart.total) { finishSession(); return; }
     ses.raf = requestAnimationFrame(loop);
+  }
+
+  // 무대 위 고양이·장애물: 오른쪽에서 슈가 발치까지 걸어온다.
+  function paintProp(prop, type, p) {
+    if (p < 0 || p > 1.06) { if (prop.style.display !== 'none') prop.style.display = 'none'; return; }
+    if (prop.style.display !== 'block') prop.style.display = 'block';
+    var from = 104, to = 52;                       // scene 기준 % (슈가는 가운데)
+    var left = from + (to - from) * Math.min(1, p);
+    var size = 0.72 + 0.38 * Math.min(1, p);
+    var bob = type === 'cat' ? Math.sin(p * 16) * 2.4 : 0;
+    prop.style.left = left.toFixed(1) + '%';
+    prop.style.transform = 'translate(-50%,' + bob.toFixed(1) + 'px) scale(' + size.toFixed(3) + ')';
+    prop.style.opacity = p > 1 ? Math.max(0, (1.06 - p) / 0.06).toFixed(2) : '1';
+    prop.classList.toggle('near', p > 0.88);
   }
 
   function paintDots() {
@@ -329,12 +345,26 @@
     T.showDancer($('lDancer'), T.get().worn, pose);
     $('lPose').textContent = T.POSES[pose];
     var img = $('lDancer');
-    if (snap) { img.classList.remove('snap', 'wobble'); void img.offsetWidth; img.classList.add('snap'); }
+    if (snap) { img.classList.remove('snap', 'wobble', 'hop', 'leap'); void img.offsetWidth; img.classList.add('snap'); }
   }
   function wobble() {
     var img = $('lDancer');
-    img.classList.remove('wobble'); void img.offsetWidth; img.classList.add('wobble');
+    img.classList.remove('wobble', 'snap', 'hop', 'leap'); void img.offsetWidth; img.classList.add('wobble');
     $('lPose').textContent = '휘청!';
+  }
+  // 고양이는 사뿐히 폴짝, 장애물은 크게 도약.
+  function hopOver(kind) {
+    var img = $('lDancer');
+    img.classList.remove('snap', 'wobble', 'hop', 'leap'); void img.offsetWidth;
+    img.classList.add(kind === 'jump' ? 'leap' : 'hop');
+  }
+  var bubbleTimer = 0;
+  function bubble(text, kind) {
+    var el = $('lBubble');
+    el.textContent = text;
+    el.className = 'bubble on' + (kind ? ' ' + kind : '');
+    clearTimeout(bubbleTimer);
+    bubbleTimer = setTimeout(function () { el.className = 'bubble'; }, 1500);
   }
   function cue(text) { $('lFeedback').textContent = text; }
   function comboBump() {
@@ -344,9 +374,23 @@
     badge.querySelector('b').textContent = ses.combo;
     badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop');
   }
-  function advancePose() {
+  function advancePose(over) {
     ses.poseIdx = (ses.poseIdx + 1) % ses.poses.length;
-    setPose(ses.poses[ses.poseIdx], true);
+    setPose(ses.poses[ses.poseIdx], !over);
+    if (over) hopOver(over);
+  }
+
+  function clearProp(n) {
+    if (!n.prop || n.prop.dataset.done === '1') return;
+    n.prop.dataset.done = '1';
+    n.prop.classList.add('clear');
+    setTimeout(function () { if (n.prop) n.prop.style.display = 'none'; }, 420);
+  }
+  function bonkProp(n) {
+    if (!n.prop || n.prop.dataset.done === '1') return;
+    n.prop.dataset.done = '1';
+    n.prop.classList.add('bonk');
+    setTimeout(function () { if (n.prop) n.prop.style.display = 'none'; }, 520);
   }
 
   function hitNote(n, verdict) {
@@ -354,9 +398,12 @@
     if (verdict === 'perfect') ses.perfect++; else ses.good++;
     ses.combo++;
     if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
-    advancePose();
+    if (n.type !== 'beat') clearProp(n);
+    advancePose(n.type === 'beat' ? '' : n.type);
     if (verdict === 'perfect') {
       flashJudge('PERFECT!', 'perfect'); sparkle(10, 'gold'); tone('perfect');
+      if (n.type === 'cat') bubble('야옹! 같이 폴짝 🐱', 'happy');
+      else if (n.type === 'jump') bubble('장애물 위로 붕! 🦋', 'happy');
       cue(book.pickLine('perfect', n.type));
     } else {
       flashJudge('GOOD!', 'good'); sparkle(5, 'mint'); tone('good');
@@ -370,14 +417,22 @@
       ses.shields--;
       ses.good++; ses.combo++;
       if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
-      advancePose();
+      if (n.type !== 'beat') clearProp(n);
+      advancePose(n.type === 'beat' ? '' : n.type);
       flashJudge('살짝 구했어요!', 'good'); sparkle(4, 'mint'); tone('good');
       cue(book.pickLine('shield', n.type));
       comboBump(); paintDots(); paintCount();
       return;
     }
     ses.miss++; ses.combo = 0;
+    if (n.type !== 'beat') bonkProp(n);
     wobble(); flashJudge('삐끗!', 'miss'); tone('miss');
+    var jokes = n.type === 'cat'
+      ? ['야웅… 고양이가 밟고 갔어요 🐱', '고양이가 슈가 리본을 물었어요 🎀', '고양이 앞에서 중심을 잃었어요 😹']
+      : n.type === 'jump'
+        ? ['튜튜가 장애물에 걸렸어요! 🚧', '도약은 했는데 장애물이 더 높았어요 😵', '장애물이 오늘따라 커 보여요 🧱']
+        : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
+    bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
     cue(why === 'wrong' ? book.pickLine('wrong', n.type) : book.pickLine('late', n.type));
     comboBump(); paintDots(); paintCount();
   }
@@ -430,8 +485,54 @@
     } finally { busy = false; }
     ses = null;
     refresh();
+    if (receipt && receipt.levelUp) {
+      dialogs.forEach(function (id) { if ($(id).open) $(id).close(); });
+      showLevelUp(receipt.levelUp, function () { routeTo('#completed', true); });
+      return;
+    }
     if (receipt) { routeTo('#completed', true); return; }
     renderRoute();
+  }
+
+  /* ================= 레벨업 보상 카드 ================= */
+  var levelBusy = false;
+  function showLevelUp(info, done) {
+    var spirit = T.SPIRITS[teachers[info.level === 2 ? 'bar' : info.level === 3 ? 'center' : 'piece']];
+    var lines = {
+      2: '두 번의 수업으로 견습 발레리나가 됐어요. 무대가 조금 더 가까워졌어요!',
+      3: '이제 주역 발레리나예요. 왕국의 객석이 슈가를 기다리고 있어요.',
+      4: '프리마 발레리나! 발레 왕국에서 가장 빛나는 무대가 열렸어요.',
+      5: '발레 왕국 스타! 다섯 정령이 모두 박수를 보내고 있어요.'
+    };
+    $('gTitle').textContent = 'Lv.' + info.level + ' ' + info.name;
+    $('gKicker').textContent = info.levels && info.levels.length > 1 ? '밀린 레벨업 보상' : '레벨 업 · ' + T.fmt(T.get().classes) + '번째 수업을 마쳤어요';
+    $('gLine').textContent = (lines[info.level] || '새로운 레벨이에요!') + ' ' + spirit.name + '가 축하 인사를 건네요.';
+    $('gCoins').textContent = '+' + T.fmt(info.coins) + ' 코인';
+    var dress = info.dress ? T.dressOf(info.dress) : null;
+    $('gOutfit').hidden = !dress;
+    if (dress) {
+      T.showDancer($('gDancer'), dress.id, 'curtsy');
+      $('gOutfitName').textContent = dress.name;
+      $('gOutfitNote').textContent = 'Lv.' + info.level + ' 달성 해금 · 드레스룸에서 바로 입을 수 있어요.';
+      $('gDress').href = '../dressroom/?v=' + T.V + '#' + dress.id;
+      $('gDress').textContent = '입어 보기';
+    } else if (info.gift === 'coins') {
+      $('gOutfit').hidden = true;
+    }
+    $('gTier').textContent = new Array(info.level + 1).join('★');
+    if (!$('levelup').open) $('levelup').showModal();
+    var button = $('gGo');
+    levelBusy = false;
+    button.onclick = async function () {
+      if (levelBusy) return;
+      levelBusy = true;
+      button.disabled = true;
+      try { await T.ackLevelUp(); } finally { levelBusy = false; button.disabled = false; }
+      $('levelup').close();
+      refresh();
+      if (done) done();
+      else renderRoute();
+    };
   }
 
   /* ================= 결과 카드 ================= */
@@ -566,8 +667,22 @@
     notes: function () { return ses ? ses.notes.map(function (n) { return { t: n.t, type: n.type, judged: n.judged, result: n.result }; }) : []; },
     score: function () { return ses ? { perfect: ses.perfect, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, window: ses.window, shields: ses.shields } : null; },
     audio: function () { return actx ? { state: actx.state, time: actx.currentTime, sound: soundOn } : null; },
-    music: function () { return ses ? { started: ses.musicStarted, scheduled: ses.musicAt, total: ses.music.length } : null; }
+    music: function () {
+      var m = band && band.info();
+      return ses ? { started: ses.musicStarted, scheduled: m ? m.scheduled : 0, total: m ? m.total : 0, song: ses.chart.song || ses.kind } : null;
+    },
+    props: function () {
+      return ses ? ses.notes.filter(function (n) { return n.prop; }).map(function (n) {
+        return { type: n.type, judged: n.judged, left: n.prop.style.left, shown: n.prop.style.display !== 'none' };
+      }) : null;
+    }
   };
 
   refresh(); renderRoute();
+  // 지난번에 받지 못한 레벨업 보상이 있으면 한 번만 보여 준다.
+  (function () {
+    var pending = T.get().levelUp;
+    if (!pending || location.hash) return;
+    setTimeout(function () { if (!ses && !$('result').open && !$('lesson').open) showLevelUp(pending); }, 350);
+  })();
 })();

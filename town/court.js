@@ -29,7 +29,8 @@
     }).join('');
     $('lvName').textContent = 'Lv.' + level.n + ' ' + level.name;
     $('lvBar').style.width = level.pct + '%';
-    $('lvNote').textContent = '누적 수료 ' + s.classes + '회' + (level.next ? ' · 다음 레벨까지 연습 ' + (level.need - level.have) + '번' : '');
+    $('lvNote').textContent = '누적 수료 ' + s.classes + '회' + (level.next ? ' · 다음 레벨까지 연습 ' + (level.need - level.have) + '번' : '') +
+      (level.next && T.LEVEL_GIFTS[level.next.n] ? ' · Lv.' + level.next.n + '에서 ' + (T.LEVEL_GIFTS[level.next.n].dress ? T.dressOf(T.LEVEL_GIFTS[level.next.n].dress).name + ' 해금' : '+' + T.fmt(T.LEVEL_GIFTS[level.next.n].coins) + '코인') : '');
     $('stageLine').textContent = T.stageReady() ? (k.debutOutfit ? '앙코르 무대에 오르기' : '오늘의 의상으로 첫 리허설') : '첫 리허설 초대장까지 도장 ' + T.stageLeft() + '개';
     var best = T.cafeBest();
     if (best) $('cafeBest').textContent = '최고 매출 ' + T.fmt(best) + '원';

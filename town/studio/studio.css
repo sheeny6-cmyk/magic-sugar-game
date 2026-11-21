@@ -107,3 +107,41 @@
 @media(max-height:670px){.lcard{padding:11px}.practice-scene{height:clamp(118px,20svh,152px)}.lesson-progress{margin:3px 0 6px}.rhythm-track{height:64px;margin-top:7px}.move{min-height:56px}.reaction{min-height:30px;margin-top:5px}}
 @media(max-width:340px){.studio dialog{padding-inline:7px}.lcard{padding:10px}.move{font-size:.76rem}.move span{font-size:1.16rem}.reward-text{padding:9px}.reward-text h3{font-size:1.02rem}.progress span{font-size:.55rem}}
 @media(prefers-reduced-motion:reduce){.studio *{animation:none!important;transition:none!important}}
+
+/* ---------- 무대 위 고양이 · 장애물 ---------- */
+.practice-floor{position:absolute;left:0;right:0;bottom:0;height:26%;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(80,50,70,.16) 62%,rgba(70,42,62,.26));border-top:1px solid rgba(255,255,255,.22)}
+.props{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.prop{position:absolute;bottom:12%;left:100%;font-size:26px;line-height:1;transform:translate(-50%,0);will-change:left,transform;pointer-events:none;filter:drop-shadow(0 1px 2px #3a223033)}
+.prop i{font-style:normal;display:block}
+.prop.near{filter:drop-shadow(0 0 7px #fff0bb) drop-shadow(0 1px 2px #3a223033)}
+.prop.clear{animation:prop-clear .42s ease-out forwards}
+@keyframes prop-clear{0%{opacity:1}55%{opacity:1;margin-bottom:22px;transform:translate(-50%,0) scale(1.22) rotate(-12deg)}100%{opacity:0;margin-bottom:40px;transform:translate(-50%,0) scale(.7) rotate(20deg)}}
+.prop.bonk{animation:prop-bonk .52s ease-out forwards}
+@keyframes prop-bonk{0%{opacity:1}28%{transform:translate(-50%,-5px) rotate(7deg)}55%{transform:translate(-50%,0) rotate(-9deg)}100%{opacity:0;transform:translate(-50%,4px) scale(.88)}}
+.practice-dancer.hop{animation:dancer-hop .5s ease-out}
+@keyframes dancer-hop{0%{transform:none}22%{transform:translateY(-15%) rotate(-3deg)}52%{transform:translateY(-19%) rotate(2deg)}80%{transform:translateY(-3%)}100%{transform:none}}
+.practice-dancer.leap{animation:dancer-leap .64s ease-out}
+@keyframes dancer-leap{0%{transform:none}16%{transform:translateY(-4%) scale(.985)}44%{transform:translateY(-30%) rotate(4deg) scale(1.02)}72%{transform:translateY(-10%) rotate(-2deg)}100%{transform:none}}
+.bubble{position:absolute;z-index:4;right:3%;bottom:25%;max-width:46%;margin:0;padding:5px 9px;border-radius:11px 3px 11px 11px;text-align:right;background:#fffaf0;border:1px solid #e0c9a8;color:#6d4a3d;font-size:.68rem;font-weight:700;line-height:1.35;word-break:keep-all;box-shadow:0 4px 12px #4a2c4030;opacity:0;transform:translateY(6px) scale(.92);transition:opacity .18s,transform .2s}
+.bubble.on{opacity:1;transform:none}
+.bubble.happy{background:#fff8e2;border-color:#ebcd8a;color:#78521f}
+.bubble.sad{background:#fff0f2;border-color:#e8bfc7;color:#8a4055}
+
+/* ---------- 레벨업 보상 카드 ---------- */
+.studio dialog.levelup{background:#2c1a33e0}
+.gcard{width:min(100%,400px);max-height:100%;overflow:auto;border:1px solid #d9c3a1;border-radius:20px;background:linear-gradient(180deg,#fffaf0,#fcf2e4);padding:18px 17px;box-shadow:0 18px 54px #1a0f1f55;text-align:center}
+.g-kicker{margin:0;font-size:.76rem;font-weight:800;letter-spacing:.06em;color:#9a7a52}
+.g-tier{margin:6px 0 2px;font-size:1.15rem;letter-spacing:.28em;color:#c79a3c}
+.gcard h2{font:700 clamp(1.5rem,6.4vw,1.95rem)/1.2 var(--serif);color:#4e3350;margin:2px 0 6px;letter-spacing:-.04em}
+.g-line{margin:0 auto;max-width:32ch;font-size:.87rem;line-height:1.5;color:#6f5a68;word-break:keep-all}
+.g-coin{display:inline-block;margin:11px 0 4px;padding:7px 15px;border-radius:999px;background:linear-gradient(135deg,#fdeac0,#f2cd83);border:1px solid #e5bf74;color:#6b4a15;font-weight:800;font-size:1.06rem}
+.g-outfit{display:grid;grid-template-columns:104px minmax(0,1fr);gap:11px;align-items:center;margin:11px 0 4px;padding:10px;border:1px solid #e2d0b6;border-radius:14px;background:#fffdf7;text-align:left}
+.g-outfit[hidden]{display:none}
+.g-figure{position:relative;height:112px;border-radius:11px;overflow:hidden;background:radial-gradient(circle at 50% 26%,#fff6e2,#efdfe9)}
+.g-figure img{position:absolute;inset:2% 4% 0;width:92%;height:98%;object-fit:contain;object-position:center bottom}
+.g-outfit-text p{margin:0;font-size:.72rem;font-weight:750;color:#9a7a52}
+.g-outfit-text h3{margin:2px 0 4px;font-size:1.02rem;color:#503449}
+.g-outfit-text small{font-size:.74rem;line-height:1.4;color:#7a6672;display:block;word-break:keep-all}
+.g-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+
+.practice-scene.playing #lPrize{display:none}
