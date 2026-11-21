@@ -141,7 +141,7 @@
       if (t > ct + WINDOW.good) { judgeMiss('late-' + i); }
       else {
         var p = 1 - (ct - t) / APPROACH;
-        $('sFill').style.width = Math.max(0, Math.min(1.08, p)) * 100 + '%';
+        $('sFill').style.width = Math.max(0, Math.min(1, p)) * 100 + '%';
         setPoseFor(i, p);
       }
     }
