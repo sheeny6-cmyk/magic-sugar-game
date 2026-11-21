@@ -26,32 +26,84 @@
 .sheet-card,.rcard{padding:19px}.sheet-card h2{font-size:1.65rem;margin:4px 0}.sheet-card>p{font-size:.94rem;line-height:1.5;color:var(--muted);word-break:keep-all}
 .c-fee{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:14px 0 8px;padding:10px 12px;background:#f8edd6;border-radius:9px;font-size:.92rem;color:#785a36}.c-fee b{font-size:1.18rem}
 .c-btns,.r-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
-.lesson-heading,.choice-title,.teacher{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.lesson-heading p{font-size:.8rem;color:#795a77;font-weight:700}.lesson-heading h2{font-size:1.35rem}.lesson-heading button,.choice-title button{font:inherit;font-size:.85rem;cursor:pointer;min-height:44px;border:0;background:none;color:#735571;padding:0 3px;text-underline-offset:3px}.choice-title button{text-decoration:underline}
-.lesson-progress{display:flex;gap:5px;margin:6px 0 9px}.lesson-progress i{flex:1;height:4px;border-radius:6px;background:#e5dbdd}.lesson-progress .current{background:#bca0b8}.lesson-progress .done{background:#775a79}
-.practice-scene{height:clamp(140px,25vh,228px);height:clamp(140px,25svh,228px);margin:0;position:relative;isolation:isolate;overflow:hidden;border-radius:36px 10px 10px 10px;border:1px solid #c9b299;background:#ded1c1 url('../assets/rehearsal-room.webp') center 60%/cover}
+.lesson-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.lesson-heading p{font-size:.8rem;color:#795a77;font-weight:700;font-variant-numeric:tabular-nums}.lesson-heading h2{font-size:1.3rem}
+.l-tools{display:flex;align-items:center;gap:2px}
+.lesson-heading button{font:inherit;font-size:.82rem;cursor:pointer;min-height:38px;border:0;background:none;color:#735571;padding:0 4px;text-underline-offset:3px}
+#lSound{font-size:.8rem}#lPause{text-decoration:underline}
+.lesson-progress{display:flex;gap:3px;margin:5px 0 8px}.lesson-progress i{flex:1;height:4px;border-radius:6px;background:#e5dbdd;transition:background .15s}.lesson-progress .current{background:#c3a6c6;animation:dot-pulse 1s ease-in-out infinite}.lesson-progress .done{background:#775a79}
+@keyframes dot-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.practice-scene{height:clamp(126px,21svh,200px);margin:0;position:relative;isolation:isolate;overflow:hidden;border-radius:36px 10px 10px 10px;border:1px solid #c9b299;background:#ded1c1 url('../assets/rehearsal-room.webp') center 60%/cover}
 .practice-scene:before{content:"";position:absolute;inset:6px;border:1px solid #fff0d28c;border-radius:29px 6px 6px 6px}
 .practice-dancer{position:absolute;left:10%;bottom:5%;width:80%;height:92%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(0 2px 2px #5c403f3b);transform-origin:50% 100%}
-.practice-scene figcaption{position:absolute;inset:auto 7px 6px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;pointer-events:none}
-.practice-scene figcaption span{font-size:.74rem;line-height:1.3;background:#432d40de;color:#fff8e9;border-radius:5px;padding:4px 7px;font-weight:650}
-.practice-scene.landed img{animation:mark-pose .43s ease-out}
-@keyframes mark-pose{0%{opacity:.74;transform:translateY(3px)}55%{transform:translateY(-2px)}100%{opacity:1;transform:none}}
-.cue-card{margin-top:8px;padding:9px 11px;border:1px solid #e0d4dc;border-radius:11px;background:#f5eef3}.teacher{justify-content:flex-start;gap:6px;font-size:.8rem;font-weight:750;color:#694c69}.teacher img{width:28px;height:28px;object-fit:contain;border-radius:50%;background:#fff8ee}
-#lCue{font-size:1.02rem;line-height:1.55;color:#4b344f;letter-spacing:-.025em;font-weight:650;word-break:keep-all;overflow-wrap:anywhere;margin-top:4px}#lCue:focus{outline:none}
-.term-blank{display:inline-block;min-width:3em;text-align:center;line-height:1.2;padding:0 .3em;background:#fff9;border-bottom:2px solid #99769d;border-radius:4px}.term-blank.filled{color:#32604d;background:#ecf4e9;border-color:#698a71}
-.choice-title{font-size:.88rem;color:#685166;min-height:38px}.lesson-choices{display:grid;gap:6px}
-.term-choice{display:flex;align-items:center;justify-content:space-between;gap:6px;width:100%;min-height:44px;text-align:left;padding:8px 12px;border:1px solid #d5c1d1;border-radius:9px;background:#fffefa;color:#49344a;font:inherit;font-weight:700;font-size:.99rem;cursor:pointer}
-.term-choice.correct{background:#eaf3e8;color:#2f5b45;border-color:#85a98d}.term-choice.wrong{background:#faeee9;color:#875b54;border-color:#dcb8ae}.term-choice small{font-size:.76rem}
-.lesson-feedback{font-size:.87rem;color:#705970;line-height:1.45;margin:8px 0 0;word-break:keep-all}.lesson-feedback b{display:block;color:#3b614c}.lesson-feedback:empty{display:none}#lNext{margin-top:9px}
+.practice-scene figcaption{position:absolute;inset:auto 7px 6px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px;pointer-events:none;z-index:2}
+.practice-scene figcaption span{font-size:.72rem;line-height:1.3;background:#432d40de;color:#fff8e9;border-radius:5px;padding:3px 7px;font-weight:650}
+.practice-dancer.snap{animation:snap-pose .42s ease-out}
+@keyframes snap-pose{0%{opacity:.7;transform:translateY(4px) scale(.985)}55%{transform:translateY(-3px) scale(1.01)}100%{opacity:1;transform:none}}
+.practice-dancer.wobble{animation:wobble-pose .5s ease-in-out}
+@keyframes wobble-pose{0%,100%{transform:rotate(0)}18%{transform:rotate(-8deg)}42%{transform:rotate(7deg)}66%{transform:rotate(-4deg)}84%{transform:rotate(2deg)}}
+.combo-badge{position:absolute;top:8px;left:9px;z-index:3;display:flex;align-items:baseline;gap:3px;padding:3px 8px;border-radius:9px;background:#fff6e4e8;border:1px solid #e7c896;color:#7c5323;font-weight:800;letter-spacing:.02em}
+.combo-badge b{font-size:1.05rem;font-variant-numeric:tabular-nums}.combo-badge span{font-size:.56rem}
+.combo-badge.pop{animation:combo-pop .28s ease-out}
+@keyframes combo-pop{0%{transform:scale(1)}45%{transform:scale(1.16)}100%{transform:scale(1)}}
+.judge-flash{position:absolute;z-index:4;left:50%;top:8%;transform:translate(-50%,0);margin:0;font:800 1.5rem/1 var(--serif);letter-spacing:-.02em;text-shadow:0 2px 0 #fff8ee,0 0 12px #fff8ee;opacity:0;pointer-events:none;white-space:nowrap}
+.judge-flash.perfect{color:#c78a12;animation:judge-up .85s ease-out forwards}
+.judge-flash.good{color:#2f8a76;animation:judge-up .85s ease-out forwards}
+.judge-flash.miss{color:#a85162;animation:judge-shake .8s ease-out forwards}
+@keyframes judge-up{0%{opacity:0;transform:translate(-50%,10px) scale(.8)}28%{opacity:1;transform:translate(-50%,-3px) scale(1.08)}70%{opacity:1;transform:translate(-50%,-8px) scale(1)}100%{opacity:0;transform:translate(-50%,-18px) scale(.98)}}
+@keyframes judge-shake{0%{opacity:0;transform:translate(-50%,6px) rotate(-3deg)}20%{opacity:1;transform:translate(-50%,0) rotate(2deg)}45%{transform:translate(-50%,0) rotate(-2deg)}75%{opacity:1}100%{opacity:0;transform:translate(-50%,4px)}}
+.spark-layer{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.spark{position:absolute;left:50%;top:52%;width:7px;height:7px;margin:-3.5px 0 0 -3.5px;border-radius:50%;background:#ffe08a;box-shadow:0 0 7px #ffcf5e;animation:spark-fly .62s ease-out forwards}
+.spark.mint{background:#8fe6cc;box-shadow:0 0 7px #5cc9ac}
+@keyframes spark-fly{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.25);opacity:0}}
+.rhythm-track{position:relative;margin-top:9px;height:74px;border-radius:15px;border:1px solid #d9c2da;background:linear-gradient(180deg,#f8eef7,#efe0f1 60%,#e6d6ea);overflow:hidden;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.rhythm-track:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 27px,#ffffff59 27px 28px);opacity:.75;pointer-events:none}
+.rhythm-track.hot{box-shadow:inset 0 0 0 2px #d5a8e0}
+.note-lane{position:absolute;inset:0}
+.target-zone{position:absolute;left:58px;top:50%;width:56px;height:56px;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center;border:3px solid #cf9fda;background:radial-gradient(circle at 50% 40%,#fffaff 30%,#f4ddf7 62%,#e7c6ef 100%);box-shadow:0 0 0 6px #ffffff5c,0 0 16px #d3a3e2a8;transition:box-shadow .12s,border-color .12s}
+.target-zone .ring{position:absolute;inset:-9px;border-radius:50%;border:2px dashed #cfa9da;opacity:.75}
+.target-zone .target-mark{font-size:1.2rem;filter:drop-shadow(0 1px 1px #fff)}
+.target-zone.perfect{border-color:#e8b23c;box-shadow:0 0 0 7px #fff2c9a8,0 0 24px #efc357c2}
+.target-zone.good{border-color:#5cc0a4;box-shadow:0 0 0 7px #dcf7eea8,0 0 22px #74d2b7b8}
+.target-zone.miss{border-color:#d07887;box-shadow:0 0 0 7px #ffe1e5a8,0 0 18px #dd94a1a8}
+.note{position:absolute;left:0;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;display:grid;place-items:center;font-size:1.06rem;line-height:1;will-change:transform;transform:translate3d(0,0,0);box-shadow:0 2px 5px #6a4a6a33;border:2px solid #ffffffb8}
+.note.beat{background:linear-gradient(160deg,#ffe0ed,#f8aacb)}
+.note.cat{background:linear-gradient(160deg,#fff0d4,#f6c47c)}
+.note.jump{background:linear-gradient(160deg,#eee7ff,#c0aef5)}
+.note.near{box-shadow:0 0 0 4px #ffffff80,0 0 14px #ffe6a8}
+.note.hit{animation:note-hit .3s east-out forwards}
+@keyframes note-hit{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(1.6)}}
+.rhythm-pad{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:9px}
+.move{position:relative;display:grid;grid-template-rows:auto auto;place-items:center;gap:1px;min-height:62px;padding:6px 2px 7px;border:2px solid;border-radius:15px;font:inherit;font-weight:800;font-size:.82rem;line-height:1.15;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;transition:transform .06s,filter .12s}
+.move span{font-size:1.28rem;line-height:1}
+.move small{font-size:.58rem;font-weight:700;opacity:.62;letter-spacing:.04em}
+.move.beat{background:linear-gradient(180deg,#ffe6f0,#fbc0d9);border-color:#e79bbd;color:#7b3556}
+.move.cat{background:linear-gradient(180deg,#fff2dc,#ffd79c);border-color:#e3b26d;color:#7a4f1c}
+.move.jump{background:linear-gradient(180deg,#efe8ff,#d3c2ff);border-color:#ab96e8;color:#473580}
+.move:active,.move.on{transform:translateY(2px) scale(.972);filter:brightness(1.05)}
+.move.flash{animation:move-flash .3s ease-out}
+@keyframes move-flash{0%{box-shadow:0 0 0 0 #ffffffbf}100%{box-shadow:0 0 0 9px #ffffff00}}
+.buff-badge{margin:8px 0 0;padding:5px 9px;border-radius:8px;background:#f3ecfa;border:1px solid #d9c8ec;color:#67508c;font-size:.76rem;font-weight:700;line-height:1.35;word-break:keep-all}
+.reaction{display:grid;grid-template-columns:28px 1fr;grid-template-rows:auto auto;column-gap:7px;align-items:center;margin:7px 0 0;min-height:34px}
+.reaction img{grid-row:1/span 2;width:28px;height:28px;object-fit:contain;border-radius:50%;background:#fff8ee}
+.reaction span{font-size:.72rem;font-weight:750;color:#694c69;line-height:1.2}
+.reaction b{font-size:.84rem;font-weight:650;color:#5a4359;line-height:1.35;word-break:keep-all}
 .r-course{font-weight:700;color:#785470;font-size:.88rem}.rcard h2{font:700 clamp(1.75rem,7vw,2.5rem)/1.14 var(--serif);color:#593b54;margin:3px 0}
-.wallet-line{font-size:1rem;color:#664c39;font-variant-numeric:tabular-nums}.bonus-line,.last-answer,.rcard details p,.r-links{font-size:.83rem;color:var(--muted);line-height:1.45}
-.reward-feature{display:grid;grid-template-columns:minmax(92px,.8fr) minmax(0,1.2fr);min-height:148px;border:1px solid #d9c5b0;background:#faf2e6;border-radius:13px;overflow:hidden;margin:14px 0 10px}
-.reward-figure{position:relative;min-height:145px;background:#e0ccc5 url('../assets/rehearsal-room.webp') 40% 66%/cover}
+.wallet-line{font-size:1rem;color:#664c39;font-variant-numeric:tabular-nums}.bonus-line,.rcard details p,.r-links{font-size:.83rem;color:var(--muted);line-height:1.45}
+.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:11px 0 0}
+.score-row div{display:grid;place-items:center;gap:1px;padding:7px 2px 6px;border-radius:9px;background:#f6eef4;border:1px solid #e3d2e0}
+.score-row span{font-size:.6rem;font-weight:750;letter-spacing:.02em;color:#7a6076}
+.score-row b{font-size:1.24rem;font-variant-numeric:tabular-nums;color:#4f3652;line-height:1.1}
+.score-row .perfect{background:#fdf3d8;border-color:#ecd9a8}.score-row .perfect b{color:#a5750f}
+.score-row .good{background:#e8f6f1;border-color:#c6e4da}.score-row .good b{color:#2c7a68}
+.score-row .miss{background:#fbeaee;border-color:#eccdd4}.score-row .miss b{color:#a25063}
+.reward-feature{display:grid;grid-template-columns:minmax(92px,.8fr) minmax(0,1.2fr);min-height:140px;border:1px solid #d9c5b0;background:#faf2e6;border-radius:13px;overflow:hidden;margin:12px 0 10px}
+.reward-figure{position:relative;min-height:138px;background:#e0ccc5 url('../assets/rehearsal-room.webp') 40% 66%/cover}
 .reward-figure img{position:absolute;inset:4% 4% 4%;width:92%;height:92%;object-fit:contain;object-position:center bottom}
 .reward-text{align-self:center;padding:12px;word-break:keep-all}.reward-text .feature-label{font-size:.78rem;font-weight:750;color:#805d40}.reward-text h3{font-size:1.15rem;margin:3px 0 5px}.reward-text p{font-size:.86rem;line-height:1.4;color:#6e5965}.reward-text .btn{margin-top:8px;font-size:.85rem;padding:8px 10px}
 .rcard details{border-block:1px solid var(--edge);margin-top:8px}.rcard summary{cursor:pointer;min-height:44px;align-content:center;color:#6c4f68;font-size:.89rem;font-weight:650;padding:10px 0}.rcard details p{margin-bottom:6px}
 .r-links{display:flex;justify-content:space-between;gap:8px}.r-links a{margin:0 2px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
-@media(max-height:670px){.lcard{padding:11px}.practice-scene{height:clamp(134px,26svh,170px)}.lesson-progress{margin:3px 0 6px}.lesson-choices{gap:4px}.choice-title button{min-height:38px}.cue-card{padding:7px 10px}}
-@media(max-width:340px){.studio dialog{padding-inline:7px}.lcard{padding:10px}.reward-text{padding:9px}.reward-text h3{font-size:1.02rem}}
+@media(max-height:670px){.lcard{padding:11px}.practice-scene{height:clamp(118px,20svh,152px)}.lesson-progress{margin:3px 0 6px}.rhythm-track{height:64px;margin-top:7px}.move{min-height:56px}.reaction{min-height:30px;margin-top:5px}}
+@media(max-width:340px){.studio dialog{padding-inline:7px}.lcard{padding:10px}.move{font-size:.76rem}.move span{font-size:1.16rem}.reward-text{padding:9px}.reward-text h3{font-size:1.02rem}.progress span{font-size:.55rem}}
 @media(prefers-reduced-motion:reduce){.studio *{animation:none!important;transition:none!important}}

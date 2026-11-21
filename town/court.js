@@ -8,9 +8,9 @@
     var level = T.level(), reward = T.rewardFor(lesson ? lesson.kind : 'bar', dose);
     var first = !s.classes && !lesson;
     $('nextTitle').textContent = lesson ? courseNames[lesson.kind] + ' 이어서' : first ? '첫 바 연습' : '오늘의 바 연습';
-    $('nextGoal').textContent = lesson ? (lesson.index + 1) + '번째 빈칸에서 선생님이 기다리고 있어요.'
-      : '에튜의 말을 듣고 빈칸에 들어갈 발레 용어 세 개를 골라요.';
-    $('nextReward').innerHTML = '세 문제 완주 <b>+' + T.fmt(reward.coins) + '코인</b>';
+    $('nextGoal').textContent = lesson ? '연습 중이던 노래를 처음부터 다시 틀어 드려요.'
+      : '에튜 선생님과 3/4 왈츠에 맞춰 박자를 타요.';
+    $('nextReward').innerHTML = '노트 완주 <b>+' + T.fmt(reward.coins) + '코인</b>';
     $('nextAction').href = lesson ? 'studio/?v=' + T.V + '#lesson' : 'studio/?v=' + T.V + '#first-bar';
     $('nextAction').firstChild.textContent = lesson ? '연습 이어 하기 ' : dose ? '포션 들고 바 연습하기 ' : first ? '첫 바 연습 시작 ' : '바 연습 시작 ';
     var target = T.nextDress();

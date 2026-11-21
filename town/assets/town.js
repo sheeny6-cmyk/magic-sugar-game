@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121e';
+  var V = '20261121f';
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
     center: { fee: 0, coins: 80, life: 2 },
@@ -159,6 +159,15 @@
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
 
+  var NOTE_TYPES = { beat: 1, cat: 1, jump: 1 };
+  function validChart(chart) {
+    return !!chart && Array.isArray(chart.notes) && chart.notes.length >= 4 && chart.notes.length <= 40 &&
+      typeof chart.total === 'number' && isFinite(chart.total) && chart.total > 0 && chart.total < 600000 &&
+      chart.notes.every(function (n) {
+        return n && typeof n.t === 'number' && isFinite(n.t) && n.t >= 0 && Object.hasOwn(NOTE_TYPES, n.type);
+      });
+  }
+
   function normalize(raw) {
     var s = clone(DEFAULT);
     if (!raw || typeof raw !== 'object') return s;
@@ -176,7 +185,9 @@
       }
       if (DRESS.some(function (d) { return d.id === kingdom.debutOutfit; })) s.kingdom.debutOutfit = kingdom.debutOutfit;
       var receipt = kingdom.receipt;
-      if (receipt && Object.hasOwn(PRACTICE, receipt.kind) && Array.isArray(receipt.keys) && receipt.keys.length === 3) {
+      if (receipt && Object.hasOwn(PRACTICE, receipt.kind) && Number.isFinite(receipt.coins) &&
+          ((Array.isArray(receipt.keys) && receipt.keys.length === 3) ||
+           (Number.isSafeInteger(receipt.notes) && Number.isSafeInteger(receipt.perfect)))) {
         s.kingdom.receipt = receipt;
       }
     } else {
@@ -206,10 +217,16 @@
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
     var lesson = raw.lesson;
-    if (lesson && Object.hasOwn(PRACTICE, lesson.kind) && typeof lesson.id === 'string' &&
+    if (lesson && Object.hasOwn(PRACTICE, lesson.kind) && typeof lesson.id === 'string' && validChart(lesson.chart)) {
+      s.lesson = {
+        id: lesson.id, kind: lesson.kind, mode: 'rhythm', index: 0,
+        paidFee: Number.isSafeInteger(lesson.paidFee) ? Math.max(0, lesson.paidFee) : 0, chart: lesson.chart
+      };
+    } else if (lesson && Object.hasOwn(PRACTICE, lesson.kind) && typeof lesson.id === 'string' &&
         Array.isArray(lesson.rounds) && lesson.rounds.length === 3 &&
         Number.isInteger(lesson.index) && lesson.index >= 0 && lesson.index < lesson.rounds.length &&
         lesson.rounds.every(function (r) { return r && typeof r.key === 'string' && Array.isArray(r.choices) && Array.isArray(r.picks); })) {
+      // An older tab still holds a fill-in-the-blank booking; the studio swaps in that class's rhythm chart.
       s.lesson = lesson;
     }
     Object.keys(PRACTICE).forEach(function (kind) {
@@ -289,25 +306,31 @@
     return { coins: coins, life: life, extra: extra };
   }
 
-  // The last correct answer settles the whole lesson in the same wallet write.
-  function finishPractice(s, classStats) {
-    var run = s.lesson;
-    if (!run || run.index !== run.rounds.length - 1 || !run.rounds.every(function (r) { return r.picks.includes(r.key); })) return null;
+  // A finished lesson settles in one wallet write: reward, potion, stamp, stats, gift and receipt.
+  function settlePractice(s, run, classStats, score) {
     var k = s.kingdom, potion = k.prepared, reward = rewardFor(run.kind, potion);
     var stats = Object.assign({}, classStats);
     if (reward.extra && Object.hasOwn(STATS, reward.extra.key)) {
       stats[reward.extra.key] = (stats[reward.extra.key] || 0) + reward.extra.amount;
     }
+    var bonus = score ? Math.max(0, Math.round(score.comboCoins || 0)) + Math.max(0, Math.round(score.noteCoins || 0)) : 0;
     var legacyFee = run.kind === 'bar' && !s.stamps.bar ? 0 : OLD_TUITION[run.kind];
     var refund = Number.isSafeInteger(run.paidFee) ? Math.max(0, run.paidFee) : legacyFee;
     var gift = !s.owned.includes('lilac') ? 'lilac' : null;
     var receipt = {
-      lessonId: run.id, kind: run.kind, keys: run.rounds.map(function (r) { return r.key; }),
-      first: run.rounds.filter(function (r) { return r.picks.length === 1; }).length,
-      levelBefore: level().n, classesAfter: s.classes + 1, coins: reward.coins, life: reward.life,
-      before: s.coins, after: s.coins + reward.coins + refund, refund: refund,
+      lessonId: run.id, kind: run.kind, keys: run.rounds ? run.rounds.map(function (r) { return r.key; }) : [],
+      first: run.rounds ? run.rounds.filter(function (r) { return r.picks.length === 1; }).length : 0,
+      levelBefore: level().n, classesAfter: s.classes + 1,
+      coins: reward.coins + bonus, baseCoins: reward.coins, bonusCoins: bonus, life: reward.life,
+      before: s.coins, after: s.coins + reward.coins + bonus + refund, refund: refund,
       stats: stats, potion: potion, gift: gift
     };
+    if (score) {
+      receipt.notes = score.notes || 0; receipt.perfect = score.perfect || 0; receipt.good = score.good || 0;
+      receipt.miss = score.miss || 0; receipt.maxCombo = score.maxCombo || 0;
+      receipt.comboCoins = Math.max(0, Math.round(score.comboCoins || 0));
+      receipt.noteCoins = Math.max(0, Math.round(score.noteCoins || 0));
+    }
     if (gift) s.owned.push(gift);
     s.coins = receipt.after;
     k.life += reward.life;
@@ -319,6 +342,20 @@
     k.receipt = receipt;
     s.lesson = null;
     return receipt;
+  }
+
+  // The last correct answer of an older fill-in-the-blank lesson settles it.
+  function finishPractice(s, classStats) {
+    var run = s.lesson;
+    if (!run || !run.rounds || run.index !== run.rounds.length - 1 || !run.rounds.every(function (r) { return r.picks.includes(r.key); })) return null;
+    return settlePractice(s, run, classStats, null);
+  }
+
+  // A rhythm lesson settles when the song ends, with its judgement counts as the score.
+  function finishRhythm(s, classStats, score) {
+    var run = s.lesson;
+    if (!run || run.mode !== 'rhythm' || !run.chart) return null;
+    return settlePractice(s, run, classStats, score);
   }
 
   /* ---------- 레벨 ---------- */
@@ -508,7 +545,7 @@
     syncUI: syncUI, fmt: fmt, addCoins: addCoins, spend: spend, addStats: addStats,
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
-    staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice,
+    staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
     level: level, LEVELS: LEVELS, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast

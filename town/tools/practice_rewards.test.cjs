@@ -35,10 +35,19 @@ function enroll({ wallet, book }, kind) {
   });
 }
 
-function finish({ wallet, book }) {
+function finish({ wallet, book }, score) {
   return wallet.updateWallet(state => {
     const run = state.lesson;
-    if (!run) return wallet.finishPractice(state, {});
+    if (!run) return wallet.finishRhythm(state, {}, score);
+    const total = run.chart.notes.length;
+    return wallet.finishRhythm(state, book.classes[run.kind].stats, score ||
+      { perfect: total, good: 0, miss: 0, maxCombo: total, notes: total, comboCoins: 0, noteCoins: 0 });
+  });
+}
+
+function finishLegacy({ wallet, book }) {
+  return wallet.updateWallet(state => {
+    const run = state.lesson;
     for (const round of run.rounds) round.picks.push(round.key);
     run.index = run.rounds.length - 1;
     return wallet.finishPractice(state, book.classes[run.kind].stats);
@@ -94,7 +103,7 @@ test('a returning player keeps their balance, costume and lesson, including lega
       owned: ['basic','lilac'], worn: 'lilac', lesson: { kind, id: 'old', index: 0,
         rounds: ['one','two','three'].map(key => ({ key, choices: [key], picks: [] })) } });
     const player = game.tab();
-    const receipt = await finish(player);
+    const receipt = await finishLegacy(player);
     assert.equal(receipt.refund, fee);
     assert.equal(receipt.coins, reward);
     assert.equal(game.state().coins, 510 + fee + reward);
@@ -182,12 +191,41 @@ test('each outfit has distinct on-disk art for all six poses', () => {
   assert.equal(art.size, 30);
 });
 
-test('the first barre has three illustrated basics and the next class uses fresh terms', async () => {
-  const game = savedGame(), player = game.tab();
-  await enroll(player, 'bar');
-  const first = game.state().lesson.rounds.map(row => row.key);
-  assert.deepEqual(first, ['plie','tendu','releve']);
-  await finish(player);
-  await enroll(player, 'bar');
-  assert.ok(game.state().lesson.rounds.every(row => !first.includes(row.key)));
+test('each class lays out its own note chart with ballet cues in time order', () => {
+  const { wallet, book } = savedGame().tab();
+  const sizes = { bar: 8, center: 12, piece: 16 };
+  for (const [kind, size] of Object.entries(sizes)) {
+    const chart = book.buildChart(kind, 0);
+    assert.equal(chart.notes.length, size);
+    assert.ok(chart.notes.every((note, i) => i === 0 || note.t > chart.notes[i - 1].t));
+    assert.ok(chart.notes[chart.notes.length - 1].t + 1000 < chart.total);
+    assert.ok(chart.notes.every(note => ['beat', 'cat', 'jump'].includes(note.type)));
+    const cues = chart.notes.filter(note => note.type !== 'beat');
+    assert.ok(cues.length >= 2, kind + ' needs cat and obstacle cues');
+    assert.ok(chart.notes[0].type === 'beat' && chart.notes[1].type === 'beat', 'a beat settles the player first');
+  }
+  assert.equal(book.buildChart('bar', 0).notes.filter(n => n.type === 'beat').length, 6);
+  const again = book.buildChart('bar', 1).notes.map(n => n.type).join(',');
+  assert.notEqual(again, book.buildChart('bar', 0).notes.map(n => n.type).join(','));
+});
+
+test('a rhythm lesson is saved with its chart and scores combo and potion coins on completion', async () => {
+  const game = savedGame(), player = game.tab(), { wallet, book } = player;
+  await wallet.orderPotion('ara');
+  await enroll(player, 'piece');
+  const saved = game.state().lesson;
+  assert.equal(saved.mode, 'rhythm');
+  assert.equal(saved.chart.notes.length, 16);
+  const reread = game.tab();
+  assert.equal(reread.wallet.get().lesson.chart.notes.length, 16);
+  const receipt = await finish(player, { perfect: 12, good: 3, miss: 1, maxCombo: 12, notes: 16, comboCoins: 9, noteCoins: 0 });
+  assert.equal(receipt.comboCoins, 9);
+  assert.equal(receipt.baseCoins, 120);
+  assert.equal(receipt.coins, 129);
+  assert.equal(receipt.perfect, 12);
+  assert.equal(receipt.maxCombo, 12);
+  assert.equal(receipt.stats.flex, 3 + 4);
+  assert.equal(game.state().stamps.piece, 1);
+  assert.equal(game.state().kingdom.prepared, null);
+  assert.equal(game.tab().wallet.get().kingdom.receipt.notes, 16);
 });

@@ -2,11 +2,11 @@
 """발레 왕국 마을 라이브 검증 + 보고용 스크린샷."""
 import json, pathlib, sys
 from playwright.sync_api import sync_playwright
-from lesson_flow import finish_lesson
+from lesson_flow import play_lesson
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "https://sheeny6-cmyk.github.io/magic-sugar-game"
 OUT = pathlib.Path("/workspace/downloads"); OUT.mkdir(parents=True, exist_ok=True)
-V = "?v=20261121e"
+V = "?v=20261121f"
 
 def overflow(pg):
     return pg.evaluate("""() => {
@@ -107,7 +107,7 @@ with sync_playwright() as p:
     pg.screenshot(path=str(OUT/"ballet-town-studio-confirm-360.png"))
     pg.evaluate("() => document.getElementById('cGo').click()"); pg.wait_for_timeout(600)
     pg.screenshot(path=str(OUT/"ballet-town-studio-lesson-360.png"))
-    finish_lesson(pg)
+    play_lesson(pg)
     pg.wait_for_timeout(500)
     pg.screenshot(path=str(OUT/"ballet-town-studio-result-360.png"))
     st = state(pg); print("after class:", st["coins"], st["classes"], st["stats"], st["stamps"])
@@ -121,7 +121,7 @@ with sync_playwright() as p:
     pg.goto(BASE + "/town/studio/" + V, wait_until="load"); pg.reload(wait_until="load"); pg.wait_for_timeout(500)
     pg.evaluate("() => document.querySelector('[data-cls=\"piece\"]').click()"); pg.wait_for_timeout(300)
     pg.evaluate("() => document.getElementById('cGo').click()"); pg.wait_for_timeout(400)
-    finish_lesson(pg)
+    play_lesson(pg)
     pg.wait_for_timeout(400)
     print("stage ready:", pg.evaluate("() => document.getElementById('rTitle').innerText"))
     pg.screenshot(path=str(OUT/"ballet-town-studio-stageopen-360.png"))

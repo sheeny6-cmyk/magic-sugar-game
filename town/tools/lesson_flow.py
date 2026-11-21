@@ -1,33 +1,42 @@
-"""Complete a studio lesson using its rendered answer buttons."""
-from playwright.sync_api import expect
+"""리듬 수업을 실제 무대 버튼으로 끝까지 연주한다."""
+import time
 
 
-def finish_lesson(page):
-    def wallet():
-        return page.evaluate("JSON.parse(localStorage.getItem('sugartown.v1'))")
+def wallet(page):
+    return page.evaluate("JSON.parse(localStorage.getItem('sugartown.v1'))")
 
-    before = wallet()
+
+def play_lesson(page, timeout=30000):
+    """노트가 판정 원에 닿을 때 같은 동작 버튼을 누른다."""
+    before = wallet(page)
     run = before["lesson"]
-    for index, row in enumerate(run["rounds"]):
-        expect(page.locator("#lCount")).to_contain_text(f"{index + 1} / 3")
-        expect(page.locator("#lNext")).to_be_hidden()
-        if index == 0:
-            wrong = next(choice for choice in row["choices"] if choice != row["key"])
-            page.locator(f'.term-choice[data-key="{wrong}"]').click()
-            expect(page.locator("#lFeedback")).to_contain_text("한 번 더")
-            page.reload(wait_until="domcontentloaded")
-            expect(page.locator(f'.term-choice[data-key="{wrong}"]')).to_be_disabled()
-        page.locator(f'.term-choice[data-key="{row["key"]}"]').click()
-        if index < len(run["rounds"]) - 1:
-            page.locator("#lNext").click()
-    expect(page.locator("#result")).to_be_visible()
-    after = wallet()
+    page.wait_for_function("() => window.__rhythm && window.__rhythm.notes().length > 0")
+    buttons = {"beat": ".move.beat", "cat": ".move.cat", "jump": ".move.jump"}
+    deadline = time.time() + timeout / 1000
+    while time.time() < deadline:
+        info = page.evaluate("() => ({ now: window.__rhythm.now(), notes: window.__rhythm.notes() })")
+        pending = [n for n in info["notes"] if not n["judged"]]
+        if not pending:
+            break
+        upcoming = pending[0]
+        wait = upcoming["t"] - info["now"] - 10
+        if wait > 0:
+            time.sleep(min(wait, 250) / 1000)
+            continue
+        page.locator(buttons[upcoming["type"]]).click()
+        time.sleep(0.03)
+    page.wait_for_selector("#result", state="visible", timeout=15000)
+    after = wallet(page)
     assert after["lesson"] is None and after["classes"] == before["classes"] + 1
     assert after["stamps"][run["kind"]] == before["stamps"][run["kind"]] + 1
-    reward = {"bar": (50, 1), "center": (80, 2), "piece": (120, 3)}[run["kind"]]
+    receipt = after["kingdom"]["receipt"]
+    base = {"bar": 50, "center": 80, "piece": 120}[run["kind"]]
     potion = before["kingdom"]["prepared"]
-    extra_coins = 12 * potion["level"] if potion and potion["id"] == "piru" else 0
-    extra_life = potion["level"] if potion and potion["id"] == "alle" else 0
-    assert after["coins"] == before["coins"] + run["paidFee"] + reward[0] + extra_coins
-    assert after["kingdom"]["life"] == before["kingdom"]["life"] + reward[1] + extra_life
+    extra = 12 * potion["level"] if potion and potion["id"] == "piru" else 0
+    assert receipt["baseCoins"] == base
+    assert receipt["coins"] == base + receipt["bonusCoins"] + (12 * potion["level"] if potion and potion["id"] == "piru" else 0)
+    assert after["coins"] == before["coins"] + run["paidFee"] + receipt["coins"]
+    assert receipt["perfect"] + receipt["good"] + receipt["miss"] == len(run["chart"]["notes"])
+    assert receipt["maxCombo"] <= receipt["perfect"] + receipt["good"]
     assert after["kingdom"]["prepared"] is None and after["worn"] == before["worn"]
+    return receipt
