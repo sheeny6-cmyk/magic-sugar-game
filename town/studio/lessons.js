@@ -23,7 +23,7 @@
   var terms = {
     plie: { ko: '플리에', fr: 'Plié', cue: '두 발은 1번. | 두 번, 무릎을 부드럽게 굽혔다 펴 볼까요?', note: '프랑스어로 ‘구부린’이라는 뜻이에요.' },
     tendu: { ko: '텐듀', fr: 'Battement tendu', cue: '이번엔 |. 발끝이 바닥을 스치며 길게 뻗었다가 제자리로 돌아와요.', note: '발끝까지 팽팽하게 뻗되 바닥에 닿아 있어요.' },
-    releve: { ko: '를르베', fr: 'Relevé', cue: '두 발 그대로 |! 뒤꿈치를 들어 데미포인 위에서 잠깐 멈춰요.', note: '몸을 위로 끌어올려 발앞쪽이나 포인 위에 서는 동작이에요.' },
+    releve: { ko: '를르베', fr: 'Relevé', cue: '두 발 그대로 |! 뒤꿈치를 들어 몸을 위로 끌어올린 채 잠깐 멈춰요.', note: '몸을 위로 끌어올려 발앞쪽이나 포인 위에 서는 동작이에요.' },
     rond: { ko: '롱 드 잠 아 테르', fr: 'Rond de jambe à terre', cue: '발끝으로 바닥에 반원을 그려요. 앞에서 옆을 지나 뒤까지 |.', note: '프랑스어로 rond는 ‘원’, à terre는 ‘바닥에서’라는 뜻이에요.' },
     fondu: { ko: '퐁뒤', fr: 'Battement fondu', cue: '한 발을 반대쪽 발목에 대고 지지하는 무릎을 굽혀요. 두 다리를 함께 펴며 |.', note: '치즈가 녹듯이 한 다리로 부드럽게 가라앉는 느낌이에요.' },
     grandBattement: { ko: '그랑 바뜨망', fr: 'Grand battement', cue: '다리는 곧게, 옆으로 힘차게 높이 차올려요. | 네 번 갈게요.', note: 'grand는 ‘큰’이라는 뜻이에요. 다리를 크게 차올렸다 내려요.' },
@@ -53,9 +53,13 @@
   function makeLesson(kind, state) {
     var pool = classes[kind].terms;
     var last = state.lastLessons[kind] || [];
-    var fresh = shuffled(pool.filter(function (id) { return !last.includes(id); }));
-    var deck = fresh.concat(shuffled(pool.filter(function (id) { return last.includes(id); })));
-    if (kind === 'bar' && state.stamps.bar === 0) deck = ['plie'].concat(deck.filter(function (id) { return id !== 'plie'; }));
+    var deck;
+    if (kind === 'bar' && state.stamps.bar === 0) {
+      deck = ['plie', 'tendu', 'releve'];
+    } else {
+      var fresh = shuffled(pool.filter(function (id) { return !last.includes(id); }));
+      deck = fresh.concat(shuffled(pool.filter(function (id) { return last.includes(id); })));
+    }
     var rounds = deck.slice(0, 3).map(function (key) {
       var others = shuffled(pool.filter(function (id) { return id !== key; })).slice(0, 2);
       return { key: key, choices: shuffled([key].concat(others)), picks: [], hint: false };

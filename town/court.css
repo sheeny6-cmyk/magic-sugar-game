@@ -131,3 +131,5 @@
 @media(prefers-reduced-motion:reduce){.life-flight.delivered{animation:none}}
 
 .ticket-stage{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;font-size:.85rem;font-weight:700;color:#705249;text-underline-offset:3px}
+
+.wardrobe-art>img{object-fit:contain;padding-top:5px;object-position:50% 100%}

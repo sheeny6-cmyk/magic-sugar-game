@@ -18,7 +18,8 @@ def finish_lesson(page):
             page.reload(wait_until="domcontentloaded")
             expect(page.locator(f'.term-choice[data-key="{wrong}"]')).to_be_disabled()
         page.locator(f'.term-choice[data-key="{row["key"]}"]').click()
-        page.locator("#lNext").click()
+        if index < len(run["rounds"]) - 1:
+            page.locator("#lNext").click()
     expect(page.locator("#result")).to_be_visible()
     after = wallet()
     assert after["lesson"] is None and after["classes"] == before["classes"] + 1

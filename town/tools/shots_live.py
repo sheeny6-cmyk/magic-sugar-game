@@ -6,7 +6,7 @@ from lesson_flow import finish_lesson
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "https://sheeny6-cmyk.github.io/magic-sugar-game"
 OUT = pathlib.Path("/workspace/downloads"); OUT.mkdir(parents=True, exist_ok=True)
-V = "?v=20261121b&cb=live1"
+V = "?v=20261121d"
 
 def overflow(pg):
     return pg.evaluate("""() => {
@@ -92,7 +92,8 @@ with sync_playwright() as p:
     seed(pg, demo); pg.goto(BASE + "/town/dressroom/" + V, wait_until="load"); pg.wait_for_timeout(600)
     pg.screenshot(path=str(OUT/"ballet-town-dressroom-360.png"), full_page=True)
     print("dress overflow:", json.dumps(overflow(pg), ensure_ascii=False))
-    pg.evaluate("() => document.querySelector('[data-buy=\"swan\"]').click()"); pg.wait_for_timeout(600)
+    pg.locator('[data-preview="swan"]').click()
+    pg.locator("#lookAction").click(); pg.wait_for_timeout(600)
     st = state(pg); print("buy swan:", st["coins"], st["owned"], st["worn"])
     pg.screenshot(path=str(OUT/"ballet-town-dressroom-buy-360.png"), full_page=True)
 

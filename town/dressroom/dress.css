@@ -1,55 +1,36 @@
-/* ===== 👗 드레스룸 ===== */
-.dress .app{background:
-  radial-gradient(70% 36% at 50% 0%,#f7ecff 0%,rgba(247,236,255,0) 72%),
-  linear-gradient(180deg,#fffaf6 0%,#fdf4f7 60%,#fff8f2 100%)}
-
-.look{position:relative;margin:12px 14px 0;border-radius:22px;padding:14px 13px 13px;
-  background:linear-gradient(140deg,#f6ecff 0%,#fdeaf3 52%,#fff2e6 100%);
-  border:1px solid #f2e3f3;box-shadow:0 14px 30px rgba(140,105,160,.15);
-  display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 12px;align-items:center}
-.look::after{content:"";position:absolute;inset:0;border-radius:22px;pointer-events:none;
-  background:radial-gradient(90px 60px at 12% 18%,rgba(255,255,255,.8),transparent 70%)}
-.look-chip{position:absolute;top:10px;right:10px;z-index:3;display:inline-flex;align-items:center;gap:5px;
-  background:rgba(255,255,255,.9);border-radius:999px;padding:3px 9px 3px 3px;font-size:9px;font-weight:800;color:#8a6a95;
-  box-shadow:0 3px 10px rgba(120,85,140,.14)}
-.look-chip img{width:18px;height:18px;border-radius:50%;object-fit:cover;object-position:50% 8%}
-.look-fig{position:relative;z-index:2;padding:8px 0 0 2px}
-.look-fig .fig{margin:0 auto;filter:drop-shadow(0 10px 14px rgba(130,90,150,.18))}
-.look-info{position:relative;z-index:2;min-width:0;padding-top:10px}
-.look-kicker{font-family:Georgia,serif;font-size:8px;letter-spacing:.2em;color:#b295bd}
-.look-info h2{font-size:16px;letter-spacing:-.03em;line-height:1.25;margin-top:3px}
-.look-info p{font-size:10.5px;line-height:1.5;color:#7d6789;margin-top:4px;word-break:keep-all}
-.look-tag{display:inline-block;margin-top:6px;font-size:9px;font-weight:800;color:#a0607f;
-  background:rgba(255,255,255,.8);border:1px solid #f3dee8;border-radius:999px;padding:3px 8px}
-.look-go{margin-top:9px;display:flex;font-size:11px;padding:10px 10px;border-radius:11px}
-
-.own-line{display:flex;align-items:center;justify-content:space-between;margin:16px 16px 0;gap:8px}
-.own-line h2{font-size:12.5px;letter-spacing:-.02em}
-.own-line span{font-size:10px;color:#a491b3;font-weight:800}
-
-.shop-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;padding:9px 14px 0}
-.item{position:relative;background:#fff;border:1px solid #f1e6f0;border-radius:16px;padding:10px 9px 9px;
-  box-shadow:0 6px 16px rgba(140,105,160,.09);display:flex;flex-direction:column;min-width:0}
-.item .fig{margin:2px auto 6px}
-.item .lock{position:absolute;top:8px;right:8px;font-size:10px;color:#b7a5c2}
-.item h3{font-size:11.5px;letter-spacing:-.03em;line-height:1.3;word-break:keep-all;min-height:30px}
-.item .tagsm{display:inline-block;margin-top:2px;font-size:8.5px;color:#b08aa0;font-weight:700}
-.item .price{display:flex;align-items:center;gap:4px;margin-top:7px;font-size:11px;font-weight:800;color:#8a6520}
-.item .price.free{color:#9a86a8;font-weight:700;font-size:10px}
-.item .price .ic{font-size:10px}
-.item .btn{margin-top:8px;width:100%;font-size:10.5px;padding:9px 6px;border-radius:10px}
-.item.owned{border-color:#e8d9f2}
-.item.wearing{border-color:#c8a8e0;box-shadow:0 0 0 2px rgba(169,127,199,.16),0 10px 20px rgba(120,80,150,.14)}
-.item .state{position:absolute;top:8px;left:8px;font-size:8.5px;font-weight:800;border-radius:999px;padding:3px 7px;
-  background:#f3e9fb;color:#7a5a9c}
-.item .state.on{background:linear-gradient(135deg,#8B6BAE,#c294dd);color:#fff}
-.item.wearing::after{content:"";position:absolute;inset:0;border-radius:16px;pointer-events:none;
-  background:radial-gradient(60% 40% at 50% 0%,rgba(255,255,255,.6),transparent 70%)}
-.item.shake{animation:shk .4s}
-@keyframes shk{0%,100%{transform:none}25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-3px)}}
-
-@media (max-width:339px){
-  .look{grid-template-columns:auto minmax(0,1fr);gap:6px 9px}
-  .look-info h2{font-size:14.5px}
-  .look-go{font-size:10px}
-}
+.dress{background:#ece5df;color:#442e48}
+.dress [hidden]{display:none!important}
+.dress .app{max-width:620px;background:#fbf7ef;box-shadow:0 0 55px #52375818}
+.dress .subbar{background:#fbf7efef;border-color:#dfd0bf}
+.dress h1,.dress h2{font-family:"Nanum Myeongjo","Noto Serif CJK KR",Georgia,serif}
+.dress .subbar .title{font-size:1.05rem}
+.fitting{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin:14px 14px 0;border:1px solid #d1baa3;border-radius:60px 16px 16px 16px;background:#fffdf7;overflow:hidden;scroll-margin-top:70px}
+.mirror{position:relative;isolation:isolate;min-height:218px;background:#e5d6d0 url('../assets/rehearsal-room.webp') 42% center/cover;border-right:1px solid #d7c6b0}
+.mirror:before{content:"";position:absolute;inset:7px;border:1px solid #f7e6c6b3;border-radius:51px 8px 7px 9px;pointer-events:none}
+.mirror img{position:absolute;inset:7% 4% 5%;width:92%;height:88%;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 2px 2px #59373c36)}
+.look-status{position:absolute;z-index:2;left:9px;bottom:8px;border-radius:5px;background:#473045da;color:#fffaf0;padding:3px 6px;font-size:.75rem;font-weight:700;line-height:1.3}
+.outfit-info{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:7px;padding:14px 11px}
+.outfit-info h2{font-size:clamp(1.18rem,4.8vw,1.6rem);letter-spacing:-.05em;line-height:1.22;word-break:keep-all}
+.outfit-info p,.preview-help{font-size:.875rem;line-height:1.45;color:#705f6d;word-break:keep-all}
+.outfit-info .outfit-cost{font-size:.83rem;color:#775a3a}
+.dress .btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center;width:100%;line-height:1.3;font-size:.87rem;padding:8px 6px}
+.dress .btn.primary{background:#583752;color:#fff9f2}
+.dress .btn.ghost{background:#f5ede7;border:1px solid #dfcec2;color:#69495f}
+.wardrobe{margin:23px 14px 0}
+.own-line{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.own-line h2{font-size:1.4rem;letter-spacing:-.05em}
+.own-line span{font-size:.83rem;color:#735c70}
+.preview-help{margin-top:4px}
+.shop-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:12px}
+.outfit-card{background:#fffdf8;border:1px solid #ddcfc3;border-radius:12px;padding:5px 5px 9px;min-width:0;font:inherit;color:inherit;cursor:pointer;text-align:center}
+.outfit-card[aria-pressed=true]{outline:2px solid #815f7f;outline-offset:0;background:#fcf5fb}
+.sample{position:relative;display:block;height:clamp(90px,26vw,126px);border-radius:8px;background:linear-gradient(145deg,#faf6ec 10%,var(--cloth) 160%)}
+.sample img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:4px}
+.outfit-card strong,.outfit-card small{display:block;line-height:1.35}
+.outfit-card strong{font-size:.85rem;margin:6px 0 2px;word-break:keep-all}
+.outfit-card small{color:#745a69;font-size:.76rem}
+.dress :focus-visible{outline:3px solid #75568b;outline-offset:2px}
+#lookMessage{margin:12px 16px;font-size:.85rem;color:#46705b;text-align:center}
+#lookMessage:empty{display:none}
+@media(min-width:500px){.mirror{min-height:274px}.outfit-info{padding:20px}.fitting,.wardrobe{margin-inline:22px}}
+@media(max-width:335px){.fitting{grid-template-columns:.9fr 1.1fr;margin-inline:9px}.wardrobe{margin-inline:9px}.shop-grid{gap:6px}.outfit-info{padding:12px 8px}}

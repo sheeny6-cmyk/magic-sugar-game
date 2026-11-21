@@ -1,50 +1,36 @@
-/* 발레 스튜디오 */
 (function () {
   'use strict';
   var T = window.SugarTown, book = window.SugarLessons;
   var courses = book.classes, terms = book.terms;
   var $ = function (id) { return document.getElementById(id); };
   var teachers = { bar: 'etu', center: 'piru', piece: 'ara' };
+  var demonstrations = { plie: 'plie', tendu: 'tendu', releve: 'releve', arabesque: 'arabesque', reverence: 'curtsy' };
   var dialogs = ['confirm', 'lesson', 'result'];
-  var busy = false, shown = null;
+  var busy = false, shown = null, lastReceipt = null;
 
-  function gainsHTML(stats) {
-    return Object.keys(stats).map(function (k) {
-      return '<span>' + T.STATS[k].label + ' +' + stats[k] + '</span>';
-    }).join('');
-  }
   function refresh() {
-    var s = T.get(), lv = T.level(), d = T.dressOf(s.worn);
-    $('wornName').textContent = d.name;
-    $('wornFig').innerHTML = T.dressHTML(d.id, '');
+    var s = T.get(), lv = T.level(), potion = s.kingdom.prepared;
     $('lvName').textContent = 'Lv.' + lv.n + ' ' + lv.name;
-    $('lvClasses').textContent = '수업 ' + s.classes + '번';
+    $('lvClasses').textContent = '수료 ' + s.classes + '회';
     $('lvBar').style.width = lv.pct + '%';
-    $('lvNote').textContent = lv.next
-      ? '다음 레벨까지 수업 ' + (lv.need - lv.have) + '번 · Lv.' + lv.next.n + ' ' + lv.next.name
-      : '발레 왕국 스타! 리허설 초대장을 확인해 보세요.';
-
-    var slots = '';
-    for (var i = 0; i < 5; i++) slots += '<span class="stamp' + (i < Math.min(5, s.classes) ? ' on' : '') + '">🩰</span>';
-    $('stamps').innerHTML = slots + '<span class="stamp-count">바 ' + s.stamps.bar + ' · 센터 ' + s.stamps.center + ' · 작품 ' + s.stamps.piece + '</span>';
-
-    var potion = s.kingdom.prepared;
+    $('lvNote').textContent = lv.next ? '다음 레벨까지 수업 ' + (lv.need - lv.have) + '번' : '발레 왕국 스타';
+    $('stamps').textContent = '출석 도장 · 바 ' + s.stamps.bar + ' · 센터 ' + s.stamps.center + ' · 작품 ' + s.stamps.piece;
+    $('stageLink').textContent = T.stageReady() ? '오늘의 의상으로 리허설 하기 →' : '왕립 극장까지 도장 ' + T.stageLeft() + '개 →';
     $('practiceKit').textContent = potion ? T.STAFF[potion.id].name + ' 포션 · ' + T.effectFor(potion.id, potion.level).label : '정령에게 연습 포션 주문하기';
     $('resumeLesson').hidden = !s.lesson;
-    if (s.lesson) $('resumeLesson').textContent = courses[s.lesson.kind].name + ' 이어서 풀기 · ' + (s.lesson.index + 1) + ' / 3';
+    if (s.lesson) $('resumeLesson').textContent = courses[s.lesson.kind].name + ' 이어 하기 · ' + (s.lesson.index + 1) + ' / 3';
+    $('courseNote').textContent = s.lesson
+      ? courses[s.lesson.kind].name + ' 진행 중이에요. 마치면 새 수업을 고를 수 있어요.'
+      : '수업은 모두 무료예요. 빈칸 세 개를 맞히면 코인이 자동으로 들어와요.';
     $('classes').innerHTML = Object.keys(courses).map(function (kind) {
-      var c = courses[kind], fee = T.classFee(kind);
-      return '<button class="cls' + (s.coins < fee ? ' no' : '') + '" data-cls="' + kind + '" type="button">' +
-        '<span class="tile" style="background:' + c.grad + '">' + c.icon + '</span>' +
-        '<span class="info"><strong>' + c.name + '</strong><span class="sub">' + c.desc + '</span><span class="eff">' + gainsHTML(c.stats) + '</span></span>' +
-        '<span class="fee"><b>+' + T.PRACTICE[kind].coins + '코인</b><span>' + (fee ? '예약금 ' + fee : '언제나 무료') + '</span></span></button>';
+      var c = courses[kind], sp = teachers[kind];
+      var waiting = s.lesson && kind !== s.lesson.kind;
+      var prize = T.rewardFor(kind, waiting ? null : potion).coins;
+      return '<button class="cls" data-cls="' + kind + '" type="button"' + (waiting ? ' disabled' : '') + '><img src="' + T.spiritArt(sp, true) + '" alt=""><span class="course-info"><strong>' + c.name + '</strong><small>' + T.SPIRITS[sp].name + ' 선생님</small></span><b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
-    $('stageTitle').textContent = T.stageReady() ? '리허설 초대장 도착' : '초대장까지 수업 ' + T.stageLeft() + '번';
-    $('stageSub').textContent = '출석 도장 다섯 개를 모으면 첫 공연 초대장을 받아요.';
     T.syncUI();
   }
 
-  // Hash routes make Android Back and a refreshed lesson return to the expected screen.
   function routeTo(hash, replace) {
     var url = location.pathname + location.search + hash;
     if (location.hash !== hash) {
@@ -65,52 +51,58 @@
     if (id && !$(id).open) $(id).showModal();
   }
   function confirmCourse(kind) {
-    var c = courses[kind], fee = T.classFee(kind), lack = Math.max(0, fee - T.get().coins);
-    $('cKicker').textContent = c.kick;
+    var c = courses[kind], s = T.get(), potion = s.kingdom.prepared;
     $('cName').textContent = c.name;
     $('cDesc').textContent = c.desc;
-    $('cFee').textContent = fee ? T.fmt(fee) + '코인' : '무료';
-    $('cGain').innerHTML = gainsHTML(c.stats);
-    $('cNote').textContent = lack ? '현재 ' + T.fmt(T.get().coins) + '코인 · ' + T.fmt(lack) + '코인 더 모으면 들을 수 있어요.'
-      : '세 문제를 마치면 ' + (fee ? '예약금을 돌려받고 ' : '') + '연습 보상 ' + T.PRACTICE[kind].coins + '코인과 생명력 ' + T.PRACTICE[kind].life + '을 받아요.';
-    $('cGo').hidden = !!lack;
-    $('cGo').dataset.fee = fee;
-    $('cCafe').hidden = !lack;
-    $('cGo').textContent = fee ? T.fmt(fee) + '코인 맡기고 시작' : '무료 수업 시작';
+    $('cReward').textContent = '+' + T.fmt(T.rewardFor(kind, potion).coins) + '코인';
+    $('cNote').textContent = !T.isOwned('lilac') ? '첫 수업 선물 · 라일락 쉬폰 스커트' : potion ? '이번 연습에 ' + T.STAFF[potion.id].name + ' 포션을 써요.' : '중간에 쉬어도 풀던 문제에서 이어져요.';
     showDialog('confirm');
   }
-  async function enroll(kind, quotedFee) {
-    if (busy || !courses[kind]) return;
+  async function enroll(kind) {
+    if (busy || !Object.hasOwn(courses, kind)) return;
     busy = true;
-    var enrolled;
     try {
-      enrolled = await T.updateWallet(function (s) {
-        if (s.lesson) return true;
-        var fee = T.classFee(kind);
-        if (fee > s.coins || fee !== quotedFee) return false;
+      await T.updateWallet(function (s) {
+        if (s.lesson) return;
         s.lesson = book.makeLesson(kind, s);
-        s.lesson.paidFee = fee;
-        s.coins -= fee;
-        return true;
+        s.lesson.paidFee = 0;
       });
     } finally { busy = false; }
     refresh();
-    routeTo(enrolled ? '#lesson' : '#class-' + kind, true);
+    routeTo('#lesson', true);
   }
 
   function renderQuestion() {
-    var run = T.get().lesson, c = courses[run.kind], row = run.rounds[run.index];
-    var term = terms[row.key], solved = row.picks.includes(row.key);
+    var s = T.get(), run = s.lesson, row = run.rounds[run.index], term = terms[row.key];
+    var solved = row.picks.includes(row.key), hinted = !solved && (row.hint || row.picks.length > 0);
     var newQuestion = !shown || shown.id !== run.id || shown.index !== run.index;
-    shown = { id: run.id, index: run.index };
-    var teacher = T.SPIRITS[teachers[run.kind]];
-    $('lCount').textContent = '수업 노트 · ' + (run.index + 1) + ' / ' + run.rounds.length;
-    $('lTitle').textContent = c.name;
-    $('lPortrait').src = T.spiritArt(teacher.id, true);
-    $('lTeacher').textContent = teacher.name + '의 한마디';
-    Array.from($('lDots').children).forEach(function (dot, i) {
-      dot.className = i < run.index || (i === run.index && solved) ? 'done' : i === run.index ? 'current' : '';
-    });
+    var justSolved = solved && (!shown || !shown.solved);
+    shown = { id: run.id, index: run.index, solved: solved };
+    var pose = 'ready', poseLabel = '준비 자세';
+    var demo = demonstrations[row.key];
+    if (demo && (solved || hinted)) {
+      pose = demo;
+      poseLabel = hinted ? '동작 힌트' : '동작 · ' + T.POSES[pose];
+    } else if (solved) {
+      poseLabel = '다음 동작 준비';
+    } else if (run.index > 0 && demonstrations[run.rounds[run.index - 1].key]) {
+      pose = demonstrations[run.rounds[run.index - 1].key];
+      poseLabel = '이전 포즈 · ' + T.POSES[pose];
+    }
+    if (newQuestion && demo && pose !== demo) {
+      var rehearsalImage = new Image();
+      rehearsalImage.src = T.dancerArt(s.worn, demo);
+    }
+    T.showDancer($('lDancer'), s.worn, pose);
+    $('lPose').textContent = poseLabel;
+    $('lPrize').textContent = '완주 +' + T.fmt(T.rewardFor(run.kind, s.kingdom.prepared).coins) + '코인';
+    if (newQuestion) $('lScene').classList.remove('landed');
+    if (justSolved) { $('lScene').classList.remove('landed'); void $('lScene').offsetWidth; $('lScene').classList.add('landed'); }
+    $('lCount').textContent = '빈칸 ' + (run.index + 1) + ' / ' + run.rounds.length;
+    $('lTitle').textContent = courses[run.kind].name;
+    $('lPortrait').src = T.spiritArt(teachers[run.kind], true);
+    $('lTeacher').textContent = T.SPIRITS[teachers[run.kind]].name + ' 선생님';
+    Array.from($('lDots').children).forEach(function (dot, i) { dot.className = i < run.index || (i === run.index && solved) ? 'done' : i === run.index ? 'current' : ''; });
     var cue = term.cue.split('|'), blank = document.createElement('span');
     blank.className = 'term-blank' + (solved ? ' filled' : '');
     blank.textContent = solved ? term.ko : '···';
@@ -124,104 +116,143 @@
       if (chosen) {
         b.classList.add(key === row.key ? 'correct' : 'wrong');
         var mark = document.createElement('small');
-        mark.textContent = key === row.key ? '✓ 정답' : '다시 생각해요';
-        b.appendChild(mark);
+        mark.textContent = key === row.key ? '✓ 정답' : '다시 생각해요'; b.appendChild(mark);
       }
       $('lChoices').appendChild(b);
     });
     var feedback = $('lFeedback');
     feedback.replaceChildren();
     if (solved) {
-      var correct = document.createElement('b');
-      correct.textContent = term.ko + ' · ' + term.fr;
+      var correct = document.createElement('b'); correct.textContent = term.ko + ' · ' + term.fr;
       feedback.append(correct, term.note);
-    } else if (row.hint || row.picks.length) {
-      feedback.textContent = (row.picks.length ? '한 번 더 골라 볼까요? ' : '') + '‘' + term.ko[0] + '’로 시작해요. ' + term.note;
+    } else if (hinted) {
+      feedback.textContent = (row.picks.length ? '한 번 더 골라 볼까요? ' : '') + '첫 글자가 ‘' + term.ko[0] + '’인 동작이에요. ' + term.note;
     }
-    $('lHint').hidden = solved || row.hint || row.picks.length > 0;
+    $('lHint').textContent = demonstrations[row.key] ? '동작 힌트' : '힌트 보기';
+    $('lHint').hidden = solved || !!hinted;
     $('lNext').hidden = !solved;
-    $('lNext').textContent = run.index === run.rounds.length - 1 ? '연습 보상 받기' : '다음 문제';
+    $('lNext').textContent = run.index === run.rounds.length - 1 ? '수업 마치기' : '다음 문제';
     showDialog('lesson');
-    if (newQuestion) $('lCue').focus({ preventScroll: true });
+    if (newQuestion) { $('lesson').querySelector('.lcard').scrollTop = 0; $('lCue').focus({ preventScroll: true }); }
   }
 
   async function play(action, choice) {
     if (busy || !shown || !$('lesson').open) return;
-    var view = shown;
+    var view = shown, completed;
     busy = true;
-    var completed;
     try {
       completed = await T.updateWallet(function (s) {
         var run = s.lesson;
         if (!run || run.id !== view.id || run.index !== view.index) return;
-        var row = run.rounds[run.index], solved = row.picks.includes(row.key);
+        var row = run.rounds[run.index];
+        var solved = row.picks.includes(row.key);
         if (action === 'hint' && !solved) row.hint = true;
-        if (action === 'answer' && !solved && row.choices.includes(choice) && !row.picks.includes(choice)) row.picks.push(choice);
+        if (action === 'answer' && !solved && row.choices.includes(choice) && !row.picks.includes(choice)) {
+          row.picks.push(choice);
+          if (choice === row.key && run.index === run.rounds.length - 1) return T.finishPractice(s, courses[run.kind].stats);
+        }
         if (action !== 'next' || !solved) return;
-        if (run.index + 1 < run.rounds.length) { run.index++; return; }
+        if (run.index < run.rounds.length - 1) { run.index++; return; }
         return T.finishPractice(s, courses[run.kind].stats);
       });
     } finally { busy = false; }
-    if (completed) {
-      refresh(); routeTo('#completed', true);
-    } else {
-      renderRoute();
-      if (action === 'answer' && $('lesson').open) {
-        var target = $('lNext').hidden ? $('lChoices').querySelector('button:enabled') : $('lNext');
-        if (target) target.focus({ preventScroll: true });
-      }
+    if (completed) { refresh(); routeTo('#completed', true); return; }
+    renderRoute();
+    if (action === 'answer' && $('lesson').open) {
+      var target = $('lNext').hidden ? $('lChoices').querySelector('button:enabled') : $('lNext');
+      if (target) target.focus({ preventScroll: true });
     }
   }
 
-  function renderResult(receipt) {
-    var c = courses[receipt.kind], after = T.level();
-    $('rTitle').textContent = '연습 보상 +' + T.fmt(receipt.coins) + '코인';
-    $('rSub').textContent = c.name + ' 수료 · 출석 도장 +1 · 왕국 생명력 +' + receipt.life;
-    $('rTerms').textContent = receipt.keys.map(function (key) { return terms[key].ko; }).join(' · ') + ' · 첫 시도 정답 ' + receipt.first + '/3';
-    $('rStamp').textContent = c.icon;
-    $('rGains').innerHTML = gainsHTML(receipt.stats);
-    $('rRefund').hidden = !receipt.refund;
-    $('rRefund').textContent = '맡겨 둔 예약금 ' + T.fmt(receipt.refund) + '코인도 돌려받았어요.';
-    var potion = receipt.potion;
-    $('rPotion').hidden = !potion;
-    if (potion) $('rPotion').textContent = T.SPIRITS[potion.id].name + '의 포션 사용 · ' + T.effectFor(potion.id, potion.level).label;
-    $('rLv').textContent = 'Lv.' + after.n + ' ' + after.name + (after.n > receipt.levelBefore ? ' 달성!' : '');
-    $('rBar').style.width = after.pct + '%';
-    $('rLvNote').textContent = T.stageReady() ? '리허설 초대장 도착' : '초대장까지 ' + T.stageLeft() + '번';
+  function renderResult(r) {
+    var s = T.get(), lv = T.level(), c = courses[r.kind], goal = T.nextDress();
+    var key = r.lessonId || r.keys.join(',');
+    if (lastReceipt !== key) { $('rDetails').open = false; $('rAnnounce').textContent = ''; lastReceipt = key; }
+    $('rCourse').textContent = c.name + ' 수료';
+    $('rTitle').textContent = '+' + T.fmt(r.coins) + '코인 적립';
+    $('rBalance').textContent = Number.isFinite(r.before) && Number.isFinite(r.after)
+      ? '수료 당시 지갑 ' + T.fmt(r.before) + ' → ' + T.fmt(r.after) + '코인' : '현재 지갑 ' + T.fmt(s.coins) + '코인';
+    var extra = r.coins - T.PRACTICE[r.kind].coins;
+    $('rCoinsDetail').hidden = extra <= 0;
+    $('rCoinsDetail').textContent = '기본 ' + T.PRACTICE[r.kind].coins + ' + 포션 ' + extra + '코인';
+    var last = terms[r.keys[r.keys.length - 1]];
+    $('rLast').textContent = last ? '마지막 정답 · ' + last.ko + ' (' + last.fr + ')' : '';
+    T.showDancer($('rDancer'), s.worn, demonstrations[r.keys[r.keys.length - 1]] || 'curtsy');
+    var gift = r.gift && T.dressOf(r.gift);
+    $('rWear').dataset.gift = gift ? gift.id : '';
+    $('rWear').hidden = true; $('rGoalLink').hidden = true; $('rTrack').hidden = true;
+    if (gift) {
+      var wearing = s.worn === gift.id;
+      $('rMilestone').textContent = '첫 수업 선물';
+      $('rGoalName').textContent = gift.name;
+      $('rGoalNote').textContent = wearing ? '슈가가 새 스커트로 갈아입었어요.' : '옷장에 도착했어요. 슈가에게 입혀 볼까요?';
+      $('rWear').hidden = wearing;
+    } else if (r.classesAfter === 5 || !goal && T.stageReady()) {
+      $('rMilestone').textContent = '왕립 극장 초대장';
+      $('rGoalName').textContent = '잠자는 숲속의 슈가';
+      $('rGoalNote').textContent = '오늘 입은 의상으로 리허설 무대에 올라요.';
+      $('rGoalLink').textContent = '리허설 무대로'; $('rGoalLink').href = '../stage/?v=' + T.V + '#rehearsal'; $('rGoalLink').hidden = false;
+    } else if (goal) {
+      var left = Math.max(0, goal.price - s.coins);
+      $('rMilestone').textContent = '다음 의상';
+      $('rGoalName').textContent = goal.name;
+      $('rGoalNote').textContent = left ? T.fmt(left) + '코인 더 모으면 입을 수 있어요.' : '모은 코인으로 지금 살 수 있어요.';
+      $('rTrack').hidden = false; $('rTrackFill').style.width = Math.min(100, s.coins / goal.price * 100) + '%';
+      $('rGoalLink').textContent = left ? '미리 입어보기' : '드레스룸에서 입기';
+      $('rGoalLink').href = '../dressroom/?v=' + T.V + '#' + goal.id; $('rGoalLink').hidden = false;
+    } else {
+      $('rMilestone').textContent = '슈가의 연습 기록';
+      $('rGoalName').textContent = lv.name; $('rGoalNote').textContent = '지금까지 수업 ' + s.classes + '회 수료';
+    }
+    $('rTerms').textContent = r.keys.map(function (k) { return terms[k] ? terms[k].ko : ''; }).join(' · ') + ' · 첫 시도 정답 ' + r.first + '/3';
+    $('rRecord').textContent = '출석 도장 +1 · 왕국 생명력 +' + r.life + ' · ' + lv.name;
+    $('rGains').textContent = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
+    $('rPotion').hidden = !r.potion;
+    if (r.potion) $('rPotion').textContent = '사용한 포션 · ' + T.STAFF[r.potion.id].name + ' · ' + T.effectFor(r.potion.id, r.potion.level).label;
+    $('rRefund').hidden = !r.refund;
+    if (r.refund) $('rRefund').textContent = '이전에 맡긴 예약금 ' + r.refund + '코인도 돌려받았어요.';
     $('rStage').hidden = !T.stageReady();
     showDialog('result');
   }
 
   function renderRoute() {
-    var hash = location.hash, run = T.get().lesson;
-    if (hash === '#first-bar') { enroll('bar', 0); return; }
-    if (hash === '#lesson' && run) { renderQuestion(); return; }
-    if (hash.indexOf('#class-') === 0) {
+    var hash = location.hash, s = T.get(), run = s.lesson, receipt = s.kingdom.receipt;
+    if (hash === '#first-bar') { enroll('bar'); return; }
+    if (hash === '#lesson' && run) {
+      renderQuestion();
+      if (shown.solved && run.index === run.rounds.length - 1 && !busy) play('next');
+      return;
+    }
+    if (hash === '#lesson' && shown && receipt && receipt.lessonId === shown.id) { routeTo('#completed', true); return; }
+    if (hash.startsWith('#class-')) {
       if (run) { routeTo('#lesson', true); return; }
       var kind = hash.slice(7);
       if (Object.hasOwn(courses, kind)) { confirmCourse(kind); return; }
     }
-    var receipt = T.get().kingdom.receipt;
     if (hash === '#completed' && receipt) { renderResult(receipt); return; }
-    shown = null;
-    showDialog(null);
+    shown = null; showDialog(null);
   }
-
   $('classes').addEventListener('click', function (e) {
     var b = e.target.closest('[data-cls]');
     if (b) routeTo(T.get().lesson ? '#lesson' : '#class-' + b.dataset.cls);
   });
   $('resumeLesson').addEventListener('click', function () { routeTo('#lesson'); });
-  $('cGo').addEventListener('click', function () { enroll(location.hash.slice(7), Number($('cGo').dataset.fee)); });
-  $('cCancel').addEventListener('click', closeToStudio);
-  $('lPause').addEventListener('click', closeToStudio);
-  $('lChoices').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-key]');
-    if (b && !b.disabled) play('answer', b.dataset.key);
+  $('cGo').addEventListener('click', function () { enroll(location.hash.slice(7)); });
+  $('cCancel').addEventListener('click', closeToStudio); $('lPause').addEventListener('click', closeToStudio);
+  $('lChoices').addEventListener('click', function (e) { var b = e.target.closest('[data-key]'); if (b && !b.disabled) play('answer', b.dataset.key); });
+  $('lHint').addEventListener('click', function () { play('hint'); }); $('lNext').addEventListener('click', function () { play('next'); });
+  $('rAgain').addEventListener('click', function () { enroll(T.get().kingdom.receipt.kind); });
+  $('rWear').addEventListener('click', async function () {
+    if (busy) return;
+    var gift = $('rWear').dataset.gift;
+    if (!gift) return;
+    busy = true;
+    var worn;
+    try { worn = await T.updateWallet(function () { return T.wear(gift); }); } finally { busy = false; }
+    if (worn.ok) $('rAnnounce').textContent = '슈가가 ' + worn.item.name + ' 차림으로 갈아입었어요.';
+    refresh(); renderRoute();
+    $('rAgain').focus({ preventScroll: true });
   });
-  $('lHint').addEventListener('click', function () { play('hint'); });
-  $('lNext').addEventListener('click', function () { play('next'); });
-  $('rAgain').addEventListener('click', function () { routeTo('#class-' + T.get().kingdom.receipt.kind, true); });
   dialogs.forEach(function (id) {
     $(id).addEventListener('cancel', function (e) { e.preventDefault(); closeToStudio(); });
     $(id).addEventListener('click', function (e) { if (e.target === $(id)) closeToStudio(); });
