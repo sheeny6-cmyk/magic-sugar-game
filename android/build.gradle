@@ -1,0 +1,4 @@
+// 슈가의 발레왕국 - Android 앱 빌드 설정
+plugins {
+    id 'com.android.application' version '8.7.3' apply false
+}

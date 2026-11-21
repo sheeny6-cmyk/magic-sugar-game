@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 왕국 화면의 크림색 종이 배경 -->
+    <color name="cream">#F7F3EA</color>
+    <color name="icon_bg">#F4E7E4</color>
+</resources>

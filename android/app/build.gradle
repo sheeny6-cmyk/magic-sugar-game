@@ -1,0 +1,100 @@
+plugins {
+    id 'com.android.application'
+}
+
+// 업로드 키스토어 정보는 저장소에 남기지 않는다.
+// 로컬(android/keystore.properties) 또는 CI에서 만든 같은 이름의 파일에서만 읽는다.
+def keystorePropsFile = rootProject.file('keystore.properties')
+def hasKeystore = keystorePropsFile.exists()
+def keystoreProps = new Properties()
+if (hasKeystore) {
+    keystorePropsFile.withInputStream { keystoreProps.load(it) }
+}
+
+// 저장소 루트의 웹 자산(town/, cafe/)을 앱 내부 assets/www 로 복사한다.
+// 개발용 도구 폴더(tools/)는 앱 번들에서 제외한다.
+def repoRoot = rootProject.projectDir.parentFile
+def wwwOut = file('src/main/assets/www')
+
+tasks.register('syncWebAssets', Sync) {
+    into wwwOut
+    from(new File(repoRoot, 'town')) {
+        into 'town'
+        exclude 'tools/**'
+        exclude '**/.DS_Store'
+    }
+    from(new File(repoRoot, 'cafe')) {
+        into 'cafe'
+        exclude 'tools/**'
+        exclude '**/.DS_Store'
+    }
+    doFirst {
+        logger.lifecycle("웹 자산 복사: ${repoRoot}/town, ${repoRoot}/cafe -> ${wwwOut}")
+    }
+}
+
+android {
+    namespace 'com.sugar.balletkingdom'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.sugar.balletkingdom'
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+        resourceConfigurations += ['ko']
+    }
+
+    if (hasKeystore) {
+        signingConfigs {
+            release {
+                storeFile rootProject.file(keystoreProps['storeFile'])
+                storePassword keystoreProps['storePassword']
+                keyAlias keystoreProps['keyAlias']
+                keyPassword keystoreProps['keyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            if (hasKeystore) {
+                signingConfig signingConfigs.release
+            }
+        }
+        debug {
+            applicationIdSuffix '.debug'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig false
+    }
+
+    packagingOptions {
+        resources {
+            excludes += ['META-INF/*.kotlin_module', 'META-INF/version', 'META-INF/LICENSE*', 'META-INF/NOTICE*']
+        }
+    }
+
+    lint {
+        abortOnError false
+    }
+}
+
+tasks.named('preBuild').configure {
+    dependsOn 'syncWebAssets'
+}
+
+dependencies {
+    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation 'androidx.core:core:1.13.1'
+}

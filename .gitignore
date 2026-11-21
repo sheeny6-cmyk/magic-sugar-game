@@ -1,0 +1,23 @@
+# ── Android 서명 키: 절대 커밋하지 않는다 ───────────────────────
+*.jks
+*.keystore
+keystore.properties
+android/keystore.properties
+release/keystore.properties
+
+# ── 빌드 산출물 ────────────────────────────────────────────────
+android/build/
+android/app/build/
+android/.gradle/
+.gradle/
+local.properties
+*.iml
+.idea/
+android/app/src/main/assets/www/
+
+# ── 생성물/임시 파일 ───────────────────────────────────────────
+*.aab
+*.apk
+.DS_Store
+__pycache__/
+*.pyc
