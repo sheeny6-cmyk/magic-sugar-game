@@ -7,7 +7,7 @@
   var classes = {
     bar: {
       name: '바 워크', kick: 'BARRE WORK', icon: '🩰', grad: 'linear-gradient(140deg,#f3e6ff,#fce9f4)',
-      stats: { flex: 8, axis: 4 }, desc: '바를 잡고 3/4 왈츠에 맞춰 무릎과 발끝을 차례로 눌러요.',
+      stats: { flex: 8, axis: 4 }, desc: '버튼 하나로 플리에와 텐듀를 연결해 타이밍 감각을 익혀요.',
       teacher: 'etu', bpm: 76, lead: 2500, window: { perfect: 140, good: 320 },
       poses: ['plie', 'tendu', 'releve', 'arabesque'],
       mood: '호른이 노래하는 느린 왈츠', energy: '느긋하게 한 박자씩',
@@ -17,7 +17,7 @@
     },
     center: {
       name: '센터 워크', kick: 'CENTER WORK', icon: '⚖️', grad: 'linear-gradient(140deg,#fdeaf3,#fff2e7)',
-      stats: { axis: 8, turn: 4 }, desc: '바에서 손을 떼고 백조의 왈츠에 균형과 회전을 얹어요.',
+      stats: { axis: 8, turn: 4 }, desc: '기본 동작과 밸런스 버튼을 구분해 누르며 중심축을 키워요.',
       teacher: 'piru', bpm: 104, lead: 2300, window: { perfect: 120, good: 290 },
       poses: ['arabesque', 'releve', 'arabesque', 'curtsy'],
       mood: '백조의 호수 1막 왈츠', energy: '발끝으로 통통',
@@ -27,7 +27,7 @@
     },
     piece: {
       name: '작품반', kick: 'REPERTOIRE', icon: '🎭', grad: 'linear-gradient(140deg,#efe7ff,#ffe7ee)',
-      stats: { turn: 8, stam: 5, flex: 3 }, desc: '빠르고 화려한 무대. 점프와 고양이까지 한 번에 넘겨요.',
+      stats: { turn: 8, stam: 5, flex: 3 }, desc: '기본 동작, 밸런스, 도약을 음악에 맞춰 연결하는 심화 연습이에요.',
       teacher: 'ara', bpm: 132, lead: 2200, window: { perfect: 105, good: 260 },
       poses: ['arabesque', 'releve', 'curtsy', 'arabesque'],
       mood: '꽃의 왈츠 바이올린 선율', energy: '무대 위 한 장면처럼',
@@ -83,7 +83,7 @@
     }
     var notes = c.pick.map(function (idx, i) {
       var b = melody && melody[idx] ? melody[idx][0] : c.lead / beatMs + i * 1.5;
-      return { t: Math.round(b * beatMs), type: typeFor(c.moves[i] || 'beat') };
+      return { t: Math.round(b * beatMs), type: kind === 'bar' ? 'beat' : kind === 'center' ? (c.moves[i] === 'beat' ? 'beat' : 'cat') : typeFor(c.moves[i] || 'beat') };
     });
     var last = notes[notes.length - 1];
     var tail = song ? Math.round(song.length * beatMs) : last.t + 1900;

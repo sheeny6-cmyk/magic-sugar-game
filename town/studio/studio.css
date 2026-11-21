@@ -170,3 +170,6 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
 .rvoice{margin-top:12px;font-size:.87rem;line-height:1.6;color:#5a4359;background:#f8f1f7;border:1px solid #e8d9e8;border-radius:11px;padding:9px 11px;word-break:keep-all}
 @media(max-width:360px){.mate b{font-size:.74rem}.mates{padding:10px 10px 9px}}
 .bond-gain{margin-top:9px;font-size:.85rem;line-height:1.5;font-weight:700;color:#a0577a;background:#fdf0f6;border:1px solid #f4dee9;border-radius:10px;padding:8px 10px;word-break:keep-all}
+
+.studio .practice-scene{height:clamp(180px,30svh,285px)}.studio .practice-dancer{height:96%;width:76%;left:12%;z-index:2}.scene-coach{position:absolute;left:3%;bottom:12%;width:17%;height:29%;object-fit:contain;z-index:3;border-radius:50%;background:#fff8f3c9;border:1px solid #cbb1d2}.pose-cue{position:absolute;right:7px;top:8px;z-index:3;background:#fffaf2ed;color:#5a3e66;padding:6px 9px;border-radius:9px;font-size:.8rem;font-weight:750}.studio .move{touch-action:manipulation}.studio .lcard{padding:12px}.studio .rhythm-pad{gap:6px}
+@media(max-height:650px){.studio .practice-scene{height:clamp(120px,25svh,180px)}}

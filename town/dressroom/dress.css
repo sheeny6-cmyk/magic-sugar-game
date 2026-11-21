@@ -42,3 +42,5 @@
 .outfit-card .lv-badge[hidden]{display:none}
 .outfit-card.locked .sample{filter:saturate(.82)}
 .outfit-card.locked .sample:after{content:"🔒";position:absolute;right:5px;bottom:5px;z-index:2;font-size:.72rem;opacity:.85}
+
+.fitting-poses{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}.fitting-poses button{border:1px solid #d1bed4;border-radius:8px;padding:8px 9px;background:#f7f0f6;color:#654b6d;font:inherit;font-size:.76rem;cursor:pointer;min-height:36px}.fitting-poses button[aria-pressed=true]{background:#72547e;color:white}

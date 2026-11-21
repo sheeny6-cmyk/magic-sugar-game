@@ -220,6 +220,9 @@
     $('staffIntro').textContent = dose ? T.SPIRITS[dose.id].name + '의 포션이 준비됐어요. ' + who + '님이 연습을 마치면 효과가 발동해요.'
       : !s.classes && !Object.values(k.orders).some(Boolean) ? '첫 지원금은 ' + T.GRANT + '코인이에요. 정령에게 포션을 한 잔 주문하면 생명력 1이 전해져요.'
       : '카드를 누르면 정령의 성격과 편지를 읽을 수 있어요. 함께 연습하고 포션을 주문할수록 하트가 늘어나요.';
+    var steps = [{label:'첫 연습',done:s.classes>=1},{label:'무대 준비',done:s.classes>=2},{label:'첫 공연',done:s.shows>=1}];
+    $('journeySteps').innerHTML = steps.map(function(x,i){return '<span class="'+(x.done?'done':steps.slice(0,i).every(function(y){return y.done;})?'active':'')+'">'+(x.done?'✓ ':'')+x.label+'</span>';}).join('');
+    document.querySelectorAll('.kingdom-map .venue').forEach(function(a){a.classList.toggle('is-next', !s.shows && a.getAttribute('href').indexOf(T.stageReady()&&!lesson?'stage/':'studio/')===0);});
     renderRoster(s);
     $('idRank').textContent = 'Lv.' + level.n + ' ' + level.name;
     $('lvName').textContent = 'Lv.' + level.n + ' ' + level.name;

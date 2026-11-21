@@ -3,7 +3,8 @@
   var T = window.SugarTown, $ = function (id) { return document.getElementById(id); };
   var requested = location.hash.slice(1);
   var selected = T.DRESS.some(function (d) { return d.id === requested; }) ? requested : T.get().worn;
-  var busy = false;
+  var busy = false, previewPose = 'ready';
+  $('fittingPoses').addEventListener('click', function(e){var b=e.target.closest('[data-pose]');if(b){previewPose=b.dataset.pose;refresh();}});
 
   function lvNow() { return T.level().n; }
   function unlockNote(d) {
@@ -16,7 +17,8 @@
     var missing = Math.max(0, d.price - state.coins);
     var unlocked = !!d.levelAt && lv >= d.levelAt;
     $('lookStatus').textContent = wearing ? '착용 중' : '미리 입어보기';
-    T.showDancer($('lookDancer'), d.id, 'ready');
+    T.showDancer($('lookDancer'), d.id, previewPose);
+    $('fittingPoses').querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.pose===previewPose));});
     $('lookName').textContent = d.name;
     $('lookDesc').textContent = d.desc;
     $('lookCost').textContent = owned ? (wearing ? '현재 연습복' : '내 옷장에 있어요') :

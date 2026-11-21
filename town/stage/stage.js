@@ -147,6 +147,7 @@
     $('sHearts').replaceChildren();
     $('sFill').style.width = '0%';
     T.showDancer($('sDancer'), s.worn, 'ready');
+    Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     $('sMove').textContent = '준비 자세';
     $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms. 링이 겹치는 순간을 탭!';
     var begin = function () { if (band && show) band.start(SONG, Math.max(0, performance.now() - show.p0)); };
@@ -184,7 +185,7 @@
     var cue = CUES[i];
     if (show.pose !== cue.pose && p > -0.1) {
       show.pose = cue.pose;
-      T.showDancer($('sDancer'), T.get().worn, cue.pose);
+      // Show the cue first; the dancer changes pose only on a successful tap.
       $('sMove').textContent = T.POSES[cue.pose];
       $('sCue').textContent = LINES[cue.pose] || '';
     }
@@ -227,10 +228,14 @@
       judgeMiss('wrong');
       return;
     }
+    T.showDancer($('sDancer'), T.get().worn, CUES[show.at].pose);
+    $('sDancer').classList.remove('stage-miss','stage-hit'); void $('sDancer').offsetWidth; $('sDancer').classList.add('stage-hit');
     advance();
   }
   function judgeMiss(reason) {
     show.miss++; show.combo = 0;
+    T.showDancer($('sDancer'), T.get().worn, 'ready');
+    $('sDancer').classList.remove('stage-hit','stage-miss'); void $('sDancer').offsetWidth; $('sDancer').classList.add('stage-miss');
     judge('삐끗!', 'miss');
     chime([196, 174.6], 0, 0.3, 0.11);
     bubble(reason === 'wrong' ? '손이 반 박자 빨랐어요 😅' : '음악이 먼저 지나갔어요 🎵');

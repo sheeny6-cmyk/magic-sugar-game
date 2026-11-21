@@ -223,12 +223,12 @@
     var notes = chart.notes.map(function (n, i) {
       var el = document.createElement('span');
       el.className = 'note ' + n.type;
-      el.textContent = MOVES[n.type].note;
+      el.textContent = ({beat:'♩',cat:'◇',jump:'↑'})[n.type];
       el.setAttribute('aria-hidden', 'true');
       el.style.display = 'none';
       lane.appendChild(el);
       var prop = null;
-      if (n.type !== 'beat') {
+      if (false) {
         prop = document.createElement('span');
         prop.className = 'prop ' + n.type;
         prop.setAttribute('aria-hidden', 'true');
@@ -255,6 +255,13 @@
     $('lPrize').textContent = '완주 +' + T.fmt(T.rewardFor(kind, s.kingdom.prepared).coins) + '코인';
     $('lPortrait').src = T.spiritArt(teachers[kind], true);
     var mate = s.practiceWith;
+    $('lCoach').src = T.spiritArt(mate || teachers[kind],true);
+    $('lCoach').alt = T.SPIRITS[mate || teachers[kind]].name;
+    var pad = $('pad');
+    pad.querySelectorAll('[data-move]').forEach(function(b){b.hidden = !notes.some(function(n){return n.type===b.dataset.move;});});
+    pad.style.gridTemplateColumns = 'repeat('+pad.querySelectorAll('[data-move]:not([hidden])').length+',1fr)';
+    $('lNextMove').textContent = '음악에 맞춰 준비';
+    Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     $('lTeacher').textContent = T.SPIRITS[teachers[kind]].name + ' 선생님' +
       (mate && mate !== teachers[kind] ? ' · ' + T.SPIRITS[mate].name + '와 함께'
         : mate ? ' · 단둘이 연습' : '');
@@ -262,7 +269,7 @@
     T.showDancer($('lDancer'), s.worn, 'ready');
     $('lDancer').classList.remove('snap', 'wobble');
     $('lFeedback').textContent = kind === 'bar'
-      ? '노래에 맞춰 노트가 판정 원에 닿을 때 🩰 박자를 눌러요! 고양이는 🐾, 장애물은 🦋.'
+      ? '노트가 판정 원에 닿으면 기본 동작 버튼을 눌러요.'
       : '노트가 판정 원에 닿는 순간, 노트와 같은 동작을 눌러요!';
     ses = {
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
@@ -318,6 +325,8 @@
       n.el.classList.toggle('near', Math.abs(p - 1) < 0.085);
       if (n.prop && n.prop.dataset.done !== '1') paintProp(n.prop, n.type, p);
     }
+    var next = ses.notes.find(function(n){return !n.judged;});
+    $('lNextMove').textContent = next ? ({beat:'♩ 기본 동작',cat:'◇ 밸런스',jump:'↑ 도약'})[next.type] : '마무리 자세';
     if (t > ses.chart.total) { finishSession(); return; }
     ses.raf = requestAnimationFrame(loop);
   }
@@ -407,8 +416,9 @@
   }
   function advancePose(over) {
     ses.poseIdx = (ses.poseIdx + 1) % ses.poses.length;
-    setPose(ses.poses[ses.poseIdx], !over);
-    if (over) hopOver(over);
+    if (over === 'cat') setPose('arabesque', true);
+    else if (over === 'jump') { setPose('releve', false); hopOver('jump'); }
+    else setPose(ses.poses[ses.poseIdx], true);
   }
 
   function clearProp(n) {
@@ -434,12 +444,12 @@
     advancePose(n.type === 'beat' ? '' : n.type);
     if (verdict === 'perfect') {
       flashJudge('PERFECT!', 'perfect'); sparkle(10, 'gold'); tone('perfect');
-      if (n.type === 'cat') bubble('야옹! 같이 폴짝 🐱', 'happy');
-      else if (n.type === 'jump') bubble('장애물 위로 붕! 🦋', 'happy');
-      cue(book.pickLine('perfect', n.type));
+      if (n.type === 'cat') bubble('균형 성공!', 'happy');
+      else if (n.type === 'jump') bubble('가벼운 도약!', 'happy');
+      cue(n.type === 'beat' ? '음악과 발끝이 맞았어요!' : '정확한 동작이에요!');
     } else {
       flashJudge('GOOD!', 'good'); sparkle(5, 'mint'); tone('good');
-      cue(book.pickLine('good', n.type));
+      cue('좋아요. 다음 동작을 이어 가요.');
     }
     comboBump(); paintDots(); paintCount();
   }
@@ -464,8 +474,8 @@
       : n.type === 'jump'
         ? ['튜튜가 장애물에 걸렸어요! 🚧', '도약은 했는데 장애물이 더 높았어요 😵', '장애물이 오늘따라 커 보여요 🧱']
         : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
-    bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
-    cue(why === 'wrong' ? book.pickLine('wrong', n.type) : book.pickLine('late', n.type));
+    bubble('다음 박자에 다시 도전!', 'sad');
+    cue(why === 'wrong' ? '다음 동작 표시를 보고 눌러요.' : '한 박자 놓쳤어요. 음악은 계속돼요.');
     showComfort();
     comboBump(); paintDots(); paintCount();
   }

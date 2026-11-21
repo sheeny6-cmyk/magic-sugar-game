@@ -118,3 +118,5 @@
 @media(max-width:400px){.spirit-cheer{padding:9px 10px;gap:8px}.cheer-face{width:34px;height:34px}.cheer-line{font-size:.74rem}}
 .cheer-hearts .hrt{font-size:.6rem}
 .cheer-hearts .hrt.on{color:#d2708f}
+
+#sDancer.stage-hit{animation:stage-hit-pose .34s ease-out}#sDancer.stage-miss{animation:stage-miss-pose .42s ease-out}@keyframes stage-hit-pose{0%{opacity:.65;translate:0 4px}100%{opacity:1;translate:0 0}}@keyframes stage-miss-pose{0%,100%{rotate:0deg}40%{rotate:-5deg}70%{rotate:4deg}}@media(prefers-reduced-motion:reduce){#sDancer.stage-hit,#sDancer.stage-miss{animation:none}}
