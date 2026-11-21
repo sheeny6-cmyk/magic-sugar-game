@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121d';
+  var V = '20261121e';
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
     center: { fee: 0, coins: 80, life: 2 },
