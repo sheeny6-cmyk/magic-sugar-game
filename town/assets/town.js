@@ -51,11 +51,14 @@
 
   var STAFF = {
     etu: { name: '에티튜드 밸런스', gift: 'axis', unit: 4, line: '음악이 멈춰도 한 박자 더 머물 수 있게, 중심을 한 방울 담았어.' },
-    ara: { name: '아라베스크 이슬', gift: 'flex', unit: 4, line: '손끝에서 발끝까지, 선이 길게 이어지길.' },
-    piru: { name: '피루엣 스파이럴', gift: 'coins', unit: 12, line: '한 바퀴 돌고 제자리! 오늘 연습 보상에 코인을 더할게.' },
+    ara: { name: '아라베스크 이슬', gift: 'flex', unit: 4, line: '손끝에서 발끝까지, {n}님의 선이 길게 이어지길.' },
+    piru: { name: '피루엣 스파이럴', gift: 'coins', unit: 12, line: '한 바퀴 돌고 제자리! {n}님의 연습 보상에 코인을 더할게.' },
     shangz: { name: '그랑 제떼 구름', gift: 'stam', unit: 4, line: '마지막 점프까지 가볍게! 구름 한 조각을 녹였어.' },
-    alle: { name: '세 박자 왈츠', gift: 'life', unit: 1, line: '하나, 둘, 셋. 이 박자에 왕국의 생명력도 차올라.' }
+    alle: { name: '세 박자 왈츠', gift: 'life', unit: 1, line: '하나, 둘, 셋. {n}님의 박자에 왕국의 생명력도 차올라.' }
   };
+  function staffLine(id) {
+    return String((STAFF[id] && STAFF[id].line) || '').replace(/\{n\}/g, nick());
+  }
 
   function staffLevel(orders) { return 1 + Math.floor(orders / ORDERS_PER_LEVEL); }
   function effectFor(id, level) {
@@ -716,7 +719,7 @@
     KEY: KEY, V: V, ROOT: ROOT, asset: A, STATS: STATS, SPIRITS: SPIRITS, MENU: MENU, DRESS: DRESS,
     load: load, get: get, save: persist, reset: function () { S = clone(DEFAULT); S.createdAt = Date.now(); persist(); syncUI(); },
     syncUI: syncUI, fmt: fmt, addCoins: addCoins, spend: spend, addStats: addStats,
-    updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF,
+    updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF, staffLine: staffLine,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,

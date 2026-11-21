@@ -35,7 +35,7 @@
     $('shopWindow').dataset.spirit = selected;
     $('potionTitle').textContent = recipe.name + ' 포션';
     $('brewLevel').textContent = '조제 Lv.' + level;
-    $('staffLine').textContent = '“' + recipe.line + '”';
+    $('staffLine').textContent = '“' + T.staffLine(selected) + '”';
     var brewedLevel = held && held.id === selected ? held.level : nextLevel;
     $('effect').textContent = T.effectFor(selected, brewedLevel).label;
     $('progressName').textContent = spirit.name + '의 조제 경험';
