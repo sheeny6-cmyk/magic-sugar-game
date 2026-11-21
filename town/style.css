@@ -194,3 +194,8 @@ a{color:inherit}
 .hero p{font-size:.86rem;color:#715a7d;word-break:keep-all}
 #townMap{scroll-margin-top:65px}
 .wallet-note a{font-weight:700;text-underline-offset:2px}
+
+/* ---------- 정령 친밀도 하트 (공용) ---------- */
+.heart-row{display:inline-flex;gap:1px;align-items:center;line-height:1}
+.hrt{font-size:.72rem;color:#e2cfda;font-style:normal}
+.hrt.on{color:#df7f9e}

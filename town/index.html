@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f7f3ea">
-<meta name="description" content="나만의 발레리나가 입문에서 프리마 발레리나까지 자라는 왕국. 연습으로 코인을 모으고 다섯 정령에게 나만의 포션을 주문해 보세요.">
+<meta name="description" content="나만의 발레리나가 입문에서 프리마 발레리나까지 자라는 왕국. 연습으로 코인을 모으고 다섯 정령과 마음을 나눠 보세요.">
 <meta property="og:title" content="슈가의 발레왕국">
 <meta property="og:description" content="닉네임을 정하고, 궁전 뜰에서 바 연습을 시작해 프리마 발레리나까지 승급해 보세요.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/town/assets/palace-court.webp">
 <title>슈가의 발레왕국</title>
-<link rel="stylesheet" href="style.css?v=20261121h">
-<link rel="stylesheet" href="court.css?v=20261121h">
+<link rel="stylesheet" href="style.css?v=20261121i">
+<link rel="stylesheet" href="court.css?v=20261121i">
 </head>
 <body class="court">
 <div class="court-shell">
@@ -34,11 +34,31 @@
         <h2 id="nextTitle">첫 바 연습</h2>
         <p id="nextGoal">에튜 선생님과 3/4 왈츠에 맞춰 박자를 타요.</p>
         <div class="ticket-reward" id="nextReward">노트 완주 <b>+50코인</b></div>
-        <a class="action" id="nextAction" href="studio/?v=20261121h#first-bar">바 연습 시작 <span aria-hidden="true">→</span></a>
+        <a class="action" id="nextAction" href="studio/?v=20261121i#first-bar">바 연습 시작 <span aria-hidden="true">→</span></a>
         <p class="ticket-note" id="ticketNote">첫 수업 선물 · 라일락 쉬폰 스커트</p>
-        <a class="ticket-stage" id="stageShortcut" href="stage/?v=20261121h" hidden>첫 리허설 초대장 열기 →</a>
+        <a class="ticket-stage" id="stageShortcut" href="stage/?v=20261121i" hidden>첫 리허설 초대장 열기 →</a>
       </section>
     </div>
+
+    <section class="growth" aria-labelledby="growthTitle">
+      <div class="section-line">
+        <div><p class="place-label">나의 발레리나</p><h2 id="growthTitle">오늘의 한마디</h2></div>
+        <span class="rank-chip" id="growthRank">Lv.1 입문</span>
+      </div>
+      <div class="voice-card">
+        <img class="voice-dancer" id="voiceDancer" data-worn-pose="arabesque" src="assets/dancers/basic-arabesque.webp" alt="">
+        <div class="voice-bubble"><b id="voiceName">슈가</b><p id="voiceLine"></p></div>
+      </div>
+      <div class="next-look" id="nextLook">
+        <figure class="next-silhouette" id="lookFigure"><img id="lookSilhouette" alt="다음 승급 모습 실루엣"><span class="ss-q" aria-hidden="true">?</span></figure>
+        <div class="next-copy">
+          <p class="next-kicker" id="lookKicker"></p>
+          <h3 id="lookTitle"></h3>
+          <ul class="next-hints" id="lookHints"></ul>
+          <a class="text-link" id="lookCta" href="studio/?v=20261121i"></a>
+        </div>
+      </div>
+    </section>
 
     <section class="roadmap" aria-labelledby="roadTitle">
       <div class="section-line">
@@ -49,31 +69,37 @@
       <div class="road-panel" id="roadPanel">
         <p class="road-next" id="roadNext"></p>
         <ul class="road-needs" id="roadNeeds"></ul>
-        <a class="action" id="roadCta" href="studio/?v=20261121h"></a>
+        <a class="action" id="roadCta" href="studio/?v=20261121i"></a>
         <p class="road-note" id="roadNote"></p>
       </div>
     </section>
 
     <section class="counter" aria-labelledby="staffTitle">
-      <div class="section-line"><div><p class="place-label">슈가 발레 카페</p><h2 id="staffTitle">정령 포션 주문대</h2></div><a class="text-link" href="potions/?v=20261121h">주문대 입장 <span aria-hidden="true">→</span></a></div>
-      <p class="section-intro" id="staffIntro">다음 연습을 도와줄 정령을 골라요. 주문할 때마다 그 정령에게 생명력이 전해져요.</p>
-      <div class="roster" id="staffRoster" aria-label="담당 정령 선택"></div>
+      <div class="section-line"><div><p class="place-label">슈가 발레 카페</p><h2 id="staffTitle">정령과의 교감</h2></div><a class="text-link" href="potions/?v=20261121i">주문대 입장 <span aria-hidden="true">→</span></a></div>
+      <p class="section-intro" id="staffIntro">다음 연습을 도와줄 정령을 골라요. 카드를 누르면 정령의 편지가 열려요.</p>
+      <div class="roster" id="staffRoster" aria-label="정령 다섯과 교감"></div>
     </section>
 
     <section class="district" aria-labelledby="townMap">
       <div class="section-line"><h2 id="townMap">왕국 둘러보기</h2></div>
       <div class="venues">
-        <a class="venue" href="studio/?v=20261121h"><div class="venue-art studio-art"><img data-worn-pose="releve" src="assets/dancers/basic-releve.webp" loading="lazy" alt=""></div><div><h3>발레 스튜디오</h3><p>바 · 센터 · 작품반</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="studio/?v=20261121i"><div class="venue-art studio-art"><img data-worn-pose="releve" src="assets/dancers/basic-releve.webp" loading="lazy" alt=""></div><div><h3>발레 스튜디오</h3><p>바 · 센터 · 작품반</p></div><i aria-hidden="true">↗</i></a>
         <a class="venue" href="../cafe/?v=20261121f"><div class="venue-art"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt=""></div><div><h3>슈가 발레 카페</h3><p id="cafeBest">마법 라떼 만들고 코인 벌기</p></div><i aria-hidden="true">↗</i></a>
-        <a class="venue" href="snack/?v=20261121h"><div class="venue-art"><img src="assets/thumbs/tteokbokki.webp" loading="lazy" alt=""></div><div><h3>꿈속 발레 분식집</h3><p>손님의 고민에 맞는 분식 찾기</p></div><i aria-hidden="true">↗</i></a>
-        <a class="venue" href="dressroom/?v=20261121h"><div class="venue-art wardrobe-art"><img data-worn-pose="ready" src="assets/dancers/basic-ready.webp" loading="lazy" alt=""></div><div><h3>드레스룸</h3><p data-worn-name>기본 핑크 레오타드</p></div><i aria-hidden="true">↗</i></a>
-        <a class="venue" href="stage/?v=20261121h"><div class="venue-art stage-art"><img data-worn-pose="curtsy" src="assets/dancers/basic-curtsy.webp" loading="lazy" alt=""></div><div><h3>왕립 극장</h3><p id="stageLine">첫 리허설 초대장까지 도장 5개</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="snack/?v=20261121i"><div class="venue-art"><img src="assets/thumbs/tteokbokki.webp" loading="lazy" alt=""></div><div><h3>꿈속 발레 분식집</h3><p>손님의 고민에 맞는 분식 찾기</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="dressroom/?v=20261121i"><div class="venue-art wardrobe-art"><img data-worn-pose="ready" src="assets/dancers/basic-ready.webp" loading="lazy" alt=""></div><div><h3>드레스룸</h3><p data-worn-name>기본 핑크 레오타드</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="stage/?v=20261121i"><div class="venue-art stage-art"><img data-worn-pose="curtsy" src="assets/dancers/basic-curtsy.webp" loading="lazy" alt=""></div><div><h3>왕립 극장</h3><p id="stageLine">첫 리허설 초대장까지 도장 5개</p></div><i aria-hidden="true">↗</i></a>
       </div>
     </section>
     <section class="record" aria-labelledby="recordTitle">
       <div class="section-line"><h2 id="recordTitle">연습 기록</h2><span id="lvName"></span></div>
       <div class="record-track"><i id="lvBar"></i></div><p id="lvNote"></p>
       <dl class="record-stats"><div><dt>유연성</dt><dd data-stat="flex">0</dd></div><div><dt>중심축</dt><dd data-stat="axis">0</dd></div><div><dt>턴아웃</dt><dd data-stat="turn">0</dd></div><div><dt>체력</dt><dd data-stat="stam">0</dd></div></dl>
+      <div class="diary">
+        <div class="diary-head"><h3>나의 발레 성장 일기</h3><span id="diaryCount"></span></div>
+        <p class="diary-empty" id="diaryEmpty">아직 일기가 비어 있어요. 첫 수업을 마치면 첫 줄이 적혀요.</p>
+        <ol class="diary-list" id="diaryList"></ol>
+        <button class="diary-more" id="diaryMore" type="button" hidden></button>
+      </div>
     </section>
   </main>
   <footer class="court-foot">© 슈가의 발레왕국</footer>
@@ -93,7 +119,26 @@
   </form>
 </dialog>
 
-<script src="assets/town.js?v=20261121h"></script>
-<script src="court.js?v=20261121h"></script>
+<dialog class="bond-dialog" id="bondDialog" aria-labelledby="bondName">
+  <div class="bond-card">
+    <button class="bond-x" id="bondClose" type="button" aria-label="닫기">✕</button>
+    <div class="bond-head">
+      <span class="bond-face"><img id="bondFace" src="assets/chars/etu.webp" alt=""></span>
+      <div class="bond-id"><p class="bond-kicker" id="bondRole"></p><h2 id="bondName">에튜</h2><p class="bond-nature" id="bondNature"></p></div>
+    </div>
+    <div class="bond-meter"><div id="bondHearts" class="bond-hearts"></div><p id="bondNote"></p></div>
+    <p class="bond-line" id="bondLine"></p>
+    <div class="bond-letters-head"><h3>정령의 편지</h3><span id="bondLettersCount"></span></div>
+    <div class="bond-letters" id="bondLetters"></div>
+    <div class="bond-btns">
+      <button class="nick-ghost" id="bondPractice" type="button">함께 연습하기</button>
+      <a class="nick-primary" id="bondPotion" href="potions/?v=20261121i">포션 주문</a>
+    </div>
+    <p class="bond-foot" id="bondFoot">함께 연습하면 친밀도가 +1 올라요</p>
+  </div>
+</dialog>
+
+<script src="assets/town.js?v=20261121i"></script>
+<script src="court.js?v=20261121i"></script>
 </body>
 </html>

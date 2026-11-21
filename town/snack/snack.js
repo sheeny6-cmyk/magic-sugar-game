@@ -11,31 +11,36 @@
       id: 'ara', name: '아라', role: '아라베스크 · 선 정령', img: A('assets/chars/ara.webp'), color: '#7d9ad8',
       line: '아라베스크 라인이 더 길어지고 싶어요… 발끝이 자꾸 짧아져요.',
       tags: ['라인', '유연성'], need: ['skewer'], alt: [['tteokbokki']],
-      react: '라인이 쭉 이어져요… 아라베스크가 길어졌어요!'
+      react: '라인이 쭉 이어져요… 아라베스크가 길어졌어요!',
+      comfort: '아라가 “선은 한 번에 그어지지 않아요. 다음 접시에 이어 그려요.” 하고 고개를 끄덕였어요.'
     },
     {
       id: 'alle', name: '알레', role: '음악 · 리듬 정령', img: A('assets/chars/alle.webp'), color: '#77c2a7',
       line: '점프할 때 발이 너무 무거워요! 착지도 자꾸 흔들리고요.',
       tags: ['점프', '체력'], need: ['fried'],
-      react: '발이 깃털처럼 가벼워요! 점프가 두 배!'
+      react: '발이 깃털처럼 가벼워요! 점프가 두 배!',
+      comfort: '알레가 흥얼거리죠. “괜찮아요, 쉼표도 음악이에요. 하나, 둘, 셋 — 다시 시작해요.”'
     },
     {
       id: 'etu', name: '에튜', role: '아티튜드 · 균형 정령', img: A('assets/chars/etu.webp'), color: '#ab8fdb',
       line: '밸런스 잡을 때마다 중심축이 흔들려요… 자꾸 발이 붙어요.',
       tags: ['중심축'], need: ['jjolmyeon'],
-      react: '축이… 안 흔들려요! 이제 아티튜드도 붙어요!'
+      react: '축이… 안 흔들려요! 이제 아티튜드도 붙어요!',
+      comfort: '에튜가 조용히 말해요. “흔들려도 괜찮아요. 돌아올 자리만 알면 돼요.”'
     },
     {
       id: 'shangz', name: '샹즈', role: '샹주망 · 도약 정령', img: A('assets/chars/shangz.webp'), color: '#e0b465',
       line: '오늘 연속 도약하느라 체력이 완전 방전됐어요!',
       tags: ['체력'], need: ['sundae'], alt: [['fried']],
-      react: '체력이 무한 충전됐어요! 한 번 더 뛸 수 있어요!'
+      react: '체력이 무한 충전됐어요! 한 번 더 뛸 수 있어요!',
+      comfort: '샹즈가 손을 흔들어요. “다음엔 꼭 맞아요! 저는 착지 자리에서 기다릴게요.”'
     },
     {
       id: 'piru', name: '피루', role: '피루엣 · 회전 정령', img: A('assets/chars/piru.webp'), color: '#e5899f',
       line: '피루엣 3바퀴가 너무 느리게 돌아가요! 뱅크도 자꾸 흔들리고요.',
       tags: ['회전', '턴아웃'], need: ['cola'],
-      react: '턴이 빨라졌어요! 3바퀴가 순식간!'
+      react: '턴이 빨라졌어요! 3바퀴가 순식간!',
+      comfort: '피루가 빙글 돌며 웃어요. “한 번 못 맞아도 돌아오면 되지! 다음엔 내가 콜라 마실게.”'
     },
     {
       id: 'sugar', name: T.nick(), role: '발레 왕국의 주인공', img: A('assets/chars/sugar.webp'), color: '#b98fd8',
@@ -67,7 +72,7 @@
 
   var state = {
     queue: [], round: 0, total: 6, served: 0, streak: 0, bestStreak: 0,
-    earned: 0, pick: [], order: null, busy: false, gained: {}, miss: 0
+    earned: 0, pick: [], order: null, busy: false, gained: {}, miss: 0, bond: null, bonds: {}
   };
 
   function shuffle(a) {
@@ -96,7 +101,7 @@
 
   function start() {
     state = { queue: buildQueue(), round: 0, total: 6, served: 0, streak: 0, bestStreak: 0,
-      earned: 0, pick: [], order: null, busy: false, gained: {}, miss: 0 };
+      earned: 0, pick: [], order: null, busy: false, gained: {}, miss: 0, bond: null, bonds: {} };
     show('scPlay');
     renderRound();
   }
@@ -117,6 +122,12 @@
     $('custName').textContent = o.name;
     $('custRole').textContent = o.role;
     $('custLine').textContent = '“' + o.line + '”';
+    var bondChip = $('custBond'), bond = o.img && Object.hasOwn(T.STAFF, o.id) ? T.bondOf(o.id) : null;
+    bondChip.hidden = !bond;
+    if (bond) {
+      bondChip.innerHTML = T.heartsHTML(bond.level, 'cust-hearts');
+      bondChip.title = bond.name + ' 친밀도 Lv.' + bond.level;
+    }
 
     var tags = (o.tags || []).map(function (t) { return '<span class="tag">#' + t + '</span>'; });
     if (o.need.length > 1) tags.push('<span class="tag time">2가지 담기</span>');
@@ -186,6 +197,7 @@
   async function serve() {
     if (state.busy || !state.pick.length) return;
     state.busy = true;
+    state.bond = null;
     var order = state.order;
     var pick = state.pick.slice();
     var ok = judge(order, pick);
@@ -219,6 +231,11 @@
         s.served += 1;
         T.addStats(gained);
         T.addCoins(earned);
+        if (order.img && Object.hasOwn(T.STAFF, order.id)) {
+          state.bond = T.raiseBond(s, order.id, 1);
+          state.bonds[order.id] = (state.bonds[order.id] || 0) + 1;
+          T.journal(s, 'first-serve', '🥘', T.nick() + '님이 분식집에서 첫 손님을 맞았어요. 따뜻한 한 접시로 마음까지 데웠어요.');
+        }
       }
     });
     showReact(ok, order, pick, earned, gained);
@@ -239,6 +256,18 @@
     $('rLine').innerHTML = ok
       ? '“' + (order.react || first.magic) + '”'
       : '손님이 고개를 갸웃했어요. 원하는 건 <b>' + needNames(order) + '</b>이었어요.';
+    var comfort = $('rComfort');
+    comfort.hidden = ok;
+    if (!ok) comfort.textContent = order.comfort || '다음 손님은 분명 더 잘 맞을 거예요. 천천히 살펴봐요.';
+    var bond = ok ? state.bond : null;
+    var bondEl = $('rBond');
+    bondEl.hidden = !bond;
+    if (bond) {
+      var now = T.bondOf(bond.id);
+      bondEl.textContent = bond.levels.length
+        ? '♥ ' + bond.name + '와 더 가까워졌어요 · 친밀도 Lv.' + bond.level
+        : '♥ ' + bond.name + '와 한 걸음 가까워졌어요 · 다음 하트까지 ' + now.left + '번';
+    }
     var chips = Object.keys(gained).map(function (k) {
       return '<span class="gain">' + T.STATS[k].icon + ' ' + T.STATS[k].label + ' +' + gained[k] + '</span>';
     });
@@ -295,11 +324,15 @@
       return T.STATS[k].label + ' +' + state.gained[k];
     });
     $('endStats').textContent = st.length ? st.join(' · ') : '—';
+    var met = Object.keys(state.bonds).map(T.bondOf);
+    $('endBonds').textContent = met.length
+      ? met.map(function (b) { return b.name + ' Lv.' + b.level; }).join(' · ')
+      : '오늘은 아직 마음을 나눈 정령이 없어요';
 
     var msg;
     if (state.served >= 6) msg = '완벽한 영업! 손님 6명 모두 만족했어요.';
     else if (state.served >= 4) msg = '좋아요. 코인이 차곡차곡 쌓였어요.';
-    else msg = '오늘은 헷갈리는 손님이 많았어요. 도감 보고 다시 도전!';
+    else msg = '오늘은 손님 마음이 조금 어려웠어요. 괜찮아요, 끝까지 영업했으니까요. 다음엔 더 잘 맞을 거예요.';
     $('endMsg').textContent = msg;
 
     show('scEnd');

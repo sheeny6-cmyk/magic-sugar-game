@@ -10,7 +10,7 @@ from playwright.sync_api import sync_playwright
 BASE = (sys.argv[1] if len(sys.argv) > 1 else "https://sheeny6-cmyk.github.io/magic-sugar-game").rstrip("/")
 OUT = pathlib.Path(sys.argv[2] if len(sys.argv) > 2 else "/workspace/downloads")
 OUT.mkdir(parents=True, exist_ok=True)
-V = "?v=20261121h"
+V = "?v=20261121i"
 BUTTONS = {"beat": ".move.beat", "cat": ".move.cat", "jump": ".move.jump"}
 
 STATE = {"v": 1, "coins": 420, "stats": {"flex": 62, "stam": 38, "axis": 45, "turn": 31},

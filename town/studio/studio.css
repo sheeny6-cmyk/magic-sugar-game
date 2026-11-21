@@ -150,3 +150,22 @@ dialog.levelup.prima .g-kicker{color:#a47941}
 dialog.levelup.prima .gcard h2{color:#5a3a12}
 
 .practice-scene.playing #lPrize{display:none}
+
+/* ---------- 함께 연습할 정령 ---------- */
+.mates{margin:16px 14px 0;background:#fffaf3;border:1px solid #ddcbb6;border-radius:14px;padding:12px 13px 11px}
+.mates-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.mates-head h2{font-size:1.06rem;line-height:1.3}
+.mates-head span{font-size:.72rem;color:#8a7361;text-align:right;line-height:1.35}
+.mate-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin-top:9px}
+.mate{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;padding:5px 1px 4px;border:1px solid transparent;border-radius:10px;background:none;color:inherit;font:inherit;cursor:pointer;line-height:1.3}
+.mate-face{width:clamp(38px,10vw,50px);height:clamp(38px,10vw,50px);border-radius:50% 50% 46% 46%;background:linear-gradient(165deg,#fffcf4,var(--tint,#eadff0));border:1px solid #c9b79b;overflow:hidden;display:grid;place-items:center}
+.mate-face img{width:100%;height:100%;object-fit:contain}
+.mate b{font-family:var(--serif);font-size:.82rem;font-weight:700;letter-spacing:-.03em}
+.mate-hearts .hrt{font-size:.58rem}
+.mate[aria-pressed=true]{border-color:#c9a468;background:#fdf4e2;box-shadow:0 2px 8px #a479411f}
+.mate[aria-pressed=true] .mate-face{outline:2px solid #a47941;outline-offset:1px}
+.mate:active{transform:translateY(1px)}
+
+.lcomfort{margin:6px 0 0;font-size:.8rem;line-height:1.5;color:#6a5470;background:#f8f1f7;border:1px dashed #e4d4e4;border-radius:9px;padding:7px 9px;word-break:keep-all}
+.rvoice{margin-top:12px;font-size:.87rem;line-height:1.6;color:#5a4359;background:#f8f1f7;border:1px solid #e8d9e8;border-radius:11px;padding:9px 11px;word-break:keep-all}
+@media(max-width:360px){.mate b{font-size:.74rem}.mates{padding:10px 10px 9px}}

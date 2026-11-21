@@ -36,6 +36,10 @@
     $('potionTitle').textContent = recipe.name + ' 포션';
     $('brewLevel').textContent = '조제 Lv.' + level;
     $('staffLine').textContent = '“' + T.staffLine(selected) + '”';
+    var bond = T.bondOf(selected);
+    $('bondHearts').innerHTML = T.heartsHTML(bond.level, 'bond-big');
+    $('bondText').textContent = '친밀도 Lv.' + bond.level + ' / ' + bond.max +
+      (bond.next == null ? ' · 가장 가까운 사이예요' : ' · 주문할 때마다 한 걸음 (다음 하트까지 ' + bond.left + '번)');
     var brewedLevel = held && held.id === selected ? held.level : nextLevel;
     $('effect').textContent = T.effectFor(selected, brewedLevel).label;
     $('progressName').textContent = spirit.name + '의 조제 경험';
@@ -52,7 +56,8 @@
     if (held) {
       status = T.SPIRITS[held.id].name + '의 ' + T.STAFF[held.id].name + ' 포션을 준비했어요. 다음 연습을 마치면 ' + T.effectFor(held.id, held.level).label + '!';
       if (justOrdered && justOrdered.id === held.id) {
-        status = '생명력 1 전달' + (justOrdered.leveled ? ' · 조제 Lv.' + held.level + ' 달성!' : '!') + ' ' + status;
+        status = '생명력 1 전달' + (justOrdered.leveled ? ' · 조제 Lv.' + held.level + ' 달성!' : '!') +
+          (justOrdered.bond && justOrdered.bond.levels.length ? ' ♥ 친밀도 Lv.' + justOrdered.bond.level + '로 올랐어요.' : '') + ' ' + status;
       }
     }
     $('orderStatus').textContent = status;
@@ -67,7 +72,7 @@
     ordering = true; $('orderButton').disabled = true;
     try {
       var brewed = await T.orderPotion(id);
-      justOrdered = brewed ? { id: id, leveled: brewed.leveled } : null;
+      justOrdered = brewed ? { id: id, leveled: brewed.leveled, bond: brewed.bond } : null;
       if (brewed) {
         var flight = $('shopWindow').querySelector('.life-flight');
         flight.classList.remove('delivered');

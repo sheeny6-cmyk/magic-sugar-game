@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121h';
+  var V = '20261121i';
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
@@ -41,12 +41,52 @@
   var SUP = 'assets/chars/';
 
   var SPIRITS = {
-    ara:    { id: 'ara',    name: '아라', role: '아라베스크 · 선',        color: '#7d9ad8', img: A(SUP + 'ara.webp') },
-    alle:   { id: 'alle',   name: '알레', role: '음악 · 리듬',        color: '#77c2a7', img: A(SUP + 'alle.webp') },
-    etu:    { id: 'etu',    name: '에튜', role: '에티튜드 · 균형',        color: '#ab8fdb', img: A(SUP + 'etu.webp') },
-    shangz: { id: 'shangz', name: '샹즈', role: '샹주망 · 도약',          color: '#e0b465', img: A(SUP + 'shangz.webp') },
-    piru:   { id: 'piru',   name: '피루', role: '피루엣 · 회전',          color: '#e5899f', img: A(SUP + 'piru.webp') },
-    sugar:  { id: 'sugar',  name: '슈가 공주', role: '발레 왕국의 주인공', color: '#b98fd8', img: A(SUP + 'sugar.webp') }
+    ara: {
+      id: 'ara', name: '아라', role: '아라베스크 · 선', color: '#7d9ad8', img: A(SUP + 'ara.webp'),
+      nature: '새벽의 빛을 모아 두는, 조용히 시를 쓰는 정령',
+      cheer: [
+        '{n}님의 선이 오늘 유난히 길어 보여요.',
+        '손끝에서 발끝까지, 무대 끝까지 이어져요.',
+        '긴 선은 서두르지 않는 마음에서 나와요. 오늘 그 마음이 보여요.'
+      ]
+    },
+    alle: {
+      id: 'alle', name: '알레', role: '음악 · 리듬', color: '#77c2a7', img: A(SUP + 'alle.webp'),
+      nature: '늘 흥얼거리며 세 박자를 세는 정령',
+      cheer: [
+        '하나, 둘, 셋. 이 박자에 {n}님이 있어요.',
+        '음악이 {n}님을 기다리고 있어요. 천천히 나가도 돼요.',
+        '마지막 박자까지 제가 세어 줄게요. 숨 쉬는 것도 박자예요.'
+      ]
+    },
+    etu: {
+      id: 'etu', name: '에튜', role: '에티튜드 · 균형', color: '#ab8fdb', img: A(SUP + 'etu.webp'),
+      nature: '말수는 적고, 곁을 오래 지키는 정령',
+      cheer: [
+        '조용히 옆에 있을게요. 숨 한 번 고르고 시작해요.',
+        '중심은 이미 {n}님 안에 있어요. 오늘은 그걸 믿어 봐요.',
+        '{n}님의 균형을 제가 지켜보고 있어요. 끝까지 함께할게요.'
+      ]
+    },
+    shangz: {
+      id: 'shangz', name: '샹즈', role: '샹주망 · 도약', color: '#e0b465', img: A(SUP + 'shangz.webp'),
+      nature: '높은 곳과 구름을 좋아하는, 씩씩한 겁쟁이',
+      cheer: [
+        '점프는 가볍게, 착지는 다정하게!',
+        '무대 위에서 {n}님이 날아오르면 제가 구름을 받아 줄게요.',
+        '높이보다 중요한 건 착지예요. 그거, {n}님은 이미 알아요.'
+      ]
+    },
+    piru: {
+      id: 'piru', name: '피루', role: '피루엣 · 회전', color: '#e5899f', img: A(SUP + 'piru.webp'),
+      nature: '빙글빙글 도는 걸 좋아하는, 밝고 조금 급한 마음',
+      cheer: [
+        '한 바퀴, 두 바퀴 — {n}님은 제자리로 돌아올 거예요.',
+        '돌아도 중심은 그대로! 제가 손끝을 잡아 줄게요.',
+        '오늘의 회전은 {n}님 거예요. 마음껏 돌아 봐요!'
+      ]
+    },
+    sugar: { id: 'sugar', name: '슈가 공주', role: '발레 왕국의 주인공', color: '#b98fd8', img: A(SUP + 'sugar.webp') }
   };
 
   var STAFF = {
@@ -68,6 +108,119 @@
   }
   function spiritArt(id, portrait) {
     return A('../kingdom/assets/' + (portrait ? 'av_' + id : id + '_hero') + '.webp');
+  }
+
+  /* ---------- 정령 친밀도 (하트 1~5) ---------- */
+  // 교감 한 번(포션 주문 · 함께 연습 · 분식 대접)마다 1점. 아래 횟수에 닿으면 하트가 하나 늘어난다.
+  var BOND_STEPS = [0, 1, 3, 6, 10];
+  var BOND_MAX = BOND_STEPS.length;
+  var BOND_IDS = ['etu', 'ara', 'piru', 'shangz', 'alle'];
+  var TEACHER = { bar: 'etu', center: 'piru', piece: 'ara' };
+  var JOURNAL_MAX = 40;
+
+  function bondLevel(points) {
+    var lv = 1;
+    for (var i = 1; i < BOND_STEPS.length; i++) if (points >= BOND_STEPS[i]) lv = i + 1;
+    return Math.min(BOND_MAX, lv);
+  }
+  function bondLine(text) { return String(text || '').replace(/\{n\}/g, nick()); }
+  function cheerOf(id, level) {
+    var list = (SPIRITS[id] && SPIRITS[id].cheer) || [];
+    if (!list.length) return '';
+    return bondLine(list[level >= 5 ? 2 : level >= 3 ? 1 : 0]);
+  }
+  function bondOf(id) {
+    var s = get(), rec = s.spirits[id] || { bond: 0, met: 0 };
+    var level = bondLevel(rec.bond), nextAt = level < BOND_MAX ? BOND_STEPS[level] : null;
+    var from = BOND_STEPS[level - 1];
+    return {
+      id: id, name: SPIRITS[id].name, level: level, points: rec.bond, max: BOND_MAX,
+      met: rec.met || 0, next: nextAt, left: nextAt == null ? 0 : Math.max(0, nextAt - rec.bond),
+      pct: nextAt == null ? 100 : Math.round((rec.bond - from) / Math.max(1, nextAt - from) * 100),
+      line: cheerOf(id, level)
+    };
+  }
+  function bonds() { return BOND_IDS.map(bondOf); }
+  function topBonds(n) {
+    return bonds().sort(function (a, b) { return b.points - a.points || a.id.localeCompare(b.id); }).slice(0, n || 2);
+  }
+  function heartsHTML(level, cls) {
+    var out = '';
+    for (var i = 0; i < BOND_MAX; i++) out += '<span class="hrt' + (i < level ? ' on' : '') + '">♥</span>';
+    return '<span class="heart-row' + (cls ? ' ' + cls : '') + '" role="img" aria-label="친밀도 ' + level + ' / ' + BOND_MAX + '">' + out + '</span>';
+  }
+
+  /* ---------- 정령의 편지 ---------- */
+  var LETTERS = {
+    etu: [
+      { at: 1, title: '첫 편지 · 한 박자 더', body: '안녕하세요, {n}님. 오늘 바 앞에 서는 걸 저도 조용히 봤어요. 처음엔 누구나 발끝이 떨려요. 저는 그 떨림이 싫지 않아요. 숨을 한 번 고르고, 한 박자만 더 머물러 봐요.' },
+      { at: 3, title: '두 번째 편지 · 흔들려도 괜찮아요', body: '{n}님, 요즘 중심이 자주 흔들린다고 했죠. 흔들리는 건 무너지는 게 아니에요. 돌아올 자리를 알고 있다는 뜻이니까요. 오늘은 바를 잠깐 놓고 서 봐요. 제가 옆에서 셀게요.' },
+      { at: 5, title: '세 번째 편지 · 우리의 중심', body: '{n}님과 함께한 날을 세어 보면, 처음엔 한 박자였던 게 지금은 한 곡이 되었어요. 다음 무대에 서면 저는 객석이 아니라 무대 옆에 있을게요. {n}님이 돌아올 자리는 언제나 여기예요.' }
+    ],
+    ara: [
+      { at: 1, title: '첫 편지 · 손끝의 선', body: '{n}님, 오늘 손끝이 참 멀리까지 뻗어 있었어요. 선은 힘으로 만드는 게 아니라 기다림으로 길어져요. 제가 새벽에 모은 빛 한 조각을 {n}님 손끝에 얹어 둘게요.' },
+      { at: 3, title: '두 번째 편지 · 숲을 닮은 사람', body: '{n}님이 아라베스크를 할 때, 저는 늘 그 뒤로 이어지는 숲을 상상해요. 나무가 바람에 기대듯, {n}님도 조금은 기대도 돼요. 혼자 다 버티지 않아도 괜찮아요.' },
+      { at: 5, title: '세 번째 편지 · 긴 선의 끝에서', body: '오늘 {n}님의 선은 무대 끝까지 닿았어요. 저는 그 끝을 오래 바라봤어요. 다음엔 그 너머의 빛까지 그려 볼래요? 천천히, 서두르지 않고 함께요.' }
+    ],
+    piru: [
+      { at: 1, title: '첫 편지 · 한 바퀴만', body: '{n}님! 오늘 회전을 세다가 저만 먼저 어지러웠어요. 한 바퀴만 돌아도 충분해요. 처음엔 그거면 돼요. 내일은 두 바퀴, 그다음엔 세 바퀴 — 제가 옆에서 박수 칠게요!' },
+      { at: 3, title: '두 번째 편지 · 제자리를 찾는 법', body: '{n}님은 돌다가 자꾸 바깥을 봐요. 괜찮아요, 저도 그래요. 그런데 한 번만 눈을 감고 돌면 제자리가 발밑에 있다는 걸 알게 돼요. 오늘 한 번만 해 봐요.' },
+      { at: 5, title: '세 번째 편지 · 마지막 한 바퀴', body: '{n}님, 이제 저보다 오래 돌 수 있게 됐네요. 조금 서운하고 많이 기뻐요. 다음 무대에서 마지막 한 바퀴는 꼭 같이 돌아요. 약속!' }
+    ],
+    shangz: [
+      { at: 1, title: '첫 편지 · 구름 위에서', body: '{n}님, 오늘 그랑제떼 착지 소리가 아주 가벼웠어요! 저는 구름 위에서 그 소리를 들었어요. 점프는 높이보다 착지가 예쁜 거래요. 그것만 기억해요.' },
+      { at: 3, title: '두 번째 편지 · 겁이 나도 뛰는 마음', body: '사실 저도 높은 곳이 무서워요. {n}님 앞에서는 씩씩한 척했지만요. 무서운데도 뛰는 마음이 제일 멋있다고 생각해요. 내일도 같이 뛰어요!' },
+      { at: 5, title: '세 번째 편지 · 다시 땅으로', body: '{n}님, 아무리 높이 뛰어도 돌아올 자리가 있어야 해요. 저는 {n}님이 착지할 자리를 늘 준비해 둘게요. 그러니까 마음껏 뛰어요. 받아 줄 사람, 여기 있어요.' }
+    ],
+    alle: [
+      { at: 1, title: '첫 편지 · 세 박자', body: '{n}님, 오늘 첫 박자를 세다가 저도 모르게 흥얼거렸어요. 하나, 둘, 셋. 이 세 박자에 {n}님이 들어와요. 서두르지 않아도 음악은 기다려 줘요.' },
+      { at: 3, title: '두 번째 편지 · 쉼표도 음악이에요', body: '{n}님이 삐끗한 날, 저는 음악을 잠깐 멈췄어요. 쉼표도 음악이거든요. 쉬었다 가도 곡은 끝나지 않아요. 이어지는 마음만 있으면 돼요.' },
+      { at: 5, title: '세 번째 편지 · 마지막 박자', body: '오늘 {n}님은 마지막 박자까지 흔들리지 않았어요. 저는 그 끝을 오래 기억할 거예요. 다음 곡도 같이 들어요. {n}님 박자에 맞춰서.' }
+    ]
+  };
+  function lettersFor(id) {
+    var s = get(), level = bondLevel((s.spirits[id] || {}).bond || 0);
+    return (LETTERS[id] || []).map(function (letter, i) {
+      return {
+        id: id + '-' + i, at: letter.at, title: letter.title, body: bondLine(letter.body),
+        unlocked: level >= letter.at, read: s.letters.indexOf(id + '-' + i) >= 0
+      };
+    });
+  }
+  function unreadLetters(id) {
+    return lettersFor(id).filter(function (letter) { return letter.unlocked && !letter.read; }).length;
+  }
+  function readLetter(key) {
+    return updateWallet(function (s) {
+      if (s.letters.indexOf(key) < 0) s.letters.push(key);
+    });
+  }
+
+  /* ---------- 성장 일기 ---------- */
+  function addJournal(s, key, icon, text) {
+    if (!s.journal) s.journal = [];
+    if (key && s.journal.some(function (row) { return row.key === key; })) return false;
+    s.journal.push({ at: Date.now(), key: key || '', icon: icon || '🩰', text: text });
+    if (s.journal.length > JOURNAL_MAX) s.journal = s.journal.slice(-JOURNAL_MAX);
+    return true;
+  }
+  // 정령과 조금 더 가까워진다. 오른 하트마다 일기에 한 줄이 남는다.
+  function raiseBond(s, id, n) {
+    if (!Object.hasOwn(STAFF, id) || !Object.hasOwn(SPIRITS, id)) return null;
+    if (!s.spirits[id]) s.spirits[id] = { bond: 0, met: 0 };
+    var rec = s.spirits[id], before = bondLevel(rec.bond);
+    if (!rec.met) rec.met = Date.now();
+    rec.bond = Math.min(BOND_STEPS[BOND_MAX - 1], rec.bond + Math.max(1, Math.round(n || 1)));
+    var after = bondLevel(rec.bond), levels = [];
+    for (var lv = before + 1; lv <= after; lv++) {
+      levels.push(lv);
+      addJournal(s, 'bond-' + id + '-' + lv, '♥', josa(SPIRITS[id].name, '과', '와') + ' 친밀도 Lv.' + lv + josa(String(lv), '이', '가') + ' 되었어요. ' + SPIRITS[id].nature + josa(SPIRITS[id].nature, '이라고', '라고') + ' 해요.');
+    }
+    return { id: id, name: SPIRITS[id].name, before: before, level: after, points: rec.bond, levels: levels };
+  }
+  function addBond(id, n) { return updateWallet(function (s) { return raiseBond(s, id, n); }); }
+  function setPracticeWith(id) {
+    return updateWallet(function (s) { s.practiceWith = Object.hasOwn(STAFF, id) ? id : null; return s.practiceWith; });
   }
 
   /* ---------- 마법 분식 메뉴 8종 ---------- */
@@ -162,6 +315,11 @@
   var DEFAULT = {
     v: 1, coins: GRANT, nick: '', named: false, shows: 0, bestGrade: '',
     kingdom: { charter: 1, life: 1, orders: { etu: 0, ara: 0, piru: 0, shangz: 0, alle: 0 }, prepared: null, receipt: null, debutOutfit: null },
+    spirits: {
+      etu: { bond: 0, met: 0 }, ara: { bond: 0, met: 0 }, piru: { bond: 0, met: 0 },
+      shangz: { bond: 0, met: 0 }, alle: { bond: 0, met: 0 }
+    },
+    journal: [], letters: [], practiceWith: null,
     stats: { flex: 0, stam: 0, axis: 0, turn: 0 },
     owned: ['basic'], worn: 'basic',
     stamps: { bar: 0, center: 0, piece: 0 },
@@ -185,6 +343,7 @@
     return updateWallet(function (s) {
       s.nick = next;
       s.named = true;
+      addJournal(s, 'arrive', '✉️', (next || NICK_DEFAULT) + '님이 발레왕국에 도착했어요. 오늘부터 한 걸음씩.');
       return next;
     });
   }
@@ -278,6 +437,38 @@
       if (!s.bestGrade) s.bestGrade = s.show.grade;
     }
     if (Array.isArray(raw.seen)) s.seen = raw.seen.filter(function (id) { return typeof id === 'string'; });
+    // 정령 친밀도: 새 지갑은 주문 기록(orders)에서 한 번만 이어받는다.
+    var spiritSave = raw.spirits, seeded = false;
+    if (spiritSave && typeof spiritSave === 'object') {
+      Object.keys(STAFF).forEach(function (id) {
+        var saved = spiritSave[id];
+        if (!saved || typeof saved !== 'object') return;
+        seeded = true;
+        if (typeof saved.bond === 'number' && isFinite(saved.bond)) {
+          s.spirits[id].bond = Math.max(0, Math.min(BOND_STEPS[BOND_MAX - 1], Math.round(saved.bond)));
+        }
+        if (typeof saved.met === 'number' && isFinite(saved.met)) s.spirits[id].met = saved.met;
+      });
+    }
+    if (!seeded) {
+      Object.keys(STAFF).forEach(function (id) {
+        var ordered = s.kingdom.orders[id] || 0;
+        if (ordered > 0) s.spirits[id].bond = Math.min(BOND_STEPS[BOND_MAX - 1], ordered);
+      });
+    }
+    if (Array.isArray(raw.letters)) {
+      s.letters = raw.letters.filter(function (key) {
+        return typeof key === 'string' && Object.keys(STAFF).some(function (id) { return key.indexOf(id + '-') === 0; });
+      });
+    }
+    if (raw.practiceWith && Object.hasOwn(STAFF, raw.practiceWith)) s.practiceWith = raw.practiceWith;
+    if (Array.isArray(raw.journal)) {
+      s.journal = raw.journal.filter(function (row) {
+        return row && typeof row.text === 'string' && typeof row.at === 'number';
+      }).slice(-JOURNAL_MAX).map(function (row) {
+        return { at: row.at, key: typeof row.key === 'string' ? row.key : '', icon: typeof row.icon === 'string' ? row.icon : '🩰', text: row.text };
+      });
+    }
     if (raw.lastServe && typeof raw.lastServe === 'object') s.lastServe = raw.lastServe;
     var lesson = raw.lesson;
     if (lesson && Object.hasOwn(PRACTICE, lesson.kind) && typeof lesson.id === 'string' && validChart(lesson.chart)) {
@@ -295,6 +486,10 @@
     Object.keys(PRACTICE).forEach(function (kind) {
       if (raw.lastLessons && Array.isArray(raw.lastLessons[kind])) s.lastLessons[kind] = raw.lastLessons[kind];
     });
+    // 이미 수업을 쌓은 지갑은 일기가 비어 있지 않게 한 줄로 이어 준다.
+    if (!s.journal.length && s.classes > 0) {
+      addJournal(s, 'resume', '📖', '지금까지 수업 ' + s.classes + '회를 마쳤어요. 오늘부터 성장 일기에 한 줄씩 쌓여요.');
+    }
     if (typeof raw.createdAt === 'number') s.createdAt = raw.createdAt;
     return s;
   }
@@ -363,7 +558,9 @@
       k.orders[id] += 1;
       var level = staffLevel(k.orders[id]);
       k.prepared = { id: id, level: level };
-      return { level: level, leveled: level > oldLevel };
+      var bond = raiseBond(s, id, 1);
+      addJournal(s, 'first-potion', '🧪', nick() + '님이 처음으로 정령에게 포션을 주문했어요. ' + SPIRITS[id].name + '가 생명력 한 방울을 받았어요.');
+      return { level: level, leveled: level > oldLevel, bond: bond };
     });
   }
 
@@ -410,6 +607,15 @@
     s.lastLessons[run.kind] = receipt.keys;
     k.receipt = receipt;
     s.lesson = null;
+    if (s.classes === 1) addJournal(s, 'first-class', '🩰', nick() + '님이 첫 수업을 마쳤어요. 바를 잡은 손끝까지 음악이 닿았어요.');
+    var bonds = [];
+    var teacherBond = raiseBond(s, TEACHER[run.kind], 1);
+    if (teacherBond) bonds.push(teacherBond);
+    if (s.practiceWith && s.practiceWith !== TEACHER[run.kind]) {
+      var mateBond = raiseBond(s, s.practiceWith, 1);
+      if (mateBond) bonds.push(mateBond);
+    }
+    receipt.bonds = bonds;
     var gifts = grantGifts(s);
     if (gifts.length) { receipt.levelUp = clone(s.levelUp); receipt.after = s.coins; }
     return receipt;
@@ -432,11 +638,43 @@
   /* ---------- 프리마 발레리나 승급 로드맵 ---------- */
   // 레벨 = 승급 단계. 수료 수업에 더해 능력치와 극장 공연까지 갖춰야 다음 단계로 간다.
   var RANKS = [
-    { n: 1, at: 0,  short: '입문',   name: '입문 발레리나', tag: '바에 처음 서는 날', icon: '🩰', need: {} },
-    { n: 2, at: 2,  short: '견습',   name: '견습 발레리나', tag: '두 번의 수업', icon: '🎀', need: {} },
-    { n: 3, at: 5,  short: '군무',   name: '코르 드 발레', tag: '군무 발레리나', icon: '🌷', need: { stat: 20 } },
-    { n: 4, at: 9,  short: '솔리스트', name: '솔리스트', tag: '단독 무대', icon: '✨', need: { stat: 40, shows: 1 } },
-    { n: 5, at: 14, short: '프리마',  name: '프리마 발레리나', tag: '왕립 발레단의 별', icon: '👑', crown: true, need: { stat: 65, shows: 3 } }
+    {
+      n: 1, at: 0, short: '입문', name: '입문 발레리나', tag: '바에 처음 서는 날', icon: '🩰', need: {},
+      voice: '발레는 처음이에요. 그래도 오늘 바 하나는 잡을 수 있을 것 같아요.',
+      tease: {
+        stage: '바 끝에서 센터로 — 손을 떼고 서는 첫 장면',
+        spirit: 'etu', line: '바를 놓아도 괜찮다고, 균형은 이미 네 안에 있다고 말해 줄게요.'
+      }
+    },
+    {
+      n: 2, at: 2, short: '견습', name: '견습 발레리나', tag: '두 번의 수업', icon: '🎀', need: {},
+      voice: '수업 두 번이면 다리가 조금은 말을 들어요. 내일은 센터에 서 볼래요.',
+      tease: {
+        stage: '다섯 정령이 나란히 서서 박수를 보내는 군무 무대',
+        spirit: 'alle', line: '세 박자만 세면 돼. 하나, 둘, 셋 — 그 사이에 네가 있어.'
+      }
+    },
+    {
+      n: 3, at: 5, short: '군무', name: '코르 드 발레', tag: '군무 발레리나', icon: '🌷', need: { stat: 20 },
+      voice: '군무 속에서도 제 박자를 찾았어요. 옆에 정령들이 서 있으면 덜 떨려요.',
+      tease: {
+        stage: '조명이 {n}님 한 사람만 비추는 단독 무대',
+        spirit: 'shangz', line: '단독 무대는 무섭지 않아. 내가 뒤에서 도약을 세어 줄게.'
+      }
+    },
+    {
+      n: 4, at: 9, short: '솔리스트', name: '솔리스트', tag: '단독 무대', icon: '✨', need: { stat: 40, shows: 1 },
+      voice: '솔리스트. 조명이 저 하나만 비춰도 발끝은 아직 떨려요. 괜찮아요, 떨려도 예뻐요.',
+      tease: {
+        stage: '황금 포스터와 앙코르가 기다리는 프리마 피날레',
+        spirit: 'piru', line: '마지막 한 바퀴, 내가 손끝을 잡아 줄게. 돌아도 네 중심은 그대로야.'
+      }
+    },
+    {
+      n: 5, at: 14, short: '프리마', name: '프리마 발레리나', tag: '왕립 발레단의 별', icon: '👑', crown: true, need: { stat: 65, shows: 3 },
+      voice: '프리마 발레리나가 되었어요. 화려한 건 잠깐이고, 남는 건 끝까지 함께한 마음이에요.',
+      tease: null
+    }
   ];
   var LEVELS = RANKS;
 
@@ -491,6 +729,7 @@
       s.coins += coins;
       total += coins;
       got.push({ level: n, coins: coins, dress: dress, swapped: swapped });
+      addJournal(s, 'rank-' + n, '🌟', 'Lv.' + n + ' ' + josa(RANKS[n - 1].name, '으로', '로') + ' 승급했어요. ' + RANKS[n - 1].tag + '이 열렸어요.');
     }
     if (got.length) {
       var last = got[got.length - 1];
@@ -707,6 +946,7 @@
       s.coins += coins;
       s.fame += fame;
       s.shows = (s.shows || 0) + 1;
+      if (s.shows === 1) addJournal(s, 'first-show', '🎭', nick() + '님이 왕립 극장 첫 무대에 올랐어요. 마지막 인사까지 박수가 이어졌어요.');
       if (!s.bestGrade || 'SABC'.indexOf(grade) < 'SABC'.indexOf(s.bestGrade)) s.bestGrade = grade;
       s.show = record;
       if (!s.kingdom.debutOutfit) s.kingdom.debutOutfit = s.worn;
@@ -726,7 +966,11 @@
     LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
-    seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast
+    seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast,
+    BOND_STEPS: BOND_STEPS, BOND_MAX: BOND_MAX, BOND_IDS: BOND_IDS, TEACHER: TEACHER, LETTERS: LETTERS,
+    bondLevel: bondLevel, bondOf: bondOf, bonds: bonds, topBonds: topBonds, heartsHTML: heartsHTML,
+    lettersFor: lettersFor, unreadLetters: unreadLetters, readLetter: readLetter, cheerOf: cheerOf,
+    raiseBond: raiseBond, addBond: addBond, journal: addJournal, setPracticeWith: setPracticeWith
   };
   window.SugarTown = API;
   load();

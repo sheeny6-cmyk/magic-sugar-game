@@ -99,7 +99,22 @@
         '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.count + '노트</small></span>' +
         '<b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
+    renderMates(s);
     T.syncUI();
+  }
+
+  /* ================= 함께 연습할 정령 ================= */
+  function renderMates(s) {
+    var mate = s.practiceWith;
+    $('mates').innerHTML = T.BOND_IDS.map(function (id) {
+      var spirit = T.SPIRITS[id], bond = T.bondOf(id);
+      return '<button class="mate" type="button" data-mate="' + id + '" aria-pressed="' + (mate === id) + '" style="--tint:' + spirit.color + '" aria-label="' + spirit.name + '와 함께 연습하기">' +
+        '<span class="mate-face"><img src="' + T.spiritArt(id, true) + '" alt=""></span>' +
+        '<b>' + spirit.name + '</b>' + T.heartsHTML(bond.level, 'mate-hearts') + '</button>';
+    }).join('');
+    $('mateNote').textContent = mate
+      ? T.SPIRITS[mate].name + '와 함께 · 완주하면 친밀도 +1'
+      : '완주하면 선생님과 친밀도 +1';
   }
 
   function routeTo(hash, replace) {
@@ -129,8 +144,10 @@
     $('cName').textContent = c.name;
     $('cDesc').textContent = c.desc;
     $('cReward').textContent = '+' + T.fmt(T.rewardFor(kind, potion).coins) + '코인';
-    $('cNote').textContent = !T.isOwned('lilac') ? '첫 수업 선물 · 라일락 쉬폰 스커트' :
-      potion ? T.STAFF[potion.id].name + ' 포션을 들고 타요. ' + T.effectFor(potion.id, potion.level).label : '노트가 판정 원에 닿을 때 버튼을 누르면 돼요.';
+    $('cNote').textContent = (!T.isOwned('lilac') ? '첫 수업 선물 · 라일락 쉬폰 스커트' :
+      potion ? T.STAFF[potion.id].name + ' 포션을 들고 타요. ' + T.effectFor(potion.id, potion.level).label : '노트가 판정 원에 닿을 때 버튼을 누르면 돼요.') +
+      ' 완주하면 ' + T.SPIRITS[teachers[kind]].name +
+      (s.practiceWith && s.practiceWith !== teachers[kind] ? '와 ' + T.SPIRITS[s.practiceWith].name : '') + '와 더 가까워져요.';
     showDialog('confirm');
   }
   async function enroll(kind) {
@@ -230,7 +247,11 @@
     $('lPose').textContent = '준비 자세';
     $('lPrize').textContent = '완주 +' + T.fmt(T.rewardFor(kind, s.kingdom.prepared).coins) + '코인';
     $('lPortrait').src = T.spiritArt(teachers[kind], true);
-    $('lTeacher').textContent = T.SPIRITS[teachers[kind]].name + ' 선생님';
+    var mate = s.practiceWith;
+    $('lTeacher').textContent = T.SPIRITS[teachers[kind]].name + ' 선생님' +
+      (mate && mate !== teachers[kind] ? ' · ' + T.SPIRITS[mate].name + '와 함께'
+        : mate ? ' · 단둘이 연습' : '');
+    $('lComfort').hidden = true;
     T.showDancer($('lDancer'), s.worn, 'ready');
     $('lDancer').classList.remove('snap', 'wobble');
     $('lFeedback').textContent = kind === 'bar'
@@ -398,6 +419,7 @@
 
   function hitNote(n, verdict) {
     n.judged = true; n.result = verdict; ses.judged++;
+    $('lComfort').hidden = true;
     if (verdict === 'perfect') ses.perfect++; else ses.good++;
     ses.combo++;
     if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
@@ -437,7 +459,23 @@
         : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
     bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
     cue(why === 'wrong' ? book.pickLine('wrong', n.type) : book.pickLine('late', n.type));
+    showComfort();
     comboBump(); paintDots(); paintCount();
+  }
+
+  // 삐끗해도 정령이 다독여 준다. 벌점 대신 한 박자 쉬어 가는 느낌.
+  var COMFORT = [
+    '괜찮아요. 한 박자 놓쳐도 음악은 계속돼요.',
+    '숨 한 번 고르고, 다음 박자만 봐요.',
+    '오늘은 여기까지 해도 충분해요. 잘 따라오고 있어요.',
+    '떨려도 괜찮아요. 저도 처음엔 그랬어요.'
+  ];
+  function showComfort() {
+    if (!ses) return;
+    var el = $('lComfort'), mate = T.get().practiceWith;
+    var who = T.SPIRITS[mate || teachers[ses.kind]];
+    el.textContent = who.name + '가 “' + COMFORT[(ses.miss + ses.good) % COMFORT.length] + '” 하고 말해요.';
+    el.hidden = false;
   }
 
   function pressMove(move, soft) {
@@ -542,6 +580,16 @@
   }
 
   /* ================= 결과 카드 ================= */
+  function voiceLine(r) {
+    var teacher = T.SPIRITS[teachers[r.kind]], mate = T.get().practiceWith;
+    var total = (r.perfect || 0) + (r.good || 0) + (r.miss || 0);
+    var line;
+    if (!r.miss) line = '오늘은 한 박자도 놓치지 않았어요. 이 순간을 오래 기억할게요.';
+    else if (r.perfect >= total / 2) line = '손끝이 참 예뻤어요. 삐끗한 박자도 다음 박자가 감싸 주었어요.';
+    else line = '오늘도 끝까지 함께했어요. 잘하려고 애쓰는 마음이 제일 예뻐요.';
+    return teacher.name + '가 “' + line + '” 하고 말했어요.' +
+      (mate && mate !== teachers[r.kind] ? ' ' + T.SPIRITS[mate].name + '도 옆에서 박수를 보냈어요.' : '');
+  }
   function renderResult(r) {
     var s = T.get(), lv = T.level(), c = classes[r.kind], goal = T.nextDress();
     var key = r.lessonId || 'receipt';
@@ -590,7 +638,14 @@
     $('rRecord').textContent = '출석 도장 +1 · 왕국 생명력 +' + r.life + ' · ' + lv.name + (lv.next ? ' (다음 레벨까지 ' + (lv.need - lv.have) + '번)' : '');
     $('rStamp').textContent = '도장 · 바 ' + s.stamps.bar + ' · 센터 ' + s.stamps.center + ' · 작품 ' + s.stamps.piece +
       (T.stageReady() ? '' : ' · 왕립 극장까지 ' + T.stageLeft() + '개');
-    $('rGains').textContent = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
+    var st = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
+    $('rGains').textContent = st;
+    var bonds = r.bonds || [];
+    $('rBonds').hidden = !bonds.length;
+    $('rBonds').textContent = bonds.length ? '함께한 정령 · ' + bonds.map(function (b) {
+      return b.name + ' ' + (b.levels.length ? '친밀도 Lv.' + b.level + '로 올랐어요' : '친밀도 +1');
+    }).join(' · ') : '';
+    $('rVoice').textContent = voiceLine(r);
     $('rPotion').hidden = !r.potion;
     if (r.potion) $('rPotion').textContent = '사용한 포션 · ' + T.STAFF[r.potion.id].name + ' · ' + T.effectFor(r.potion.id, r.potion.level).label;
     $('rRefund').hidden = !r.refund;
@@ -625,6 +680,18 @@
     if (b) routeTo(T.get().lesson ? '#lesson' : '#class-' + b.dataset.cls);
   });
   $('resumeLesson').addEventListener('click', function () { routeTo('#lesson'); });
+  $('mates').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mate]');
+    if (!b || busy) return;
+    busy = true;
+    T.setPracticeWith(b.dataset.mate)
+      .then(function (id) {
+        busy = false;
+        refresh();
+        T.toast(id ? T.SPIRITS[id].name + '와 함께 연습할게요' : '혼자 연습할게요');
+      })
+      .catch(function () { busy = false; });
+  });
   $('cGo').addEventListener('click', function () { audio(); applySound(); enroll(location.hash.slice(7)); });
   $('cCancel').addEventListener('click', closeToStudio);
   $('lPause').addEventListener('click', closeToStudio);

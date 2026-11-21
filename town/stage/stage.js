@@ -55,6 +55,22 @@
     });
   }
 
+  /* ---------- 정령의 응원 ---------- */
+  function renderCheer() {
+    var top = T.topBonds(2);
+    $('cheerRow').innerHTML = top.map(function (bond) {
+      var spirit = T.SPIRITS[bond.id];
+      return '<figure class="cheer-spirit" style="--tint:' + spirit.color + '">' +
+        '<span class="cheer-face"><img src="' + T.spiritArt(bond.id, true) + '" alt=""></span>' +
+        '<figcaption>' + spirit.name + T.heartsHTML(bond.level, 'cheer-hearts') + '</figcaption></figure>';
+    }).join('');
+    var lead = top[0];
+    $('cheerLine').textContent = lead && lead.points
+      ? '가장 가까운 ' + lead.name + '가 무대 옆에서 말해요. “' + lead.line + '”'
+      : '아직 무대를 지켜보는 정령이 없어요. 포션을 주문하거나 분식집에서 마음을 나눠 보세요.';
+  }
+  function cheerLead() { return T.topBonds(1)[0]; }
+
   /* ---------- 대기 화면 ---------- */
   function refresh() {
     var s = T.get(), ready = T.stageReady(), debut = s.kingdom.debutOutfit, who = T.nick();
@@ -101,6 +117,7 @@
       $('cueText').textContent = part.line;
     }
     T.syncUI();
+    renderCheer();
   }
 
   /* ---------- 공연 ---------- */
@@ -136,6 +153,8 @@
     else begin();
     if (!$('show').open) $('show').showModal();
     chime([523.25, 659.25], 0.05, 0.5, 0.09);
+    var lead = cheerLead();
+    if (lead && lead.points) setTimeout(function () { bubble(lead.name + ' · “' + lead.line + '”'); }, 520);
     show.raf = requestAnimationFrame(loop);
   }
 
@@ -273,6 +292,13 @@
     $('cGrade').textContent = info.grade;
     $('cGrade').className = 'grade ' + info.grade;
     $('cLine').textContent = gradeLine(info.grade);
+    var lead = cheerLead(), cheerEl = $('cCheer');
+    cheerEl.hidden = !(lead && lead.points);
+    if (lead && lead.points) {
+      cheerEl.textContent = lead.name + '가 무대 옆에서 “' +
+        (info.grade === 'C' ? '괜찮아요. 무대는 끝까지 이어졌어요. 다음엔 제가 더 가까이 있을게요.' : lead.line) +
+        '” 하고 말했어요.';
+    }
     $('cScore').textContent = T.fmt(info.score) + '점';
     $('cPerfect').textContent = String(info.perfect);
     $('cCoins').textContent = record ? '+' + T.fmt(record.coins) : '–';

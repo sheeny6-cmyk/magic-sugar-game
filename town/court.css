@@ -196,3 +196,111 @@
 .ticket-stage{display:inline-flex;align-items:center;align-self:flex-start;min-height:44px;font-size:.85rem;font-weight:700;color:#705249;text-underline-offset:3px}
 
 .wardrobe-art>img{object-fit:contain;padding-top:5px;object-position:50% 100%}
+
+/* ---------- 정령 친밀도 하트 ---------- */
+.heart-row{display:inline-flex;gap:1px;align-items:center;line-height:1}
+.hrt{font-size:.72rem;color:#e2cfda;font-style:normal}
+.hrt.on{color:#df7f9e}
+.counter .staff-link{position:relative}
+.staff-link .bond-mini{margin-top:1px}
+.staff-link .bond-mini .hrt{font-size:.64rem}
+.bond-dot{position:absolute;top:0;right:2px;min-width:15px;height:15px;border-radius:999px;background:linear-gradient(135deg,#f6dfa6,#dcaa4e);color:#5a3c10;font-size:.6rem;font-weight:700;display:grid;place-items:center;border:1px solid #c9a15f;opacity:0;transition:opacity .2s}
+.bond-dot.on{opacity:1}
+
+/* ---------- 나의 발레리나 · 다음 모습 ---------- */
+.growth{margin-top:clamp(28px,4vw,45px)}
+.growth .section-line h2{font-size:clamp(1.22rem,2.4vw,1.58rem)}
+.voice-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:end;margin-top:12px;padding:13px 15px 15px;background:linear-gradient(180deg,#fffdf8,#f7f0e7);border:1px solid #e0d0b9;border-radius:16px}
+.voice-dancer{width:80px;height:108px;object-fit:contain;object-position:50% 100%;align-self:end}
+.voice-bubble{position:relative;background:#fffdf9;border:1px solid #e3d4bf;border-radius:14px 14px 14px 4px;padding:10px 13px;min-width:0}
+.voice-bubble:before{content:"";position:absolute;left:-7px;bottom:9px;width:11px;height:11px;background:#fffdf9;border-left:1px solid #e3d4bf;border-bottom:1px solid #e3d4bf;transform:rotate(45deg)}
+.voice-bubble b{display:block;font-family:var(--serif);font-size:.84rem;color:#8a6a4a}
+.voice-bubble p{font-size:.88rem;line-height:1.6;color:#5d4a55;margin-top:3px!important;word-break:keep-all;overflow-wrap:anywhere}
+.next-look{display:grid;grid-template-columns:104px minmax(0,1fr);gap:13px;align-items:center;margin-top:10px;padding:12px 14px;background:#fffdf9;border:1px dashed #dcc8ac;border-radius:14px}
+.next-look.prima{grid-template-columns:minmax(0,1fr)}
+.next-silhouette{position:relative;display:grid;place-items:center;margin:0;height:118px;border-radius:12px;background:radial-gradient(62% 62% at 50% 38%,#f7eef7,#ece0ee);overflow:hidden}
+.next-silhouette img{width:100%;height:100%;object-fit:contain;object-position:50% 100%;filter:brightness(0) saturate(0) opacity(.3)}
+.ss-q{position:absolute;right:7px;top:2px;font-family:var(--serif);font-size:1.15rem;color:#b19a86}
+.next-copy{min-width:0}
+.next-kicker{font-size:.69rem;font-weight:700;letter-spacing:.06em;color:#a47941}
+.next-copy h3{font-family:var(--serif);font-size:1.02rem;line-height:1.35;margin:4px 0 8px;letter-spacing:-.03em;word-break:keep-all}
+.next-hints{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.next-hints li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px;align-items:start;font-size:.78rem;line-height:1.45}
+.next-hints span{color:#8a6a4a;font-weight:700;font-size:.68rem;background:#f4e9d8;border-radius:5px;padding:2px 5px;white-space:nowrap;align-self:start}
+.next-hints b{font-weight:600;color:#5d4a55;word-break:keep-all}
+.next-copy .text-link{margin-top:8px;font-size:.82rem}
+
+/* ---------- 나의 발레 성장 일기 ---------- */
+.diary{margin-top:16px;padding-top:14px;border-top:1px solid var(--edge)}
+.diary-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.diary-head h3{font-family:var(--serif);font-size:1rem;line-height:1.3}
+.diary-head span{font-size:.72rem;color:#8a7a6c;font-weight:700;white-space:nowrap}
+.diary-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:9px}
+.diary-list li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:9px;align-items:start}
+.diary-icon{width:24px;height:24px;display:grid;place-items:center;border-radius:50%;background:#fffdf8;border:1px solid #e0d2be;font-size:.76rem}
+.diary-list b{display:block;font-size:.83rem;font-weight:600;line-height:1.55;color:#544250;word-break:keep-all}
+.diary-list small{display:block;font-size:.67rem;color:#9a8a7c;margin-top:1px}
+.diary-empty{font-size:.82rem;color:#8a7a6c;line-height:1.5;margin-top:8px!important;word-break:keep-all}
+.diary-more{margin-top:10px;min-height:38px;padding:7px 12px;border-radius:9px;border:1px solid #ddc9ab;background:#fffdf8;color:#77543a;font:inherit;font-size:.77rem;font-weight:700;cursor:pointer}
+
+/* ---------- 정령 교감 모달 ---------- */
+.bond-dialog{border:0;padding:0;background:transparent;width:min(94vw,430px);max-width:min(94vw,430px);color:var(--ink);margin:auto}
+.bond-dialog::backdrop{background:#3a2440a8;-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.bond-card{position:relative;background:var(--cream);border:1px solid #d6c1a0;border-radius:20px;padding:19px 17px 15px;box-shadow:0 28px 70px #3a244066;max-height:calc(100dvh - 26px);overflow:auto;overscroll-behavior:contain}
+.bond-x{position:absolute;right:9px;top:9px;width:30px;height:30px;border-radius:50%;border:1px solid #d9c7ad;background:#fffdf8;color:#7a5738;font-size:.82rem;line-height:1;cursor:pointer;display:grid;place-items:center}
+.bond-head{display:flex;align-items:center;gap:12px;padding-right:26px}
+.bond-face{flex:none;width:60px;height:60px;border-radius:50% 50% 46% 46%;background:linear-gradient(165deg,#fffcf4,#efe3f4);border:1px solid #c5b18f;overflow:hidden;display:grid;place-items:center;box-shadow:inset 0 0 0 3px #fff9eb8c}
+.bond-face img{width:100%;height:100%;object-fit:contain}
+.bond-id{min-width:0}
+.bond-kicker{font-size:.67rem;font-weight:700;letter-spacing:.08em;color:#a47941}
+.bond-id h2{font-family:var(--serif);font-size:1.45rem;line-height:1.2}
+.bond-nature{font-size:.77rem;color:#7d6c78;line-height:1.45;margin-top:2px!important;word-break:keep-all}
+.bond-meter{margin-top:13px;padding:9px 12px 10px;background:#f6efe4;border-radius:11px}
+.bond-hearts .hrt{font-size:1.06rem}
+.bond-meter p{font-size:.75rem;color:#7d6a5b;margin-top:4px!important;line-height:1.4}
+.bond-line{margin-top:11px!important;font-size:.87rem;line-height:1.62;color:#57444f;background:#fffdf9;border:1px solid #e6d7c1;border-radius:12px;padding:10px 12px;word-break:keep-all}
+.bond-letters-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:14px}
+.bond-letters-head h3{font-family:var(--serif);font-size:.98rem}
+.bond-letters-head span{font-size:.65rem;color:#9a8a7c;text-align:right;line-height:1.4;max-width:60%}
+.bond-letters{display:grid;gap:7px;margin-top:8px}
+.letter{border:1px solid #e2d3bd;border-radius:11px;background:#fffdf8;padding:8px 11px}
+.letter summary{display:flex;align-items:center;gap:7px;cursor:pointer;list-style:none;min-height:26px}
+.letter summary::-webkit-details-marker{display:none}
+.letter-mark{font-size:.84rem;flex:none}
+.letter-title{flex:1;min-width:0;font-size:.83rem;font-weight:700;color:#5d4a55;line-height:1.4;word-break:keep-all}
+.letter-at{flex:none;font-size:.63rem;font-weight:700;color:#8a6a4a;background:#f4e9d8;border-radius:4px;padding:1px 5px}
+.letter p{font-size:.82rem;line-height:1.72;color:#5f4d5b;margin-top:8px!important;word-break:keep-all}
+.letter.read summary .letter-title{color:#7c6a76}
+.letter.locked{display:flex;align-items:center;gap:7px;background:#f5f0e8;border-style:dashed;padding:10px 11px}
+.letter.locked .letter-title{color:#94857a;font-weight:600;font-size:.79rem}
+.bond-btns{display:flex;gap:8px;margin-top:14px}
+.bond-btns button,.bond-btns a{flex:1;min-height:44px;border-radius:11px;font:inherit;font-size:.84rem;font-weight:700;display:grid;place-items:center;text-decoration:none;cursor:pointer;letter-spacing:-.01em}
+.bond-btns button[disabled]{opacity:.5;pointer-events:none}
+.bond-foot{margin-top:8px!important;font-size:.69rem;color:#93838f;text-align:center;line-height:1.4}
+
+@media(max-width:650px){
+  .voice-dancer{width:70px;height:96px}
+  .voice-bubble p{font-size:.85rem}
+  .next-look{grid-template-columns:84px minmax(0,1fr);gap:11px;padding:11px 12px}
+  .next-silhouette{height:104px}
+  .next-copy h3{font-size:.95rem}
+  .next-hints li{font-size:.75rem}
+  .bond-card{padding:17px 14px 14px}
+}
+@media(max-width:345px){
+  .voice-card{grid-template-columns:1fr;gap:8px}
+  .voice-dancer{display:none}
+  .voice-bubble:before{display:none}
+  .bond-head{gap:9px}.bond-face{width:50px;height:50px}
+}
+
+/* ---------- 주문대의 친밀도 ---------- */
+.bond-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:9px;padding:8px 10px;background:#f7f1f7;border:1px solid #e8dbe8;border-radius:10px}
+.bond-row .hrt{font-size:.9rem}
+.bond-text{font-size:.76rem;color:#6f5a6c;line-height:1.4}
+.letter-mark{color:#d98aa4;width:16px;text-align:center}
+.letter-mark.read{color:#c3b0b8}
+.letter.locked .letter-mark{color:#b3a495}
+.counter .section-line .text-link{flex:none;white-space:nowrap}
+.diary-icon{color:#d2708f}
+.next-silhouette img{filter:brightness(0) saturate(0) opacity(.38)}

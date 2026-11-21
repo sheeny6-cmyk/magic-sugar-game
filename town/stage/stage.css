@@ -104,3 +104,17 @@
 .curtain-card .btn{min-height:46px;font-size:.92rem;width:100%;display:flex;align-items:center;justify-content:center}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 @media(prefers-reduced-motion:reduce){.lights i,.hearts span,.show-hearts span{animation:none!important}}
+
+/* ---------- 정령의 응원 ---------- */
+.spirit-cheer{margin:10px 14px 0;display:flex;align-items:center;gap:11px;padding:10px 12px;background:linear-gradient(180deg,#fffaf3,#f7f0e8);border:1px solid #d8c8b1;border-radius:14px}
+.cheer-row{display:flex;gap:9px;align-items:center;flex:none}
+.cheer-spirit{display:flex;flex-direction:column;align-items:center;gap:2px;margin:0;min-width:0}
+.cheer-face{width:40px;height:40px;border-radius:50% 50% 46% 46%;background:linear-gradient(165deg,#fffcf4,var(--tint,#eadff0));border:1px solid #c9b79b;overflow:hidden;display:grid;place-items:center}
+.cheer-face img{width:100%;height:100%;object-fit:contain}
+.cheer-spirit figcaption{font-size:.66rem;font-weight:700;color:#6d5763;display:flex;align-items:center;gap:2px;line-height:1.25;white-space:nowrap}
+.cheer-hearts .hrt{font-size:.52rem}
+.cheer-line{flex:1;min-width:0;font-size:.78rem;line-height:1.55;color:#5f4a58;word-break:keep-all;margin:0}
+.curtain-cheer{margin-top:9px;font-size:.85rem;line-height:1.6;color:#5d465c;background:#f8f1f7;border:1px solid #e6d6e6;border-radius:11px;padding:9px 11px;word-break:keep-all}
+@media(max-width:400px){.spirit-cheer{padding:9px 10px;gap:8px}.cheer-face{width:34px;height:34px}.cheer-line{font-size:.74rem}}
+.cheer-hearts .hrt{font-size:.6rem}
+.cheer-hearts .hrt.on{color:#d2708f}

@@ -6,20 +6,24 @@
 <meta name="theme-color" content="#fbf7ef">
 <meta name="description" content="3/4 왈츠 박자를 타는 왕립 발레 스튜디오. 박자·파드샤·그랑제떼를 눌러 노래를 완주하면 코인과 도장이 쌓여요.">
 <title>왕립 발레 스튜디오 · 슈가의 발레왕국</title>
-<link rel="stylesheet" href="../style.css?v=20261121h">
-<link rel="stylesheet" href="studio.css?v=20261121h">
+<link rel="stylesheet" href="../style.css?v=20261121i">
+<link rel="stylesheet" href="studio.css?v=20261121i">
 </head>
 <body class="sub studio">
 <main class="app">
-  <header class="subbar"><a class="back" href="../?v=20261121h" aria-label="왕국으로">←</a><h1 class="title">왕립 발레 스튜디오</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
+  <header class="subbar"><a class="back" href="../?v=20261121i" aria-label="왕국으로">←</a><h1 class="title">왕립 발레 스튜디오</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
   <button class="resume-lesson" id="resumeLesson" type="button" hidden></button>
   <section class="attend" aria-label="오늘의 연습복">
     <img class="attend-sugar" data-worn-pose="ready" src="../assets/dancers/basic-ready.webp" alt="">
-    <div class="attend-txt"><p><span data-nick>슈가</span>님의 오늘의 연습복</p><h2 data-worn-name>기본 핑크 레오타드</h2><a href="../dressroom/?v=20261121h">갈아입기 →</a></div>
+    <div class="attend-txt"><p><span data-nick>슈가</span>님의 오늘의 연습복</p><h2 data-worn-name>기본 핑크 레오타드</h2><a href="../dressroom/?v=20261121i">갈아입기 →</a></div>
+  </section>
+  <section class="mates" aria-labelledby="mateTitle">
+    <div class="mates-head"><h2 id="mateTitle">함께 연습할 정령</h2><span id="mateNote">완주하면 친밀도 +1</span></div>
+    <div class="mate-row" id="mates" role="group" aria-label="함께 연습할 정령"></div>
   </section>
   <section class="course-board" aria-labelledby="classList"><h2 id="classList">오늘의 연습</h2><p id="courseNote">수업은 모두 무료예요. 음악이 끝날 때까지 박자를 타면 코인이 쌓여요.</p><div class="classes" id="classes"></div></section>
-  <a class="practice-kit" href="../potions/?v=20261121h"><span id="practiceKit">정령에게 연습 포션 주문하기</span><span aria-hidden="true">→</span></a>
-  <section class="lv"><div class="level-line"><b id="lvName"></b><span id="lvClasses"></span></div><div class="lv-bar"><i id="lvBar"></i></div><p id="lvNote"></p><div id="stamps"></div><a id="stageLink" href="../stage/?v=20261121h"></a></section>
+  <a class="practice-kit" href="../potions/?v=20261121i"><span id="practiceKit">정령에게 연습 포션 주문하기</span><span aria-hidden="true">→</span></a>
+  <section class="lv"><div class="level-line"><b id="lvName"></b><span id="lvClasses"></span></div><div class="lv-bar"><i id="lvBar"></i></div><p id="lvNote"></p><div id="stamps"></div><a id="stageLink" href="../stage/?v=20261121i"></a></section>
   <footer class="foot">© 슈가의 발레왕국</footer>
 
   <dialog class="sheet" id="confirm" aria-labelledby="cName">
@@ -58,6 +62,7 @@
       </div>
       <p class="buff-badge" id="lBuff" hidden></p>
       <p class="reaction" id="lReaction"><img id="lPortrait" alt=""><span id="lTeacher"></span><b id="lFeedback" role="status" aria-live="polite"></b></p>
+      <p class="lcomfort" id="lComfort" hidden></p>
     </div>
   </dialog>
 
@@ -94,13 +99,14 @@
           <a class="btn ghost" id="rGoalLink" hidden></a>
         </div>
       </div>
-      <details id="rDetails"><summary>연습 기록</summary><p id="rRecord"></p><p id="rGains"></p><p id="rStamp"></p><p id="rPotion" hidden></p><p id="rRefund" hidden></p></details>
-      <div class="r-btns"><button type="button" class="btn primary" id="rAgain">한 번 더!</button><a class="btn ghost" href="../potions/?v=20261121h">정령 포션 주문대</a></div>
-      <div class="r-links"><a id="rStage" href="../stage/?v=20261121h">왕립 극장</a><a href="../?v=20261121h">왕국으로</a></div>
+      <p class="rvoice" id="rVoice"></p>
+      <details id="rDetails"><summary>연습 기록</summary><p id="rRecord"></p><p id="rGains"></p><p id="rBonds" hidden></p><p id="rStamp"></p><p id="rPotion" hidden></p><p id="rRefund" hidden></p></details>
+      <div class="r-btns"><button type="button" class="btn primary" id="rAgain">한 번 더!</button><a class="btn ghost" href="../potions/?v=20261121i">정령 포션 주문대</a></div>
+      <div class="r-links"><a id="rStage" href="../stage/?v=20261121i">왕립 극장</a><a href="../?v=20261121i">왕국으로</a></div>
       <p class="sr-only" id="rAnnounce" role="status" aria-live="polite"></p>
     </div>
   </dialog>
 </main>
-<script src="../assets/town.js?v=20261121h"></script><script src="../assets/music.js?v=20261121h"></script><script src="lessons.js?v=20261121h"></script><script src="studio.js?v=20261121h"></script>
+<script src="../assets/town.js?v=20261121i"></script><script src="../assets/music.js?v=20261121i"></script><script src="lessons.js?v=20261121i"></script><script src="studio.js?v=20261121i"></script>
 </body>
 </html>
