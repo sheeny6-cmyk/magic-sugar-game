@@ -316,3 +316,48 @@
 .map-plaza{grid-area:2/2/3/3;align-self:center;justify-self:center;border:2px double #c1a383;background:#f9efd9;border-radius:50%;width:64px;height:64px;display:grid;align-content:center;text-align:center;color:#866c4b;font:700 .62rem/1.25 Georgia,serif;letter-spacing:.08em}
 .journey-steps{display:flex;gap:4px;margin-top:12px}.journey-steps span{flex:1;border-radius:8px;padding:7px 2px;background:#f1e8ef;color:#7b687c;font-size:.7rem;text-align:center;font-weight:700}.journey-steps .done{background:#e0eadb;color:#526b4c}.journey-steps .active{background:#e2d1ed;color:#52366a;border:1px solid #b39bc7}
 @media(max-width:500px){.kingdom-map{aspect-ratio:auto;min-height:345px;grid-template-rows:repeat(3,minmax(100px,1fr));grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:9px 6px}.kingdom-map .venue{padding:5px 3px}.map-plaza{width:49px;height:49px;font-size:.52rem}}
+
+
+/* ---------- 첫 5분: 행동과 보상을 한 화면에서 ---------- */
+.practice-ticket .ticket-top{order:1}
+.practice-ticket #nextTitle{order:2}
+.practice-ticket #nextGoal{order:3}
+.practice-ticket #nextAction{order:4;margin-top:13px}
+.practice-ticket .first-gift{order:5}
+.practice-ticket .ticket-reward{order:6;margin:9px 0 0}
+.practice-ticket .journey-steps{order:7}
+.practice-ticket #ticketNote{order:8}
+.practice-ticket #stageShortcut{order:9}
+.first-gift{display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:11px;margin-top:14px;padding:8px 11px 8px 7px;background:#f9f3f7;border:1px solid #e2d1df;border-radius:12px;min-height:97px}
+.first-gift img{width:70px;height:84px;object-fit:contain;object-position:center bottom}
+.first-gift-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
+.first-gift-copy span{font-size:.7rem;color:#826083;font-weight:700}
+.first-gift-copy strong{font-family:var(--serif);font-size:.97rem;line-height:1.35;word-break:keep-all;color:#593b5a}
+.first-gift-copy small{font-size:.74rem;color:#7d6b79;line-height:1.45;word-break:keep-all}
+
+/* 긴 자료는 접어 두되 선택해서 열 수 있게 유지 */
+.deep-dive{margin-top:22px;border:1px solid #ddd0c6;border-radius:14px;background:#fffdf9;overflow:hidden}
+.deep-dive summary{display:flex;align-items:center;justify-content:space-between;gap:12px;list-style:none;cursor:pointer;min-height:69px;padding:13px 17px}
+.deep-dive summary::-webkit-details-marker{display:none}
+.deep-dive summary>span:first-child{display:flex;flex-direction:column;gap:4px;min-width:0}
+.deep-dive summary strong{font-family:var(--serif);font-size:1.02rem;color:var(--ink)}
+.deep-dive summary small{font-size:.77rem;line-height:1.45;color:var(--muted);word-break:keep-all}
+.deep-toggle{white-space:nowrap;font-size:.74rem;font-weight:700;color:#6c5277;flex:none}
+.deep-toggle:after{content:"⌄";font-size:1rem;padding-left:5px}
+.deep-dive[open] .deep-toggle{font-size:0}
+.deep-dive[open] .deep-toggle:before{content:"접기";font-size:.74rem}
+.deep-dive[open] .deep-toggle:after{content:"⌃";font-size:1rem}
+.deep-dive[open] summary{border-bottom:1px solid #e9ded7}
+.deep-dive-body{padding:16px}
+.deep-dive-body>.growth{margin-top:0}
+.deep-dive-body>.roadmap{margin-top:16px}
+.deep-dive-body>.record{margin-top:0}
+.record-fold{margin-bottom:4px}
+@media(max-width:650px){
+  .first-gift{grid-template-columns:64px minmax(0,1fr);min-height:86px;gap:8px;margin-top:11px}
+  .first-gift img{width:64px;height:76px}
+  .deep-dive{margin-top:16px}
+  .deep-dive summary{padding:11px 13px;min-height:65px}
+  .deep-dive-body{padding:12px}
+  .practice-ticket #nextAction{margin-top:10px}
+}
