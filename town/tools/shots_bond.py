@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """친밀도 UI 요소별 화면 캡처(검토용)."""
-import pathlib, threading
+import pathlib, sys, threading
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from playwright.sync_api import sync_playwright
@@ -53,7 +53,8 @@ with sync_playwright() as p:
     errs = []
     pg.on("console", lambda m: errs.append(m.text) if m.type == "error" else None)
     pg.on("pageerror", lambda e: errs.append("PAGEERROR " + str(e)))
-    base = f'http://127.0.0.1:{serve()}/town/'
+    live = sys.argv[1] if len(sys.argv) > 1 else ''
+    base = (live.rstrip('/') + '/town/') if live else f'http://127.0.0.1:{serve()}/town/'
     pg.goto(base + V, wait_until="load")
     pg.evaluate("(d)=>localStorage.setItem('sugartown.v1',JSON.stringify(d))", STATE)
     pg.reload(wait_until="load")
