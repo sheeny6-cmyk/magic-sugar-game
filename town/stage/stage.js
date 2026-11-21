@@ -94,17 +94,17 @@
     var fame = $('fameLine');
     fame.hidden = !ready;
     if (ready) {
-      fame.textContent = '왕국 명성 ' + T.fmt(s.fame || 0) + (s.show ? ' · 지난 공연 ' + s.show.grade + '등급 ' + T.fmt(s.show.score) + '점' : ' · 아직 첫 공연 전이에요');
+      fame.textContent = '왕국 명성 ' + T.fmt(s.fame || 0) + (s.show ? ' · 지난 공연 ' + s.show.grade + '등급 ' + T.fmt(s.show.score) + '점' : ' · 아직 첫 공연 전이에요') + ' · 연습 효과 +' + T.stagePower(s).good + 'ms';
     }
     if (!ready) {
-      $('count').textContent = '출석 도장 ' + s.classes + ' / 5';
+      $('count').textContent = '출석 도장 ' + s.classes + ' / ' + T.STAGE_CLASSES;
       $('cueTitle').textContent = '초대장까지 도장 ' + T.stageLeft() + '개';
-      $('cueText').textContent = '수업 하나에 도장 하나. 다섯 번째 도장을 찍으면 ' + who + '님이 이 무대에 올라요.';
+      $('cueText').textContent = '수업 두 번을 마치면 ' + who + '님이 이 무대에 올라요.';
       $('toClass').href = '../studio/?v=' + T.V + (s.lesson ? '#lesson' : '#first-bar');
       $('toClass').textContent = s.lesson ? '수업 이어 하기' : '도장 모으러 가기';
-      $('billNote').textContent = '도장 ' + s.classes + ' / 5 · 초대장을 기다리는 중';
+      $('billNote').textContent = '도장 ' + s.classes + ' / ' + T.STAGE_CLASSES + ' · 초대장을 기다리는 중';
     } else if (!part) {
-      $('count').textContent = '출석 도장 5 / 5';
+      $('count').textContent = '왕립 극장 초대 완료';
       $('cueTitle').textContent = debut ? who + '님의 앙코르 무대' : crown ? '👑 프리마 피날레, ' + who + '님 무대로!' : who + '님, 무대로 나와 주세요!';
       $('cueText').textContent = debut
         ? '오늘의 의상으로 한 번 더. 왈츠가 시작되면 링이 겹치는 순간을 탭해요.'
@@ -133,7 +133,8 @@
   function startShow() {
     if (!T.stageReady() || show) return;
     var ctx = audio();
-    var s = T.get(), times = cueTimes();
+    var s = T.get(), times = cueTimes(), power = T.stagePower(s);
+    WINDOW = { perfect: 150 + power.perfect, good: 330 + power.good };
     show = {
       times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
       p0: performance.now() + LEAD, done: false, sending: false, raf: 0, pose: null
@@ -147,7 +148,7 @@
     $('sFill').style.width = '0%';
     T.showDancer($('sDancer'), s.worn, 'ready');
     $('sMove').textContent = '준비 자세';
-    $('sCue').textContent = '왈츠가 시작돼요. 링이 겹치는 순간을 탭!';
+    $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms. 링이 겹치는 순간을 탭!';
     var begin = function () { if (band && show) band.start(SONG, Math.max(0, performance.now() - show.p0)); };
     if (ctx && ctx.state === 'suspended') ctx.resume().then(begin).catch(begin);
     else begin();
@@ -222,6 +223,7 @@
       show.good++; show.combo++; if (show.combo > show.maxCombo) show.maxCombo = show.combo;
       judge('GOOD!', 'good'); hearts(1); chime([784, 1046.5], 0, 0.35, 0.1);
     } else {
+      if (dt < -WINDOW.good) { judge('조금만 기다려요', 'good'); return; }
       judgeMiss('wrong');
       return;
     }

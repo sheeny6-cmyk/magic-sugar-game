@@ -96,7 +96,7 @@
       var prize = T.rewardFor(kind, waiting ? null : potion).coins;
       return '<button class="cls" data-cls="' + kind + '" type="button"' + (waiting ? ' disabled' : '') + '>' +
         '<img src="' + T.spiritArt(sp, true) + '" alt=""><span class="course-info"><strong>' + c.name + '</strong>' +
-        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.count + '노트</small></span>' +
+        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.count + '노트 · ' + Object.keys(c.stats).map(function (k) { return T.STATS[k].label; }).join('·') + '</small></span>' +
         '<b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
     renderMates(s);
@@ -113,7 +113,7 @@
         '<b>' + spirit.name + '</b>' + T.heartsHTML(bond.level, 'mate-hearts') + '</button>';
     }).join('');
     $('mateNote').textContent = mate
-      ? T.SPIRITS[mate].name + '와 함께 · 완주하면 친밀도 +1'
+      ? T.SPIRITS[mate].name + '와 함께 · ' + T.practicePower('bar', s).label
       : '완주하면 선생님과 친밀도 +1';
   }
 
@@ -209,6 +209,13 @@
     stopSession();
     var chart = run.chart && run.chart.notes && run.chart.notes.length ? run.chart : book.buildChart(run.kind, 0);
     var s = T.get(), kind = run.kind, c = classes[kind], buffs = buffFor(s.kingdom.prepared, kind);
+    var power = T.practicePower(kind, s);
+    buffs.window.good += power.timing;
+    buffs.window.perfect = Math.min(buffs.window.good - 30, buffs.window.perfect + Math.floor(power.timing / 2) + power.perfect);
+    buffs.comboRate *= power.combo;
+    buffs.noteCoins += power.notes;
+    buffs.shields += power.shields;
+    buffs.line = ['성장 효과 · 판정 +' + power.timing + 'ms', power.label, buffs.line].filter(Boolean).join(' · ');
     var lane = $('lane');
     lane.replaceChildren();
     var props = $('lProps');
@@ -601,7 +608,8 @@
     var parts = [];
     if (Number.isFinite(r.baseCoins)) parts.push('기본 ' + r.baseCoins);
     if (r.comboCoins) parts.push('콤보 ' + r.comboCoins);
-    if (r.noteCoins) parts.push('알레 ' + r.noteCoins);
+    if (r.noteCoins) parts.push('정령 ' + r.noteCoins);
+    if (r.techniqueCoins) parts.push('동작 성공 ' + r.techniqueCoins);
     $('rCoinsDetail').hidden = parts.length < 2;
     $('rCoinsDetail').textContent = parts.join(' + ') + '코인';
     $('rPerfect').textContent = r.perfect || 0;
@@ -618,10 +626,10 @@
       $('rGoalName').textContent = gift.name;
       $('rGoalNote').textContent = wearing ? T.nick() + '님이 새 스커트로 갈아입었어요.' : '옷장에 도착했어요. ' + T.nick() + '님께 입혀 볼까요?';
       $('rWear').hidden = wearing;
-    } else if (r.classesAfter === 5 || !goal && T.stageReady()) {
+    } else if (T.stageReady() && (!s.shows || !goal)) {
       $('rMilestone').textContent = '왕립 극장 초대장';
       $('rGoalName').textContent = '잠자는 숲속의 ' + T.nick();
-      $('rGoalNote').textContent = '오늘 입은 의상으로 리허설 무대에 올라요.';
+      $('rGoalNote').textContent = '첫 공연 준비가 끝났어요. 지금 바로 무대에 올라 포스터를 남겨요.';
       $('rGoalLink').textContent = '리허설 무대로'; $('rGoalLink').href = '../stage/?v=' + T.V + '#rehearsal'; $('rGoalLink').hidden = false;
     } else if (goal) {
       var left = Math.max(0, goal.price - s.coins);
@@ -639,7 +647,8 @@
     $('rStamp').textContent = '도장 · 바 ' + s.stamps.bar + ' · 센터 ' + s.stamps.center + ' · 작품 ' + s.stamps.piece +
       (T.stageReady() ? '' : ' · 왕립 극장까지 ' + T.stageLeft() + '개');
     var st = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
-    $('rGains').textContent = st;
+    $('rGains').textContent = st + ' · 다음 수업 판정 여유 +' + T.practicePower(r.kind, s).timing + 'ms';
+    $('rDetails').open = true;
     var bonds = r.bonds || [];
     $('rBonds').hidden = !bonds.length;
     $('rBonds').textContent = bonds.length ? '함께한 정령 · ' + bonds.map(function (b) {
@@ -650,7 +659,7 @@
     if (r.potion) $('rPotion').textContent = '사용한 포션 · ' + T.STAFF[r.potion.id].name + ' · ' + T.effectFor(r.potion.id, r.potion.level).label;
     $('rRefund').hidden = !r.refund;
     if (r.refund) $('rRefund').textContent = '이전에 맡긴 예약금 ' + r.refund + '코인도 돌려받았어요.';
-    $('rStage').textContent = T.stageReady() ? '왕립 극장 가기' : '왕립 극장 · 도장 ' + T.stageLeft() + '개';
+    $('rStage').textContent = T.stageReady() ? '왕립 극장 가기' : '첫 공연까지 수업 ' + T.stageLeft() + '회';
     showDialog('result');
   }
 

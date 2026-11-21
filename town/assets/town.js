@@ -4,7 +4,8 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121i';
+  var V = '20261121j';
+  var STAGE_CLASSES = 2;
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
     bar: { fee: 0, coins: 50, life: 1 },
@@ -580,6 +581,16 @@
       stats[reward.extra.key] = (stats[reward.extra.key] || 0) + reward.extra.amount;
     }
     var bonus = score ? Math.max(0, Math.round(score.comboCoins || 0)) + Math.max(0, Math.round(score.noteCoins || 0)) : 0;
+    // Everyone gets attendance credit; successful technique earns more stats and coins.
+    if (score && score.notes > 0) {
+      var accuracy = Math.min(1, ((score.perfect || 0) + 0.65 * (score.good || 0)) / score.notes);
+      Object.keys(classStats).forEach(function (key) {
+        var extra = stats[key] - classStats[key];
+        stats[key] = Math.max(1, Math.round(classStats[key] * (0.5 + 0.5 * accuracy))) + extra;
+      });
+      var techniqueCoins = Math.round(30 * accuracy);
+      bonus += techniqueCoins;
+    }
     var legacyFee = run.kind === 'bar' && !s.stamps.bar ? 0 : OLD_TUITION[run.kind];
     var refund = Number.isSafeInteger(run.paidFee) ? Math.max(0, run.paidFee) : legacyFee;
     var gift = !s.owned.includes('lilac') ? 'lilac' : null;
@@ -596,6 +607,7 @@
       receipt.miss = score.miss || 0; receipt.maxCombo = score.maxCombo || 0;
       receipt.comboCoins = Math.max(0, Math.round(score.comboCoins || 0));
       receipt.noteCoins = Math.max(0, Math.round(score.noteCoins || 0));
+      receipt.techniqueCoins = techniqueCoins || 0;
     }
     if (gift) s.owned.push(gift);
     s.coins = receipt.after;
@@ -761,8 +773,28 @@
     var s = get().stamps;
     return s.bar + s.center + s.piece;
   }
-  function stageReady() { return get().classes >= 5; }
-  function stageLeft() { return Math.max(0, 5 - get().classes); }
+  function stageReady() { return get().classes >= STAGE_CLASSES; }
+  function stageLeft() { return Math.max(0, STAGE_CLASSES - get().classes); }
+
+  // Training changes the actual timing and companion abilities, not just numbers.
+  function practicePower(kind, state) {
+    var s = state || get(), st = s.stats;
+    var skill = kind === 'bar' ? st.axis + st.flex : kind === 'center' ? st.axis + st.turn : st.stam + st.flex;
+    var out = { timing: Math.min(90, Math.floor(skill * 2)), perfect: 0, combo: 1, notes: 0, shields: 0, label: '' };
+    var id = s.practiceWith, b = id && s.spirits[id];
+    if (!b) return out;
+    var lv = bondLevel(b.bond), amount = 1 + Math.floor((lv - 1) / 2);
+    if (id === 'etu') { out.timing += 12 * amount; out.label = '균형 · 판정 +' + 12 * amount + 'ms'; }
+    if (id === 'alle') { out.perfect += 10 * amount; out.label = '리듬 · Perfect +' + 10 * amount + 'ms'; }
+    if (id === 'ara') { out.combo = 1 + amount * 0.25; out.label = '표현력 · 콤보 코인 +' + 25 * amount + '%'; }
+    if (id === 'piru') { out.shields = amount; out.label = '회전 · 실수 ' + amount + '회 보조'; }
+    if (id === 'shangz') { out.notes = amount; out.label = '도약 · 성공 노트당 +' + amount + '코인'; }
+    return out;
+  }
+  function stagePower(state) {
+    var s = state || get(), st = s.stats;
+    return { perfect: Math.min(75, Math.floor((st.axis + st.turn) * 1.5)), good: Math.min(130, Math.floor((st.axis + st.turn + st.flex + st.stam) * 2)) };
+  }
 
   /* ---------- 코인/스탯 ---------- */
   function syncUI(root) {
@@ -963,7 +995,7 @@
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
-    LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, addClass: addClass,
+    LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, STAGE_CLASSES: STAGE_CLASSES, practicePower: practicePower, stagePower: stagePower, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast,

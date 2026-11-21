@@ -30,7 +30,7 @@
         label: '스튜디오에서 ' + courseNames[s.lesson ? s.lesson.kind : 'bar'] + (s.lesson ? ' 이어 하기' : ' ' + classes.left + '번 더')
       };
     }
-    if (stat) return { href: 'snack/?v=' + T.V, label: '분식집에서 능력치 ' + stat.left + ' 채우기' };
+    if (stat) return { href: 'studio/?v=' + T.V, label: '연습으로 능력치 ' + stat.left + ' 더 키우기' };
     if (shows) {
       if (T.stageReady()) return { href: 'stage/?v=' + T.V, label: '왕립 극장에서 공연 ' + shows.left + '회 더' };
       return { href: 'studio/?v=' + T.V, label: '극장 초대장까지 수업 ' + T.stageLeft() + '번' };
@@ -112,7 +112,8 @@
     }).join('');
     $('bondPotion').href = 'potions/?v=' + T.V + '#' + id;
     $('bondPractice').dataset.spirit = id;
-    $('bondFoot').textContent = '함께 연습하면 ' + spirit.name + '와 친밀도가 +1 올라요';
+    var preview = Object.assign({}, T.get(), { practiceWith: id });
+    $('bondFoot').textContent = '동료 능력 · ' + T.practicePower('bar', preview).label + ' · 수료할 때 친밀도 +1';
   }
   function openBond(id) {
     if (!Object.hasOwn(T.STAFF, id)) return;
@@ -190,7 +191,7 @@
     var level = T.level(), reward = T.rewardFor(lesson ? lesson.kind : 'bar', dose);
     var first = !s.classes && !lesson;
     var who = nick();
-    $('lookTitle').textContent = lesson ? courseNames[lesson.kind] + ' 이어서' : first ? '첫 바 연습' : '오늘의 바 연습';
+    $('nextTitle').textContent = lesson ? courseNames[lesson.kind] + ' 이어서' : first ? '첫 무대를 향한 바 연습' : '오늘의 바 연습';
     $('nextGoal').textContent = lesson ? '연습 중이던 노래를 처음부터 다시 틀어 드려요.'
       : '에튜 선생님과 3/4 왈츠에 맞춰 박자를 타요.';
     $('nextReward').innerHTML = '노트 완주 <b>+' + T.fmt(reward.coins) + '코인</b>';
@@ -201,7 +202,20 @@
     else if (dose) $('ticketNote').textContent = T.STAFF[dose.id].name + ' 포션 준비 · ' + T.effectFor(dose.id, dose.level).label;
     else if (target) $('ticketNote').textContent = s.coins >= target.price ? '드레스룸에서 구매 가능 · ' + target.name : '다음 의상 · ' + target.name + '까지 ' + T.fmt(target.price - s.coins) + '코인';
     else $('ticketNote').textContent = '이번 연습복 · ' + T.dressOf(s.worn).name;
-    $('stageShortcut').hidden = !T.stageReady();
+    if (!lesson && !s.shows) {
+      $('nextTitle').textContent = T.stageReady() ? '첫 공연 초대장이 도착했어요' : '첫 무대까지 수업 ' + T.stageLeft() + '회';
+      $('nextGoal').textContent = T.stageReady() ? '연습한 동작을 무대에서 보여주고 나만의 공연 포스터를 남겨요.' : '수업 두 번으로 왕립 극장에 데뷔해요. 연습할수록 판정이 쉬워져요.';
+      if (T.stageReady()) {
+        $('nextReward').textContent = '공연 보상 · 코인과 첫 공연 포스터';
+        $('nextAction').href = 'stage/?v=' + T.V;
+        $('nextAction').firstChild.textContent = '첫 공연 시작 ';
+        $('ticketNote').textContent = '현재 의상 그대로 무대에 올라요';
+      }
+    } else if (!lesson) {
+      var power = T.practicePower('bar', s);
+      $('nextGoal').textContent = '오늘도 한 걸음 · 연습으로 판정 여유 +' + power.timing + 'ms';
+    }
+    $('stageShortcut').hidden = !T.stageReady() || (!lesson && !s.shows);
     $('stageShortcut').textContent = T.prima() ? '프리마 피날레 무대 열기 →' : k.debutOutfit ? '오늘의 의상으로 앙코르 공연 →' : '첫 리허설 초대장 열기 →';
     $('staffIntro').textContent = dose ? T.SPIRITS[dose.id].name + '의 포션이 준비됐어요. ' + who + '님이 연습을 마치면 효과가 발동해요.'
       : !s.classes && !Object.values(k.orders).some(Boolean) ? '첫 지원금은 ' + T.GRANT + '코인이에요. 정령에게 포션을 한 잔 주문하면 생명력 1이 전해져요.'
