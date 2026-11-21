@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261121l';
+  var V = '20261121m';
   var STAGE_CLASSES = 2;
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
@@ -30,7 +30,7 @@
     var i = src.indexOf('/assets/town.js');
     return i >= 0 ? src.slice(0, i + 1) : 'assets/';
   })();
-  function A(p) { return ROOT + p; }
+  function A(p) { return ROOT + p + (p.indexOf('?') < 0 ? '?v=' + V : ''); }
 
   var STATS = {
     flex: { key: 'flex', label: '유연성', icon: '💫' },
