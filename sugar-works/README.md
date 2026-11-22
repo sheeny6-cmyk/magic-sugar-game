@@ -10,7 +10,7 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 
 ## Completed (2026-11-22)
 - Responsive ivory/lilac SUGAR WORKS creative landing page with ballet palace imagery
-- Archive grid and functioning category filters for 7 catalogued works (non-owned snowboard entry removed)
+- Archive grid and functioning category filters for 6 portfolio project groups; OGQ lives in a dedicated collection section (non-owned snowboard entry removed)
 - Direct links to ballet kingdom/cafe game
 - Naver OGQ links: initial Sugar Ballet stickers https://naver.me/x52dbBni and **발레 쇼핑에 진심인 슈가** https://naver.me/GGGt2vH1 (saved earlier, live redirect not independently verified)
 - YouTube, Instagram and Threads links
@@ -18,7 +18,7 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 
 ## Important content safety rules
 - Show **only real, actually published projects**. Never invent work, testimonials, thumbnails or personal experiences.
-- The seven cards are catalog labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.
+- The six portfolio cards are project-category labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.
 - For any card without a confirmed deep link, link back to the original legacy gallery.
 - Do not expose private drafts or internal data.
 - Never pretend original Sites login/upload/edit/delete features are migrated. They remain in the old system.
@@ -32,3 +32,10 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 
 ## Editing from a normal ChatGPT chat
 Update only `sheeny6-cmyk/magic-sugar-game/sugar-works/`. Report the exact commit, and distinguish source updates from deployment verification. Do not edit the sibling game directories.
+
+## OGQ collection update (2026-11-22)
+- The OGQ works are not limited to 2: a dedicated section exists at `/sugar-works/#ogq`.
+- Confirmed direct-link entries from prior context: SET 01 https://naver.me/x52dbBni; SET 02 https://naver.me/GGGt2vH1. Current redirect destinations were not independently accessible.
+- 「슈가공주의 일상」 passed review on Nov 16, 2026, per the user's Google Drive OGQ master plan, but its live sales link is not yet verified, so no invented link/status.
+- 「발레리노 루카의 척척 리액션」 has 24-piece source/planning materials, but no publication confirmation; do not list as for sale.
+- The complete OGQ creator catalog has NOT been retrieved; do not claim the entries represent all of the user's OGQ works. If the user supplies one creator profile URL, index the verified published works from it.
