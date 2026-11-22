@@ -44,3 +44,13 @@
 .order-card .oc-note{margin:5px 0 0;text-align:center;font-size:.68rem;color:#9a86ad;line-height:1.4}
 .order-card .oc-ok{margin-top:11px;width:100%;min-height:48px;border:0;border-radius:13px;font:inherit;font-weight:850;font-size:.94rem;
   background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;cursor:pointer;box-shadow:0 8px 18px #6b4a8a3d}
+
+/* 화면 아래에 떠 있는 주문 버튼 */
+.order-cta.shop-fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  width:min(92vw,340px);min-height:52px;border:0;border-radius:15px;font:inherit;font-weight:850;font-size:.95rem;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;cursor:pointer;z-index:80;
+  box-shadow:0 14px 30px #6b4a8a59;letter-spacing:-.02em}
+.order-cta.shop-fab[disabled]{background:linear-gradient(150deg,#d8c9ea,#c3addb);color:#5b4770;box-shadow:0 8px 18px #6b4a8a26}
+.order-cta.shop-fab[hidden]{display:none}
+/* 분식집은 아래 '영업 시작' 바 위로 띄운다 */
+.snack .order-cta.shop-fab{bottom:calc(104px + env(safe-area-inset-bottom,0px))}

@@ -256,4 +256,4 @@ body.sub .app{background:linear-gradient(180deg,#fdfaff,#f7f0fe 46%,#fbf6ff)}
 .dress .reward-guide p,.dress .reward-guide{color:#77659a}
 .dress .preview-help{color:#7c6a8b}
 /* 분식집: 주문 버튼을 화면 아래에 붙여 메뉴를 고른 뒤 바로 누를 수 있게 */
-.snack .shop-order .order-cta{position:sticky;bottom:calc(94px + var(--safe-b));z-index:6;box-shadow:0 10px 26px #6b4a8a4d}
+.shop-order .shop-head{margin-bottom:8px}

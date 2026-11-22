@@ -11,7 +11,12 @@
   var kind = box.getAttribute('data-shop');
   var list = kind === 'cafe' ? T.CAFE : T.MENU;
   var grid = box.querySelector('.menu-grid');
-  var cta = box.querySelector('.order-cta');
+  /* 고른 메뉴의 주문 버튼은 화면 아래에 떠서 언제든 누를 수 있게 한다. */
+  var cta = document.createElement('button');
+  cta.type = 'button';
+  cta.className = 'order-cta shop-fab';
+  cta.hidden = true;
+  document.body.appendChild(cta);
   var selected = null;
   var dialog = document.querySelector('.order-card');
 
@@ -39,10 +44,12 @@
   }
   function paintCta() {
     if (!selected) {
+      cta.hidden = true;
       cta.disabled = true;
       cta.textContent = '메뉴를 골라 주세요';
       return;
     }
+    cta.hidden = false;
     var m = T.mealOf(kind, selected);
     var left = T.get().coins;
     cta.disabled = left < m.price;
