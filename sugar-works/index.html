@@ -40,7 +40,7 @@ nav{max-width:1450px;min-height:72px;margin:auto;padding:0 5%;display:flex;align
 .cover .cover-type{position:absolute;z-index:3;top:20px;left:18px;color:#76677b;font-size:9px;letter-spacing:.1em;font-weight:700}
 .cover .cover-title{position:relative;z-index:3;max-width:86%;font:400 clamp(22px,2.2vw,34px)/1.25 var(--serif);letter-spacing:-.035em;word-break:keep-all}
 .cover .cover-bottom{position:absolute;z-index:3;bottom:20px;left:18px;color:#7d687d;font-size:9px;letter-spacing:.13em;font-weight:700}
-.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cover.pos-top img{object-position:top center}
 .cover.has-img:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#2b2033ad 0%,#2b203300 42%);z-index:2}
 .cover.has-img .cover-type,.cover.has-img .cover-bottom{color:#fff;text-shadow:0 1px 4px #2b203399;z-index:3}.cover.game:before{content:"";position:absolute;inset:0;background:#39294555;z-index:2}.cover.game span{color:#fff!important;text-shadow:0 1px 5px #281a36a8}
 .cover.snow{background:linear-gradient(145deg,#f9fcff,#d6e1ea)}.cover.snow:before{content:"";position:absolute;width:150%;height:39%;bottom:-16%;transform:rotate(-9deg);background:white;border-radius:50%}
@@ -227,24 +227,28 @@ var ORIGINAL="https://sugar-works-gallery.sugar0506.chatgpt.site/";
 var works=[
 {title:"슈가의 마법 발레 카페",kind:"웹게임",type:"game",desc:"발레 동작을 마법 음료로 풀어낸 웹게임 작업.",cover:"SUGAR BALLET CAFÉ",url:"https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/"},
 {title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"이미지 컷과 릴스로 만든 발레 인스타툰. 사이트 안에서 바로 감상·재생.",cover:"BALLET DIARY",img:"assets/toons/allegro/01.webp",action:"toon"},
-{title:"발레왕국 달력 소개",kind:"디자인",type:"editorial",desc:"발레왕국 달력을 소개하는 콘텐츠 디자인.",cover:"A YEAR OF BALLET"},
-{title:"발레왕국 달력",kind:"굿즈",type:"calendar",desc:"발레왕국 세계관을 담은 달력 작업.",cover:"BALLET CALENDAR"},
+{title:"발레왕국 달력 소개",kind:"디자인",type:"editorial",desc:"2027년 슈가공주 달력을 소개하는 5컷 이야기.",cover:"A YEAR OF BALLET",img:"assets/toons/kingdom/01.webp",pos:"top",cta:"▷ 5컷 달력 소개 보기",viewer:"kingdom"},
+{title:"발레왕국 달력",kind:"굿즈",type:"calendar",desc:"2027년 슈가공주 달력 12장. 1월부터 12월까지 사이트 안에서 넘겨 봅니다.",cover:"BALLET CALENDAR",img:"assets/toons/calendar/01.webp",pos:"top",cta:"▷ 2027 달력 12장 보기",viewer:"calendar"},
 {title:"네이버 OGQ 스티커 컬렉션",kind:"OGQ 스티커 시리즈",type:"sticker",desc:"슈가의 다양한 스티커 작품 모음. 확인된 작품과 심사 현황을 볼 수 있어요.",cover:"OGQ STICKER COLLECTION",url:"#ogq"},
 {title:"영상 편집 작업",kind:"영상",type:"video",desc:"장면과 리듬을 연결하는 영상 편집 작업.",cover:"MOTION & MOMENTS"}
 ];
 var types={game:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",video:"video"};
 var grid=document.getElementById("workGrid");
 works.forEach(function(w,i){
-var card=document.createElement(w.action==="toon"?"button":"a");card.className="card";card.dataset.category=types[w.type];
-if(w.action==="toon"){card.type="button";card.dataset.openToon="";card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
+var viewer=w.viewer||null;
+var card=document.createElement(viewer||w.action==="toon"?"button":"a");card.className="card";card.dataset.category=types[w.type];
+if(viewer){card.type="button";card.dataset.viewer=viewer;card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
+else if(w.action==="toon"){card.type="button";card.dataset.openToon="";card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
 else{card.href=w.url||ORIGINAL;if(card.href.charAt(card.href.length-1)!=="#".charAt(0)&&!(w.url||"").startsWith("#")){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(w.url&&w.url.startsWith("#")?" 컬렉션으로 이동":" 새 창에서 감상"));}
 var cover=document.createElement("div");cover.className="cover "+w.type;
 if(w.type==="game"){var im=document.createElement("img");im.src="../cafe/assets/bg-entrance.webp";im.loading="lazy";im.alt="";cover.appendChild(im);}
-else if(w.img){cover.className+=" has-img";var imt=document.createElement("img");imt.src=w.img;imt.loading="lazy";imt.alt="";cover.appendChild(imt);}
+else if(w.img){cover.className+=" has-img"+(w.pos?" pos-"+w.pos:"");var imt=document.createElement("img");imt.src=w.img;imt.loading="lazy";imt.alt="";cover.appendChild(imt);}
 function text(cls,value){var el=document.createElement("span");el.className=cls;el.textContent=value;cover.appendChild(el);}
 text("cover-type",String(i+1).padStart(2,"0")+" / "+w.kind.toUpperCase());
-if(w.img){text("cover-bottom","▷ 사이트에서 바로 보기");}else{text("cover-title",w.cover);text("cover-bottom","SUGAR WORKS · ARCHIVE");}
-var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;var arrow=document.createElement("span");arrow.textContent=w.action==="toon"?"▷":"↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow);var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);card.append(cover,info);grid.appendChild(card);
+if(w.img){text("cover-bottom",w.cta||"▷ 사이트에서 바로 보기");}else{text("cover-title",w.cover);text("cover-bottom","SUGAR WORKS · ARCHIVE");}
+var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;var arrow=document.createElement("span");arrow.textContent=(viewer||w.action==="toon")?"▷":"↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow);var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);card.append(cover,info);
+if(viewer){card.addEventListener("click",function(){if(window.SugarToons&&window.SugarToons.openId)window.SugarToons.openId(viewer)})}
+grid.appendChild(card);
 });
 var buttons=[].slice.call(document.querySelectorAll("[data-filter]"));
 buttons.forEach(function(b){b.addEventListener("click",function(){
@@ -280,6 +284,7 @@ if(f==="toon"&&window.SugarToons){window.SugarToons.open()}
 var TOONS=[
 {id:"allegro",title:"미들 알레그로가 끝나지 않아!",kind:"IMAGE TOON · 8 CUTS",cuts:8,dir:"assets/toons/allegro/",cover:"assets/toons/allegro/01.webp",desc:"다 외웠다고 생각한 순간, 다시 한 번. 반복되는 미들 알레그로 수업을 담은 8장 인스타툰입니다. 오른쪽을 마쳤으니 이제 왼쪽 — 힘들어도 다음 동작을 이어가는 슈가의 발레 일상.",src:{label:"기존 갤러리에서 보기 ↗",url:"https://sugar-works-gallery.sugar0506.chatgpt.site/works/middle-allegro"}},
 {id:"kingdom",title:"발레왕국의 2027년 준비",kind:"IMAGE TOON · 5 CUTS",cuts:5,dir:"assets/toons/kingdom/",cover:"assets/toons/kingdom/01.webp",desc:"2027년 슈가공주 달력을 소개하는 5장 인스타툰입니다. 발레를 계속하겠다는 다짐에서 시작해, 정령들과 함게하는 발레왕국의 사계절로 이어집니다.",src:{label:"기존 갤러리에서 보기 ↗",url:"https://sugar-works-gallery.sugar0506.chatgpt.site/works/kingdom-2027"}},
+{id:"calendar",title:"2027 슈가공주 달력",kind:"CALENDAR · 12 MONTHS",cuts:12,dir:"assets/toons/calendar/",cover:"assets/toons/calendar/01.webp",noCard:true,desc:"2027년 슈가공주 달력 12장입니다. 1월부터 12월까지 한 장씩 넘겨 보거나, 세로로 이어서 볼 수 있어요. Galaxy S24 세로 화면용으로 만든 월별 배경화면입니다.",src:{label:"기존 갤러리에서 보기 ↗",url:"https://sugar-works-gallery.sugar0506.chatgpt.site/works/calendar-2027"}},
 {id:"ending",title:"최발러의 엔딩은 죽음뿐",kind:"IMAGE TOON · 9 CUTS",cuts:9,dir:"assets/toons/ending/",cover:"assets/toons/ending/01.webp",desc:"발레왕국 마을 <가든>의 프롤로그로 들어간 9킷 이야기입니다. 발레를 시작한 최미 발레러의 하루가 이어집니다.",src:{label:"발레왕국 마을에서 보기 ↗",url:"https://sheeny6-cmyk.github.io/magic-sugar-game/town/garden/"}},
 {id:"misconception",title:"발레 16년 했어요",kind:"IMAGE TOON · 8 CUTS",cuts:8,dir:"assets/toons/misconception/",cover:"assets/toons/misconception/01.webp",desc:"발레에 대한 오해. 그리고 나를 보며 드는 생각. '16년 했다고 말해도 되나...?' 오래 한 거지, 잘하는 건 또 다른 얘기. 그래도 취미는 취미니까. (2026년 7월 20일 인스타그램 게시)",src:{label:"인스타그램 원본 ↗",url:"https://www.instagram.com/sugar.ballet/p/DbCJVF9Er15/"}}
 ];
@@ -302,6 +307,7 @@ function cutPath(t,i){return t.dir+String(i+1).padStart(2,"0")+".webp"}
 function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 var tGrid=document.getElementById("toonGrid"),rGrid=document.getElementById("reelGrid");
 TOONS.forEach(function(t,ti){
+if(t.noCard)return;
 var b=el("button","toon-card");b.type="button";b.setAttribute("aria-haspopup","dialog");b.setAttribute("aria-label",t.title+" — 사이트 내 뷰어 열기");
 var th=el("div","toon-thumb");var im=el("img");im.src=t.cover;im.alt=t.title+" 첫 컷";im.loading="lazy";th.appendChild(im);
 th.appendChild(el("span","toon-cut",t.cuts+" CUTS"));
@@ -387,7 +393,7 @@ if(st.vertical&&st.mode==="toon")return;
 if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);
 });
 [].slice.call(document.querySelectorAll("[data-open-toon]")).forEach(function(b){b.addEventListener("click",function(){openToon(0,0)})});
-window.SugarToons={open:function(){openToon(0,0)}};
+window.SugarToons={open:function(){openToon(0,0)},openId:function(id,cut){for(var k=0;k<TOONS.length;k++){if(TOONS[k].id===id){openToon(k,cut||0);return true}}return false}};
 })();
 </script>
 </body></html>

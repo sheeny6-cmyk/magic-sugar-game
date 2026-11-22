@@ -30,6 +30,15 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 - Viewer behaviour: arrow buttons, keyboard ←/→, swipe, cut counter, thumbnail strip, `세로 보기` (continuous scroll for image series), per-series switcher, and a link to the original post. Escape/backdrop/✕ closes; focus and body scroll are restored.
 - The `인스타툰` filter in `01 / CREATIVE ARCHIVE` no longer bounces to the legacy gallery: it filters the grid and opens the viewer, and the `발레 인스타툰` card is a viewer button (`▷`).
 
+## Calendar cards now open the in-site viewer (2026-11-22)
+- `01 / CREATIVE ARCHIVE`의 두 달력 카드가 더 이상 기존 갤러리(`ORIGINAL`)로 나가지 않고, 사이트 내 뷰어에서 바로 열립니다.
+  - 「발레왕국 달력 소개」 → `kingdom` 시리즈 「발레왕국의 2027년 준비」 5컷.
+  - 「발레왕국 달력」 → `calendar` 시리즈 「2027 슈가공주 달력」 12장(1월~12월 넘겨 보기 / 세로로 이어 보기 / 썸네일 스트립).
+- 12장 이미지는 `sugar-works-gallery…/works/calendar-2027`의 `/api/media/calendar-01`~`calendar-12`에서 받아 `sugar-works/assets/toons/calendar/01.webp`~`12.webp`로 저장했습니다. 원본 665×1440(세로 배경화면)을 810px 이하로 유지하며 webp q82로 재인코딩(합계 약 1.9MB).
+- `calendar` 시리즈는 `noCard:true`라서 인스타툰 그리드에는 카드가 생기지 않습니다(그리드 집계 4 시리즈/30컷 유지). 뷰어의 시리즈 전환 줄에는 함께 나옵니다.
+- 두 카드는 시리즈 첫 컷을 커버 이미지로 쓰고 `▷` 표시와 `▷ 2027 달력 12장 보기` / `▷ 5컷 달력 소개 보기` 문구를 답니다.
+- 뷰어 API에 `window.SugarToons.openId(id, cut)`를 추가해 카드에서 특정 시리즈를 바로 열 수 있게 했습니다.
+
 ## Important content safety rules
 - Show **only real, actually published projects**. Never invent work, testimonials, thumbnails or personal experiences.
 - The six portfolio cards are project-category labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.
