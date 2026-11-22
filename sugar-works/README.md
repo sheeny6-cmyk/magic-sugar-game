@@ -38,4 +38,5 @@ Update only `sheeny6-cmyk/magic-sugar-game/sugar-works/`. Report the exact commi
 - Confirmed direct-link entries from prior context: SET 01 https://naver.me/x52dbBni; SET 02 https://naver.me/GGGt2vH1. Current redirect destinations were not independently accessible.
 - 「슈가공주의 일상」 passed review on Nov 16, 2026, per the user's Google Drive OGQ master plan, but its live sales link is not yet verified, so no invented link/status.
 - 「발레리노 루카의 척척 리액션」 has 24-piece source/planning materials, but no publication confirmation; do not list as for sale.
-- The complete OGQ creator catalog has NOT been retrieved; do not claim the entries represent all of the user's OGQ works. If the user supplies one creator profile URL, index the verified published works from it.
+- The user supplied their OGQ creator URL: https://naver.me/5Z1FxGzR . The portfolio now links there prominently for the complete catalog.
+- The shortlink did not resolve to a readable creator/product listing through available external reading tools. Do not claim all individual stickers have been indexed until their titles and sales URLs are retrievable and verified.
