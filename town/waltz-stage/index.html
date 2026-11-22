@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2f2742">
+<meta name="description" content="슈가의 3/4 왈츠 무대. 강-약-약 세 박에 맞춰 파드샤·그랑제떼·아라베스크·피루엣으로 55초 코스를 지나 첫 무대를 완성해요.">
+<title>3/4 왈츠 · 세 박의 발레 · 슈가의 발레왕국</title>
+<style>
+:root{
+  --ink:#4d3f60; --soft:#8d7f9c; --line:#e2d8ea; --paper:#fffaf6;
+  --lilac:#9a7dbd; --deep:#3a2f4e; --mint:#79c2a8; --gold:#e8b96a; --rose:#d98d9b;
+  --pad:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overscroll-behavior:none}
+body{
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  color:var(--ink); background:#241d33;
+  -webkit-tap-highlight-color:transparent;
+  overflow:hidden;
+}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+a{color:inherit;text-decoration:none}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid #c9b4e6;outline-offset:2px}
+
+.app{
+  height:100dvh; max-width:560px; margin:0 auto;
+  display:flex; flex-direction:column;
+  background:linear-gradient(180deg,#efe7f7,#e6e0ef 40%,#f4eef2);
+  overflow:hidden;
+}
+
+/* ---------- 상단 ---------- */
+.top{
+  flex:none; height:50px; display:flex; align-items:center; gap:8px;
+  padding:0 12px; padding-top:env(safe-area-inset-top);
+  background:linear-gradient(180deg,#fbf7fd,#f4eef8);
+  border-bottom:1px solid #e6ddef;
+}
+.top .back{
+  display:flex;align-items:center;gap:4px;font-size:12px;font-weight:800;color:#7a678c;
+  background:#fff;border:1px solid #e3d8ea;border-radius:11px;padding:6px 9px;flex:none;
+}
+.top .who{flex:1;min-width:0;text-align:center}
+.top .who small{display:block;font-size:8px;letter-spacing:1.7px;color:#a697b0;font-weight:800}
+.top .who b{display:block;font-family:Georgia,"Noto Serif KR",serif;font-size:14px;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .snd{width:34px;height:34px;flex:none;border:1px solid #e3d8ea;border-radius:11px;background:#fff;font-size:15px;color:#6d5a7f}
+
+/* ---------- 무대 ---------- */
+.stage-wrap{position:relative;flex:1 1 auto;min-height:0;background:#241d33;overflow:hidden}
+#stage{display:block;width:100%;height:100%;touch-action:none}
+
+.hud{position:absolute;inset:0;pointer-events:none}
+.judge{
+  position:absolute;left:0;right:0;top:20%;text-align:center;
+  font-size:18px;font-weight:900;letter-spacing:1.2px;opacity:0;
+  text-shadow:0 2px 6px #2b213d,0 0 14px #5b4676;
+}
+.judge.show{animation:jpop .62s ease-out forwards}
+.judge.perfect{color:#ffe6a8}
+.judge.good{color:#c7f0e2}
+.judge.miss{color:#ffc8cf}
+@keyframes jpop{
+  0%{opacity:0;transform:translateY(10px) scale(.86)}
+  22%{opacity:1;transform:translateY(0) scale(1.06)}
+  60%{opacity:1;transform:translateY(-2px) scale(1)}
+  100%{opacity:0;transform:translateY(-16px) scale(.98)}
+}
+.combo{
+  position:absolute;right:12px;top:34px;text-align:right;color:#fff;
+  font-size:10px;font-weight:800;letter-spacing:1.3px;text-shadow:0 1px 6px #241a36;
+  opacity:0;transition:opacity .2s;
+}
+.combo.on{opacity:.95}
+.combo b{display:block;font-size:22px;font-family:Georgia,serif;line-height:1}
+.section-tag{
+  position:absolute;left:12px;top:34px;color:#fff;font-size:9px;font-weight:800;letter-spacing:1.6px;
+  background:#2c2340a8;border:1px solid #ffffff2e;border-radius:8px;padding:4px 7px;
+}
+.tap-hint{
+  position:absolute;left:0;right:0;bottom:10px;text-align:center;color:#fff;
+  font-size:10px;font-weight:700;letter-spacing:.4px;text-shadow:0 1px 5px #241a36;opacity:.8;
+}
+
+/* ---------- 커버 ---------- */
+.cover{
+  position:absolute;inset:0;z-index:20;display:flex;align-items:flex-start;justify-content:center;
+  padding:10px 14px 0;
+  background:linear-gradient(180deg,#f3ecf8fa 0%,#f3ecf8f4 52%,#f4eef7c4 63%,#f5f0f733 71%,#f6f1f700 100%);
+  overflow:hidden;
+}
+.cover-card{
+  width:100%;max-width:400px;background:#fffdfb;border:1px solid #eadff0;border-radius:22px;
+  padding:16px 18px 14px;box-shadow:0 16px 40px #4a3a5e26;text-align:center;
+}
+.cover-card .seal{font-size:23px;letter-spacing:4px}
+.cover-card .eyebrow{font-size:9px;font-weight:800;letter-spacing:2.4px;color:#a087b4;margin-top:4px}
+.cover-card h1{font-family:Georgia,"Noto Serif KR",serif;font-size:24px;letter-spacing:-.9px;margin:6px 0 4px;color:#5b4a6e}
+.cover-card .sub{font-size:11.5px;line-height:1.65;color:#8b7b95;margin:0 0 12px}
+.cover-card .sub b{color:#6d5783}
+.guide{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:11px}
+.guide div{background:#f5eff9;border-radius:12px;padding:8px 2px;font-size:9.5px;font-weight:800;color:#7b6790;line-height:1.3}
+.guide span{display:block;font-size:19px;margin-bottom:2px}
+.cover-card .beat-note{
+  display:flex;gap:3px;justify-content:center;align-items:flex-end;margin:0 0 11px;height:18px;
+}
+.cover-card .beat-note i{display:block;width:12px;border-radius:3px;background:#cdb9e0}
+.cover-card .beat-note i:nth-child(3n+1){height:20px;background:#9a7dbd}
+.cover-card .beat-note i:nth-child(3n+2){height:11px}
+.cover-card .beat-note i:nth-child(3n){height:7px}
+.primary{
+  display:block;width:100%;min-height:48px;border-radius:15px;font-size:14.5px;font-weight:850;color:#fff;
+  background:linear-gradient(115deg,#8d6fb4,#b28ec4);box-shadow:0 5px 0 #6e5890;
+}
+.primary:active{transform:translateY(2px);box-shadow:0 3px 0 #6e5890}
+.cover-card .meta{font-size:10px;color:#a294ab;margin:8px 0 0}
+
+/* ---------- 다음 동작 / 판정 안내 ---------- */
+.cue{
+  flex:none;display:flex;align-items:center;gap:9px;padding:9px 12px;
+  background:#fdf9fd;border-top:1px solid #ece2f2;min-height:52px;
+}
+.cue .dot{width:9px;height:9px;border-radius:50%;background:#cdbddb;flex:none;box-shadow:0 0 0 4px #f1e9f6}
+.cue .txt{flex:1;min-width:0}
+.cue .txt b{display:block;font-size:12.5px;font-weight:850;color:#5f4d72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cue .txt small{display:block;font-size:10px;color:#9a8ba6;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cue .beat{
+  flex:none;display:flex;gap:3px;align-items:flex-end;height:20px;
+}
+.cue .beat i{width:5px;border-radius:2px;background:#d9cbe6;display:block;height:6px}
+.cue .beat i:nth-child(1){height:18px;background:#b79ed3}
+.cue .beat i:nth-child(2){height:10px}
+.cue .beat i:nth-child(3){height:6px}
+.cue .beat i{transition:background .07s linear,height .07s linear,transform .07s linear}
+.cue .beat i.cur{background:#8d6fb4}
+.cue .beat i.cur:nth-child(1){height:20px}
+.cue .beat i.cur:nth-child(2){height:14px;background:#a98ac6}
+.cue .beat i.cur:nth-child(3){height:10px;background:#bda6d3}
+
+/* ---------- 버튼 ---------- */
+.pad{
+  flex:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;
+  padding:9px 10px 10px;background:#f8f3fa;
+}
+.move{
+  position:relative;min-height:92px;border-radius:16px;border:1px solid #e8dbee;background:#fffdfd;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  color:#6b5679;box-shadow:0 3px 0 #e5d8ec;touch-action:none;user-select:none;
+  transition:transform .06s,box-shadow .06s,background .12s;
+}
+.move .ico{font-size:24px;line-height:1.1}
+.move b{font-size:clamp(10px,2.9vw,12px);font-weight:850;letter-spacing:-.4px;white-space:nowrap}
+.move small{font-size:8.5px;color:#a899b2}
+.move[data-move=cat]{background:#fff5f8}
+.move[data-move=jump]{background:#fff6f0}
+.move[data-move=beam]{background:#f2faf6}
+.move[data-move=turn]{background:#f4f1fc}
+.move.down{transform:translateY(2px);box-shadow:0 1px 0 #e5d8ec}
+.move.next{box-shadow:0 3px 0 #e5d8ec,0 0 0 2px #b79ed3,0 0 16px #b79ed366}
+.move.next b{color:#5b4276}
+.move .hit{position:absolute;inset:0;border-radius:16px;opacity:0}
+.move .hit.on{animation:hitflash .3s ease-out}
+@keyframes hitflash{0%{opacity:.55;background:#fff}100%{opacity:0}}
+
+.fine{
+  flex:none;font-size:9.5px;color:#93859f;text-align:center;padding:0 10px 2px;
+  padding-bottom:calc(2px + env(safe-area-inset-bottom));background:#f8f3fa;
+}
+body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transition:opacity .25s}
+
+/* ---------- 결과 ---------- */
+.result{
+  position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;padding:14px;
+  background:#241d33e0;backdrop-filter:blur(5px);
+}
+.res-card{
+  width:100%;max-width:400px;background:#fffdfb;border-radius:22px;padding:18px 18px 16px;
+  box-shadow:0 22px 60px #0006;text-align:center;
+}
+.res-card .eyebrow{font-size:9px;letter-spacing:2.4px;font-weight:800;color:#a087b4}
+.res-card h2{font-family:Georgia,"Noto Serif KR",serif;font-size:22px;margin:5px 0 2px;color:#584569}
+.rank{
+  width:74px;height:74px;border-radius:50%;margin:8px auto 6px;display:grid;place-items:center;
+  font-family:Georgia,serif;font-size:34px;font-weight:bold;color:#fff;
+  background:linear-gradient(150deg,#a98ac6,#7d619c);box-shadow:0 0 0 4px #fff,0 8px 22px #6a518f55;
+}
+.rank.S{background:linear-gradient(150deg,#f0c878,#d79a4c)}
+.rank.A{background:linear-gradient(150deg,#a98ac6,#7d619c)}
+.rank.B{background:linear-gradient(150deg,#8fb6b0,#5f8f88)}
+.rank.C{background:linear-gradient(150deg,#bdb2c8,#8d8199)}
+.res-line{font-size:11.5px;color:#8c7d98;line-height:1.6;margin:2px 0 10px}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px}
+.res-grid div{background:#f6f0fa;border-radius:11px;padding:8px 2px}
+.res-grid b{display:block;font-size:16px;color:#5f4b73;font-family:Georgia,serif}
+.res-grid small{font-size:8.5px;color:#a294ae;font-weight:800;letter-spacing:.4px}
+.res-moves{display:grid;gap:4px;margin:0 0 12px;text-align:left}
+.res-moves .row{display:grid;grid-template-columns:58px 1fr 46px;gap:6px;align-items:center;font-size:9.5px;color:#8b7c97}
+.res-moves .bar{height:6px;border-radius:3px;background:#eee6f3;overflow:hidden}
+.res-moves .bar i{display:block;height:100%;background:linear-gradient(90deg,#a98ac6,#8dbfae)}
+.res-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.res-actions .ghost{border:1px solid #e2d5ec;background:#f8f2fb;border-radius:14px;min-height:46px;font-weight:800;font-size:12.5px;color:#77628b}
+.res-actions .primary{min-height:46px;font-size:13px}
+.res-card .status{font-size:10px;color:#a294ae;margin-top:8px;min-height:14px}
+
+@media (max-height:720px){
+  .top{height:44px}
+  .move{min-height:78px}
+  .move .ico{font-size:20px}
+  .cue{min-height:46px;padding:7px 12px}
+  .cover-card h1{font-size:21px}
+  .cover-card .sub{font-size:11px;margin-bottom:9px}
+  .guide{margin-bottom:10px}
+}
+@media (max-height:640px){
+  .move{min-height:66px}
+  .move small{display:none}
+  .cover-card{padding:14px}
+  .cover-card h1{font-size:19px}
+  .cover-card .beat-note{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .judge.show{animation-duration:.3s}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <a class="back" href="../?v=20261122w" aria-label="발레왕국 마을로 돌아가기"><span aria-hidden="true">←</span> 마을</a>
+    <div class="who"><small>SUGAR'S BALLET KINGDOM</small><b>3/4 왈츠 · 세 박의 발레</b></div>
+    <button id="sndBtn" class="snd" type="button" aria-label="음악 끄기" aria-pressed="true">♫</button>
+  </header>
+
+  <div class="stage-wrap" id="stageWrap">
+    <canvas id="stage" aria-label="왈츠 연습길 무대"></canvas>
+    <div class="hud" aria-hidden="true">
+      <span class="section-tag" id="sectionTag">도입 · 세 박을 세어요</span>
+      <span class="combo" id="combo"><b>0</b>COMBO</span>
+      <span class="judge" id="judge" aria-live="polite"></span>
+      <span class="tap-hint" id="tapHint"></span>
+    </div>
+
+    <div class="cover" id="cover">
+      <div class="cover-card">
+        <div class="seal">✧ 3 · 4 ✧</div>
+        <div class="eyebrow">WALTZ STAGE · PLAYTEST</div>
+        <h1>세 박의 왈츠</h1>
+        <p class="sub">강-약-약, 왈츠의 세 박에 맞춰 <b>고양이를 넘고 · 허들을 뛰고<br>균형대를 지나 · 빙글 돌아</b> 55초 연습길을 지나요.<br>장애물은 사라지지 않고, 슈가가 정말 뛰어넘어요.</p>
+        <div class="guide">
+          <div><span>🐈</span>파드샤<br>고양이</div>
+          <div><span>🦋</span>그랑제떼<br>허들</div>
+          <div><span>═</span>아라베스크<br>균형대</div>
+          <div><span>↻</span>피루엣<br>회전</div>
+        </div>
+        <div class="beat-note" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button id="startBtn" class="primary" type="button">음악과 함께 시작</button>
+        <p class="meta">약 55초 · 한 손 조작 · 저장 기록은 바뀌지 않아요</p>
+      </div>
+    </div>
+
+    <div class="result" id="result" hidden>
+      <div class="res-card">
+        <div class="eyebrow">CURTAIN CALL</div>
+        <h2 id="resTitle">첫 왈츠를 마쳤어요</h2>
+        <div class="rank" id="resRank">A</div>
+        <p class="res-line" id="resLine"></p>
+        <div class="res-grid">
+          <div><b id="resPerfect">0</b><small>PERFECT</small></div>
+          <div><b id="resGood">0</b><small>GOOD</small></div>
+          <div><b id="resMiss">0</b><small>MISS</small></div>
+          <div><b id="resCombo">0</b><small>MAX COMBO</small></div>
+        </div>
+        <div class="res-moves" id="resMoves"></div>
+        <div class="res-actions">
+          <button id="retryBtn" class="ghost" type="button">다시 추기</button>
+          <a id="backBtn" class="primary" href="../?v=20261122w" style="display:flex;align-items:center;justify-content:center">마을로</a>
+        </div>
+        <div class="status" id="resStatus" role="status" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cue">
+    <span class="dot" id="cueDot" aria-hidden="true"></span>
+    <div class="txt"><b id="cueName">왈츠의 세 박</b><small id="cueDetail">강 · 약 · 약, 첫 박에 크게 뛰어요</small></div>
+    <span class="beat" id="beatBars" aria-hidden="true"><i></i><i></i><i></i></span>
+  </div>
+
+  <div class="pad" id="pad" role="group" aria-label="발레 동작 버튼">
+    <button class="move" data-move="cat" type="button"><span class="ico" aria-hidden="true">🐈</span><b>파드샤</b><small>고양이</small><span class="hit"></span></button>
+    <button class="move" data-move="jump" type="button"><span class="ico" aria-hidden="true">🦋</span><b>그랑제떼</b><small>허들</small><span class="hit"></span></button>
+    <button class="move" data-move="beam" type="button"><span class="ico" aria-hidden="true">═</span><b>아라베스크</b><small>균형대</small><span class="hit"></span></button>
+    <button class="move" data-move="turn" type="button"><span class="ico" aria-hidden="true">↻</span><b>피루엣</b><small>회전</small><span class="hit"></span></button>
+  </div>
+
+  <p class="fine">실험용 왈츠 시제품 · 마을의 코인·의상·저장 기록은 그대로예요</p>
+</div>
+
+<script src="music.js?v=20261122w"></script>
+<script src="waltz.js?v=20261122w"></script>
+</body>
+</html>
