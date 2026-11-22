@@ -85,3 +85,13 @@ Update only `sheeny6-cmyk/magic-sugar-game/sugar-works/`. Report the exact commi
 - Assets added: `assets/ballet-note.webp` (800×450, from the Tistory post's `img1.daumcdn.net` key image, q84) and `assets/ballet-note-icon.webp` (256×256 from the Play icon, q88). Both local; no hotlinked media.
 - The `ballet-note` migration item above is now satisfied: the app is listed only with these two verified public URLs.
 - `town/` was not touched. A local `town/garden/garden.js` modification was left unstaged and out of this commit.
+
+## Games removed · Ballet Note only (2026-11-23)
+- The user chose to drop the unfinished game projects from the portfolio and keep the 「발레노트」 app only. The top bar is now `WORKS · TOON & VIDEO · WRITING · NAVER OGQ · ABOUT` (5 tabs); the `SUGAR WORLD` tab and `#panel-world` were deleted, so an old `#world` link falls back to `works` through `fromHash()`.
+- **WORKS**: the 「슈가의 마법 발레 카페」 card was deleted. The archive renders 5 cards numbered `01–05`, and both counts (`#workCount`, `#workCountAll`) read `05`. Card 01 「발레노트 (Ballet Note)」 keeps its `Google Play ↗` / `웹앱 열기 ↗` links and the `앱·웹` cover label.
+- Filter chip `게임·웹` → `앱` (`data-filter="app"`); `types` now maps `app:"app"`. The renderer's `type:"game"` cafe-cover branch went with the card.
+- Last game links out of `sugar-works/` removed: the two SUGAR WORLD tiles (`/cafe/`, `/town/`, plus the `../cafe`·`../town` image paths) and the `발레왕국 마을에서 보기 ↗` source link on the 「취발러의 엔딩은 죽음뿐」 toon (→ `town/garden/`). The toon, its cuts and its description stay.
+- Copy: meta description and intro summary now read `영상과 앱` instead of `영상과 게임`. About copy already said 앱.
+- The `.world*` CSS rules remain in the stylesheet but nothing in the markup uses them any more.
+- `town/` was not touched. The local `town/garden/garden.js` modification was left unstaged and out of this commit.
+- Checked at 390×844 (local, then live `?v=20261123c`): 5 tabs paint and switch, `#youtube` alias still opens `toon`, `#world` lands on `works`, filter chips show `앱/인스타툰/굿즈/영상`, no console errors, no HTTP ≥400, no broken images, no page-level horizontal overflow (only the tab bar scrolls sideways by design).
