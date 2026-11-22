@@ -1264,9 +1264,10 @@ section.block{margin-top:22px}
     var advance=Math.min(9,session.hits*.4);
     scene.style.setProperty('--walk',(-Math.round(t*.24)%180)+'px');
     scene.style.setProperty('--runner-step',advance.toFixed(2)+'%');
-    /* 배경은 cover로 깔려 좌우 여백이 ±250px 안팎이다. 그보다 더 밀면 그림이 이어 붙어 세로 이음새가 보이므로,
-       어떤 코스 길이에서도 이음새 없이 움직이는 만큼만 천천히 민다. */
-    scene.style.backgroundPosition='calc(50% - '+Math.min(240,Math.round(t*.008))+'px) 56%';
+    /* 배경은 cover로 깔려 좌우에 그림이 넘치는 만큼(slack)만 민다. 그보다 더 밀면 그림이 이어 붙어
+       세로 이음새가 보이므로, 화면 폭에 맞춰 민 수 있는 한도 안에서만 천천히 민다. */
+    var slack=Math.max(0,Math.round((scene.offsetHeight*1.5-scene.offsetWidth)/2)-16);
+    scene.style.backgroundPosition='calc(50% - '+Math.min(slack,Math.round(t*.008))+'px) 56%';
     var runner=$('playDancer');
     if(runner.classList.contains('cruise')){
       var walkPoses=['ready','tendu','releve','tendu'];
