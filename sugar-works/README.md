@@ -63,3 +63,14 @@ Update only `sheeny6-cmyk/magic-sugar-game/sugar-works/`. Report the exact commi
 - 「발레리노 루카의 척척 리액션」 has 24-piece source/planning materials, but no publication confirmation; do not list as for sale.
 - The user supplied their OGQ creator URL: https://naver.me/5Z1FxGzR . The portfolio now links there prominently for the complete catalog.
 - The shortlink did not resolve to a readable creator/product listing through available external reading tools. Do not claim all individual stickers have been indexed until their titles and sales URLs are retrievable and verified.
+
+## 6-tab structure · YouTube shorts · WRITING (2026-11-23)
+- The top tab bar is now `WORKS · TOON & VIDEO · WRITING · NAVER OGQ · ABOUT · SUGAR WORLD` (`SUGAR WORLD` stays last). `#youtube`, `#instatoon` and `#reels` are aliases that open the `toon` panel (`canon()` in the tab script). Panel order in the DOM is works/toon/writing/ogq/world/about.
+- **TOON & VIDEO (`#toon`)** keeps the existing 16-post Insta feed (4 toons / 30 cuts + 12 reels) and adds:
+  - a chip row linking `@sugar.ballet` on Instagram, YouTube and Threads;
+  - a filter group `전체 24 · 인스타툰·릴스 16 · 유튜브 숏츠 8` that toggles the two `.tv-set` blocks (`.tv-set[hidden]`);
+  - a YouTube block: the channel's own banner + avatar (`assets/yt/channel-banner.webp`, `channel-avatar.webp`, taken from the public channel page) and **all 8 shorts** currently on `youtube.com/@sugar.ballet` (channel has no long-form videos tab). Titles/dates are the channel's own (`2026.10.30`–`2026.11.18`); no duration is shown because YouTube denied unauthenticated player extraction (`Sign in to confirm you're not a bot`).
+  - Thumbnails are stored locally as `assets/yt/NN-<videoId>.webp` (480 px wide, from YouTube's `oar2.jpg` 720×1280 vertical frame; `joCplQz0_3o` only exists at 406×722). Each card opens `https://www.youtube.com/shorts/<id>` in a new tab — an in-page embed was deliberately not added because embeddability could not be verified from here and YouTube's own player/app is the reliable path.
+- **WRITING (`#writing`, new)**: lilac magazine-style card grid — 01 「미치도록 아름다운 크리스마스」 (feature card, `brunch.co.kr/brunchbook/crazybchristmas`, 매주 화요일 · 1~20화), 02 브런치 `@sheeny6` (필명 루네), 03 티스토리 에튀튀드, 04 네이버 블로그 티나는 여행 중 (`sugaramor0506`), 05 네이버 블로그 슈가의 우당탕탕 일상 (`sugaramor`). Brunch pages redirect to a sign-in wall for anonymous readers, so episode counts come from the user's own copy and were not re-verified here.
+- **NAVER OGQ (`#ogq`)** gains a goods card under the three sticker sets: 2027 슈가공주 달력 12장 — cover + 3 month previews, a `▷ 사이트에서 12장 보기` button that opens the existing in-site `calendar` viewer (`data-open-calendar` → `SugarToons`), and a link to the Tistory post for the wallpaper download.
+- Kickers renumbered: 01 WORKS, 02 TOON & VIDEO, 03 WRITING & SERIALS, 04 ORIGINAL STICKER SERIES, 05 ABOUT THE CREATOR, 06 THE UNIVERSE. `town/` was not touched in this change.
