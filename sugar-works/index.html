@@ -67,6 +67,15 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 .ogq-heading h2 em{color:#af8eb6}
 .ogq-intro{margin:14px 0 0;color:#817383;font-size:12px;line-height:1.9;word-break:keep-all;max-width:780px}
 .ogq-label{font-size:10px;letter-spacing:.14em;font-weight:700;color:#977d9f}
+.ogq-profile{display:flex;align-items:center;justify-content:space-between;gap:24px;margin:0 0 24px;padding:26px 30px;background:#59445f;color:#fff;position:relative;overflow:hidden}
+.ogq-profile:after{content:"✳";position:absolute;right:205px;top:-38px;color:#ffffff14;font:400 160px/1 var(--serif);pointer-events:none}
+.ogq-profile-copy{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px}
+.ogq-profile-copy small{letter-spacing:.16em;font-size:10px;font-weight:700;color:#dbcbdf}
+.ogq-profile-copy strong{font-size:19px;line-height:1.5;font-weight:600;letter-spacing:-.045em}
+.ogq-profile-copy span{font-size:11px;color:#e7dae7;line-height:1.7}
+.ogq-profile-link{flex:0 0 auto;position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:space-between;gap:27px;padding:15px 20px;background:#faf6fa;color:#5b4563;font-size:12px;font-weight:700}
+.ogq-profile-link:hover{background:#e9ddea}
+@media(max-width:740px){.ogq-profile{flex-direction:column;align-items:stretch;gap:18px;padding:23px 20px}.ogq-profile-link{width:100%}.ogq-profile:after{right:8px;top:0}}
 .ogq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .ogq-entry{display:flex;flex-direction:column;min-height:290px;padding:27px;background:#fbf8fb;border:1px solid #e2d6e3;position:relative}
 .ogq-entry:before{content:"";position:absolute;inset:8px;border:1px solid #e9e0e9;pointer-events:none}
@@ -97,12 +106,14 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 <div class="legacy"><i aria-hidden="true">✳</i><span>기존 SUGAR WORKS의 작품과 관리자 기능은 원본 사이트에 유지됩니다. 아직 원본 미디어를 이전하지 않은 작업은 기존 갤러리로 연결하며, OGQ 시리즈는 아래에서 따로 소개합니다.</span><a href="https://sugar-works-gallery.sugar0506.chatgpt.site/" target="_blank" rel="noopener noreferrer">기존 갤러리 ↗</a></div></section>
 <section class="ogq-section" id="ogq" aria-labelledby="ogqTitle">
 <div class="ogq-inner">
-<div class="ogq-heading"><div><p class="kicker">02 / ORIGINAL STICKER SERIES</p><h2 id="ogqTitle">Sugar's <em>OGQ Collection</em></h2><p class="ogq-intro">스티커를 한두 개로 묶지 않고, 슈가가 만든 OGQ 시리즈를 차례로 모으는 공간입니다. 판매 페이지가 확인된 작품과 심사 통과 작품을 구분해 보여줍니다.</p></div><span class="ogq-label">NAVER OGQ</span></div>
+<div class="ogq-heading"><div><p class="kicker">02 / ORIGINAL STICKER SERIES</p><h2 id="ogqTitle">Sugar's <em>OGQ Collection</em></h2><p class="ogq-intro">슈가가 만든 OGQ 스티커는 한두 개가 아니에요. 아래에서 일부 시리즈를 소개하고, 크리에이터 페이지에서 더 많은 작품을 살펴볼 수 있습니다.</p></div><span class="ogq-label">NAVER OGQ</span></div>
+<a class="ogq-profile" href="https://naver.me/5Z1FxGzR" target="_blank" rel="noopener noreferrer" aria-label="슈가의 네이버 OGQ 크리에이터 페이지에서 작품 전체 보기, 새 창">
+<span class="ogq-profile-copy"><small>THE CREATOR'S OGQ ARCHIVE</small><strong>슈가의 OGQ 작품을 한곳에서</strong><span>스티커 시리즈를 더 보고 싶다면 크리에이터 페이지로 이동해 주세요.</span></span><span class="ogq-profile-link">OGQ 전체 작품 보기 <span aria-hidden="true">↗</span></span></a>
 <div class="ogq-grid">
 <article class="ogq-entry"><span class="series">SET 01 · BALLET LIFE</span><h3>발레를 좋아하는 현실 취발러 슈가의 우당탕 발레생활!</h3><p>발레 수업, 방향 혼동, 연습의 기쁨을 담은 슈가의 첫 스티커 24종.</p><div class="status"><a href="https://naver.me/x52dbBni" target="_blank" rel="noopener noreferrer">OGQ 작품 페이지 ↗</a></div></article>
 <article class="ogq-entry"><span class="series">SET 02 · BALLET SHOPPING</span><h3>발레 쇼핑에 진심인 슈가</h3><p>레오타드와 토슈즈를 고르는 순간부터 택배를 기다리는 마음까지, 발레 쇼핑 이야기 24종.</p><div class="status"><a href="https://naver.me/GGGt2vH1" target="_blank" rel="noopener noreferrer">OGQ 작품 페이지 ↗</a></div></article>
 <article class="ogq-entry"><span class="series">APPROVED · SUGAR PRINCESS</span><h3>슈가공주의 일상</h3><p>2026년 11월 16일 OGQ 심사 통과 확인. 실제 판매 페이지는 추가 확인이 필요합니다.</p><div class="status">심사 통과 · 판매 링크 확인 중</div></article>
-</div><p class="ogq-foot">이 목록은 현재 자료로 상태를 확인한 작품부터 정리한 것이며, 슈가의 전체 OGQ 작품 수를 의미하지 않습니다. 준비 중인 작품은 판매작으로 표시하지 않습니다.</p>
+</div><p class="ogq-foot">개별 작품 카드에는 확인된 정보만 표시했어요. 그 외 작품은 <a href="https://naver.me/5Z1FxGzR" target="_blank" rel="noopener noreferrer">OGQ 크리에이터 페이지</a>에서 확인할 수 있습니다. 준비 중인 작품은 판매작으로 표시하지 않습니다.</p>
 </div></section>
 <section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">03 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/town/" target="_blank" rel="noopener noreferrer"><img src="../town/assets/palace-court.webp" loading="lazy" alt="발레왕국 궁전 풍경"><div class="world-label"><small>INTERACTIVE WORLD · 01</small><strong>슈가의 발레왕국</strong><span>왕국 구경하기 ↗</span></div></a>
