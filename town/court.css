@@ -410,9 +410,21 @@
 .court .map-prototype-link small{font-size:.65rem;color:#937d96;font-weight:600}
 
 /* ---------- 20261122u · 산책길 세 갈래 상점 카드 · 처음부터 다시하기 ---------- */
-.court .royal-walk .venue .venue-art.shop-art{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 24%,#fff8ff 0,transparent 70%),linear-gradient(150deg,#f7ecff,#fdeaf3)}
-.court .royal-walk .venue .venue-art.shop-art .shop-emoji{display:flex;align-items:center;justify-content:center;gap:3px;padding-bottom:4px}
-.court .royal-walk .venue .venue-art.shop-art .shop-emoji em{font-style:normal;font-size:1.5rem;line-height:1;filter:drop-shadow(0 2px 4px #6b4a8a33)}
+.court .royal-walk .venue .venue-art.shop-art{background:#f6e8ef}
+.court .royal-walk .venue .venue-art.shop-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:52% 44%;padding-top:0}
+
+/* 20261123a · 접힌 정령 섹션 바 — 다섯 정령 얼굴과 힌트 */
+.court .spirit-fold summary{gap:10px}
+.court .spirit-fold summary>span.spirit-faces{display:flex;flex-direction:row;flex:none;gap:0;min-width:auto}
+.court .spirit-fold .spirit-faces img{width:30px;height:30px;flex:none;border-radius:50%;border:2px solid #fffdfe;background:#f1e6fa;object-fit:cover;object-position:50% 26%;box-shadow:0 2px 6px #6d4a8a26;margin-left:-5px}
+.court .spirit-fold .spirit-faces img:first-child{margin-left:0}
+.court .spirit-fold summary>span.spirit-copy{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1 1 auto}
+.court .spirit-fold summary .spirit-copy small{color:#8a6fa0;text-wrap:balance}
+.court .spirit-fold .deep-toggle{flex:none;white-space:nowrap}
+.court .spirit-fold .deep-dive-body{padding:14px 14px 16px}
+.court .spirit-fold .counter .section-intro{margin:0!important}
+@media(max-width:420px){.court .spirit-fold .spirit-faces img{width:28px;height:28px;margin-left:-5px}.court .spirit-fold summary{gap:9px;padding:11px 13px}.court .spirit-fold .deep-dive-body{padding:12px 12px 14px}}
+@media(max-width:380px){.court .spirit-fold .spirit-faces img{width:24px;height:24px;margin-left:-6px}.court .spirit-fold summary{gap:7px;padding:10px 11px}.court .spirit-fold summary .spirit-copy strong{font-size:.86rem}.court .spirit-fold summary .spirit-copy small{font-size:.7rem}}
 .court .side-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:11px 13px 0}
 .court .side-head strong{font-size:.85rem;color:#5f4276;letter-spacing:-.02em}
 .court .side-head small{font-size:.7rem;color:#9a86af;text-align:right;word-break:keep-all}
