@@ -375,6 +375,7 @@ next.addEventListener("click",function(){step(1)});
 document.addEventListener("keydown",function(e){
 if(viewer.hidden)return;
 if(e.key==="Escape"){e.preventDefault();closeViewer();return}
+if(e.key==="Tab"){var f=[].slice.call(viewer.querySelectorAll("a[href],button,video")).filter(function(x){return x.tabIndex>=0&&x.offsetParent!==null});if(f.length){var first=f[0],last=f[f.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}return}
 if(st.vertical&&st.mode==="toon")return;
 if(e.key==="ArrowLeft"){e.preventDefault();step(-1)}else if(e.key==="ArrowRight"){e.preventDefault();step(1)}
 });
