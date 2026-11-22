@@ -39,7 +39,7 @@ header.site-head{position:relative;z-index:20;background:var(--bg);border-bottom
 .section h2,.world h2{font:400 clamp(42px,5.2vw,68px)/1.17 var(--serif);letter-spacing:-.06em;margin:0}.section h2 em,.world h2 em{color:#8b6bb1}
 .section-intro{font-size:12px;color:#75688a;line-height:1.85;margin:18px 0 0;max-width:610px;word-break:keep-all}.count{font:400 53px/1 var(--serif);color:#9a7bb8}
 .filters{display:flex;gap:8px;margin:48px 0 26px;overflow-x:auto;scrollbar-width:thin;padding-bottom:6px}.filters button{border:1px solid #e4d8f5;background:transparent;padding:10px 17px;flex-shrink:0;font-size:11px;color:#6f5f85}.filters button[aria-pressed=true],.filters button:hover{background:#5b3a7d;border-color:#5b3a7d;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}.card{min-width:0;display:block;border:0;padding:0;background:none;text-align:left;color:inherit;font:inherit}.card[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}.card{min-width:0;display:flex;flex-direction:column;border:0;padding:0;background:none;text-align:left;color:inherit;font:inherit}.card[hidden]{display:none}
 .cover{position:relative;height:clamp(205px,22vw,310px);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;background:#f1eaff;border:1px solid #e4d8f5;isolation:isolate}
 .cover:after{content:"";position:absolute;inset:9px;border:1px solid #ffffff82;pointer-events:none}
 .cover .cover-type{position:absolute;z-index:3;top:20px;left:18px;color:#6b5a80;font-size:9px;letter-spacing:.1em;font-weight:700}
@@ -58,13 +58,41 @@ header.site-head{position:relative;z-index:20;background:var(--bg);border-bottom
 .world-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.world-tile{height:clamp(260px,28vw,380px);position:relative;overflow:hidden;color:#fff;background:#9d86bd}
 .world-tile>img{width:100%;height:100%;object-fit:cover;transition:transform .35s}.world-tile:hover>img{transform:scale(1.05)}.world-tile:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#241a3ac9 0%,transparent 75%)}
 .world-label{position:absolute;z-index:2;bottom:28px;left:28px;display:flex;flex-direction:column;gap:8px}.world-label small{font-size:9px;letter-spacing:.15em;font-weight:700}.world-label strong{font:400 clamp(30px,3.2vw,44px)/1.15 var(--serif)}.world-label span{font-size:11px;font-weight:700;margin-top:5px}
-.about{display:grid;grid-template-columns:.8fr 1fr;align-items:center;gap:11%}.about-art{font:400 clamp(120px,16vw,220px)/1 var(--serif);letter-spacing:-.17em;color:#c3b2de;white-space:nowrap}.about-art i{font:400 clamp(35px,5vw,64px)/1 sans-serif;color:#8b6bb1;position:relative;top:-.75em;margin:0 15px}
+.cover.app{background:linear-gradient(145deg,#fdeef5,#eadcf7)}
+.cover.has-img.app .cover-type{color:#5b3a7d;text-shadow:none;background:#ffffffdd;padding:4px 8px}
+.cover-icon{position:absolute;z-index:3;top:15px;right:15px;width:50px;height:50px;border-radius:13px;overflow:hidden;border:1px solid #ffffffcc;box-shadow:0 5px 14px #241a3a52}
+.cover .cover-icon img{position:static;width:100%;height:100%;object-fit:cover}
+.card-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.card-actions a{flex:1 1 auto;min-width:0;text-align:center;border:1px solid #ddd0ee;background:#faf7ff;color:#5b3a7d;padding:9px 10px;font-size:10px;font-weight:700;letter-spacing:.01em;white-space:nowrap}
+.card-actions a:hover{background:#4a2f6b;border-color:#4a2f6b;color:#fff}
+.card-actions a:first-child{background:#5b3a7d;border-color:#5b3a7d;color:#fff}
+.world-tile.is-app{grid-column:1/-1;height:auto;display:flex;align-items:center;justify-content:space-between;gap:clamp(16px,3vw,38px);padding:clamp(22px,3vw,34px) clamp(22px,3.4vw,40px);background:linear-gradient(120deg,#f8f0fb,#e7d9f7 58%,#fbeef4);border:1px solid #e0d0f0;color:#3f2c57}
+.world-tile.is-app:after{display:none}
+.world-tile.is-app>.world-app-icon{width:clamp(68px,7vw,92px);height:auto;object-fit:contain;flex:0 0 auto;border-radius:20px;border:1px solid #ffffffd9;box-shadow:0 10px 24px #4a2f6b26}
+.world-app-copy{display:flex;flex-direction:column;gap:7px;min-width:0}
+.world-app-copy small{font-size:9px;letter-spacing:.15em;font-weight:700;color:#8b6bb1}
+.world-app-copy strong{font:400 clamp(24px,2.6vw,34px)/1.16 var(--serif);letter-spacing:-.03em;color:#3f2c57}
+.world-app-copy span{font-size:12px;line-height:1.75;color:#6f5f85;max-width:54ch;word-break:keep-all}
+.world-tile.is-app>.world-app-shot{flex:0 1 clamp(240px,32%,430px);width:clamp(240px,32%,430px);height:auto;object-fit:cover;border-radius:14px;border:1px solid #ffffffd0;box-shadow:0 12px 26px #4a2f6b1f}
+.world-app-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.world-app-btns a{border:1px solid #d9c8ee;background:#ffffffc9;color:#5b3a7d;padding:10px 16px;font-size:11px;font-weight:700}
+.world-app-btns a:first-child{background:#5b3a7d;border-color:#5b3a7d;color:#fff}
+.world-app-btns a:hover{background:#4a2f6b;border-color:#4a2f6b;color:#fff}
+@media(max-width:900px){.world-tile.is-app>.world-app-shot{display:none}}
+@media(max-width:740px){.world-tile.is-app{flex-direction:column;align-items:flex-start;text-align:left}.world-app-copy strong{font-size:25px}.world-app-copy span{font-size:11.5px}}
+.about{display:grid;grid-template-columns:.8fr 1fr;align-items:center;gap:11%}
+.about-art{position:relative;margin:0;aspect-ratio:1122/1402;border-radius:26px;overflow:hidden;border:1px solid #e4d8f5;background:#f1eaff;box-shadow:0 20px 44px #4a2f6b1c}
+.about-art img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
+.about-art:after{content:"";position:absolute;inset:11px;border:1px solid #ffffffa8;border-radius:17px;pointer-events:none}
+.about-mark{position:absolute;z-index:2;left:16px;bottom:16px;display:flex;flex-direction:column;gap:5px;padding:11px 15px;background:#ffffffde}
+.about-mark b{font:400 13px/1 var(--serif);letter-spacing:.19em;color:#5b3a7d}
+.about-mark small{font-size:8px;letter-spacing:.16em;font-weight:700;color:#8b6bb1}
 .about-copy>p:not(.kicker){font-size:13px;line-height:2.1;color:#6f6382;word-break:keep-all}.socials{display:flex;gap:20px;flex-wrap:wrap;margin-top:26px}.socials a{font-size:10px;font-weight:700;letter-spacing:.07em;border-bottom:1px solid #8b6bb1;padding:0 0 8px}
 footer{background:#241a33;color:#f7f3ff;padding:37px 5% 25px;display:flex;align-items:center;justify-content:space-between;gap:20px}footer p{font:italic 16px var(--serif);opacity:.7}footer small{color:#c3b6d6;font-size:10px}
 @media(max-width:1050px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.cover{height:260px}}
 @media(max-width:940px){.intro-inner{grid-template-columns:1fr;row-gap:4px;padding:30px 5% 0}.intro h1{font-size:clamp(54px,8.4vw,86px)}.hello{margin:14px 0 10px}.intro-side{padding:16px 0 0}.hero-foot{margin-top:20px;padding-bottom:15px}.hero-visual{width:min(540px,100%)}}
-@media(max-width:740px){.topbar{padding:0 19px;min-height:58px}.logo{font-size:18px}.top-instagram{padding:9px 11px;font-size:9px;letter-spacing:.09em}.intro-inner{padding:22px 23px 0}.intro h1{font-size:clamp(60px,15vw,100px)}.hello{margin:12px 0 9px}.intro-side{padding-top:16px}.tagline{font-size:22px;margin-bottom:12px}.summary{font-size:11.5px;line-height:1.85}.ctas{margin-top:20px}.hero-foot{margin-top:16px;padding-bottom:13px;font-size:8.5px}.poster{padding:10px 0}.hero-visual{width:min(520px,100%)}.hero-visual img{object-position:center 12%}.visual-top{left:17px;top:20px}.visual-bottom{left:17px;bottom:17px;font-size:8.5px;letter-spacing:.14em}.band{justify-content:flex-start}.section{padding:46px 20px 73px}.count{display:none}.filters{margin:30px 0 23px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:27px 12px}.cover{height:clamp(175px,54vw,300px)}.cover .cover-title{font-size:clamp(20px,5vw,32px)}.card h3{font-size:14px}.world-inner{padding:44px 20px 75px}.world-grid{gap:12px}.world-tile{height:280px}.world-label{left:16px;bottom:19px}.world-label strong{font-size:29px}.about{display:block}.about-art{font-size:120px}.about-copy{margin-top:35px}footer{flex-wrap:wrap}}
-@media(max-width:420px){.topbar{gap:9px;padding:0 14px}.logo{font-size:17px}.top-instagram{padding:8px 9px;font-size:8.2px;letter-spacing:.06em}.intro-inner{padding:18px 20px 0}.intro h1{font-size:clamp(56px,15.5vw,76px)}.micro{font-size:9px;letter-spacing:.08em}.summary{font-size:11px}.hero-foot{font-size:8px}.cover{height:clamp(164px,56vw,225px)}.cover .cover-title{font-size:21px}.cover .cover-type{top:13px;left:11px;font-size:8px}.cover .cover-bottom{bottom:14px;left:11px;font-size:8px}.card h3{font-size:13px}.world-grid{grid-template-columns:1fr}.world-tile{height:280px}.section h2,.world h2{font-size:43px}footer p{display:none}}
+@media(max-width:740px){.topbar{padding:0 19px;min-height:58px}.logo{font-size:18px}.top-instagram{padding:9px 11px;font-size:9px;letter-spacing:.09em}.intro-inner{padding:22px 23px 0}.intro h1{font-size:clamp(60px,15vw,100px)}.hello{margin:12px 0 9px}.intro-side{padding-top:16px}.tagline{font-size:22px;margin-bottom:12px}.summary{font-size:11.5px;line-height:1.85}.ctas{margin-top:20px}.hero-foot{margin-top:16px;padding-bottom:13px;font-size:8.5px}.poster{padding:10px 0}.hero-visual{width:min(520px,100%)}.hero-visual img{object-position:center 12%}.visual-top{left:17px;top:20px}.visual-bottom{left:17px;bottom:17px;font-size:8.5px;letter-spacing:.14em}.band{justify-content:flex-start}.section{padding:46px 20px 73px}.count{display:none}.filters{margin:30px 0 23px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:27px 12px}.cover{height:clamp(175px,54vw,300px)}.cover .cover-title{font-size:clamp(20px,5vw,32px)}.card h3{font-size:14px}.world-inner{padding:44px 20px 75px}.world-grid{gap:12px}.world-tile{height:280px}.world-label{left:16px;bottom:19px}.world-label strong{font-size:29px}.about{display:block}.about-art{margin:0 auto 34px;max-width:420px}.about-copy{margin-top:0}footer{flex-wrap:wrap}}
+@media(max-width:420px){.card-actions a{padding:9px 4px;font-size:9px;letter-spacing:-.01em}.topbar{gap:9px;padding:0 14px}.logo{font-size:17px}.top-instagram{padding:8px 9px;font-size:8.2px;letter-spacing:.06em}.intro-inner{padding:18px 20px 0}.intro h1{font-size:clamp(56px,15.5vw,76px)}.micro{font-size:9px;letter-spacing:.08em}.summary{font-size:11px}.hero-foot{font-size:8px}.cover{height:clamp(164px,56vw,225px)}.cover .cover-title{font-size:21px}.cover .cover-type{top:13px;left:11px;font-size:8px}.cover .cover-bottom{bottom:14px;left:11px;font-size:8px}.card h3{font-size:13px}.world-grid{grid-template-columns:1fr}.world-tile{height:280px}.section h2,.world h2{font-size:43px}footer p{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
 /* INSTATOON & REELS — in-site viewer (images + reels), no external bounce */
@@ -460,10 +488,16 @@ body.vw-lock{overflow:hidden}
 <section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">06 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/town/" target="_blank" rel="noopener noreferrer"><img src="../town/assets/palace-court.webp" loading="lazy" alt="발레왕국 궁전 풍경"><div class="world-label"><small>INTERACTIVE WORLD · 01</small><strong>슈가의 발레왕국</strong><span>왕국 구경하기 ↗</span></div></a>
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/" target="_blank" rel="noopener noreferrer"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt="슈가 발레 카페 입구"><div class="world-label"><small>PLAYABLE PROJECT · 02</small><strong>슈가 발레 카페</strong><span>게임 플레이하기 ↗</span></div></a>
+<div class="world-tile is-app">
+<img class="world-app-icon" src="assets/ballet-note-icon.webp" alt="발레노트 앱 아이콘" width="256" height="256" loading="lazy" decoding="async">
+<div class="world-app-copy"><small>APP · 03</small><strong>발레노트 (Ballet Note)</strong><span>취미 발레 수업 기록 앱. 수업 순서와 콤비네이션, 선생님 피드백, 발레 용어 406개 사전, 월별 발레 비용을 한곳에 남깁니다. Android는 Google Play에서, 아이폰·PC는 웹앱으로 바로 열 수 있어요.</span>
+<div class="world-app-btns"><a href="https://play.google.com/store/apps/details?id=com.sugar.balletnote" target="_blank" rel="noopener noreferrer">Google Play ↗</a><a href="https://ballet-note-ten.vercel.app" target="_blank" rel="noopener noreferrer">웹앱 열기 ↗</a></div></div>
+<img class="world-app-shot" src="assets/ballet-note.webp" alt="발레노트 앱의 기록 화면과 발레 용어 사전을 소개하는 이미지" width="800" height="450" loading="lazy" decoding="async">
+</div>
 </div></div></section>
 </div>
 <div class="tab-panel" id="panel-about" data-panel="about" role="region" aria-labelledby="aboutTitle">
-<section class="section about" id="about" aria-labelledby="aboutTitle"><div class="about-art" aria-hidden="true">S<i>✳</i>W</div><div class="about-copy"><p class="kicker">05 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div>
+<section class="section about" id="about" aria-labelledby="aboutTitle"><figure class="about-art"><img src="assets/hero-kingdom-spirits.webp" alt="발레왕국의 다섯 정령과 함께 점프하는 슈가" width="1122" height="1402" loading="lazy" decoding="async"><figcaption class="about-mark"><b>SUGAR WORKS.</b><small>BALLET · STORY · ILLUSTRATION</small></figcaption></figure><div class="about-copy"><p class="kicker">05 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상, 앱을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다. 직접 쓰려고 만든 발레 기록 앱 <b>발레노트</b>처럼, 필요한 기록 도구는 앱으로도 하나씩 만들고 있습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div>
 <div class="channels-wrap"><p class="channels-kicker">CHANNELS &amp; ARCHIVE</p>
 <div class="channels">
 <a class="channel" href="https://brunch.co.kr/@sheeny6" target="_blank" rel="noopener noreferrer"><small>BRUNCH · 루네</small><strong>브런치</strong><span>소설과 에세이 연재 ↗</span></a>
@@ -526,6 +560,7 @@ if(tabBar){tabBar.addEventListener("scroll",tabEdgeHint,{passive:true});window.a
 (function(){
 "use strict";
 var works=[
+{title:"발레노트 (Ballet Note)",kind:"앱·웹",type:"app",desc:"취미 발레 수업을 기록하는 앱. 일반·작품반 수업 순서와 콤비네이션, 선생님 피드백과 그날의 느낌, 달력·검색 조회, 발레 용어 406개 사전, 월별 발레 비용까지 한곳에 남깁니다.",cover:"BALLET NOTE",img:"assets/ballet-note.webp",icon:"assets/ballet-note-icon.webp",cta:"▷ Google Play · 웹앱",links:[{label:"Google Play ↗",url:"https://play.google.com/store/apps/details?id=com.sugar.balletnote"},{label:"웹앱 열기 ↗",url:"https://ballet-note-ten.vercel.app"}]},
 {title:"슈가의 마법 발레 카페",kind:"웹게임",type:"game",desc:"발레 동작을 마법 음료로 풀어낸 웹게임 작업.",cover:"SUGAR BALLET CAFÉ",url:"https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/"},
 {title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"이미지 컷과 릴스로 만든 발레 인스타툰. 사이트 안에서 바로 감상·재생.",cover:"BALLET DIARY",img:"assets/toon-cover-collage.webp",cta:"▷ 인스타그램 피드 보기",action:"toon"},
 {title:"발레툰 숏츠",kind:"영상",type:"video",desc:"발레의 유쾌한 순간을 짧은 숏폼으로 풀어낸 발레툰 숏츠. TOON & VIDEO 탭에서 8편을 한 번에 봅니다.",cover:"MOTION & MOMENTS",img:"assets/video-thumb.webp",pos:"top",cta:"▷ 유튜브 숏츠 보기",url:"#toon"},
@@ -535,21 +570,27 @@ var works=[
 var wc=document.getElementById("workCount"),wca=document.getElementById("workCountAll"),wcLabel=String(works.length).padStart(2,"0");
 if(wc){wc.textContent=wcLabel;wc.setAttribute("aria-label","프로젝트 "+works.length+"개")}
 if(wca)wca.textContent=wcLabel;
-var types={game:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",video:"video"};
+var types={game:"game",app:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",video:"video"};
 var grid=document.getElementById("workGrid");
 works.forEach(function(w,i){
 var viewer=w.viewer||null;
-var card=document.createElement(viewer||w.action==="toon"?"button":"a");card.className="card";card.dataset.category=types[w.type];
-if(viewer){card.type="button";card.dataset.viewer=viewer;card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
+var links=w.links||null;
+var card=document.createElement(links?"article":(viewer||w.action==="toon"?"button":"a"));card.className="card";card.dataset.category=types[w.type];
+if(links){card.setAttribute("aria-label",w.title)}
+else if(viewer){card.type="button";card.dataset.viewer=viewer;card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
 else if(w.action==="toon"){card.type="button";card.dataset.openToon="";card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
 else{var href=w.url||"#works";card.href=href;if(href.charAt(0)!=="#"){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(href.charAt(0)==="#"?" 컬렉션으로 이동":" 새 창에서 감상"));}
 var cover=document.createElement("div");cover.className="cover "+w.type;
 if(w.type==="game"){var im=document.createElement("img");im.src="../cafe/assets/bg-entrance.webp";im.loading="lazy";im.alt="";cover.appendChild(im);}
 else if(w.img){cover.className+=" has-img"+(w.pos?" pos-"+w.pos:"");var imt=document.createElement("img");imt.src=w.img;imt.loading="lazy";imt.alt="";cover.appendChild(imt);}
+if(w.icon){var ic=document.createElement("span");ic.className="cover-icon";var ici=document.createElement("img");ici.src=w.icon;ici.alt="";ici.width=50;ici.height=50;ici.loading="lazy";ic.appendChild(ici);cover.appendChild(ic);}
 function text(cls,value){var el=document.createElement("span");el.className=cls;el.textContent=value;cover.appendChild(el);}
 text("cover-type",String(i+1).padStart(2,"0")+" / "+w.kind.toUpperCase());
 if(w.img){text("cover-bottom",w.cta||"▷ 사이트에서 바로 보기");}else{text("cover-title",w.cover);text("cover-bottom","SUGAR WORKS · ARCHIVE");}
-var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;var arrow=document.createElement("span");arrow.textContent=(viewer||w.action==="toon")?"▷":"↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow);var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);card.append(cover,info);
+var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;if(links){title.append(t)}else{var arrow=document.createElement("span");arrow.textContent=(viewer||w.action==="toon")?"▷":"↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow)}
+var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);
+if(links){var acts=document.createElement("div");acts.className="card-actions";links.forEach(function(l){var a=document.createElement("a");a.href=l.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent=l.label;a.setAttribute("aria-label",w.title+" — "+l.label+" 새 창");acts.appendChild(a)});info.appendChild(acts);}
+card.append(cover,info);
 if(viewer){card.addEventListener("click",function(){if(window.SugarToons&&window.SugarToons.openId)window.SugarToons.openId(viewer)})}
 grid.appendChild(card);
 });
