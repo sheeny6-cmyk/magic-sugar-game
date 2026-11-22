@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f9f5f0">
+<title>첫 무대 시제품 · 슈가의 발레왕국</title>
+<meta name="description" content="슈가의 발레왕국 V2 시제품. 정령과 연습해 첫 의상을 얻고 공연을 완성해 보세요.">
+<style>
+:root{--paper:#fcf9f4;--ink:#49374d;--muted:#837687;--lav:#82619a;--soft:#f2e9f2;--border:#e1d6df;--gold:#c7a56b;--shadow:0 15px 44px #5c426118;font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:#eee7eb;color:var(--ink)}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #8d68a7;outline-offset:3px}button:disabled{opacity:.48;cursor:not-allowed}
+.shell{max-width:560px;min-height:100dvh;margin:auto;padding:15px 18px calc(27px + env(safe-area-inset-bottom));background:var(--paper);box-shadow:0 10px 60px #594a5630}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 15px}
+.brand{display:grid;gap:4px}.brand span{font-family:Georgia,serif;letter-spacing:.15em;color:#947798;font-size:.65rem}.brand strong{font-size:1.18rem;letter-spacing:-.04em}
+.top small{color:#917d88;font-size:.73rem;white-space:nowrap}
+.story{border:1px solid #dbc9d8;background:linear-gradient(160deg,#fffdf8,#f4eaf1);border-radius:22px;padding:17px 17px 13px;box-shadow:var(--shadow)}
+.eyebrow{margin:0;color:#8a6d85;letter-spacing:.1em;font-size:.69rem;font-weight:800}
+.story h1{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:clamp(1.55rem,6.2vw,2.2rem);line-height:1.3;margin:8px 0 7px;letter-spacing:-.065em}
+.story-lead{margin:0;font-size:.87rem;line-height:1.6;color:#6e6172;word-break:keep-all}
+.scene{position:relative;margin-top:15px;isolation:isolate;border-radius:19px;min-height:285px;height:clamp(290px,41svh,350px);background:#cfb9ca url('../assets/rehearsal-room.webp') center 55%/cover;overflow:hidden}
+.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#fffafa18 0%,transparent 62%,#3d2c4a2b 100%);z-index:-1}
+.scene img.dancer{display:block;position:absolute;left:17%;bottom:2%;width:66%;height:91%;object-fit:contain;object-position:center bottom;filter:drop-shadow(1px 5px 3px #45344736)}
+.scene img.dancer.bow{animation:bow .52s ease-in-out}
+@keyframes bow{0%{transform:translateY(6px) scale(.96)}60%{transform:translateY(-4px) scale(1.02)}100%{transform:none}}
+.coach{position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:6px;padding:5px 9px 5px 4px;background:#fff9f4ed;border:1px solid #fff3e5;border-radius:99px;z-index:3}
+.coach img{width:35px;height:35px;object-fit:contain;border-radius:50%}.coach span{font-size:.73rem;font-weight:700}
+.scene-note{position:absolute;top:12px;left:12px;background:#fffdf7ed;border-radius:9px;padding:7px 10px;font-size:.73rem;letter-spacing:-.02em;font-weight:800}
+.stage-lights{display:none;position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 17%,#fff9cc29 38%,transparent 55%),linear-gradient(65deg,transparent 35%,#fff4cb35 55%,transparent 70%)}
+.stage-lights.on{display:block}
+.hero-message{display:flex;align-items:center;gap:11px;margin:13px 0 2px;min-height:48px}
+.hero-message img{width:43px;height:43px;border-radius:50%;object-fit:contain;background:#f1e8ed;border:1px solid #e7d8e5}
+.hero-message p{margin:0;color:#69546e;line-height:1.5;font-size:.82rem}
+.action{display:block;width:100%;min-height:54px;border:0;border-radius:13px;background:#715388;color:#fffaf7;font-weight:800;font-size:1rem;box-shadow:0 8px 16px #7251832b}
+.action:active{transform:translateY(2px)}.action:disabled{background:#a6a0a8}
+.reward-strip{display:flex;align-items:center;gap:10px;border:1px solid #dfd0de;background:#f7eff6;border-radius:12px;margin-top:11px;padding:7px 11px}
+.reward-strip img{width:53px;height:65px;object-fit:contain}
+.reward-strip span{display:block;font-size:.71rem;color:#8b6685;font-weight:750}.reward-strip b{display:block;font-size:.93rem;margin:2px 0}.reward-strip p{margin:0;color:#7e7082;line-height:1.4;font-size:.73rem}
+.steps{margin-top:24px}.section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}.section-head h2{margin:0;font-size:1.03rem}.section-head small{color:#958798;font-size:.71rem}
+.step-list{display:grid;gap:8px}.step{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:60px;padding:11px 13px;border:1px solid #e8e0e7;background:#fffefa;border-radius:12px}
+.step.active{border-color:#a385b0;background:#f8f1fb}.step.done{border-color:#d4dfcd;background:#f9fcf7}.step-num{display:grid;place-items:center;height:29px;width:29px;border:1px solid #dbccda;border-radius:50%;font-weight:800;font-size:.77rem;color:#856e89}.step.active .step-num{background:#805c96;color:white;border-color:#805c96}.step.done .step-num{background:#e3eadc;border-color:#d5dfcf;color:#5f8660}
+.step b{display:block;font-size:.85rem}.step small{display:block;margin-top:3px;font-size:.72rem;color:#8b7c8a}.step em{font-style:normal;font-size:.68rem;color:#8b778d}
+.support{margin-top:20px}.support details{border:1px solid var(--border);border-radius:12px;background:#fffdf9;overflow:hidden}.support summary{cursor:pointer;list-style:none;padding:13px;font-weight:800;font-size:.86rem;display:flex;justify-content:space-between}.support summary::-webkit-details-marker{display:none}.support summary span{font-weight:500;color:#8e7d8a;font-size:.74rem}
+.support-body{padding:0 12px 15px}.support p{font-size:.75rem;line-height:1.5;color:#726476;margin:6px 0 10px}.spirit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.spirit{border:1px solid #e6d8e6;background:#fffaf9;border-radius:10px;padding:5px 1px 6px;display:grid;justify-items:center;gap:4px;color:#64536e;font-size:.67rem}.spirit img{width:45px;height:45px;object-fit:contain}.spirit.selected{border:2px solid #8f6ca1;background:#f4eaf7;padding:4px 0 5px}.support .visit{display:flex;margin-top:12px;justify-content:space-between;gap:8px;font-size:.75rem}.support .visit a{color:#7d608e}
+.reset{margin-top:25px;text-align:center}.reset button{border:0;color:#9c8e9a;background:transparent;text-decoration:underline;font-size:.73rem;padding:10px}
+.overlay{display:none;position:fixed;inset:0;z-index:30;background:#f8f2f7;padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom);overflow:auto}
+.overlay.on{display:block}.playwrap{max-width:510px;margin:auto;min-height:100%;display:flex;flex-direction:column;gap:11px}
+.play-top{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:9px}.play-top div{display:grid;gap:3px}.play-top small{font-size:.69rem;color:#8d7889}.play-top strong{font-size:1.17rem}.quiet{border:0;background:#f1e6ef;border-radius:9px;padding:9px 13px;color:#76637a;font-size:.8rem;font-weight:700}
+.play-progress{height:5px;background:#e3d8e4;border-radius:99px;overflow:hidden}.play-progress i{display:block;width:0;height:100%;background:#9673a9;transition:width .2s}
+.play-scene{position:relative;flex:1;min-height:230px;height:clamp(245px,43svh,430px);max-height:430px;border:1px solid #dac9d7;overflow:hidden;border-radius:23px;background:#d0c0c6 url('../assets/rehearsal-room.webp') center 57%/cover}
+.play-scene.stage-mode{background-image:linear-gradient(180deg,#5e395880,#39264726),url('../assets/palace-court.webp');background-position:center}
+.play-scene img{display:block;position:absolute;left:15%;bottom:1%;width:70%;height:96%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(1px 3px 3px #4e2d4b50)}
+.play-scene img.move{animation:bow .42s ease-out}
+.float-cue{position:absolute;top:12px;left:12px;right:12px;text-align:center;z-index:3;color:#5d4467;background:#fffdf7d9;border-radius:10px;padding:7px 10px;font-size:.77rem;font-weight:800}
+.judge{position:absolute;top:24%;left:50%;transform:translateX(-50%);font-size:1.28rem;font-weight:900;color:#704b8e;text-shadow:0 2px 6px #fff;opacity:0;z-index:4;white-space:nowrap}
+.judge.pop{animation:pop .62s forwards}@keyframes pop{0%{opacity:0;transform:translate(-50%,12px) scale(.88)}22%{opacity:1;transform:translate(-50%,0) scale(1)}65%{opacity:1}100%{opacity:0;transform:translate(-50%,-12px)}}
+.lane-label{font-size:.76rem;color:#7c6881;font-weight:700}
+.track{height:64px;border:1px solid #d1bdd5;border-radius:13px;background:linear-gradient(180deg,#fffaff,#eee1f2);position:relative;overflow:hidden}
+.track:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 29px,#ffffff80 29px 30px)}
+.hit-ring{position:absolute;left:40px;top:50%;width:43px;height:43px;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%;border:3px solid #9973ad;background:#fffafce8;box-shadow:0 0 0 5px #fff9}.hit-ring:after{content:"♪";font-size:1.2rem;color:#865d98}
+.note{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;margin-top:-14px;background:#c9a6d3;box-shadow:0 2px 7px #9968a655;border:2px solid #fff;display:none}
+.tap{margin-top:auto;min-height:80px;width:100%;border:0;border-radius:21px;background:#7d5b99;color:white;font-size:1.24rem;font-weight:850;touch-action:manipulation;box-shadow:0 9px 0 #593e71}.tap:active{transform:translateY(5px);box-shadow:0 4px 0 #593e71}
+.play-help{text-align:center;font-size:.75rem;color:#87778b;margin:6px 0 14px;min-height:22px}
+.result{display:none;position:fixed;inset:0;z-index:40;background:#f9f4f8eF;align-items:center;justify-content:center;padding:16px}
+.result.on{display:flex}.result-card{background:#fffefa;border:1px solid #d7bed7;border-radius:23px;padding:25px 20px;width:min(100%,400px);text-align:center;box-shadow:0 22px 70px #46304a25}
+.result-card .eyebrow{color:#8d668f}.result-card h2{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:1.65rem;line-height:1.35;margin:10px 0}.result-card p{font-size:.86rem;line-height:1.6;color:#7d7180;word-break:keep-all}
+.result-card img{display:block;height:185px;width:100%;object-fit:contain}.result-card .action{margin-top:15px}
+.result-stats{font-size:.76rem;color:#9a7f9e}
+@media(max-height:690px){.playwrap{gap:6px}.play-scene{height:clamp(190px,35svh,260px);min-height:190px}.tap{min-height:64px}.play-help{margin:0 0 5px}}
+@media(max-width:360px){.shell{padding-inline:12px}.scene{min-height:240px;height:280px}.story{padding:13px}.spirit img{width:39px;height:39px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="top"><div class="brand"><span>SUGAR'S ROYAL BALLET</span><strong>슈가의 발레왕국</strong></div><small>첫 공연 시제품</small></header>
+  <section class="story" aria-label="진행 중인 공연">
+    <p class="eyebrow">ROYAL THEATER · 첫 번째 작품</p>
+    <h1>별빛의 첫 왈츠</h1>
+    <p class="story-lead" id="lead">첫 무대에 설 발레리나에게 에튜가 작은 초대장을 건넸어요.</p>
+    <div class="scene">
+      <div class="stage-lights" id="lights"></div><span class="scene-note" id="sceneNote">첫 무대 준비 중</span>
+      <img class="dancer" id="homeDancer" src="../assets/dancers/basic-ready.webp" alt="첫 연습을 준비하는 발레리나">
+      <div class="coach"><img id="coachPic" src="../../kingdom/assets/av_etu.webp" alt=""><span id="coachName">에튜와 함께</span></div>
+    </div>
+    <div class="hero-message"><img id="portrait" src="../../kingdom/assets/av_etu.webp" alt=""><p id="talk">"첫 음악은 제가 옆에서 세어 드릴게요."</p></div>
+    <button type="button" class="action" id="mainAction">첫 안무 연습하기</button>
+    <div class="reward-strip"><img id="rewardPic" src="../assets/dancers/lilac-curtsy.webp" alt="첫 의상"><div><span id="rewardKicker">첫 완주 선물</span><b id="rewardName">라일락 쉬폰 스커트</b><p id="rewardNote">완주하면 바로 입어 볼 수 있어요.</p></div></div>
+  </section>
+  <section class="steps" aria-labelledby="stepsTitle">
+    <div class="section-head"><h2 id="stepsTitle">첫 공연을 완성하는 길</h2><small id="stepCount">0 / 3 완료</small></div>
+    <div class="step-list" id="stepList"></div>
+  </section>
+  <section class="support">
+    <details id="spiritDetails">
+      <summary>곁에서 도와줄 정령 <span>선택 사항 · 탭해서 열기</span></summary>
+      <div class="support-body"><p>한 명만 선택하면 돼요. 이번 시제품에서는 정령별 응원 메시지를 확인할 수 있어요. 능력 효과는 본편 통합 단계에서 연결할 거예요.</p><div class="spirit-grid" id="spirits"></div></div>
+    </details>
+    <div class="visit"><a href="../?v=20261122a">기존 발레왕국으로 돌아가기</a><a href="../REDESIGN_V2.md">재설계 문서 보기</a></div>
+  </section>
+  <div class="reset"><button type="button" id="reset">시제품 진행 초기화</button></div>
+</main>
+<section class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="playTitle">
+  <div class="playwrap">
+    <div class="play-top"><div><small id="playKicker">첫 안무 · 1/3</small><strong id="playTitle">바 워크</strong></div><button type="button" class="quiet" id="exit">나가기</button></div>
+    <div class="play-progress"><i id="playBar"></i></div>
+    <div class="play-scene" id="playScene"><img id="playDancer" src="../assets/dancers/basic-ready.webp" alt="연습하는 발레리나"><span class="float-cue" id="cue">음악에 맞춰 발끝을 움직여요</span><span class="judge" id="judge"></span></div>
+    <div class="lane-label" id="laneLabel">박자 0 / 8</div>
+    <div class="track" id="track"><div class="hit-ring" aria-hidden="true"></div><div id="notes"></div></div>
+    <button class="tap" id="tap" type="button">박자에 맞춰 TAP</button>
+    <p class="play-help" id="help">동그란 노트가 왼쪽 링에 닿을 때 누르세요.</p>
+  </div>
+</section>
+<section class="result" id="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+  <div class="result-card">
+    <p class="eyebrow" id="resultKicker">FIRST LESSON</p>
+    <h2 id="resultTitle">첫 안무 완성!</h2>
+    <img id="resultDancer" src="../assets/dancers/lilac-curtsy.webp" alt="">
+    <p id="resultBody">라일락 스커트를 선물로 받았어요.</p>
+    <div class="result-stats" id="resultStats"></div>
+    <button class="action" id="resultNext" type="button">계속하기</button>
+  </div>
+</section>
+<script>
+(function(){
+  'use strict';
+  var KEY='sugar-royal-preview-v2', spirits=[
+    {id:'etu',name:'에튜',line:'한 박자씩, 천천히 같이 가요.'},
+    {id:'ara',name:'아라',line:'손끝의 선을 조금 더 멀리 뻗어봐요.'},
+    {id:'piru',name:'피루',line:'흔들려도 다시 중심을 찾으면 돼요.'},
+    {id:'shangz',name:'샹즈',line:'가볍게 뛰고 사뿐히 착지해요!'},
+    {id:'alle',name:'알레',line:'하나, 둘, 셋! 박자는 제가 셀게요.'}
+  ], poses=['plie','tendu','releve','arabesque'];
+  var state={step:0,spirit:'etu'},session=null,raf=0,audio=null,beatTimer=null;
+  function $(id){return document.getElementById(id)}
+  try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isInteger(saved.step)&&saved.step>=0&&saved.step<=3){state.step=saved.step;state.spirit=spirits.some(function(x){return x.id===saved.spirit})?saved.spirit:'etu'}}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+  function dancerSrc(pose){return '../assets/dancers/'+(state.step>=1?'lilac':'basic')+'-'+pose+'.webp'}
+  function chosen(){return spirits.find(function(x){return x.id===state.spirit})||spirits[0]}
+  function portrait(id){return '../../kingdom/assets/av_'+id+'.webp'}
+  function setImage(img,src){if(img.getAttribute('src')!==src)img.src=src}
+  function home(){
+    var s=state.step,sp=chosen(),labels=['첫 안무 연습하기','두 번째 연습 시작하기','왕립 극장 첫 공연하기','다시 공연 감상하기'];
+    $('lead').textContent=[
+      '왕립 극장에 처음 초대받았어요. 무대에 서기 전, 첫 안무를 익혀 봐요.',
+      '첫 의상을 얻었어요! 한 번 더 연습하면 공연 초대장이 열려요.',
+      '무대 준비가 끝났어요. 익힌 동작으로 첫 공연을 완성해 봐요.',
+      '첫 공연을 완성했어요! 다음 작품은 새로운 안무와 함께 열릴 거예요.'
+    ][s];
+    $('sceneNote').textContent=['첫 무대 준비 중','라일락 의상 획득','첫 공연 초대장 도착','첫 무대 완성'][s];
+    $('lights').classList.toggle('on',s>=2);
+    $('homeDancer').src=dancerSrc(s>=1?'arabesque':'ready');
+    $('coachName').textContent=sp.name+'와 함께';
+    $('coachPic').src=portrait(sp.id);$('portrait').src=portrait(sp.id);
+    $('talk').textContent='“'+sp.line+'”';
+    $('mainAction').textContent=labels[s];
+    $('rewardKicker').textContent=['첫 완주 선물','다음 보상','첫 공연 기념','완성한 첫 공연'][s];
+    $('rewardName').textContent=['라일락 쉬폰 스커트','왕립 극장 초대장','나의 첫 공연 포스터','별빛의 첫 왈츠'][s];
+    $('rewardNote').textContent=['완주하면 자동 지급돼요.','한 번 더 연습하면 열려요.','공연을 완성하면 받을 수 있어요.','다음 작품 준비 전, 공연을 다시 해 볼 수 있어요.'][s];
+    $('rewardPic').src='../assets/dancers/'+(s===0?'lilac':'lilac')+'-curtsy.webp';
+    $('stepCount').textContent=s+' / 3 완료';
+    var parts=[
+      {name:'첫 바 워크',desc:'플리에·텐듀·를르베·아라베스크',gift:'라일락 스커트'},
+      {name:'안무 이어 연습',desc:'배운 동작을 음악과 연결하기',gift:'공연 초대장'},
+      {name:'첫 왕립 공연',desc:'무대에서 완성하는 첫 왈츠',gift:'기념 포스터'}
+    ];
+    $('stepList').innerHTML=parts.map(function(x,i){return '<div class="step '+(s>i?'done':s===i?'active':'')+'"><span class="step-num">'+(s>i?'✓':i+1)+'</span><div><b>'+x.name+'</b><small>'+x.desc+'</small></div><em>'+(s>i?'완료':s===i?'진행 중':x.gift)+'</em></div>'}).join('');
+    $('spirits').innerHTML=spirits.map(function(x){return '<button type="button" class="spirit '+(x.id===state.spirit?'selected':'')+'" data-id="'+x.id+'" aria-pressed="'+(x.id===state.spirit)+'"><img src="'+portrait(x.id)+'" alt=""><b>'+x.name+'</b></button>'}).join('');
+  }
+  $('spirits').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(!b)return;state.spirit=b.dataset.id;save();home()});
+  $('reset').addEventListener('click',function(){if(!confirm('이 시제품 진행만 처음부터 다시 시작할까요? 기존 발레왕국 기록은 유지돼요.'))return;state.step=0;state.spirit='etu';save();home()});
+  function osc(freq,when,duration,volume){
+    if(!audio)return;
+    var o=audio.createOscillator(),g=audio.createGain();
+    o.type='sine';o.frequency.setValueAtTime(freq,when);
+    g.gain.setValueAtTime(.0001,when);
+    g.gain.exponentialRampToValueAtTime(volume,when+.008);
+    g.gain.exponentialRampToValueAtTime(.0001,when+duration);
+    o.connect(g);g.connect(audio.destination);o.start(when);o.stop(when+duration+.01);
+  }
+  function noteSound(n){if(!audio)return;var t=audio.currentTime+.008;osc(([392,440,494,587,523,494,440,392])[n%8],t,.22,.048);if(n%3===0)osc(196,t,.25,.025)}
+  function flash(word){
+    var el=$('judge');el.textContent=word;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+  }
+  function updatePose(pose){
+    var img=$('playDancer');setImage(img,dancerSrc(pose));img.classList.remove('move');void img.offsetWidth;img.classList.add('move');
+    $('cue').textContent=({'plie':'플리에','tendu':'텐듀','releve':'를르베','arabesque':'아라베스크'})[pose]+' · 안무가 연결돼요';
+  }
+  function clearRun(){
+    if(raf)cancelAnimationFrame(raf);raf=0;
+    if(beatTimer)clearInterval(beatTimer);beatTimer=null;
+    session=null;$('overlay').classList.remove('on');
+  }
+  function run(){
+    if(session)return;
+    var act=state.step===3?2:state.step;
+    var specs=[
+      {count:8,gap:710,title:'첫 바 워크',label:'첫 안무 · 1/3'},
+      {count:10,gap:630,title:'안무 이어 연습',label:'두 번째 연습 · 2/3'},
+      {count:12,gap:595,title:'별빛의 첫 왈츠',label:'왕립 극장 · 첫 공연'}
+    ];
+    var c=specs[act];
+    session={act:act,notes:[],done:0,hits:0,perfect:0,start:performance.now()+700,finished:false};
+    $('overlay').classList.add('on');$('playScene').classList.toggle('stage-mode',act===2);
+    $('playKicker').textContent=c.label;$('playTitle').textContent=c.title;
+    $('playDancer').src=dancerSrc('ready');$('playDancer').className='';
+    $('cue').textContent='음악에 맞춰 동작을 하나씩 연결해요';
+    $('help').textContent='노트가 링에 닿을 때 아래 버튼을 눌러요.';
+    $('tap').disabled=false;$('tap').textContent='박자에 맞춰 TAP';
+    $('notes').replaceChildren();$('playBar').style.width='0%';$('laneLabel').textContent='박자 0 / '+c.count;
+    for(var i=0;i<c.count;i++){
+      var el=document.createElement('span');el.className='note';$('notes').appendChild(el);
+      session.notes.push({t:2050+i*c.gap,el:el,judged:false});
+    }
+    try{
+      if(!audio){var C=window.AudioContext||window.webkitAudioContext;if(C)audio=new C()}
+      if(audio&&audio.state==='suspended')audio.resume();
+    }catch(e){audio=null}
+    raf=requestAnimationFrame(tick);
+  }
+  function tap(){
+    if(!session||session.finished)return;
+    var t=performance.now()-session.start,best=null,near=1e9;
+    session.notes.forEach(function(n){var dif=Math.abs(n.t-t);if(!n.judged&&dif<near){near=dif;best=n}});
+    if(best&&near<=285){
+      best.judged=true;session.done++;session.hits++;if(near<=150)session.perfect++;
+      best.el.style.display='none';
+      noteSound(session.done);
+      updatePose(poses[(session.done-1)%poses.length]);
+      flash(near<=150?'PERFECT':'GOOD');
+      $('laneLabel').textContent='박자 '+session.done+' / '+session.notes.length;
+      $('playBar').style.width=(100*session.done/session.notes.length)+'%';
+      return;
+    }
+    if(best&&best.t-t>285){$('help').textContent='조금만 기다렸다가 링에 닿을 때 눌러요.'}
+  }
+  function tick(){
+    if(!session||session.finished)return;
+    var t=performance.now()-session.start,trackW=$('track').clientWidth,approach=1750,target=40,startX=Math.max(190,trackW-28),sessionNow=session;
+    session.notes.forEach(function(n){
+      if(n.judged)return;
+      if(t-n.t>295){
+        n.judged=true;session.done++;n.el.style.display='none';
+        $('laneLabel').textContent='박자 '+session.done+' / '+session.notes.length;
+        $('playBar').style.width=(100*session.done/session.notes.length)+'%';
+        flash('다음 박자로!');
+        return;
+      }
+      var p=1-(n.t-t)/approach;
+      if(p<0){n.el.style.display='none';return}
+      n.el.style.display='block';
+      n.el.style.left=(startX+(target-startX)*p)+'px';
+      n.el.style.opacity=p>1?Math.max(0,1-(p-1)*3):Math.min(1,.3+p*2);
+    });
+    if(session.done>=session.notes.length && t>session.notes[session.notes.length-1].t+600){finish();return}
+    raf=requestAnimationFrame(tick);
+  }
+  function finish(){
+    if(!session||session.finished)return;
+    var runState=session;runState.finished=true;
+    if(raf)cancelAnimationFrame(raf);raf=0;
+    $('overlay').classList.remove('on');$('result').classList.add('on');
+    $('resultStats').textContent='PERFECT '+runState.perfect+' · 맞춘 박자 '+runState.hits+'/'+runState.notes.length;
+    $('resultKicker').textContent=['FIRST CLASS','SECOND CLASS','ROYAL DEBUT'][runState.act];
+    $('resultTitle').textContent=['첫 안무를 배웠어요!','이제 무대에 설 준비 완료!','첫 왕립 공연 완성!'][runState.act];
+    $('resultBody').textContent=[
+      '라일락 쉬폰 스커트가 옷장에 들어왔어요. 다음 연습부터 새 의상을 입어요.',
+      '왕립 극장 초대장이 도착했어요. 방금 배운 동작으로 무대에 올라봐요.',
+      '축하해요! 별빛의 첫 왈츠를 완성했어요. 다음 작품은 더 풍성한 안무를 목표로 만들 거예요.'
+    ][runState.act];
+    $('resultDancer').src='../assets/dancers/lilac-'+(runState.act===2?'arabesque':'curtsy')+'.webp';
+    $('resultNext').textContent=runState.act===2?'왕국으로 돌아가기':'다음 장면으로';
+    state.step=Math.max(state.step,runState.act+1);save();session=null;
+  }
+  $('mainAction').addEventListener('click',run);
+  $('tap').addEventListener('pointerdown',function(e){e.preventDefault();tap()});
+  $('tap').addEventListener('click',function(e){if(e.detail===0)tap()});
+  window.addEventListener('keydown',function(e){if(e.code==='Space'&&session&&!session.finished){e.preventDefault();if(!e.repeat)tap()}});
+  $('exit').addEventListener('click',clearRun);
+  $('resultNext').addEventListener('click',function(){$('result').classList.remove('on');home()});
+  document.addEventListener('visibilitychange',function(){if(document.hidden && session)clearRun()});
+  home();
+})();
+</script>
+</body>
+</html>
