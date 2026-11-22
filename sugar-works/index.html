@@ -58,10 +58,29 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 @media(max-width:740px){nav{padding:0 19px;min-height:62px}.links{gap:14px}.links a{font-size:9px}.top-instagram{display:none}.logo{font-size:18px}.hero{display:flex;flex-direction:column}.hero-body{padding:46px 23px 23px}.hello{margin:36px 0 12px}.hero h1{font-size:clamp(72px,16vw,112px)}.tagline{font-size:23px;margin-top:27px}.hero-foot{padding-top:42px}.hero-visual{min-height:clamp(300px,84vw,520px)}.visual-top{left:17px;top:20px}.visual-bottom{left:17px;bottom:17px}.spirits{right:15px;bottom:12px}.spirits img{width:34px;height:34px}.band{justify-content:flex-start}.section{padding:73px 20px}.count{display:none}.filters{margin:30px 0 23px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:27px 12px}.cover{height:clamp(175px,54vw,300px)}.cover .cover-title{font-size:clamp(20px,5vw,32px)}.card h3{font-size:14px}.legacy{align-items:start;flex-wrap:wrap}.legacy a{margin-left:30px}.world-inner{padding:75px 20px}.world-grid{gap:12px}.world-tile{height:280px}.world-label{left:16px;bottom:19px}.world-label strong{font-size:29px}.about{display:block}.about-art{font-size:120px}.about-copy{margin-top:35px}footer{flex-wrap:wrap}}
 @media(max-width:420px){nav{gap:9px;padding:0 13px}.logo{font-size:17px}.links{gap:11px}.links a{font-size:8px;letter-spacing:.05em}.hero-body{padding:42px 20px 23px}.hero h1{font-size:clamp(60px,16vw,78px)}.micro{font-size:9px;letter-spacing:.08em}.summary{font-size:11px}.hero-foot{font-size:8px}.cover{height:clamp(164px,56vw,225px)}.cover .cover-title{font-size:21px}.cover .cover-type{top:13px;left:11px;font-size:8px}.cover .cover-bottom{bottom:14px;left:11px;font-size:8px}.card h3{font-size:13px}.world-grid{grid-template-columns:1fr}.world-tile{height:280px}.section h2,.world h2{font-size:43px}footer p{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* OGQ series — verified catalog only; never mix in unapproved drafts */
+.ogq-section{background:#f1ebf2;border-top:1px solid #e4d8e7;border-bottom:1px solid #e4d8e7}
+.ogq-inner{max-width:1400px;margin:0 auto;padding:100px 5%}
+.ogq-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:32px}
+.ogq-heading h2{font:400 clamp(42px,5vw,68px)/1.15 var(--serif);letter-spacing:-.06em;margin:0}
+.ogq-heading h2 em{color:#af8eb6}
+.ogq-intro{margin:14px 0 0;color:#817383;font-size:12px;line-height:1.9;word-break:keep-all;max-width:780px}
+.ogq-label{font-size:10px;letter-spacing:.14em;font-weight:700;color:#977d9f}
+.ogq-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.ogq-entry{display:flex;flex-direction:column;min-height:290px;padding:27px;background:#fbf8fb;border:1px solid #e2d6e3;position:relative}
+.ogq-entry:before{content:"";position:absolute;inset:8px;border:1px solid #e9e0e9;pointer-events:none}
+.ogq-entry .series{font-size:10px;font-weight:700;letter-spacing:.15em;color:#a58aa8}
+.ogq-entry h3{font:400 clamp(23px,2.4vw,32px)/1.28 var(--serif);letter-spacing:-.045em;word-break:keep-all;margin:30px 0 13px}
+.ogq-entry p{font-size:12px;line-height:1.8;color:#817684;margin:0}
+.ogq-entry .status{margin-top:auto;padding-top:26px;font-size:10px;font-weight:700;letter-spacing:.06em;color:#8f7295}
+.ogq-entry a{color:#6b4f73;text-decoration:underline;text-underline-offset:4px}
+.ogq-foot{margin-top:20px;padding-top:17px;border-top:1px solid #ddd1df;line-height:1.8;color:#887d88;font-size:11px}
+@media(max-width:740px){.ogq-inner{padding:73px 20px}.ogq-grid{grid-template-columns:1fr;gap:12px}.ogq-entry{min-height:245px}.ogq-entry h3{font-size:29px}.ogq-heading h2{font-size:47px}}
 </style>
 </head><body>
 <a class="skip" href="#works">작품 바로가기</a>
-<header><nav aria-label="주요 메뉴"><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><div class="links"><a href="#works">WORKS</a><a href="#world">SUGAR WORLD</a><a href="#about">ABOUT</a></div><a class="top-instagram" href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a></nav></header>
+<header><nav aria-label="주요 메뉴"><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><div class="links"><a href="#works">WORKS</a><a href="#ogq">NAVER OGQ</a><a href="#world">SUGAR WORLD</a><a href="#about">ABOUT</a></div><a class="top-instagram" href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a></nav></header>
 <main id="top">
 <section class="hero" aria-labelledby="mainTitle">
 <div class="hero-body"><p class="micro">THE CREATIVE ARCHIVE OF SUGAR BALLET</p><p class="hello">안녕하세요, 슈가의 작은 창작 세계에 오신 것을 환영합니다.</p>
@@ -73,14 +92,23 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 <div class="spirits" aria-label="발레왕국의 다섯 정령"><img src="../kingdom/assets/av_etu.webp" alt="에튜"><img src="../kingdom/assets/av_ara.webp" alt="아라"><img src="../kingdom/assets/av_piru.webp" alt="피루"><img src="../kingdom/assets/av_shangz.webp" alt="샹즈"><img src="../kingdom/assets/av_alle.webp" alt="알레"></div>
 <span class="visual-bottom">SUGAR BALLET KINGDOM · 2026</span></div></section>
 <div class="band"><span>BALLET</span><b>✦</b><span>ILLUSTRATION</span><b>✦</b><span>STORY</span><b>✦</b><span>VIDEO</span><b>✦</b><span>INTERACTIVE</span></div>
-<section class="section" id="works" aria-labelledby="workTitle"><div class="section-head"><div><p class="kicker">01 / CREATIVE ARCHIVE</p><h2 id="workTitle">Selected <em>Works</em></h2><p class="section-intro">슈가가 만든 작업을 분야별로 모았습니다. 스티커는 네이버 OGQ에서 바로 보고, 다른 작품은 기존 갤러리에서 감상할 수 있습니다.</p></div><div class="count" aria-label="작품 7개">07</div></div>
-<div class="filters" role="group" aria-label="작품 분야 필터"><button type="button" data-filter="all" aria-pressed="true">전체 07</button><button type="button" data-filter="game" aria-pressed="false">게임·웹</button><button type="button" data-filter="toon" aria-pressed="false">인스타툰</button><button type="button" data-filter="goods" aria-pressed="false">굿즈</button><button type="button" data-filter="video" aria-pressed="false">영상</button></div><div class="grid" id="workGrid" aria-live="polite"></div>
-<div class="legacy"><i aria-hidden="true">✳</i><span>기존 SUGAR WORKS의 작품과 관리자 기능은 원본 사이트에 그대로 남겨두었습니다. 이 화면에는 확인된 작업 분류만 표시하고 원본 작품 이미지나 설명을 임의로 만들지 않았습니다.</span><a href="https://sugar-works-gallery.sugar0506.chatgpt.site/" target="_blank" rel="noopener noreferrer">기존 갤러리 ↗</a></div></section>
-<section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">02 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
+<section class="section" id="works" aria-labelledby="workTitle"><div class="section-head"><div><p class="kicker">01 / CREATIVE ARCHIVE</p><h2 id="workTitle">Selected <em>Works</em></h2><p class="section-intro">슈가의 창작 프로젝트를 분야별로 모았습니다. 여러 OGQ 스티커 작품은 별도의 컬렉션에서 소개합니다.</p></div><div class="count" aria-label="프로젝트 6개">06</div></div>
+<div class="filters" role="group" aria-label="작품 분야 필터"><button type="button" data-filter="all" aria-pressed="true">전체 06</button><button type="button" data-filter="game" aria-pressed="false">게임·웹</button><button type="button" data-filter="toon" aria-pressed="false">인스타툰</button><button type="button" data-filter="goods" aria-pressed="false">굿즈</button><button type="button" data-filter="video" aria-pressed="false">영상</button></div><div class="grid" id="workGrid" aria-live="polite"></div>
+<div class="legacy"><i aria-hidden="true">✳</i><span>기존 SUGAR WORKS의 작품과 관리자 기능은 원본 사이트에 유지됩니다. 아직 원본 미디어를 이전하지 않은 작업은 기존 갤러리로 연결하며, OGQ 시리즈는 아래에서 따로 소개합니다.</span><a href="https://sugar-works-gallery.sugar0506.chatgpt.site/" target="_blank" rel="noopener noreferrer">기존 갤러리 ↗</a></div></section>
+<section class="ogq-section" id="ogq" aria-labelledby="ogqTitle">
+<div class="ogq-inner">
+<div class="ogq-heading"><div><p class="kicker">02 / ORIGINAL STICKER SERIES</p><h2 id="ogqTitle">Sugar's <em>OGQ Collection</em></h2><p class="ogq-intro">스티커를 한두 개로 묶지 않고, 슈가가 만든 OGQ 시리즈를 차례로 모으는 공간입니다. 판매 페이지가 확인된 작품과 심사 통과 작품을 구분해 보여줍니다.</p></div><span class="ogq-label">NAVER OGQ</span></div>
+<div class="ogq-grid">
+<article class="ogq-entry"><span class="series">SET 01 · BALLET LIFE</span><h3>발레를 좋아하는 현실 취발러 슈가의 우당탕 발레생활!</h3><p>발레 수업, 방향 혼동, 연습의 기쁨을 담은 슈가의 첫 스티커 24종.</p><div class="status"><a href="https://naver.me/x52dbBni" target="_blank" rel="noopener noreferrer">OGQ 작품 페이지 ↗</a></div></article>
+<article class="ogq-entry"><span class="series">SET 02 · BALLET SHOPPING</span><h3>발레 쇼핑에 진심인 슈가</h3><p>레오타드와 토슈즈를 고르는 순간부터 택배를 기다리는 마음까지, 발레 쇼핑 이야기 24종.</p><div class="status"><a href="https://naver.me/GGGt2vH1" target="_blank" rel="noopener noreferrer">OGQ 작품 페이지 ↗</a></div></article>
+<article class="ogq-entry"><span class="series">APPROVED · SUGAR PRINCESS</span><h3>슈가공주의 일상</h3><p>2026년 11월 16일 OGQ 심사 통과 확인. 실제 판매 페이지는 추가 확인이 필요합니다.</p><div class="status">심사 통과 · 판매 링크 확인 중</div></article>
+</div><p class="ogq-foot">이 목록은 현재 자료로 상태를 확인한 작품부터 정리한 것이며, 슈가의 전체 OGQ 작품 수를 의미하지 않습니다. 준비 중인 작품은 판매작으로 표시하지 않습니다.</p>
+</div></section>
+<section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">03 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/town/" target="_blank" rel="noopener noreferrer"><img src="../town/assets/palace-court.webp" loading="lazy" alt="발레왕국 궁전 풍경"><div class="world-label"><small>INTERACTIVE WORLD · 01</small><strong>슈가의 발레왕국</strong><span>왕국 구경하기 ↗</span></div></a>
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/" target="_blank" rel="noopener noreferrer"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt="슈가 발레 카페 입구"><div class="world-label"><small>PLAYABLE PROJECT · 02</small><strong>슈가 발레 카페</strong><span>게임 플레이하기 ↗</span></div></a>
 </div></div></section>
-<section class="section about" id="about" aria-labelledby="aboutTitle"><div class="about-art" aria-hidden="true">S<i>✳</i>W</div><div class="about-copy"><p class="kicker">03 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div></div></section>
+<section class="section about" id="about" aria-labelledby="aboutTitle"><div class="about-art" aria-hidden="true">S<i>✳</i>W</div><div class="about-copy"><p class="kicker">04 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div></div></section>
 </main><footer><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><p>A little world of things I love making.</p><small>© 2026 SUGAR WORKS</small></footer>
 <script>
 (function(){
@@ -91,14 +119,13 @@ var works=[
 {title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"발레와 일상의 순간들을 만화로 풀어낸 작업.",cover:"BALLET DIARY"},
 {title:"발레왕국 달력 소개",kind:"디자인",type:"editorial",desc:"발레왕국 달력을 소개하는 콘텐츠 디자인.",cover:"A YEAR OF BALLET"},
 {title:"발레왕국 달력",kind:"굿즈",type:"calendar",desc:"발레왕국 세계관을 담은 달력 작업.",cover:"BALLET CALENDAR"},
-{title:"발레를 좋아하는 현실 취발러 슈가의 우당탕 발레생활",kind:"네이버 OGQ 스티커",type:"sticker",desc:"취미 발레를 즐기는 슈가의 일상을 담은 OGQ 스티커.",cover:"SUGAR BALLET STICKERS",url:"https://naver.me/x52dbBni"},
-{title:"발레 쇼핑에 진심인 슈가",kind:"네이버 OGQ 스티커",type:"sticker2",desc:"발레 쇼핑의 설렘과 즐거움을 담은 OGQ 스티커 24종.",cover:"BALLET SHOPPING",url:"https://naver.me/GGGt2vH1"},
+{title:"네이버 OGQ 스티커 컬렉션",kind:"OGQ 스티커 시리즈",type:"sticker",desc:"슈가의 다양한 스티커 작품 모음. 확인된 작품과 심사 현황을 볼 수 있어요.",cover:"OGQ STICKER COLLECTION",url:"#ogq"},
 {title:"영상 편집 작업",kind:"영상",type:"video",desc:"장면과 리듬을 연결하는 영상 편집 작업.",cover:"MOTION & MOMENTS"}
 ];
-var types={game:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",sticker2:"goods",video:"video"};
+var types={game:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",video:"video"};
 var grid=document.getElementById("workGrid");
 works.forEach(function(w,i){
-var card=document.createElement("a");card.className="card";card.dataset.category=types[w.type];card.href=w.url||ORIGINAL;card.target="_blank";card.rel="noopener noreferrer";card.setAttribute("aria-label",w.title+" 새 창에서 감상");
+var card=document.createElement("a");card.className="card";card.dataset.category=types[w.type];card.href=w.url||ORIGINAL;if(card.href.charAt(card.href.length-1)!=="#".charAt(0)&&!(w.url||"").startsWith("#")){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(w.url&&w.url.startsWith("#")?" 컬렉션으로 이동":" 새 창에서 감상"));
 var cover=document.createElement("div");cover.className="cover "+w.type;
 if(w.type==="game"){var im=document.createElement("img");im.src="../cafe/assets/bg-entrance.webp";im.loading="lazy";im.alt="";cover.appendChild(im);}
 function text(cls,value){var el=document.createElement("span");el.className=cls;el.textContent=value;cover.appendChild(el);}
