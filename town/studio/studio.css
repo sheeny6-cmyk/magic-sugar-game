@@ -624,7 +624,7 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
   color:#f2dbe8;font-size:.84rem;line-height:1.55;text-align:left;word-break:keep-all}
 .go-pass{margin:10px 0 0;font-size:.7rem;font-weight:900;letter-spacing:.05em;color:#ffd79a}
 .go-btns{display:grid;gap:7px;margin-top:14px}
-.go-btns .btn.primary{background:#c8456d;border-color:#a8335a;color:#fff5f8;font-weight:800}
+#gameover .go-btns .btn.primary{background:linear-gradient(150deg,#d9557c,#b8375f);border:0;color:#fff5f8;font-weight:800;box-shadow:0 8px 20px #7d234040}
 .go-shop-lead{margin:2px 0 0;font-size:.7rem;color:#cfa9c2}
 .go-shop{display:grid;grid-template-columns:1fr 1fr;gap:7px}
 .go-shop .btn{font-size:.8rem;background:#ffffff12;border-color:#ffffff2e;color:#f6e6f0}
