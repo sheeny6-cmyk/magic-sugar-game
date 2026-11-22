@@ -404,3 +404,7 @@
 .court .royal-walk .venue p{font-size:.64rem}
 .court .side-venues{grid-template-columns:1fr}
 }
+
+.court .map-prototype-link{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 11px 12px;padding:9px 11px;min-height:44px;background:#f5edf7;border-radius:10px;color:#775b85;text-decoration:none;font-weight:750;font-size:.8rem}
+.court .map-prototype-link:hover{text-decoration:underline;text-underline-offset:3px}
+.court .map-prototype-link small{font-size:.65rem;color:#937d96;font-weight:600}
