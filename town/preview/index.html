@@ -82,7 +82,9 @@
 @keyframes step-wobble{0%,100%{transform:none}25%{transform:translateX(-7px) rotate(-3deg)}65%{transform:translateX(5px) rotate(3deg)}}
 .scene-event{position:absolute;z-index:3;left:90%;bottom:12%;width:74px;height:65px;display:none;align-items:center;justify-content:center;transform:translateX(-50%);background:#fff9f0f0;border:2px solid #e6d1c8;border-radius:13px;box-shadow:0 4px 12px #4e3b4d22;font-size:2.05rem;pointer-events:none;will-change:left,opacity}
 .scene-event.cat{background:#fff1e4;border-color:#ead2b7}.scene-event.jump{background:#f2e9ff;border-color:#c5afe5}.scene-event.beam{background:#e6f3ed;border-color:#a0cfb6}
-.scene-event.beam:after{content:"";position:absolute;bottom:5px;width:70%;height:6px;border-radius:6px;background:#83ab9b}
+.scene-event.beam{font-size:0;width:110px;height:48px;background:transparent;border:0;box-shadow:none}
+.scene-event.beam:before{content:"";position:absolute;top:20px;left:3px;right:3px;height:9px;background:#a2adac;border:2px solid #708a85;border-radius:5px}
+.scene-event.beam:after{content:"";position:absolute;top:29px;left:19px;right:19px;height:19px;border-left:7px solid #94aaa3;border-right:7px solid #94aaa3}
 .note{width:36px;height:36px;margin-top:-18px;place-items:center;box-shadow:0 2px 6px #68496a3b;font-size:1.1rem}
 .note.cat{background:#ffe2c9}.note.jump{background:#d8c8fc}.note.beam{background:#c6e9dd}
 .move-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:auto}
@@ -173,7 +175,7 @@
   function home(){
     var s=state.step,sp=chosen(),labels=['첫 안무 연습하기','두 번째 연습 시작하기','왕립 극장 첫 공연하기','다시 공연 감상하기'];
     $('lead').textContent=[
-      '왕립 극장에 처음 초대받았어요. 무대에 서기 전, 첫 안무를 익혀 봐요.',
+      '첫 공연 초대장이 왔어요! 고양이·장애물·균형대를 만나면 알맞은 발레 동작을 선택해 봐요.',
       '첫 의상을 얻었어요! 한 번 더 연습하면 공연 초대장이 열려요.',
       '무대 준비가 끝났어요. 익힌 동작으로 첫 공연을 완성해 봐요.',
       '첫 공연을 완성했어요! 다음 작품은 새로운 안무와 함께 열릴 거예요.'
@@ -286,7 +288,7 @@
     }
     return {song:spec.song,notes:selected.map(function(t,i){
       return {t:t,type:spec.pattern[i%spec.pattern.length],judged:false,el:null};
-    }),end:Math.round(song.length*beat)};
+    }),end:Math.round(Math.max(song.length*beat+650,selected[selected.length-1]+1200))};
   }
   function run(){
     if(session)return;
@@ -300,6 +302,7 @@
     $('playKicker').textContent=c.label;
     $('playTitle').textContent=c.title;
     $('playDancer').src=dancerSrc('ready');$('playDancer').className='';
+    ['ready','releve','arabesque'].forEach(function(pose){var image=new Image();image.src=dancerSrc(pose)});
     $('cue').textContent='하나, 둘, 셋! 상황을 보고 맞는 발레 동작을 골라요.';
     $('help').textContent='고양이=파드샤 · 장애물=그랑제떼 · 균형대=아라베스크';
     $('sceneEvent').style.display='none';
@@ -346,6 +349,15 @@
     }
     updateCount();
   }
+  function windowFor(n){
+    var w=280;
+    if(state.spirit==='etu')w+=55;
+    if(state.spirit==='ara'&&n.type==='beam')w+=70;
+    if(state.spirit==='shangz'&&n.type==='jump')w+=70;
+    if(state.spirit==='piru'&&n.type==='cat')w+=50;
+    if(state.spirit==='alle')w+=40;
+    return w;
+  }
   function pressMove(move){
     if(!session||session.finished)return;
     var b=$('movePad').querySelector('[data-move="'+move+'"]');
@@ -356,12 +368,7 @@
       var d=Math.abs(item.t-t);
       if(d<nearest){nearest=d;n=item}
     });
-    var windowMs=280;
-    if(state.spirit==='etu')windowMs+=55;
-    if(n&&state.spirit==='ara'&&n.type==='beam')windowMs+=70;
-    if(n&&state.spirit==='shangz'&&n.type==='jump')windowMs+=70;
-    if(n&&state.spirit==='piru'&&n.type==='cat')windowMs+=50;
-    if(n&&state.spirit==='alle')windowMs+=40;
+    var windowMs=n?windowFor(n):280;
     if(n&&nearest<=windowMs){
       resolveNote(n,move,n.type===move?'hit':'wrong',nearest);
     }else if(n&&n.t-t>windowMs){
@@ -375,7 +382,7 @@
     // 판정과 그림 모두 가장 가까운 상황 노트를 기준으로 보여준다.
     session.notes.forEach(function(n){
       if(n.judged)return;
-      var late=state.spirit==='etu'?355:300;
+      var late=windowFor(n)+20;
       if(t-n.t>late){resolveNote(n,null,'late',0);return}
       var p=1-(n.t-t)/approach;
       if(p<0){n.el.style.display='none';return}
@@ -392,7 +399,7 @@
       obj.style.opacity=String(Math.min(1,.4+progress*1.2));
       $('cue').textContent=a.name+' 등장! '+(session.act===0?a.move+'로 맞춰요': '알맞은 동작을 골라요');
     }else obj.style.display='none';
-    if(t>session.end+450&&session.done>=session.notes.length){finish();return}
+    if(t>session.end&&session.done>=session.notes.length){finish();return}
     raf=requestAnimationFrame(tick);
   }
   function finish(){
