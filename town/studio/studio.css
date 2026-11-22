@@ -306,7 +306,7 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
 /* 무대: 남는 높이를 모두 쓴다 */
 #lesson .play-scene{--mark:50%;position:relative;flex:1 1 auto;min-height:0;margin:0;padding:0;isolation:isolate;
   border:1px solid #ddc9ee;border-bottom:0;border-radius:20px 20px 0 0;overflow:hidden;outline:none;
-  background:#d5c3e4 url('../assets/rehearsal-room.webp') 68% 62%/cover;box-shadow:inset 0 0 0 1px #ffffff55}
+  background:#d5c3e4 url('../assets/rehearsal-room.webp') 80% 62%/cover;box-shadow:inset 0 0 0 1px #ffffff55}
 #lesson .play-scene:before{display:none}
 #lesson .play-scene:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
   background:radial-gradient(ellipse at 50% 108%,#5d3a8355 0,transparent 60%),

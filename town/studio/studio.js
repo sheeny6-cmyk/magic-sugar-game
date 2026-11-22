@@ -348,7 +348,7 @@
       }
       if (n.el.style.display !== 'grid') n.el.style.display = 'grid';
       /* 아이콘은 무대 오른쪽 끝에서 슈가 발밑 스포트라이트까지 같은 속도로 다가온다. */
-      var left = 108 + (MARK - 108) * Math.min(p, 1.7);
+      var left = 115 + (MARK - 115) * Math.min(p, 1.7);
       n.el.style.left = left.toFixed(1) + '%';
       n.el.style.opacity = Math.min(1, Math.max(0, 0.45 + p * 2)).toFixed(2);
       var w = noteWindow(n), delta = Math.abs(n.t - t);
