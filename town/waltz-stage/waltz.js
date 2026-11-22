@@ -280,7 +280,7 @@
     if (dt < 0.36) {
       var q = clamp01((dt + 0.18) / 0.54);
       return {
-        pose: q > 0.9 ? 'plie' : 'arabesque',
+        pose: q > 0.9 ? 'plie' : 'releve',
         dx: -6 + 16 * q, dy: -62 * 4 * q * (1 - q),
         rot: -7 * Math.sin(q * Math.PI), sx: 1, sy: 1, alpha: 1, trail: 3
       };
@@ -298,7 +298,7 @@
     if (dt < 0.44) {
       var q = clamp01((dt + 0.16) / 0.6);
       return {
-        pose: q > 0.92 ? 'plie' : 'arabesque',
+        pose: q > 0.92 ? 'plie' : 'tendu',
         dx: -8 + 24 * q, dy: -108 * 4 * q * (1 - q),
         rot: -11 * Math.sin(q * Math.PI), sx: 1 + 0.06 * Math.sin(q * Math.PI), sy: 1, alpha: 1, trail: 4
       };
