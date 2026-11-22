@@ -307,7 +307,7 @@
       var q = clamp01((dt + 0.16) / 0.6);
       return {
         pose: q > 0.92 ? 'plie' : 'grandjete',
-        dx: 24 * Math.sin(Math.PI * q), dy: -108 * 4 * q * (1 - q),
+        dx: 32 * Math.sin(Math.PI * q), dy: -108 * 4 * q * (1 - q),
         rot: -11 * Math.sin(q * Math.PI), sx: 1 + 0.06 * Math.sin(q * Math.PI), sy: 1, alpha: 1, trail: 4
       };
     }
