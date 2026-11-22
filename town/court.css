@@ -408,3 +408,21 @@
 .court .map-prototype-link{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 11px 12px;padding:9px 11px;min-height:44px;background:#f5edf7;border-radius:10px;color:#775b85;text-decoration:none;font-weight:750;font-size:.8rem}
 .court .map-prototype-link:hover{text-decoration:underline;text-underline-offset:3px}
 .court .map-prototype-link small{font-size:.65rem;color:#937d96;font-weight:600}
+
+/* ---------- 20261122t · 산책길 세 갈래 상점 카드 · 처음부터 다시하기 ---------- */
+.court .royal-walk .venue .venue-art.shop-art{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 24%,#fff8ff 0,transparent 70%),linear-gradient(150deg,#f7ecff,#fdeaf3)}
+.court .royal-walk .venue .venue-art.shop-art .shop-emoji{display:flex;align-items:center;justify-content:center;gap:3px;padding-bottom:4px}
+.court .royal-walk .venue .venue-art.shop-art .shop-emoji em{font-style:normal;font-size:1.5rem;line-height:1;filter:drop-shadow(0 2px 4px #6b4a8a33)}
+.court .side-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:11px 13px 0}
+.court .side-head strong{font-size:.85rem;color:#5f4276;letter-spacing:-.02em}
+.court .side-head small{font-size:.7rem;color:#9a86af;text-align:right;word-break:keep-all}
+.court .side-streets{padding-bottom:0}
+.court .side-streets .side-venues{padding:9px 11px 11px}
+.reset-zone{margin:26px 14px 0;text-align:center}
+.court .reset-btn{
+  min-height:42px;padding:10px 18px;border-radius:999px;border:1px solid #e0d2e8;
+  background:#fffdfe;color:#8a7699;font:inherit;font-size:.8rem;font-weight:800;letter-spacing:-.02em;cursor:pointer
+}
+.court .reset-btn:hover{border-color:#c9b4d8;color:#6d5585}
+.court .reset-btn:active{transform:translateY(1px)}
+.reset-zone p{margin:7px 0 0;font-size:.7rem;line-height:1.5;color:#ac9cb8;word-break:keep-all}

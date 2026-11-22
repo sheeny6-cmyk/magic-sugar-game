@@ -6,21 +6,25 @@
 <meta name="theme-color" content="#EDE4F7">
 <meta name="description" content="왕궁 거울 앞에서 발레 의상을 입어 보고, 연습과 승급으로 새로운 옷을 모아요.">
 <title>왕궁 드레스룸 · 슈가의 발레왕국</title>
-<link rel="stylesheet" href="../style.css?v=20261122p">
-<link rel="stylesheet" href="dress.css?v=20261122p">
-<link rel="stylesheet" href="../lilac.css?v=20261122p">
+<link rel="stylesheet" href="../style.css?v=20261122t">
+<link rel="stylesheet" href="dress.css?v=20261122t">
+<link rel="stylesheet" href="../lilac.css?v=20261122t">
 </head>
 <body class="sub dress"><main class="app">
   <header class="subbar">
-    <a class="back" href="../?v=20261122p" aria-label="왕국으로 돌아가기">←</a>
-    <h1 class="title">왕궁 드레스룸<small>ROYAL WARDROBE</small></h1>
+    <a class="back" href="../?v=20261122t" aria-label="왕국으로 돌아가기">←</a>
+    <h1 class="title" id="pageTitle">👗 내 옷장<small>MY WARDROBE</small></h1>
     <span class="coin" aria-label="보유 코인"><span aria-hidden="true">🪙</span><b data-coin>0</b></span>
   </header>
   <div class="dress-intro">
     <span class="eyebrow">SUGAR BALLET KINGDOM</span>
-    <h2>오늘은 어떤 모습으로 춤출까요?</h2>
-    <p>옷을 골라 입어 보고, 마음에 드는 모습으로 수업에 가요.</p>
+    <h2 id="introTitle">오늘은 어떤 모습으로 춤출까요?</h2>
+    <p id="introLead">내가 가진 의상을 골라 갈아입고, 마음에 드는 모습으로 수업에 가요.</p>
   </div>
+  <nav class="dress-modes" aria-label="내 옷장과 의상 상점">
+    <a class="dm" id="modeWardrobe" href="./?v=20261122t">👗 내 옷장</a>
+    <a class="dm" id="modeShop" href="./?v=20261122t&amp;mode=shop">🛍️ 의상 상점</a>
+  </nav>
   <section class="fitting" id="fitting" aria-labelledby="lookName">
     <div class="mirror">
       <div class="mirror-frame" aria-hidden="true"></div>
@@ -45,7 +49,7 @@
       <p class="outfit-cost" id="lookCost"></p>
       <div class="outfit-actions">
         <button id="lookAction" class="btn primary" type="button" hidden></button>
-        <a class="btn ghost" id="lookGo" href="../studio/?v=20261122p#first-bar">이 옷 입고 연습하기</a>
+        <a class="btn ghost" id="lookGo" href="../studio/?v=20261122t#first-bar">이 옷 입고 연습하기</a>
       </div>
       <p class="wear-tip" id="wearTip" role="status" aria-live="polite"></p>
     </div>
@@ -61,12 +65,12 @@
   </section>
   <section class="reward-guide" aria-labelledby="rewardTitle">
     <strong id="rewardTitle">새로운 의상은 어떻게 얻나요?</strong>
-    <p>첫 수업을 마치면 라일락 의상을 선물 받아요. 백조·블랙 스완·마법 드레스는 해당 레벨에 도달하면 무료 보상으로 받을 수 있어요. 레벨을 기다리기 싫다면 코인으로 먼저 구매할 수도 있답니다.</p>
+    <p id="rewardText">첫 수업을 마치면 라일락 의상을 선물 받아요. 백조·블랙 스완·마법 드레스는 해당 레벨에 도달하면 무료 보상으로 받을 수 있어요. 레벨을 기다리기 싫다면 코인으로 먼저 구매할 수도 있답니다.</p>
   </section>
   <p id="lookMessage" role="status" aria-live="polite"></p>
   <footer class="foot">© 슈가의 발레왕국</footer>
 </main>
-<script src="../assets/town.js?v=20261122p"></script>
-<script src="dress.js?v=20261122p"></script>
+<script src="../assets/town.js?v=20261122t"></script>
+<script src="dress.js?v=20261122t"></script>
 </body>
 </html>

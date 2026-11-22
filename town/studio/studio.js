@@ -602,7 +602,9 @@
   function setPose(pose, snap, anim, type) {
     T.showDancer($('lDancer'), T.get().worn, pose);
     var mv = (type && MOVES[type]) || null;
-    $('lPose').textContent = mv ? mv.label + ' · ' + T.POSES[pose] : T.POSES[pose];
+    var poseName = T.POSES[pose] || '';
+    /* 동작 이름과 그림 이름이 같으면(파드샤 · 파드샤) 한 번만 쓴다. */
+    $('lPose').textContent = mv && mv.label !== poseName ? mv.label + ' · ' + poseName : poseName;
     var img = $('lDancer');
     img.className = 'practice-dancer';
     if (snap) {

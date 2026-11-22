@@ -53,18 +53,43 @@
   var COLORS = { cat: '#f2a7bd', jump: '#f0b489', beam: '#8fceb6', turn: '#b39ce0' };
 
   /* ---------- 이미지 ---------- */
-  var POSE_SRC = {
+  /* 지금 내 옷장에서 고른 의상으로 춘다. 전용 그림이 없는 동작·의상은
+     assets/town.js의 안전 대체 규칙을 그대로 따라 404 없이 기존 동작으로 보여 준다. */
+  function wornOutfit() {
+    var T = window.SugarTown;
+    try {
+      if (T && T.get && T.get().worn) return T.get().worn;
+      var raw = localStorage.getItem('sugartown.v1');
+      if (raw) { var s = JSON.parse(raw); if (s && s.worn) return s.worn; }
+    } catch (e) { /* 저장된 왕국이 없으면 기본 의상 */ }
+    return 'basic';
+  }
+  var WORN = wornOutfit();
+  var POSE_KEYS = ['ready', 'plie', 'releve', 'arabesque', 'tendu', 'curtsy', 'pasdechat', 'grandjete', 'pirouette'];
+  var LILAC_SRC = {
     ready: '../assets/dancers/lilac-ready.webp',
     plie: '../assets/dancers/lilac-plie.webp',
     releve: '../assets/dancers/lilac-releve.webp',
     arabesque: '../assets/dancers/lilac-arabesque.webp',
     tendu: '../assets/dancers/lilac-tendu.webp',
     curtsy: '../assets/dancers/lilac-curtsy.webp',
-    /* 동작 이름 그대로의 전용 그림 (waltz-stage/assets) */
     pasdechat: 'assets/lilac-pasdechat.webp',
     grandjete: 'assets/lilac-grandjete.webp',
     pirouette: 'assets/lilac-pirouette.webp'
   };
+  var POSE_SRC = {};
+  POSE_KEYS.forEach(function (k) {
+    var src = null;
+    try { if (window.SugarTown) src = window.SugarTown.dancerArt(WORN, k); } catch (e) { src = null; }
+    POSE_SRC[k] = src || LILAC_SRC[k];
+  });
+  /* 지금 어떤 옷으로 추는지 첫 화면에서 바로 알 수 있게 한다. */
+  var clothNameEl = document.getElementById('clothName');
+  if (clothNameEl) {
+    var name = '';
+    try { if (window.SugarTown) name = window.SugarTown.dressOf(WORN).name; } catch (e) { name = ''; }
+    if (name) clothNameEl.textContent = name;
+  }
   /* 포즈마다 그림 틀의 비율이 다르다 (기본 381/500 = 기존 도트 규격) */
   var POSE_FRAME = {
     grandjete: { ar: 640 / 500, hs: 0.85 }

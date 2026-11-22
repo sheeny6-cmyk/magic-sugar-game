@@ -34,10 +34,10 @@
 
   var MOVES = {
     beat: { key: 'beat', label: '박자', icon: '🩰', note: '♪', pose: 'plie', anim: '', kind: '음악이 흘러요' },
-    cat: { key: 'cat', label: '파드샤', icon: '🐾', note: '🐈', pose: 'releve', anim: 'pas-de-chat', kind: '길고양이 등장!' },
-    jump: { key: 'jump', label: '그랑제떼', icon: '🦋', note: '', pose: 'arabesque', anim: 'grand-jete', kind: '연습실 장애물!' },
+    cat: { key: 'cat', label: '파드샤', icon: '🐾', note: '🐈', pose: 'pasdechat', anim: 'pas-de-chat', kind: '길고양이 등장!' },
+    jump: { key: 'jump', label: '그랑제떼', icon: '🦋', note: '', pose: 'grandjete', anim: 'grand-jete', kind: '연습실 장애물!' },
     beam: { key: 'beam', label: '아라베스크', icon: '═', note: '', pose: 'arabesque', anim: 'balance-arabesque', kind: '균형대가 놓였어요!' },
-    turn: { key: 'turn', label: '피루엣', icon: '↻', note: '↻', pose: 'releve', anim: 'pirouette', kind: '회전 구간!' }
+    turn: { key: 'turn', label: '피루엣', icon: '↻', note: '↻', pose: 'pirouette', anim: 'pirouette', kind: '회전 구간!' }
   };
 
   /* 정령마다 무대에서 실제로 도와주는 능력. 함께 연습하면 이 힘이 발동한다. */

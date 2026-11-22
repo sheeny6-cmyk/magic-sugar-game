@@ -57,6 +57,13 @@
 .outfit-card .lv-badge.on{background:#edce91;color:#543c29}
 .outfit-card.locked .sample{filter:saturate(.78)}
 .outfit-card.locked .sample:after{content:"잠금";position:absolute;right:6px;bottom:6px;border-radius:6px;background:#46344bd4;color:white;font-size:.67rem;padding:3px 6px}
+.outfit-card.shop .sample{filter:saturate(.86)}
+.outfit-card.shop .sample:after{content:"상점";position:absolute;right:6px;bottom:6px;border-radius:6px;background:#7d5c9bcc;color:#fff6ff;font-size:.67rem;padding:3px 6px;letter-spacing:-.02em}
+/* 옷장·상점 두 역할 전환 */
+.dress-modes{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:0 14px 4px;padding:4px;border:1px solid #e3d5c9;border-radius:999px;background:#f8f1ed}
+.dress-modes .dm{display:flex;align-items:center;justify-content:center;min-height:38px;border-radius:999px;text-decoration:none;font-size:.8rem;font-weight:800;color:#7a6279;letter-spacing:-.03em;overflow-wrap:anywhere;text-align:center;padding:6px 4px}
+.dress-modes .dm.on{background:#fffdf9;color:#5f4270;box-shadow:0 3px 9px #6e4a7022;border:1px solid #e0cfc0}
+@media(min-width:500px){.dress-modes{margin-inline:22px}}
 .reward-guide{margin:17px 14px 0;border:1px solid #e8d8c0;border-radius:15px;background:#faf1e4;padding:13px 15px}
 .reward-guide strong{font-size:.85rem;color:#725138}
 .reward-guide p{font-size:.78rem;line-height:1.65;color:#7d695c;margin-top:6px;word-break:keep-all}

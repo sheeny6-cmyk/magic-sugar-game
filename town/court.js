@@ -7,67 +7,6 @@
 
   function nick() { return T.nick(); }
 
-  /* ---------- 프리마 승급 로드맵 ---------- */
-  function stepRow(rank, lv) {
-    var state = rank.n < lv.n ? 'done' : rank.n === lv.n ? 'now' : 'locked';
-    var mark = rank.crown ? '👑' : state === 'done' ? '✓' : rank.n;
-    return '<li class="road-step ' + state + '"' + (rank.n === lv.n ? ' aria-current="step"' : '') + '>' +
-      '<span class="rs-mark" aria-hidden="true">' + mark + '</span>' +
-      '<b>' + rank.short + '</b>' +
-      '<small>' + rank.tag + '</small></li>';
-  }
-
-  function recommend(lv, s) {
-    var next = lv.next;
-    if (!next) return { href: 'stage/?v=' + T.V, label: '👑 프리마 피날레 무대 열기' };
-    var open = lv.steps.filter(function (row) { return !row.done; });
-    var classes = open.filter(function (row) { return row.key === 'classes'; })[0];
-    var stat = open.filter(function (row) { return row.key === 'stat'; })[0];
-    var shows = open.filter(function (row) { return row.key === 'shows'; })[0];
-    if (classes) {
-      return {
-        href: 'studio/?v=' + T.V + (s.lesson ? '#lesson' : s.classes ? '' : '#first-bar'),
-        label: '스튜디오에서 ' + courseNames[s.lesson ? s.lesson.kind : 'bar'] + (s.lesson ? ' 이어 하기' : ' ' + classes.left + '번 더')
-      };
-    }
-    if (stat) return { href: 'studio/?v=' + T.V, label: '연습으로 능력치 ' + stat.left + ' 더 키우기' };
-    if (shows) {
-      if (T.stageReady()) return { href: 'stage/?v=' + T.V, label: '왕립 극장에서 공연 ' + shows.left + '회 더' };
-      return { href: 'studio/?v=' + T.V, label: '극장 초대장까지 수업 ' + T.stageLeft() + '번' };
-    }
-    return { href: 'studio/?v=' + T.V, label: '스튜디오에서 한 곡 더' };
-  }
-
-  function renderRoadmap(lv, s) {
-    $('roadTitle').textContent = 'Lv.' + lv.n + ' ' + lv.name;
-    $('rankChip').textContent = lv.next ? '다음 승급까지' : '👑 프리마 달성';
-    $('rankChip').className = 'rank-chip' + (lv.crown ? ' crown' : '');
-    $('roadSteps').innerHTML = T.RANKS.map(function (rank) { return stepRow(rank, lv); }).join('');
-    if (!lv.next) {
-      $('roadNext').textContent = '👑 ' + nick() + '님이 프리마 발레리나가 되었어요.';
-      $('roadNeeds').innerHTML = '<li class="need-row done"><span>왕립 발레단의 별</span><b>' + T.fmt(s.classes) + '회 수료 · 공연 ' + T.fmt(s.shows || 0) + '회</b></li>';
-      var cta = $('roadCta');
-      cta.href = 'stage/?v=' + T.V;
-      cta.textContent = '왕립 극장 피날레 무대로';
-      $('roadNote').textContent = '황금 포스터와 피날레 무대가 열렸어요.';
-      return;
-    }
-    $('roadNext').textContent = '다음은 Lv.' + lv.next.n + ' ' + lv.next.name + '.';
-    $('roadNeeds').innerHTML = lv.steps.map(function (row) {
-      return '<li class="need-row' + (row.done ? ' done' : '') + '">' +
-        '<span>' + row.label + '</span>' +
-        '<b>' + T.fmt(row.have) + ' / ' + T.fmt(row.need) + row.unit + '</b>' +
-        '<i aria-hidden="true"><em style="width:' + row.pct + '%"></em></i></li>';
-    }).join('');
-    var pick = recommend(lv, s);
-    $('roadCta').href = pick.href;
-    $('roadCta').textContent = pick.label;
-    $('roadNote').textContent = lv.crown
-      ? '프리마의 무대는 계속 열려 있어요. 앙코르 공연으로 명성을 더 쌓을 수 있어요.'
-      : s.levelUp ? '🎁 새 승급 보상이 도착했어요. 스튜디오에 들어가면 축하 카드가 열려요.'
-      : '한 단계 오를 때마다 옷장과 무대가 열려요.';
-  }
-
   /* ---------- 정령 다섯과의 교감 ---------- */
   function renderRoster(s) {
     $('staffRoster').innerHTML = Object.keys(T.STAFF).map(function (id) {
@@ -122,69 +61,6 @@
     if (!$('bondDialog').open) $('bondDialog').showModal();
   }
 
-  /* ---------- 나의 발레리나 · 다음 모습 · 성장 일기 ---------- */
-  function closestLine() {
-    var top = T.topBonds(1)[0];
-    if (!top || !top.points) return '아직 마음을 나눌 정령을 기다리고 있어요';
-    return top.name + '와 친밀도 Lv.' + top.level + ' · ' + top.line;
-  }
-  function renderGrowth(lv, s) {
-    var rank = T.RANKS[lv.n - 1], who = nick();
-    $('growthRank').textContent = 'Lv.' + lv.n + ' ' + lv.short;
-    $('voiceName').textContent = who;
-    $('voiceLine').textContent = '“' + String(rank.voice || '').replace(/\{n\}/g, who) + '”';
-    // 각 승급 단계의 예고는 '그 다음 모습'을 가리킨다. 다음 단계의 것이 아니라 지금 단계의 예고를 쓴다.
-    var next = lv.next, tease = rank.tease || null;
-    if (!next || !tease) {
-      $('nextLook').classList.add('prima');
-      $('lookFigure').hidden = true;
-      $('lookKicker').textContent = '👑 프리마 발레리나';
-      $('lookTitle').textContent = '이제 왕국의 모든 무대가 열려 있어요';
-      $('lookHints').innerHTML =
-        '<li><span>무대</span><b>프리마 피날레와 앙코르 공연이 계속 열려 있어요</b></li>' +
-        '<li><span>기록</span><b>왕국 명성 ' + T.fmt(s.fame || 0) + ' · 공연 ' + T.fmt(s.shows || 0) + '회</b></li>' +
-        '<li><span>곁에 있는 정령</span><b>' + closestLine() + '</b></li>';
-      $('lookCta').href = 'stage/?v=' + T.V;
-      $('lookCta').textContent = '피날레 무대 열기 →';
-      return;
-    }
-    $('nextLook').classList.remove('prima');
-    $('lookFigure').hidden = false;
-    var gift = (T.LEVEL_GIFTS[next.n] || {}).dress;
-    $('lookSilhouette').src = gift ? T.dancerArt(gift, 'curtsy') : T.dancerArt('sugar', 'arabesque');
-    $('lookSilhouette').alt = 'Lv.' + next.n + '에 열릴 새 모습의 실루엣';
-    $('lookKicker').textContent = '다음 모습 · Lv.' + next.n + ' ' + next.name;
-    $('lookTitle').textContent = '아직은 실루엣만 보여 드릴게요';
-    var hints = [];
-    hints.push('<li><span>의상</span><b>' + (gift ? T.dressOf(gift).name : '황금 포스터') + '</b></li>');
-    hints.push('<li><span>무대</span><b>' + String(tease.stage).replace(/\{n\}/g, who) + '</b></li>');
-    if (tease.spirit && T.SPIRITS[tease.spirit]) {
-      hints.push('<li><span>' + T.SPIRITS[tease.spirit].name + '의 예고</span><b>“' + tease.line + '”</b></li>');
-    }
-    var left = lv.steps.filter(function (row) { return !row.done; }).map(function (row) {
-      return row.label + ' ' + (row.need - row.have) + row.unit;
-    });
-    hints.push('<li><span>남은 조건</span><b>' + (left.length ? left.join(' · ') : '모두 채웠어요') + '</b></li>');
-    $('lookHints').innerHTML = hints.join('');
-    var pick = recommend(lv, s);
-    $('lookCta').href = pick.href;
-    $('lookCta').textContent = pick.label + ' →';
-  }
-
-  var diaryOpen = false;
-  function renderDiary(s) {
-    var rows = (s.journal || []).slice().reverse();
-    $('diaryCount').textContent = rows.length ? rows.length + '줄' : '';
-    $('diaryEmpty').hidden = rows.length > 0;
-    $('diaryList').innerHTML = (diaryOpen ? rows : rows.slice(0, 4)).map(function (row) {
-      var d = new Date(row.at);
-      return '<li><span class="diary-icon" aria-hidden="true">' + row.icon + '</span>' +
-        '<div><b>' + row.text + '</b><small>' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일</small></div></li>';
-    }).join('');
-    $('diaryMore').hidden = rows.length <= 4;
-    $('diaryMore').textContent = diaryOpen ? '접기' : '일기 ' + (rows.length - 4) + '줄 더 보기';
-  }
-
   /* ---------- 한눈에 보이는 첫 보상 ---------- */
   function renderFirstGift(s) {
     var kicker, title, detail, outfit;
@@ -233,7 +109,7 @@
     var target = T.nextDress();
     if (!s.classes && !T.isOwned('lilac')) $('ticketNote').textContent = '첫 수업은 무료 · 선물은 자동으로 지급돼요';
     else if (dose) $('ticketNote').textContent = T.STAFF[dose.id].name + ' 포션 준비 · ' + T.effectFor(dose.id, dose.level).label;
-    else if (target) $('ticketNote').textContent = s.coins >= target.price ? '드레스룸에서 구매 가능 · ' + target.name : '다음 의상 · ' + target.name + '까지 ' + T.fmt(target.price - s.coins) + '코인';
+    else if (target) $('ticketNote').textContent = s.coins >= target.price ? '의상 상점에서 구매 가능 · ' + target.name : '다음 의상 · ' + target.name + '까지 ' + T.fmt(target.price - s.coins) + '코인';
     else $('ticketNote').textContent = '이번 연습복 · ' + T.dressOf(s.worn).name;
     if (!lesson && !s.shows) {
       $('nextTitle').textContent = T.stageReady() ? '첫 공연 초대장이 도착했어요' : !s.classes ? '첫 바 연습으로 출발!' : '첫 공연까지 딱 한 수업!';
@@ -260,20 +136,8 @@
     document.querySelectorAll('.kingdom-map .venue').forEach(function(a){a.classList.toggle('is-next', !s.shows && a.getAttribute('href').indexOf(T.stageReady()&&!lesson?'stage/':'studio/')===0);});
     renderRoster(s);
     $('idRank').textContent = 'Lv.' + level.n + ' ' + level.name;
-    $('lvName').textContent = 'Lv.' + level.n + ' ' + level.name;
-    $('lvBar').style.width = level.pct + '%';
-    $('recordTitle').textContent = who + '의 연습 기록';
-    var open = level.steps.filter(function (row) { return !row.done; });
-    $('lvNote').textContent = level.next
-      ? '누적 수료 ' + s.classes + '회 · ' + level.next.name + '까지 ' + open.map(function (row) { return row.label + ' ' + (row.need - row.have) + row.unit; }).join(' · ')
-      : '누적 수료 ' + s.classes + '회 · 공연 ' + (s.shows || 0) + '회 · 👑 프리마 발레리나';
     $('stageLine').textContent = T.prima() ? '프리마 피날레 무대가 열려 있어요'
       : T.stageReady() ? (k.debutOutfit ? '앙코르 무대에 오르기' : '오늘의 의상으로 첫 리허설') : '첫 리허설 초대장까지 도장 ' + T.stageLeft() + '개';
-    var best = T.cafeBest();
-    if (best) $('cafeBest').textContent = '최고 매출 ' + T.fmt(best) + '원';
-    renderRoadmap(level, s);
-    renderGrowth(level, s);
-    renderDiary(s);
     T.syncUI();
   }
 
@@ -354,7 +218,18 @@
       location.href = 'studio/?v=' + T.V;
     }).catch(function () { $('bondPractice').disabled = false; });
   });
-  $('diaryMore').addEventListener('click', function () { diaryOpen = !diaryOpen; renderDiary(T.get()); });
+  /* ---------- 처음부터 다시하기 ---------- */
+  var resetBtn = $('resetBtn');
+  if (resetBtn) resetBtn.addEventListener('click', function () {
+    var ok = window.confirm('왕국의 연습 기록 · 코인 · 모은 의상이 모두 사라지고\nLv.1 입문 발레리나로 돌아가요.\n\n정말 처음부터 다시 시작할까요?');
+    if (!ok) return;
+    try {
+      localStorage.removeItem(T.KEY);
+      localStorage.removeItem(T.KEY + '.court');
+      localStorage.removeItem('sugarcafe.best');
+    } catch (e) { /* 저장소를 못 지우면 새로 고침만 한다 */ }
+    location.replace('./?v=' + T.V);
+  });
 
   window.addEventListener('sugartown:refresh', refresh);
   refresh();

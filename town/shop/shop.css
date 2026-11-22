@@ -1,0 +1,44 @@
+/* 왕국 상점 허브 — 의상 상점 · 발레 카페 · 꿈속 발레 분식집 (라일락 테마) */
+.shop{color:#432e52}
+.shop .app{max-width:560px}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+.shop-hero{margin:14px 14px 0;padding:18px 16px 17px;border:1px solid #e3d3f1;border-radius:20px;
+  background:linear-gradient(155deg,#fffdfe 8%,#f6ebff 62%,#fbeefb 100%);box-shadow:0 9px 24px #6b4a8a1c}
+.shop-hero .kicker{margin:0;font:700 .62rem Georgia,serif;letter-spacing:.2em;color:#a388bd}
+.shop-hero h1{margin:8px 0 0;font-family:Georgia,"Noto Serif KR",serif;font-size:clamp(1.35rem,6vw,1.7rem);
+  line-height:1.32;letter-spacing:-.05em;color:#4a3159;word-break:keep-all}
+.shop-hero .lead{margin:9px 0 0;font-size:.82rem;line-height:1.6;color:#7c6890;word-break:keep-all}
+
+.shop-hub{display:grid;gap:10px;margin:14px 14px 0}
+.store{position:relative;display:flex;align-items:center;gap:12px;padding:11px 12px 11px 11px;min-height:104px;
+  border:1px solid #e3d5ef;border-radius:18px;background:#fffdfe;text-decoration:none;color:inherit;
+  box-shadow:0 6px 16px #6b4a8a17;overflow:hidden}
+.store:active{transform:scale(.99)}
+.store::after{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;
+  background:linear-gradient(120deg,#ffffff00 60%,#f6e9ff88)}
+.store-art{position:relative;flex:none;width:86px;height:86px;border-radius:14px;overflow:hidden;background:#f4e9ff;display:grid;place-items:center}
+.store-art img{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+.store.outfit .store-art img{object-fit:contain;object-position:50% 100%;padding:3px 2px 0}
+.store.outfit .store-art{background:radial-gradient(ellipse at 50% 22%,#ffffffd8,transparent 72%),linear-gradient(150deg,#f7eeff,#f3e2fb)}
+.store.cafe .store-art{background:#f6ecff}
+.store.snack .store-art{background:#fdf1e6}
+.store-body{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.store-kicker{font:700 .58rem Georgia,serif;letter-spacing:.16em;color:#a98cc2}
+.store-body b{font-size:.98rem;letter-spacing:-.03em;color:#4a3159}
+.store-body small{font-size:.78rem;line-height:1.45;color:#7e6a91;word-break:keep-all}
+.store-state{align-self:flex-start;margin-top:4px;font-style:normal;font-size:.66rem;font-weight:800;color:#7d5c9b;
+  background:#f3e9fd;border:1px solid #e6d6f6;border-radius:999px;padding:3px 8px;letter-spacing:-.02em;word-break:keep-all}
+.store i{flex:none;align-self:flex-start;color:#a78bc0;font-style:normal;font-size:.9rem;padding-top:2px}
+
+.shop-note{margin:16px 14px 0;padding:13px 15px;border-radius:16px;border:1px solid #e6d8f2;background:#fbf7ff}
+.shop-note p{margin:0;font-size:.8rem;line-height:1.6;color:#75628a;word-break:keep-all}
+.shop-note b{color:#5f4276}
+.note-link{display:inline-flex;margin-top:9px;font-size:.82rem;font-weight:800;color:#7d5c9b;text-decoration:none;word-break:keep-all}
+.note-link:hover{text-decoration:underline;text-underline-offset:3px}
+
+.shop .foot{margin-top:20px}
+@media(max-width:360px){
+  .store-art{width:74px;height:74px}
+  .store-body small{font-size:.74rem}
+}

@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261122p';
+  var V = '20261122t';
   var STAGE_CLASSES = 2;
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
@@ -933,13 +933,26 @@
   function dressOf(id) {
     return DRESS.filter(function (d) { return d.id === id; })[0] || DRESS[0];
   }
-  var POSES = { ready: '준비 자세', plie: '데미 플리에', tendu: '텐듀', releve: '를르베', arabesque: '아라베스크', curtsy: '무대 인사' };
+  var POSES = {
+    ready: '준비 자세', plie: '데미 플리에', tendu: '텐듀', releve: '를르베', arabesque: '아라베스크', curtsy: '무대 인사',
+    /* 동작 이름 그대로의 전용 그림. 지금은 기본·라일락 두 의상에만 있다. */
+    pasdechat: '파드샤', grandjete: '그랑제떼', pirouette: '피루엣'
+  };
   var ORIGINAL = { ready: 'front', releve: 'releve', arabesque: 'arabesque', curtsy: 'curtsy' };
-  function dancerArt(id, pose) {
+  /* 전용 그림이 없는 의상은 404 대신 가장 가까운 기존 동작 그림으로 보여 준다. */
+  var POSE_SAFE = { pasdechat: 'releve', grandjete: 'arabesque', pirouette: 'releve' };
+  var POSE_OWN = { basic: 1, lilac: 1 };
+  function artPose(id, pose) {
     id = dressOf(id).id;
     if (!Object.hasOwn(POSES, pose)) pose = 'ready';
-    if (id === 'sugar' && Object.hasOwn(ORIGINAL, pose)) return A('../kingdom/assets/sugar_' + ORIGINAL[pose] + '@2x.webp');
-    return A('assets/dancers/' + id + '-' + pose + '.webp');
+    if (!POSE_OWN[id] && Object.hasOwn(POSE_SAFE, pose)) return POSE_SAFE[pose];
+    return pose;
+  }
+  function dancerArt(id, pose) {
+    var who = dressOf(id).id;
+    pose = artPose(who, pose);
+    if (who === 'sugar' && Object.hasOwn(ORIGINAL, pose)) return A('../kingdom/assets/sugar_' + ORIGINAL[pose] + '@2x.webp');
+    return A('assets/dancers/' + who + '-' + pose + '.webp');
   }
   function showDancer(img, id, pose) {
     var src = dancerArt(id, pose);
@@ -1077,7 +1090,7 @@
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
     LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, STAGE_CLASSES: STAGE_CLASSES, practicePower: practicePower, stagePower: stagePower, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
-    dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
+    dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, artPose: artPose, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast,
     CAFE: CAFE, orderMeal: orderMeal, mealOf: mealOf, buffChips: buffChips, TURN_LABEL: TURN_LABEL,
     BOND_STEPS: BOND_STEPS, BOND_MAX: BOND_MAX, BOND_IDS: BOND_IDS, TEACHER: TEACHER, LETTERS: LETTERS,

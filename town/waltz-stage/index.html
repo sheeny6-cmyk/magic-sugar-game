@@ -116,6 +116,9 @@ a{color:inherit;text-decoration:none}
 }
 .primary:active{transform:translateY(2px);box-shadow:0 3px 0 #6e5890}
 .cover-card .meta{font-size:10px;color:#a294ab;margin:8px 0 0}
+.cover-card .cloth{display:inline-flex;align-items:center;gap:4px;margin-top:9px;padding:6px 10px;border-radius:999px;
+  border:1px solid #e6d6f2;background:#faf4ff;color:#7a5f91;font-size:9.5px;font-weight:800;text-decoration:none;letter-spacing:-.02em}
+.cover-card .cloth b{color:#5b4276}
 
 /* ---------- 다음 동작 / 판정 안내 ---------- */
 .cue{
@@ -256,6 +259,7 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
         </div>
         <div class="beat-note" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <button id="startBtn" class="primary" type="button">음악과 함께 시작</button>
+        <a class="cloth" id="clothLink" href="../dressroom/?v=20261122t">👗 <b id="clothName">기본 핑크 레오타드</b> 차림으로 춰요 · 옷 바꾸기</a>
         <p class="meta">약 55초 · 한 손 조작 · 저장 기록은 바뀌지 않아요</p>
       </div>
     </div>
@@ -298,7 +302,8 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
   <p class="fine">실험용 왈츠 시제품 · 마을의 코인·의상·저장 기록은 그대로예요</p>
 </div>
 
+<script src="../assets/town.js?v=20261122t"></script>
 <script src="music.js?v=20261122w"></script>
-<script src="waltz.js?v=20261122p"></script>
+<script src="waltz.js?v=20261122t"></script>
 </body>
 </html>
