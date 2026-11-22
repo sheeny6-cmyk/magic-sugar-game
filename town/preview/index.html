@@ -1097,7 +1097,7 @@ section.block{margin-top:22px}
     $('buddyLine').classList.remove('on');
 
     var c=CHARTS[r.act],oldLv=curLv();
-    var earned=c.coins+Math.round(r.score/400)+(r.miss===0?50:0);
+    var earned=c.coins+r.hits*5+r.perfect*8+(r.miss===0?50:0);
     state.coins+=earned;
     state.stage=Math.max(state.stage,Math.min(4,r.act+1));
     var newLv=curLv();
