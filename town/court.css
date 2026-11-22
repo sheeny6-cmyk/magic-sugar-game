@@ -409,7 +409,7 @@
 .court .map-prototype-link:hover{text-decoration:underline;text-underline-offset:3px}
 .court .map-prototype-link small{font-size:.65rem;color:#937d96;font-weight:600}
 
-/* ---------- 20261122t · 산책길 세 갈래 상점 카드 · 처음부터 다시하기 ---------- */
+/* ---------- 20261122u · 산책길 세 갈래 상점 카드 · 처음부터 다시하기 ---------- */
 .court .royal-walk .venue .venue-art.shop-art{display:grid;place-items:center;background:radial-gradient(ellipse at 50% 24%,#fff8ff 0,transparent 70%),linear-gradient(150deg,#f7ecff,#fdeaf3)}
 .court .royal-walk .venue .venue-art.shop-art .shop-emoji{display:flex;align-items:center;justify-content:center;gap:3px;padding-bottom:4px}
 .court .royal-walk .venue .venue-art.shop-art .shop-emoji em{font-style:normal;font-size:1.5rem;line-height:1;filter:drop-shadow(0 2px 4px #6b4a8a33)}
