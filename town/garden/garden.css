@@ -226,7 +226,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
 /* 샹들리에 */
 .chandelier{
-  position:absolute;left:50%;width:25%;top:10%;height:25%;opacity:0;
+  position:absolute;left:50%;width:27%;top:10.5%;aspect-ratio:140/170;height:auto;opacity:0;
   transition:opacity 1.2s ease,transform 1.2s ease;transform:translateY(-8px);
   filter:drop-shadow(0 0 14px rgba(255,224,150,.65));
 }
