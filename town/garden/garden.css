@@ -208,13 +208,13 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
   background:linear-gradient(180deg,#f6e2b3,#c8a05a);box-shadow:0 1px 3px rgba(60,30,60,.35);
 }
 .valance{
-  position:absolute;left:0;right:0;top:0;height:12%;
+  position:absolute;left:0;right:0;top:0;height:9%;
   background:linear-gradient(180deg,var(--cur-d),var(--cur));
   box-shadow:0 3px 10px rgba(45,20,55,.3);
   transition:opacity 1.1s ease;
 }
 .valance .scallop{
-  position:absolute;left:0;right:0;top:100%;height:26px;
+  position:absolute;left:0;right:0;top:100%;height:22px;
   background:radial-gradient(circle at 50% 0,var(--cur) 0 48%,transparent 52%);
   background-size:36px 26px;background-repeat:repeat-x;
 }
@@ -226,7 +226,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 
 /* 샹들리에 */
 .chandelier{
-  position:absolute;left:50%;width:27%;top:10.5%;aspect-ratio:140/170;height:auto;opacity:0;
+  position:absolute;left:50%;width:22%;top:8.6%;aspect-ratio:140/170;height:auto;opacity:0;
   transition:opacity 1.2s ease,transform 1.2s ease;transform:translateY(-8px);
   filter:drop-shadow(0 0 14px rgba(255,224,150,.65));
 }
