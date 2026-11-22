@@ -307,13 +307,13 @@
       var q = clamp01((dt + 0.16) / 0.6);
       return {
         pose: q > 0.92 ? 'plie' : 'grandjete',
-        dx: -8 + 24 * q, dy: -108 * 4 * q * (1 - q),
+        dx: 24 * Math.sin(Math.PI * q), dy: -108 * 4 * q * (1 - q),
         rot: -11 * Math.sin(q * Math.PI), sx: 1 + 0.06 * Math.sin(q * Math.PI), sy: 1, alpha: 1, trail: 4
       };
     }
     if (dt < 0.66) {
       var r = 1 - clamp01((dt - 0.44) / 0.22);
-      return { pose: 'plie', dx: 12 * r, dy: 10 * r, rot: 0, sx: 1, sy: 1, alpha: 1 };
+      return { pose: 'plie', dx: 8 * r, dy: 10 * r, rot: 0, sx: 1, sy: 1, alpha: 1 };
     }
     return { pose: 'ready', dx: 0, dy: 0, rot: 0, sx: 1, sy: 1, alpha: 1 };
   }
