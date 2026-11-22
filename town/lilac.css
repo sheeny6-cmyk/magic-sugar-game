@@ -249,3 +249,11 @@ body.sub .app{background:linear-gradient(180deg,#fdfaff,#f7f0fe 46%,#fbf6ff)}
 .dress .outfit-actions .btn.ghost{background:#fffdfe;border:1px solid #e3d4f1;color:#7d5c9b}
 .dress .wear-tip{color:#8d7ba0}
 .dress .spirit-note{background:#f8f1fe;border:1px solid #e6d8f2}
+
+/* 드레스룸 안내 박스 */
+.dress .reward-guide{background:linear-gradient(180deg,#fffdfe,#f7f0fe);border:1px solid #e6d8f2;border-radius:14px}
+.dress .reward-guide strong{color:#5a3d75}
+.dress .reward-guide p,.dress .reward-guide{color:#77659a}
+.dress .preview-help{color:#7c6a8b}
+/* 분식집: 주문 버튼을 화면 아래에 붙여 메뉴를 고른 뒤 바로 누를 수 있게 */
+.snack .shop-order .order-cta{position:sticky;bottom:calc(94px + var(--safe-b));z-index:6;box-shadow:0 10px 26px #6b4a8a4d}
