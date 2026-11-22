@@ -209,7 +209,7 @@
     $('notes').replaceChildren();$('playBar').style.width='0%';$('laneLabel').textContent='박자 0 / '+c.count;
     for(var i=0;i<c.count;i++){
       var el=document.createElement('span');el.className='note';$('notes').appendChild(el);
-      session.notes.push({t:2050+i*c.gap,el:el,judged:false});
+      session.notes.push({t:2050+i*c.gap,el:el,judged:false,soundPlayed:false});
     }
     try{
       if(!audio){var C=window.AudioContext||window.webkitAudioContext;if(C)audio=new C()}
@@ -224,7 +224,6 @@
     if(best&&near<=285){
       best.judged=true;session.done++;session.hits++;if(near<=150)session.perfect++;
       best.el.style.display='none';
-      noteSound(session.done);
       updatePose(poses[(session.done-1)%poses.length]);
       flash(near<=150?'PERFECT':'GOOD');
       $('laneLabel').textContent='박자 '+session.done+' / '+session.notes.length;
@@ -235,8 +234,9 @@
   }
   function tick(){
     if(!session||session.finished)return;
-    var t=performance.now()-session.start,trackW=$('track').clientWidth,approach=1750,target=40,startX=Math.max(190,trackW-28),sessionNow=session;
-    session.notes.forEach(function(n){
+    var t=performance.now()-session.start,trackW=$('track').clientWidth,approach=1750,target=40,startX=Math.max(190,trackW-28);
+    session.notes.forEach(function(n,i){
+      if(!n.soundPlayed && t>=n.t){n.soundPlayed=true;noteSound(i)}
       if(n.judged)return;
       if(t-n.t>295){
         n.judged=true;session.done++;n.el.style.display='none';
