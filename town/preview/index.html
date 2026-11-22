@@ -238,14 +238,14 @@
     $('talk').textContent='“'+sp.line+'”';
     $('mainAction').textContent=labels[s];
     $('rewardKicker').textContent=['첫 완주 선물','다음 보상','첫 공연 기념','완성한 첫 공연'][s];
-    $('rewardName').textContent=['라일락 쉬폰 스커트','왕립 극장 초대장','나의 첫 공연 포스터','별빛의 첫 왈츠'][s];
+    $('rewardName').textContent=['라일락 쉬폰 스커트','왕립 극장 초대장','나의 첫 공연 기록','별빛의 첫 왈츠'][s];
     $('rewardNote').textContent=['완주하면 자동 지급돼요.','한 번 더 연습하면 열려요.','공연을 완성하면 받을 수 있어요.','다음 작품 준비 전, 공연을 다시 해 볼 수 있어요.'][s];
     $('rewardPic').src='../assets/dancers/'+(s===0?'lilac':'lilac')+'-curtsy.webp';
     $('stepCount').textContent=s+' / 3 완료';
     var parts=[
       {name:'첫 코스 연습',desc:'파드샤·그랑제떼·아라베스크·피루엣',gift:'라일락 스커트'},
       {name:'안무 이어 연습',desc:'배운 동작을 음악과 연결하기',gift:'공연 초대장'},
-      {name:'첫 왕립 공연',desc:'무대에서 완성하는 첫 왈츠',gift:'기념 포스터'}
+      {name:'첫 왕립 공연',desc:'무대에서 완성하는 첫 왈츠',gift:'첫 공연 기록'}
     ];
     $('stepList').innerHTML=parts.map(function(x,i){return '<div class="step '+(s>i?'done':s===i?'active':'')+'"><span class="step-num">'+(s>i?'✓':i+1)+'</span><div><b>'+x.name+'</b><small>'+x.desc+'</small></div><em>'+(s>i?'완료':s===i?'진행 중':x.gift)+'</em></div>'}).join('');
     $('spirits').innerHTML=spirits.map(function(x){return '<button type="button" class="spirit '+(x.id===state.spirit?'selected':'')+'" data-id="'+x.id+'" aria-pressed="'+(x.id===state.spirit)+'"><img src="'+portrait(x.id)+'" alt=""><b>'+x.name+'</b></button>'}).join('');
@@ -377,6 +377,7 @@
     $('playKicker').textContent=c.label;
     $('playTitle').textContent=c.title;
     $('playDancer').src=dancerSrc('ready');$('playDancer').className='cruise';$('playScene').style.setProperty('--runner-step','0%');
+    clearMotion();
     ['ready','releve','arabesque'].forEach(function(pose){var image=new Image();image.src=dancerSrc(pose)});
     $('cue').textContent='하나, 둘, 셋! 상황을 보고 맞는 발레 동작을 골라요.';
     $('help').textContent='고양이→파드샤 · 장애물→그랑제떼 · 균형대→아라베스크 · 회전→피루엣';
@@ -471,13 +472,19 @@
     scene.style.setProperty('--walk',(-Math.round(t*.23)%180)+'px');
     scene.style.backgroundPosition='calc(50% - '+Math.round(t*.045)+'px) 55%';
     var eventTarget=41+advance;
+    // 한 자리에 서 있는 스틸 이미지가 아닌 이동감을 주기 위한 러닝 포즈 순환.
+    var runner=$('playDancer');
+    if(runner.classList.contains('cruise')){
+      var walkPoses=['ready','tendu','releve','tendu'];
+      setImage(runner,dancerSrc(walkPoses[Math.floor(Math.max(0,t)/340)%walkPoses.length]));
+    }
     session.notes.forEach(function(n){
       var p=1-(n.t-t)/approach;
       // 이미 피하거나 넘은 장애물도 캐릭터 뒤편으로 흘러가며 실제로 통과한 듯 보이게 한다.
       if(p>=-.05 && p<2.8){
         n.prop.style.display='grid';
         n.prop.style.left=(100+(eventTarget-100)*p)+'%';
-        n.prop.style.opacity=p>2.4?String(Math.max(0,(2.8-p)*2.5)):'1';
+        n.prop.style.opacity=p>2.4?String(Math.max(0,(2.8-p)*2.5)):n.judged?'.64':'1';
       }else n.prop.style.display='none';
       if(n.judged)return;
       var late=windowFor(n)+20;
