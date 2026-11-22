@@ -419,18 +419,14 @@ body.vw-lock{overflow:hidden}
 </div>
 <div class="tab-panel" id="panel-toon" data-panel="toon" role="region" aria-labelledby="toonTitle">
 <section class="toon-sec" id="toon" aria-labelledby="toonTitle"><div class="toon-inner">
-<div class="toon-head"><div><p class="kicker">02 / TOON &amp; VIDEO</p><h2 id="toonTitle">Toon <em>&amp; Video</em></h2><p class="toon-intro">인스타그램 인스타툰·릴스와 유튜브 숏츠를 한 탭에 모았어요. 위 필터로 보고 싶은 채널만 골라 볼 수 있고, 이미지 툰은 탭해서 넘겨 보거나 세로로 이어 볼 수 있으며, 릴스는 여기서 바로 재생됩니다.</p></div><div class="toon-tally"><b>24</b>PIECES<br>INSTA 16 · SHORTS 8</div></div>
+<div class="toon-head"><div><p class="kicker">02 / TOON &amp; VIDEO</p><h2 id="toonTitle">Toon <em>&amp; Video</em></h2><p class="toon-intro">인스타그램 인스타툰·릴스와 유튜브 숏츠를 한 탭에 모았어요. 위 필터로 보고 싶은 채널만 골라 볼 수 있고, 이미지 툰은 탭해서 넘겨 보거나 세로로 이어 볼 수 있으며, 릴스는 여기서 바로 재생됩니다.</p></div><div class="toon-tally"><b>24</b>PIECES<br>SHORTS 8 · INSTA 16</div></div>
 <div class="tv-chips">
 <a class="tv-chip" href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer"><b>INSTAGRAM</b><span class="tv-handle">@sugar.ballet <span aria-hidden="true">↗</span></span></a>
 <a class="tv-chip" href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer"><b>YOUTUBE</b><span class="tv-handle">@sugar.ballet <span aria-hidden="true">↗</span></span></a>
 <a class="tv-chip" href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer"><b>THREADS</b><span class="tv-handle">@sugar.ballet <span aria-hidden="true">↗</span></span></a>
 </div>
-<div class="tv-filter" role="group" aria-label="톤·영상 필터"><button type="button" data-tv="all" aria-pressed="true">전체 <span>24</span></button><button type="button" data-tv="insta" aria-pressed="false">인스타툰·릴스 <span>16</span></button><button type="button" data-tv="yt" aria-pressed="false">유튜브 숏츠 <span>8</span></button></div>
-<div class="tv-set" data-set="insta">
-<div class="toon-group-head"><h3>인스타툰 &amp; 릴스</h3><span>INSTAGRAM · 16 POSTS</span></div>
-<div class="feed-grid" id="feedGrid"></div>
-</div>
-<div class="tv-set" data-set="yt">
+<div class="tv-filter" role="group" aria-label="톤·영상 필터"><button type="button" data-tv="all" aria-pressed="true">전체 <span>24</span></button><button type="button" data-tv="yt" aria-pressed="false">유튜브 숏츠 <span>8</span></button><button type="button" data-tv="insta" aria-pressed="false">인스타툰·릴스 <span>16</span></button></div>
+<div class="tv-set" data-set="yt" id="youtube">
 <div class="toon-group-head"><h3>유튜브 숏츠</h3><span>YOUTUBE · 8 SHORTS</span></div>
 <div class="yt-channel">
 <span class="yt-channel-banner"><img src="assets/yt/channel-banner.webp" alt="슈가발레 유튜브 채널 배너" width="1600" height="265" loading="lazy" decoding="async"></span>
@@ -446,6 +442,10 @@ body.vw-lock{overflow:hidden}
 <a class="yt-card" href="https://www.youtube.com/shorts/ixSGNii3UEI" target="_blank" rel="noopener noreferrer" aria-label="발레 수업 중 - 언제 끝나나요? 😭 — 유튜브 숏츠로 보기, 새 창"><span class="yt-thumb"><img src="assets/yt/07-ixSGNii3UEI.webp" alt="" width="480" height="853" loading="lazy" decoding="async"><span class="yt-tag">SHORTS</span><span class="yt-play" aria-hidden="true">▶</span><span class="yt-go">유튜브에서 보기 ↗</span></span><span class="yt-info"><b>발레 수업 중 - 언제 끝나나요? 😭</b><small>2026.10.31</small></span></a>
 <a class="yt-card" href="https://www.youtube.com/shorts/d7nfQytVM8E" target="_blank" rel="noopener noreferrer" aria-label="취미발레 | 오늘도 방향치 인증 — 유튜브 숏츠로 보기, 새 창"><span class="yt-thumb"><img src="assets/yt/08-d7nfQytVM8E.webp" alt="" width="480" height="853" loading="lazy" decoding="async"><span class="yt-tag">SHORTS</span><span class="yt-play" aria-hidden="true">▶</span><span class="yt-go">유튜브에서 보기 ↗</span></span><span class="yt-info"><b>취미발레 | 오늘도 방향치 인증</b><small>2026.10.30</small></span></a>
 </div>
+</div>
+<div class="tv-set" data-set="insta">
+<div class="toon-group-head"><h3>인스타툰 &amp; 릴스</h3><span>INSTAGRAM · 16 POSTS</span></div>
+<div class="feed-grid" id="feedGrid"></div>
 </div>
 <p class="toon-foot">이미지 컷과 릴스는 <a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">인스타그램 @sugar.ballet</a>에 올린 것을 사이트용으로 담았고, 숏츠는 <a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">유튜브 @sugar.ballet</a>에서 바로 이어집니다. 스레드에서도 <a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">@sugar.ballet</a>으로 만날 수 있어요.</p>
 </div></section>
@@ -505,6 +505,8 @@ var panels=[].slice.call(document.querySelectorAll(".tab-panel"));
 var names=panels.map(function(p){return p.dataset.panel});
 var alias={youtube:"toon",instatoon:"toon",reels:"toon",shorts:"toon"};
 function canon(n){n=String(n||"");return alias[n]||n}
+function rawHash(){return String((location.hash||"").replace(/^#/,""))}
+function tvHook(raw){var tv=window.SugarTV;if(!tv||!tv.focusYt)return;if(raw==="youtube"||raw==="shorts")tv.focusYt();else if(raw==="toon")tv.set("all")}
 function paint(name){
   panels.forEach(function(p){var on=p.dataset.panel===name;p.classList.toggle("is-active",on);p.hidden=!on});
   var act=null;
@@ -528,17 +530,18 @@ function fromHash(){var h=canon((location.hash||"").replace(/^#/,""));return nam
 document.addEventListener("click",function(e){
   var a=e.target&&e.target.closest?e.target.closest('a[href^="#"]'):null;
   if(!a)return;
-  var n=canon(a.getAttribute("href").slice(1));
+  var raw=a.getAttribute("href").slice(1);
+  var n=canon(raw);
   if(names.indexOf(n)<0)return;
   e.preventDefault();
-  var target="#"+n;
-  if(location.hash!==target){try{history.pushState(null,"",target)}catch(err){location.hash=n}}
-  go(n);
+  var target="#"+raw;
+  if(location.hash!==target){try{history.pushState(null,"",target)}catch(err){location.hash=raw}}
+  go(n);tvHook(raw);
 });
-window.addEventListener("hashchange",function(){go(fromHash(),!location.hash)});
-window.addEventListener("popstate",function(){go(fromHash(),!location.hash)});
+window.addEventListener("hashchange",function(){go(fromHash(),!location.hash);tvHook(rawHash())});
+window.addEventListener("popstate",function(){go(fromHash(),!location.hash);tvHook(rawHash())});
 go(fromHash(),true);
-window.addEventListener("load",function(){if(location.hash&&names.indexOf(canon(location.hash.slice(1)))>=0)go(fromHash(),false)});
+window.addEventListener("load",function(){if(location.hash&&names.indexOf(canon(location.hash.slice(1)))>=0){go(fromHash(),false);tvHook(rawHash())}});
 var tabBar=document.querySelector(".tabbar .tabs");
 function tabEdgeHint(){if(!tabBar)return;var rest=tabBar.scrollWidth-tabBar.clientWidth;tabBar.classList.toggle("more-right",rest>2&&tabBar.scrollLeft<rest-2);tabBar.classList.toggle("more-left",tabBar.scrollLeft>2)}
 if(tabBar){tabBar.addEventListener("scroll",tabEdgeHint,{passive:true});window.addEventListener("resize",tabEdgeHint);tabEdgeHint()}
@@ -550,7 +553,7 @@ if(tabBar){tabBar.addEventListener("scroll",tabEdgeHint,{passive:true});window.a
 var works=[
 {title:"발레노트 (Ballet Note)",kind:"앱·웹",type:"app",desc:"취미 발레 수업을 기록하는 앱. 일반·작품반 수업 순서와 콤비네이션, 선생님 피드백과 그날의 느낌, 달력·검색 조회, 발레 용어 406개 사전, 월별 발레 비용까지 한곳에 남깁니다.",cover:"BALLET NOTE",img:"assets/ballet-note.webp",icon:"assets/ballet-note-icon.webp",cta:"▷ Google Play · 웹앱",links:[{label:"Google Play ↗",url:"https://play.google.com/store/apps/details?id=com.sugar.balletnote"},{label:"웹앱 열기 ↗",url:"https://ballet-note-ten.vercel.app"}]},
 {title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"이미지 컷과 릴스로 만든 발레 인스타툰. 사이트 안에서 바로 감상·재생.",cover:"BALLET DIARY",img:"assets/toon-cover-collage.webp",cta:"▷ 인스타그램 피드 보기",action:"toon"},
-{title:"발레툰 숏츠",kind:"영상",type:"video",desc:"발레의 유쾌한 순간을 짧은 숏폼으로 풀어낸 발레툰 숏츠. TOON & VIDEO 탭에서 8편을 한 번에 봅니다.",cover:"MOTION & MOMENTS",img:"assets/video-thumb.webp",pos:"top",cta:"▷ 유튜브 숏츠 보기",url:"#toon"},
+{title:"발레툰 숏츠",kind:"영상",type:"video",desc:"발레의 유쾌한 순간을 짧은 숏폼으로 풀어낸 발레툰 숏츠. TOON & VIDEO 탭에서 8편을 한 번에 봅니다.",cover:"MOTION & MOMENTS",img:"assets/yt-shorts-collage.webp",pos:"top",cta:"▷ 유튜브 숏츠 보기",url:"#youtube",jump:" — 유튜브 숏츠 섹션 바로 보기"},
 {title:"발레왕국 달력",kind:"굿즈",type:"calendar",desc:"2027년 슈가공주 달력 12장. 1월부터 12월까지 사이트 안에서 넘겨 봅니다.",cover:"BALLET CALENDAR",img:"assets/toons/calendar/01.webp",pos:"top",cta:"▷ 2027 달력 12장 보기",viewer:"calendar"},
 {title:"네이버 OGQ 스티커 컬렉션",kind:"OGQ 스티커 시리즈",type:"sticker",desc:"슈가의 OGQ 스티커 3시리즈. 실제 판매 작품 이미지로 보고 작품 페이지에서 이어집니다.",cover:"OGQ STICKER COLLECTION",img:"assets/ogq/ogq-cover.webp",cta:"▷ OGQ 컬렉션 보기",url:"#ogq"}
 ];
@@ -566,7 +569,7 @@ var card=document.createElement(links?"article":(viewer||w.action==="toon"?"butt
 if(links){card.setAttribute("aria-label",w.title)}
 else if(viewer){card.type="button";card.dataset.viewer=viewer;card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
 else if(w.action==="toon"){card.type="button";card.dataset.openToon="";card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
-else{var href=w.url||"#works";card.href=href;if(href.charAt(0)!=="#"){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(href.charAt(0)==="#"?" 컬렉션으로 이동":" 새 창에서 감상"));}
+else{var href=w.url||"#works";card.href=href;if(href.charAt(0)!=="#"){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(href.charAt(0)==="#"?(w.jump||" 컬렉션으로 이동"):" 새 창에서 감상"));}
 var cover=document.createElement("div");cover.className="cover "+w.type;
 if(w.img){cover.className+=" has-img"+(w.pos?" pos-"+w.pos:"");var imt=document.createElement("img");imt.src=w.img;imt.loading="lazy";imt.alt="";cover.appendChild(imt);}
 if(w.icon){var ic=document.createElement("span");ic.className="cover-icon";var ici=document.createElement("img");ici.src=w.icon;ici.alt="";ici.width=50;ici.height=50;ici.loading="lazy";ic.appendChild(ici);cover.appendChild(ic);}
@@ -595,11 +598,21 @@ if(f==="toon"&&window.SugarToons){window.SugarToons.open()}
 var btns=[].slice.call(document.querySelectorAll("[data-tv]"));
 var sets=[].slice.call(document.querySelectorAll(".tv-set"));
 if(!btns.length||!sets.length)return;
-btns.forEach(function(b){b.addEventListener("click",function(){
-var f=b.dataset.tv;
-btns.forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+function apply(f){
+btns.forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.tv===f))});
 sets.forEach(function(s){s.hidden=!(f==="all"||s.dataset.set===f)});
-})});
+}
+btns.forEach(function(b){b.addEventListener("click",function(){apply(b.dataset.tv)})});
+function scrollTop(el){
+var bar=document.getElementById("tabbar");
+var off=(bar?bar.offsetHeight:0)+8;
+var y=el.getBoundingClientRect().top+(window.pageYOffset||document.documentElement.scrollTop||0)-off;
+if(y<0)y=0;
+try{window.scrollTo({top:y,left:0,behavior:"auto"})}catch(e){window.scrollTo(0,y)}
+}
+function focusYt(){apply("yt");var el=document.getElementById("youtube");if(el)scrollTop(el)}
+window.SugarTV={set:apply,focusYt:focusYt};
+if(/^#(youtube|shorts)$/.test(location.hash||"")){if(document.readyState==="complete")setTimeout(focusYt,30);else window.addEventListener("load",function(){setTimeout(focusYt,30)})}
 })();
 </script>
 <div class="viewer" id="viewer" hidden>
