@@ -271,3 +271,9 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
 .course-event.beat{font-size:1.5rem}
 /* 다음 동작 표시는 오른쪽 위 (콤보 배지와 겹치지 않게) */
 .pose-cue{left:auto;right:8px;top:8px}
+/* 판정 링 빛을 라일락 진주빛으로 가볍게 */
+.judge-line .ring{background:radial-gradient(ellipse at 50% 45%,#ffffff5c,#ffffff0d 58%,#ffffff00 78%)}
+.judge-line.hot .ring{transform:scale(1.16);
+  box-shadow:0 0 26px #fff,0 0 0 8px #f6e9ffcc,0 0 0 17px #c8a2c84d,inset 0 0 14px #fff}
+.judge-line.hot .floor{box-shadow:0 0 12px #f3e6ff}
+.pose-cue{background:#fffafff2;border:1px solid #ece0f8;color:#5a3e66}
