@@ -223,9 +223,9 @@
   function portrait(id){return '../../kingdom/assets/av_'+id+'.webp'}
   function setImage(img,src){if(img.getAttribute('src')!==src)img.src=src}
   function home(){
-    var s=state.step,sp=chosen(),labels=['첫 안무 연습하기','두 번째 연습 시작하기','왕립 극장 첫 공연하기','다시 공연 감상하기'];
+    var s=state.step,sp=chosen(),labels=['첫 발레 코스 도전하기','다음 코스 도전하기','왕립 극장 첫 공연하기','다시 공연 감상하기'];
     $('lead').textContent=[
-      '첫 공연 초대장이 왔어요! 고양이·장애물·균형대를 만나면 알맞은 발레 동작을 선택해 봐요.',
+      '발레왕국의 길을 따라 달려요. 고양이를 피하고 장애물을 넘고 균형대와 회전 구간을 통과해 봐요.',
       '첫 의상을 얻었어요! 한 번 더 연습하면 공연 초대장이 열려요.',
       '무대 준비가 끝났어요. 익힌 동작으로 첫 공연을 완성해 봐요.',
       '첫 공연을 완성했어요! 다음 작품은 새로운 안무와 함께 열릴 거예요.'
@@ -243,7 +243,7 @@
     $('rewardPic').src='../assets/dancers/'+(s===0?'lilac':'lilac')+'-curtsy.webp';
     $('stepCount').textContent=s+' / 3 완료';
     var parts=[
-      {name:'첫 바 워크',desc:'상황에 맞게 파드샤·그랑제떼·아라베스크',gift:'라일락 스커트'},
+      {name:'첫 코스 연습',desc:'파드샤·그랑제떼·아라베스크·피루엣',gift:'라일락 스커트'},
       {name:'안무 이어 연습',desc:'배운 동작을 음악과 연결하기',gift:'공연 초대장'},
       {name:'첫 왕립 공연',desc:'무대에서 완성하는 첫 왈츠',gift:'기념 포스터'}
     ];
@@ -310,24 +310,42 @@
   function flash(word){
     var el=$('judge');el.textContent=word;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
   }
+  function clearMotion(){
+    motionTimers.forEach(function(t){clearTimeout(t)});
+    motionTimers=[];
+  }
+  function later(ms,fn){motionTimers.push(setTimeout(fn,ms))}
   function updatePose(type){
     var a=ACTIONS[type],img=$('playDancer');
-    setImage(img,dancerSrc(a.pose));
+    clearMotion();
+    var first=(type==='cat'||type==='jump')?'plie':a.pose;
+    setImage(img,dancerSrc(first));
     img.className='';
     void img.offsetWidth;
     img.classList.add(a.anim);
-    $('cue').textContent=a.name+' · '+a.move+' 성공!';
+    if(type==='cat')later(170,function(){setImage(img,dancerSrc('releve'))});
+    if(type==='jump')later(180,function(){setImage(img,dancerSrc('arabesque'))});
+    if(type==='beam')later(140,function(){setImage(img,dancerSrc('arabesque'))});
+    if(type==='turn')later(310,function(){setImage(img,dancerSrc('releve'))});
+    later(type==='beam'?1150:980,function(){
+      setImage(img,dancerSrc('ready'));
+      img.className='cruise';
+    });
+    $('cue').textContent=a.name+' 통과! '+a.move+' 성공';
   }
   function wrongPose(){
+    clearMotion();
     var img=$('playDancer');
     img.className='';void img.offsetWidth;img.classList.add('wobble');
+    later(450,function(){img.className='cruise';setImage(img,dancerSrc('ready'))});
   }
   function clearRun(){
     if(raf)cancelAnimationFrame(raf);raf=0;
+    clearMotion();
     stopSound();
     session=null;
     $('overlay').classList.remove('on');
-    $('sceneEvent').style.display='none';
+    $('courseEvents').replaceChildren();
   }
   function chartFor(spec){
     var song=window.SugarMusic&&window.SugarMusic.SONGS&&window.SugarMusic.SONGS[spec.song];
@@ -389,22 +407,30 @@
   function resolveNote(n,move,why,delta){
     if(!session||n.judged)return;
     n.judged=true;n.el.style.display='none';session.done++;
-    var correct=n.type===move&&why!=='late';
-    $('sceneEvent').style.display='none';
-    if(correct){
+    var correct=n.type===move&&why!=='late',saved=false;
+    if(!correct && session.shields>0){
+      session.shields--;
+      session.rescued++;
+      saved=true;
+    }
+    if(correct || saved){
       session.hits++;
-      var great=delta<=140;
+      var great=correct&&delta<=140;
       if(great)session.perfect++;
+      n.prop.classList.add('cleared');
       updatePose(n.type);
-      flash(great?'PERFECT!':'GOOD!');
-      correctSound(great);
-      $('help').textContent='좋아요! 다음 상황이 오면 맞는 동작을 골라요.';
+      flash(saved?'간식이 구했어요!':great?'PERFECT!':'GOOD!');
+      if(correct)correctSound(great);
+      $('help').textContent=saved?'분식집에서 챙긴 간식이 실수를 한 번 구해줬어요.':'좋아요! 슈가가 코스를 계속 통과하고 있어요.';
     }else{
-      session.miss++;wrongPose();flash('아쉬워요!');
-      $('cue').textContent='다음 동작에서 다시 도전!';
+      session.miss++;
+      n.prop.classList.add('failed');
+      wrongPose();
+      flash('아쉬워요!');
+      $('cue').textContent='조금 흔들렸지만 다시 출발!';
       $('help').textContent=why==='wrong'
         ? ACTIONS[n.type].name+'에는 '+ACTIONS[n.type].move+'를 눌러야 해요.'
-        : '박자를 놓쳤어요. 다음 상황을 보고 다시 맞혀요.';
+        : '박자를 놓쳤어요. 다음 장애물은 통과해 봐요.';
     }
     updateCount();
   }
@@ -438,27 +464,34 @@
   function tick(){
     if(!session||session.finished)return;
     var t=performance.now()-session.start,trackW=$('track').clientWidth||320;
-    var approach=1750,target=40,startX=Math.max(target+170,trackW-25);
-    // 판정과 그림 모두 가장 가까운 상황 노트를 기준으로 보여준다.
+    var scene=$('playScene'),approach=1750,target=40,startX=Math.max(target+170,trackW-25);
+    // 슈가는 앞으로 이동하고 왕국 길은 뒤로 스크롤한다.
+    var advance=Math.min(13,session.done*.5+session.hits*.45);
+    scene.style.setProperty('--runner-step',advance.toFixed(2)+'%');
+    scene.style.setProperty('--walk',(-Math.round(t*.23)%180)+'px');
+    scene.style.backgroundPosition='calc(50% - '+Math.round(t*.045)+'px) 55%';
+    var eventTarget=41+advance;
     session.notes.forEach(function(n){
+      var p=1-(n.t-t)/approach;
+      // 이미 피하거나 넘은 장애물도 캐릭터 뒤편으로 흘러가며 실제로 통과한 듯 보이게 한다.
+      if(p>=-.05 && p<2.8){
+        n.prop.style.display='grid';
+        n.prop.style.left=(100+(eventTarget-100)*p)+'%';
+        n.prop.style.opacity=p>2.4?String(Math.max(0,(2.8-p)*2.5)):'1';
+      }else n.prop.style.display='none';
       if(n.judged)return;
       var late=windowFor(n)+20;
       if(t-n.t>late){resolveNote(n,null,'late',0);return}
-      var p=1-(n.t-t)/approach;
       if(p<0){n.el.style.display='none';return}
       n.el.style.display='grid';
       n.el.style.left=(startX+(target-startX)*p)+'px';
       n.el.style.opacity=p>1?Math.max(0,1-(p-1)*3):Math.min(1,.3+p*2);
     });
     var next=session.notes.find(function(n){return !n.judged});
-    var obj=$('sceneEvent');
-    if(next&&next.t-t<1650&&next.t-t>-290){
-      var a=ACTIONS[next.type],progress=Math.max(0,Math.min(1,1-(next.t-t)/1650));
-      obj.className='scene-event '+next.type;obj.textContent=a.sign;obj.style.display='flex';
-      obj.style.left=(91-progress*28)+'%';
-      obj.style.opacity=String(Math.min(1,.4+progress*1.2));
-      $('cue').textContent=a.name+' 등장! '+(session.act===0?a.move+'로 맞춰요': '알맞은 동작을 골라요');
-    }else obj.style.display='none';
+    if(next&&next.t-t<1250&&next.t-t>180){
+      var a=ACTIONS[next.type];
+      $('cue').textContent=a.name+' 접근 중! '+a.move+' 준비';
+    }
     if(t>session.end&&session.done>=session.notes.length){finish();return}
     raf=requestAnimationFrame(tick);
   }
@@ -467,20 +500,21 @@
     var result=session;result.finished=true;
     if(raf)cancelAnimationFrame(raf);raf=0;
     stopSound();
-    $('overlay').classList.remove('on');$('sceneEvent').style.display='none';
+    $('overlay').classList.remove('on');$('courseEvents').replaceChildren();
     $('result').classList.add('on');
-    $('resultStats').textContent='PERFECT '+result.perfect+' · 성공 '+result.hits+'/'+result.notes.length+' · 실수 '+result.miss;
+    $('resultStats').textContent='PERFECT '+result.perfect+' · 통과 '+result.hits+'/'+result.notes.length+' · 실수 '+result.miss+(result.rescued?' · 간식 도움 '+result.rescued:'');
     $('resultKicker').textContent=['FIRST CLASS','SECOND CLASS','ROYAL DEBUT'][result.act];
     $('resultTitle').textContent=['첫 안무를 배웠어요!','이제 무대에 설 준비 완료!','첫 왕립 공연 완성!'][result.act];
     $('resultBody').textContent=[
-      '상황을 보고 알맞은 발레 동작을 연결했어요. 라일락 스커트를 선물로 받았어요.',
-      '고양이·장애물·균형대에 맞는 안무를 연습했어요. 이제 무대에 올라갈 차례예요.',
+      '고양이는 피하고 장애물은 넘고 균형대를 통과했어요. 라일락 스커트를 선물로 받았어요.',
+      '파드샤·그랑제떼·아라베스크·피루엣을 연결했어요. 이제 무대에 올라갈 차례예요.',
       '별빛의 첫 왈츠를 완성했어요. 다음에는 더 다양한 안무와 공연에 도전해 봐요.'
     ][result.act];
     $('resultDancer').src='../assets/dancers/lilac-'+(result.act===2?'arabesque':'curtsy')+'.webp';
     $('resultNext').textContent=result.act===2?'왕국으로 돌아가기':'다음 장면으로';
     state.step=Math.max(state.step,result.act+1);
-    save();session=null;
+    state.cafeReady=false;state.snackReady=false;
+    clearMotion();save();session=null;
   }
 
   $('mainAction').addEventListener('click',run);
