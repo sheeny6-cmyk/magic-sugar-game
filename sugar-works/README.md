@@ -10,14 +10,15 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 
 ## Completed (2026-11-22)
 - Responsive ivory/lilac SUGAR WORKS creative landing page with ballet palace imagery
-- Archive grid and functioning category filters for the previously reported 8 published work types
+- Archive grid and functioning category filters for 7 catalogued works (non-owned snowboard entry removed)
 - Direct links to ballet kingdom/cafe game
+- Naver OGQ links: initial Sugar Ballet stickers https://naver.me/x52dbBni and **발레 쇼핑에 진심인 슈가** https://naver.me/GGGt2vH1 (saved earlier, live redirect not independently verified)
 - YouTube, Instagram and Threads links
 - Mobile layouts for small screens
 
 ## Important content safety rules
 - Show **only real, actually published projects**. Never invent work, testimonials, thumbnails or personal experiences.
-- The eight cards are catalog labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.
+- The seven cards are catalog labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.
 - For any card without a confirmed deep link, link back to the original legacy gallery.
 - Do not expose private drafts or internal data.
 - Never pretend original Sites login/upload/edit/delete features are migrated. They remain in the old system.
