@@ -16,6 +16,20 @@ This is a **new front-end, not a complete export** of the ChatGPT Sites project.
 - YouTube, Instagram and Threads links
 - Mobile layouts for small screens
 
+## In-site Instatoon & Reels viewer (2026-11-22)
+- New section `#toon` (`02 / INSTATOON & REELS`) between `#works` and `#ogq`. Nothing in it sends the visitor to Instagram to see a work: every image cut and every reel opens in an in-page modal viewer.
+- **Image toons (4 series / 30 cuts)**, stored under `sugar-works/assets/toons/`:
+  - `allegro/` 01–08 「미들 알레그로가 끝나지 않아!」 — downloaded from `sugar-works-gallery…/works/middle-allegro` (`/api/media/allegro-0N`), 810×1440 webp.
+  - `kingdom/` 01–05 「발레왕국의 2027년 준비」 — same gallery (`/api/media/kingdom-0N`), 810×1440 webp.
+  - `ending/` 01–09 「취발러의 엔딩은 죽음뿐」 — copied from `town/garden/assets/story/01–09.webp` (the garden prologue cuts), re-encoded to 810 px.
+  - `misconception/` 01–08 「발레 16년 했어요」 — the Instagram carousel post of 2026-07-20 (`/p/DbCJVF9Er15/`), 810 px webp.
+- **Reels (12 videos, 22 MB total)**, stored under `sugar-works/assets/reels/` as `NN-<shortcode>.mp4` + `NN-<shortcode>.webp` poster.
+  - All 12 reels currently on the public profile `instagram.com/sugar.ballet/reels/` were extracted **from the profile's own media JSON (`video_versions` type 101, progressive 720×1280 with AAC audio)** and re-encoded to H.264 CRF 28 + `+faststart` for the repository (37 MB → 22 MB). No reel fell back to a poster-only card and none needed a YouTube substitute.
+  - Source pages are recorded per item in `REELS` inside `index.html` (`https://www.instagram.com/sugar.ballet/reel/<shortcode>/`). Instagram's `/reel/<code>/embed/` endpoint is broken for this profile (“링크가 잘못되었거나…”) and is deliberately **not** used.
+  - Reel titles are the on-frame headline when the video has one, otherwise the author's own caption. No invented titles.
+- Viewer behaviour: arrow buttons, keyboard ←/→, swipe, cut counter, thumbnail strip, `세로 보기` (continuous scroll for image series), per-series switcher, and a link to the original post. Escape/backdrop/✕ closes; focus and body scroll are restored.
+- The `인스타툰` filter in `01 / CREATIVE ARCHIVE` no longer bounces to the legacy gallery: it filters the grid and opens the viewer, and the `발레 인스타툰` card is a viewer button (`▷`).
+
 ## Important content safety rules
 - Show **only real, actually published projects**. Never invent work, testimonials, thumbnails or personal experiences.
 - The six portfolio cards are project-category labels and *typographic category covers*, not the original artwork files. Only the ballet cafe uses an existing game asset.

@@ -34,13 +34,15 @@ nav{max-width:1450px;min-height:72px;margin:auto;padding:0 5%;display:flex;align
 .section h2,.world h2{font:400 clamp(42px,5.2vw,68px)/1.17 var(--serif);letter-spacing:-.06em;margin:0}.section h2 em,.world h2 em{color:#a68aaa}
 .section-intro{font-size:12px;color:#8b808b;line-height:1.85;margin:18px 0 0;max-width:610px;word-break:keep-all}.count{font:400 53px/1 var(--serif);color:#b79cbc}
 .filters{display:flex;gap:8px;margin:48px 0 26px;overflow-x:auto;scrollbar-width:thin;padding-bottom:6px}.filters button{border:1px solid #dfd4dd;background:transparent;padding:10px 17px;flex-shrink:0;font-size:11px;color:#7b707e}.filters button[aria-pressed=true],.filters button:hover{background:#615064;border-color:#615064;color:#fff}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}.card{min-width:0;display:block}.card[hidden]{display:none}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:30px 20px}.card{min-width:0;display:block;border:0;padding:0;background:none;text-align:left;color:inherit;font:inherit}.card[hidden]{display:none}
 .cover{position:relative;height:clamp(205px,22vw,310px);overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;background:#eadfed;border:1px solid #e5d9e2;isolation:isolate}
 .cover:after{content:"";position:absolute;inset:9px;border:1px solid #ffffff82;pointer-events:none}
 .cover .cover-type{position:absolute;z-index:3;top:20px;left:18px;color:#76677b;font-size:9px;letter-spacing:.1em;font-weight:700}
 .cover .cover-title{position:relative;z-index:3;max-width:86%;font:400 clamp(22px,2.2vw,34px)/1.25 var(--serif);letter-spacing:-.035em;word-break:keep-all}
 .cover .cover-bottom{position:absolute;z-index:3;bottom:20px;left:18px;color:#7d687d;font-size:9px;letter-spacing:.13em;font-weight:700}
-.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.cover.game:before{content:"";position:absolute;inset:0;background:#39294555;z-index:2}.cover.game span{color:#fff!important;text-shadow:0 1px 5px #281a36a8}
+.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover.has-img:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#2b2033ad 0%,#2b203300 42%);z-index:2}
+.cover.has-img .cover-type,.cover.has-img .cover-bottom{color:#fff;text-shadow:0 1px 4px #2b203399;z-index:3}.cover.game:before{content:"";position:absolute;inset:0;background:#39294555;z-index:2}.cover.game span{color:#fff!important;text-shadow:0 1px 5px #281a36a8}
 .cover.snow{background:linear-gradient(145deg,#f9fcff,#d6e1ea)}.cover.snow:before{content:"";position:absolute;width:150%;height:39%;bottom:-16%;transform:rotate(-9deg);background:white;border-radius:50%}
 .cover.toon{background:radial-gradient(circle at 80% 24%,#fff7e8,#edd9eb 65%,#d6c2e5)}.cover.calendar{background:linear-gradient(140deg,#dfd3ee,#f7e5ea 75%)}.cover.calendar:before{content:"";position:absolute;width:65%;height:72%;background:#fff9f1;transform:rotate(-6deg);box-shadow:9px 12px 0 #b69cba55}
 .cover.editorial{background:linear-gradient(150deg,#ece7f4,#d6c4e0)}.cover.sticker{background:radial-gradient(circle at 25% 70%,#f5edd8,#e8cddc 57%,#c7bbdf)}.cover.sticker2{background:radial-gradient(circle at 70% 18%,#eef5ed,#d8cbeb 63%,#ffe9e0)}
@@ -58,6 +60,97 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 @media(max-width:740px){nav{padding:0 19px;min-height:62px}.links{gap:14px}.links a{font-size:9px}.top-instagram{display:none}.logo{font-size:18px}.hero{display:flex;flex-direction:column}.hero-body{padding:46px 23px 23px}.hello{margin:36px 0 12px}.hero h1{font-size:clamp(72px,16vw,112px)}.tagline{font-size:23px;margin-top:27px}.hero-foot{padding-top:42px}.hero-visual{min-height:clamp(300px,84vw,520px)}.visual-top{left:17px;top:20px}.visual-bottom{left:17px;bottom:17px}.spirits{right:15px;bottom:12px}.spirits img{width:34px;height:34px}.band{justify-content:flex-start}.section{padding:73px 20px}.count{display:none}.filters{margin:30px 0 23px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:27px 12px}.cover{height:clamp(175px,54vw,300px)}.cover .cover-title{font-size:clamp(20px,5vw,32px)}.card h3{font-size:14px}.legacy{align-items:start;flex-wrap:wrap}.legacy a{margin-left:30px}.world-inner{padding:75px 20px}.world-grid{gap:12px}.world-tile{height:280px}.world-label{left:16px;bottom:19px}.world-label strong{font-size:29px}.about{display:block}.about-art{font-size:120px}.about-copy{margin-top:35px}footer{flex-wrap:wrap}}
 @media(max-width:420px){nav{gap:9px;padding:0 13px}.logo{font-size:17px}.links{gap:11px}.links a{font-size:8px;letter-spacing:.05em}.hero-body{padding:42px 20px 23px}.hero h1{font-size:clamp(60px,16vw,78px)}.micro{font-size:9px;letter-spacing:.08em}.summary{font-size:11px}.hero-foot{font-size:8px}.cover{height:clamp(164px,56vw,225px)}.cover .cover-title{font-size:21px}.cover .cover-type{top:13px;left:11px;font-size:8px}.cover .cover-bottom{bottom:14px;left:11px;font-size:8px}.card h3{font-size:13px}.world-grid{grid-template-columns:1fr}.world-tile{height:280px}.section h2,.world h2{font-size:43px}footer p{display:none}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+
+/* INSTATOON & REELS — in-site viewer (images + reels), no external bounce */
+.toon-sec{background:#f4eef2;border-top:1px solid var(--line);border-bottom:1px solid #e4d8e7}
+.toon-inner{max-width:1400px;margin:0 auto;padding:104px 5%}
+.toon-head{display:flex;justify-content:space-between;align-items:end;gap:26px}
+.toon-head h2{font:400 clamp(42px,5.2vw,68px)/1.17 var(--serif);letter-spacing:-.06em;margin:0}
+.toon-head h2 em{color:#a68aaa}
+.toon-intro{font-size:12px;color:#867b88;line-height:1.9;margin:18px 0 0;max-width:640px;word-break:keep-all}
+.toon-tally{flex:0 0 auto;text-align:right;color:#8f7295;font-size:10px;font-weight:700;letter-spacing:.12em;line-height:1.9}
+.toon-tally b{display:block;font:400 40px/1 var(--serif);letter-spacing:-.03em;color:#b08bb6}
+.toon-group{margin-top:50px}
+.toon-group-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;border-bottom:1px solid #ded1dc;padding-bottom:13px;margin-bottom:22px}
+.toon-group-head h3{font:400 clamp(20px,2vw,26px)/1.2 var(--serif);letter-spacing:-.035em;margin:0}
+.toon-group-head span{font-size:10px;font-weight:700;letter-spacing:.12em;color:#9a7aa0}
+.toon-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.toon-card{padding:0;border:0;background:none;text-align:left;display:block;min-width:0;color:inherit}
+.toon-thumb{position:relative;aspect-ratio:3/4;overflow:hidden;background:#e7dbe8;border:1px solid #e2d6e3;isolation:isolate}
+.toon-thumb img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .45s}
+.toon-card:hover .toon-thumb img,.toon-card:focus-visible .toon-thumb img{transform:scale(1.045)}
+.toon-thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#2b2033b3 0%,#2b203300 46%);z-index:1}
+.toon-cut{position:absolute;z-index:2;top:11px;left:11px;background:#fdfaf6e8;color:#6b546f;font-size:9px;font-weight:700;letter-spacing:.1em;padding:5px 8px}
+.toon-open{position:absolute;z-index:2;left:12px;bottom:12px;right:12px;color:#fff;font-size:10px;font-weight:700;letter-spacing:.06em;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.toon-open i{font-style:normal;font-size:14px}
+.toon-info{padding:14px 1px 0}
+.toon-info b{display:block;font-size:14px;font-weight:600;letter-spacing:-.04em}
+.toon-info small{display:block;margin-top:5px;font-size:11px;color:#8b808b;line-height:1.65}
+.reel-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}
+.reel-card{padding:0;border:0;background:none;text-align:left;min-width:0;color:inherit;display:block}
+.reel-thumb{position:relative;aspect-ratio:9/16;overflow:hidden;background:#2f2636;border:1px solid #e2d6e3}
+.reel-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .45s}
+.reel-card:hover .reel-thumb img{transform:scale(1.04)}
+.reel-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#211a2780;transition:background .25s}
+.reel-card:hover .reel-play{background:#211a2747}
+.reel-play i{width:44px;height:44px;border-radius:50%;background:#fdfaf6e0;color:#5b4660;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:14px;padding-left:3px}
+.reel-len{position:absolute;right:8px;bottom:8px;background:#1d1721c4;color:#fff;font-size:9px;font-weight:700;letter-spacing:.06em;padding:3px 6px}
+.reel-info{padding:11px 1px 0}
+.reel-info b{display:block;font-size:12px;font-weight:600;letter-spacing:-.03em;line-height:1.45;word-break:keep-all}
+.reel-info small{display:block;margin-top:4px;font-size:10px;color:#938a94;letter-spacing:.03em}
+.toon-foot{margin-top:26px;padding-top:18px;border-top:1px solid #ded1dc;font-size:11px;line-height:1.85;color:#8b808b}
+.toon-foot a{border-bottom:1px solid #b39db6;font-weight:700}
+
+@media(max-width:560px){nav{gap:6px;padding:0 14px}.links{gap:8px}.links a{font-size:8.4px;letter-spacing:.02em}.logo{font-size:16px}.logo i{font-size:20px}}
+@media(max-width:420px){nav{gap:4px;padding:0 10px}.links{gap:6px}.links a{font-size:7.6px;letter-spacing:.01em}.logo{font-size:14.5px}.logo span{margin-left:2px}}
+
+.toon-sec,.ogq-section,#works,#world,#about{scroll-margin-top:78px}
+
+/* viewer modal */
+.viewer{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:clamp(8px,2vw,28px)}
+.viewer[hidden]{display:none}
+.viewer-bg{position:absolute;inset:0;background:#241d29cc;backdrop-filter:blur(7px);border:0;padding:0;cursor:default}
+.viewer-panel{position:relative;z-index:1;width:min(1080px,96vw);height:min(94vh,940px);max-height:94vh;display:flex;flex-direction:column;background:#fbf8fa;border:1px solid #e2d6e3;box-shadow:0 26px 70px #1d172199}
+.viewer-bar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:18px 20px 15px;border-bottom:1px solid #e6dfe4}
+.viewer-kind{margin:0 0 6px;font-size:9px;font-weight:700;letter-spacing:.16em;color:#a78bad}
+.viewer-bar h2{margin:0;font:400 clamp(18px,2vw,25px)/1.3 var(--serif);letter-spacing:-.035em;word-break:keep-all}
+.viewer-close{flex:0 0 auto;width:38px;height:38px;border:1px solid #ddd0dc;background:#fff;color:#5b4660;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center}
+.viewer-close svg{display:block;width:15px;height:15px}
+.viewer-close:hover{background:#efe4ef}
+.viewer-panel[data-mode=toon]{width:min(900px,96vw)}
+.viewer-panel[data-mode=reel]{width:min(700px,96vw)}
+.viewer [hidden]{display:none!important}
+.viewer-stage{position:relative;flex:1 1 auto;min-height:0;background:#241d29;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.viewer-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block}
+.viewer-stage video{height:100%;width:auto;max-width:100%;background:#000;display:block}
+.vw-vertical{display:none}
+.viewer-stage.vertical{display:block;overflow-y:auto;background:#efe6ee;-webkit-overflow-scrolling:touch}
+.viewer-stage.vertical img{display:none}
+.viewer-stage.vertical .vw-vertical{display:flex;flex-direction:column;gap:10px;padding:14px;max-width:760px;margin:0 auto}
+.viewer-stage.vertical .vw-vertical img{display:block;position:static;width:100%;height:auto;border:1px solid #dccfda}
+.viewer-stage.vertical .vw-nav,.viewer-stage.vertical .vw-count{display:none}
+.vw-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:1px solid #ffffff42;background:#2f2636b8;color:#fff;font-size:19px;display:flex;align-items:center;justify-content:center;z-index:3}
+.vw-nav:hover{background:#4a3b52}
+.vw-nav[disabled]{opacity:.22;cursor:default}
+.vw-prev{left:12px}.vw-next{right:12px}
+.vw-count{position:absolute;right:12px;top:12px;background:#211a27c9;color:#fff;font-size:10px;font-weight:700;letter-spacing:.12em;padding:5px 11px;z-index:4}
+.viewer-foot{flex:0 0 auto;border-top:1px solid #e6dfe4;padding:14px 20px 16px;display:flex;flex-direction:column;gap:12px;max-height:34vh;overflow-y:auto}
+.vw-meta{font-size:11.5px;line-height:1.8;color:#7d7480;white-space:pre-line;word-break:keep-all;margin:0}
+.vw-meta:empty{display:none}
+.vw-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.vw-btn{border:1px solid #d8c9d7;background:#fff;color:#5b4660;font-size:10.5px;font-weight:700;letter-spacing:.05em;padding:9px 13px}
+.vw-btn:hover{background:#efe4ef}
+.vw-btn[aria-pressed=true]{background:#615064;border-color:#615064;color:#fff}
+.vw-src{margin-left:auto;font-size:10.5px;font-weight:700;color:#6b4f73;border-bottom:1px solid #b39db6;padding-bottom:3px;white-space:nowrap}
+.vw-strip{display:flex;gap:7px;overflow-x:auto;padding-bottom:4px}
+.vw-strip button{flex:0 0 auto;width:42px;height:60px;padding:0;border:1px solid #d9ccd8;background:#ede3ec;overflow:hidden;opacity:.6}
+.vw-strip button img{width:100%;height:100%;object-fit:cover}
+.vw-strip button[aria-current=true]{opacity:1;border-color:#7a5f81;box-shadow:0 0 0 2px #b79cbc}
+.vw-strip.tall button{width:38px;height:54px}
+body.vw-lock{overflow:hidden}
+@media(max-width:1050px){.toon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.reel-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:740px){.toon-inner{padding:74px 20px}.toon-head{display:block}.toon-tally{display:none}.toon-tally b{font-size:30px}.toon-grid{gap:14px}.toon-info b{font-size:13px}.reel-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.reel-info b{font-size:11px}.reel-play i{width:34px;height:34px;font-size:12px}.viewer{padding:0}.viewer-panel,.viewer-panel[data-mode=toon],.viewer-panel[data-mode=reel]{width:100vw;height:100vh;height:100dvh;max-height:none;border:0}.viewer-bar{padding:13px 15px 11px}.viewer-bar h2{font-size:16px}.viewer-close{width:34px;height:34px}.viewer-foot{padding:11px 15px 14px;gap:9px;max-height:44vh}.vw-strip.tall button{width:34px;height:48px}.vw-nav{width:38px;height:38px;font-size:17px}.vw-prev{left:7px}.vw-next{right:7px}.vw-src{margin-left:0}.toon-tally{display:none}}
+@media(prefers-reduced-motion:reduce){.toon-thumb img,.reel-thumb img{transition:none}}
 
 /* OGQ series — verified catalog only; never mix in unapproved drafts */
 .ogq-section{background:#f1ebf2;border-top:1px solid #e4d8e7;border-bottom:1px solid #e4d8e7}
@@ -89,7 +182,7 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 </style>
 </head><body>
 <a class="skip" href="#works">작품 바로가기</a>
-<header><nav aria-label="주요 메뉴"><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><div class="links"><a href="#works">WORKS</a><a href="#ogq">NAVER OGQ</a><a href="#world">SUGAR WORLD</a><a href="#about">ABOUT</a></div><a class="top-instagram" href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a></nav></header>
+<header><nav aria-label="주요 메뉴"><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><div class="links"><a href="#works">WORKS</a><a href="#toon">INSTATOON</a><a href="#ogq">NAVER OGQ</a><a href="#world">SUGAR WORLD</a><a href="#about">ABOUT</a></div><a class="top-instagram" href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a></nav></header>
 <main id="top">
 <section class="hero" aria-labelledby="mainTitle">
 <div class="hero-body"><p class="micro">THE CREATIVE ARCHIVE OF SUGAR BALLET</p><p class="hello">안녕하세요, 슈가의 작은 창작 세계에 오신 것을 환영합니다.</p>
@@ -104,9 +197,15 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 <section class="section" id="works" aria-labelledby="workTitle"><div class="section-head"><div><p class="kicker">01 / CREATIVE ARCHIVE</p><h2 id="workTitle">Selected <em>Works</em></h2><p class="section-intro">슈가의 창작 프로젝트를 분야별로 모았습니다. 여러 OGQ 스티커 작품은 별도의 컬렉션에서 소개합니다.</p></div><div class="count" aria-label="프로젝트 6개">06</div></div>
 <div class="filters" role="group" aria-label="작품 분야 필터"><button type="button" data-filter="all" aria-pressed="true">전체 06</button><button type="button" data-filter="game" aria-pressed="false">게임·웹</button><button type="button" data-filter="toon" aria-pressed="false">인스타툰</button><button type="button" data-filter="goods" aria-pressed="false">굿즈</button><button type="button" data-filter="video" aria-pressed="false">영상</button></div><div class="grid" id="workGrid" aria-live="polite"></div>
 <div class="legacy"><i aria-hidden="true">✳</i><span>기존 SUGAR WORKS의 작품과 관리자 기능은 원본 사이트에 유지됩니다. 아직 원본 미디어를 이전하지 않은 작업은 기존 갤러리로 연결하며, OGQ 시리즈는 아래에서 따로 소개합니다.</span><a href="https://sugar-works-gallery.sugar0506.chatgpt.site/" target="_blank" rel="noopener noreferrer">기존 갤러리 ↗</a></div></section>
+<section class="toon-sec" id="toon" aria-labelledby="toonTitle"><div class="toon-inner">
+<div class="toon-head"><div><p class="kicker">02 / INSTATOON &amp; REELS</p><h2 id="toonTitle">Instatoon <em>&amp; Reels</em></h2><p class="toon-intro">인스타그램에 올린 인스타툰을 사이트를 떠나지 않고 그대로 볼 수 있게 모았어요. 이미지 컷은 넘겨 보거나 세로로 이어 볼 수 있고, 릴스는 여기서 바로 재생됩니다.</p></div><div class="toon-tally"><b>30</b>CUTS · 12 REELS</div></div>
+<div class="toon-group"><div class="toon-group-head"><h3>이미지 인스타툰</h3><span>04 SERIES · 30 CUTS</span></div><div class="toon-grid" id="toonGrid"></div></div>
+<div class="toon-group"><div class="toon-group-head"><h3>릴스 인스타툰</h3><span>12 REELS · 사이트 내 재생</span></div><div class="reel-grid" id="reelGrid"></div></div>
+<p class="toon-foot">이미지 컷은 기존 갤러리와 <a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">인스타그램 @sugar.ballet</a>에서, 릴스는 인스타그램에 올린 영상을 사이트용으로 다시 인코딩해 담았습니다. 모든 영상에는 원본 게시물 링크가 함께 있어요.</p>
+</div></section>
 <section class="ogq-section" id="ogq" aria-labelledby="ogqTitle">
 <div class="ogq-inner">
-<div class="ogq-heading"><div><p class="kicker">02 / ORIGINAL STICKER SERIES</p><h2 id="ogqTitle">Sugar's <em>OGQ Collection</em></h2><p class="ogq-intro">슈가가 만든 OGQ 스티커는 한두 개가 아니에요. 아래에서 일부 시리즈를 소개하고, 크리에이터 페이지에서 더 많은 작품을 살펴볼 수 있습니다.</p></div><span class="ogq-label">NAVER OGQ</span></div>
+<div class="ogq-heading"><div><p class="kicker">03 / ORIGINAL STICKER SERIES</p><h2 id="ogqTitle">Sugar's <em>OGQ Collection</em></h2><p class="ogq-intro">슈가가 만든 OGQ 스티커는 한두 개가 아니에요. 아래에서 일부 시리즈를 소개하고, 크리에이터 페이지에서 더 많은 작품을 살펴볼 수 있습니다.</p></div><span class="ogq-label">NAVER OGQ</span></div>
 <a class="ogq-profile" href="https://naver.me/5Z1FxGzR" target="_blank" rel="noopener noreferrer" aria-label="슈가의 네이버 OGQ 크리에이터 페이지에서 작품 전체 보기, 새 창">
 <span class="ogq-profile-copy"><small>THE CREATOR'S OGQ ARCHIVE</small><strong>슈가의 OGQ 작품을 한곳에서</strong><span>스티커 시리즈를 더 보고 싶다면 크리에이터 페이지로 이동해 주세요.</span></span><span class="ogq-profile-link">OGQ 전체 작품 보기 <span aria-hidden="true">↗</span></span></a>
 <div class="ogq-grid">
@@ -115,11 +214,11 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 <article class="ogq-entry"><span class="series">APPROVED · SUGAR PRINCESS</span><h3>슈가공주의 일상</h3><p>2026년 11월 16일 OGQ 심사 통과 확인. 실제 판매 페이지는 추가 확인이 필요합니다.</p><div class="status">심사 통과 · 판매 링크 확인 중</div></article>
 </div><p class="ogq-foot">개별 작품 카드에는 확인된 정보만 표시했어요. 그 외 작품은 <a href="https://naver.me/5Z1FxGzR" target="_blank" rel="noopener noreferrer">OGQ 크리에이터 페이지</a>에서 확인할 수 있습니다. 준비 중인 작품은 판매작으로 표시하지 않습니다.</p>
 </div></section>
-<section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">03 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
+<section class="world" id="world" aria-labelledby="worldTitle"><div class="world-inner"><div class="world-head"><p class="kicker">04 / THE UNIVERSE</p><h2 id="worldTitle">Inside the <em>Sugar World</em></h2><p>발레에서 시작해 서로 연결되는 작은 세계.</p></div><div class="world-grid">
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/town/" target="_blank" rel="noopener noreferrer"><img src="../town/assets/palace-court.webp" loading="lazy" alt="발레왕국 궁전 풍경"><div class="world-label"><small>INTERACTIVE WORLD · 01</small><strong>슈가의 발레왕국</strong><span>왕국 구경하기 ↗</span></div></a>
 <a class="world-tile" href="https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/" target="_blank" rel="noopener noreferrer"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt="슈가 발레 카페 입구"><div class="world-label"><small>PLAYABLE PROJECT · 02</small><strong>슈가 발레 카페</strong><span>게임 플레이하기 ↗</span></div></a>
 </div></div></section>
-<section class="section about" id="about" aria-labelledby="aboutTitle"><div class="about-art" aria-hidden="true">S<i>✳</i>W</div><div class="about-copy"><p class="kicker">04 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div></div></section>
+<section class="section about" id="about" aria-labelledby="aboutTitle"><div class="about-art" aria-hidden="true">S<i>✳</i>W</div><div class="about-copy"><p class="kicker">05 / ABOUT THE CREATOR</p><h2 id="aboutTitle">Create what you <em>love.</em></h2><p>슈가는 발레와 글쓰기, 그림, 영상을 좋아하는 창작자입니다. 일상에서 발견한 장면과 생각을 기록하고, 이야기와 캐릭터가 있는 콘텐츠로 확장합니다.</p><p>빠르게 지나가는 유행보다 오래 좋아할 수 있는 것들을 만들고 싶습니다.</p><div class="socials"><a href="https://www.youtube.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">YOUTUBE ↗</a><a href="https://www.instagram.com/sugar.ballet/" target="_blank" rel="noopener noreferrer">INSTAGRAM ↗</a><a href="https://www.threads.com/@sugar.ballet" target="_blank" rel="noopener noreferrer">THREADS ↗</a></div></div></section>
 </main><footer><a class="logo" href="#top">SUGAR<span>WORKS</span><i>.</i></a><p>A little world of things I love making.</p><small>© 2026 SUGAR WORKS</small></footer>
 <script>
 (function(){
@@ -127,7 +226,7 @@ footer{background:#2e2733;color:#f8f2f6;padding:37px 5% 25px;display:flex;align-
 var ORIGINAL="https://sugar-works-gallery.sugar0506.chatgpt.site/";
 var works=[
 {title:"슈가의 마법 발레 카페",kind:"웹게임",type:"game",desc:"발레 동작을 마법 음료로 풀어낸 웹게임 작업.",cover:"SUGAR BALLET CAFÉ",url:"https://sheeny6-cmyk.github.io/magic-sugar-game/cafe/"},
-{title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"발레와 일상의 순간들을 만화로 풀어낸 작업.",cover:"BALLET DIARY"},
+{title:"발레 인스타툰",kind:"인스타툰",type:"toon",desc:"이미지 컷과 릴스로 만든 발레 인스타툰. 사이트 안에서 바로 감상·재생.",cover:"BALLET DIARY",img:"assets/toons/allegro/01.webp",action:"toon"},
 {title:"발레왕국 달력 소개",kind:"디자인",type:"editorial",desc:"발레왕국 달력을 소개하는 콘텐츠 디자인.",cover:"A YEAR OF BALLET"},
 {title:"발레왕국 달력",kind:"굿즈",type:"calendar",desc:"발레왕국 세계관을 담은 달력 작업.",cover:"BALLET CALENDAR"},
 {title:"네이버 OGQ 스티커 컬렉션",kind:"OGQ 스티커 시리즈",type:"sticker",desc:"슈가의 다양한 스티커 작품 모음. 확인된 작품과 심사 현황을 볼 수 있어요.",cover:"OGQ STICKER COLLECTION",url:"#ogq"},
@@ -136,14 +235,158 @@ var works=[
 var types={game:"game",toon:"toon",editorial:"goods",calendar:"goods",sticker:"goods",video:"video"};
 var grid=document.getElementById("workGrid");
 works.forEach(function(w,i){
-var card=document.createElement("a");card.className="card";card.dataset.category=types[w.type];card.href=w.url||ORIGINAL;if(card.href.charAt(card.href.length-1)!=="#".charAt(0)&&!(w.url||"").startsWith("#")){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(w.url&&w.url.startsWith("#")?" 컬렉션으로 이동":" 새 창에서 감상"));
+var card=document.createElement(w.action==="toon"?"button":"a");card.className="card";card.dataset.category=types[w.type];
+if(w.action==="toon"){card.type="button";card.dataset.openToon="";card.setAttribute("aria-haspopup","dialog");card.setAttribute("aria-label",w.title+" — 사이트 내 뷰어 열기");}
+else{card.href=w.url||ORIGINAL;if(card.href.charAt(card.href.length-1)!=="#".charAt(0)&&!(w.url||"").startsWith("#")){card.target="_blank";card.rel="noopener noreferrer";}card.setAttribute("aria-label",w.title+(w.url&&w.url.startsWith("#")?" 컬렉션으로 이동":" 새 창에서 감상"));}
 var cover=document.createElement("div");cover.className="cover "+w.type;
 if(w.type==="game"){var im=document.createElement("img");im.src="../cafe/assets/bg-entrance.webp";im.loading="lazy";im.alt="";cover.appendChild(im);}
+else if(w.img){cover.className+=" has-img";var imt=document.createElement("img");imt.src=w.img;imt.loading="lazy";imt.alt="";cover.appendChild(imt);}
 function text(cls,value){var el=document.createElement("span");el.className=cls;el.textContent=value;cover.appendChild(el);}
-text("cover-type",String(i+1).padStart(2,"0")+" / "+w.kind.toUpperCase());text("cover-title",w.cover);text("cover-bottom","SUGAR WORKS · ARCHIVE");
-var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;var arrow=document.createElement("span");arrow.textContent="↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow);var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);card.append(cover,info);grid.appendChild(card);
+text("cover-type",String(i+1).padStart(2,"0")+" / "+w.kind.toUpperCase());
+if(w.img){text("cover-bottom","▷ 사이트에서 바로 보기");}else{text("cover-title",w.cover);text("cover-bottom","SUGAR WORKS · ARCHIVE");}
+var info=document.createElement("div");info.className="card-info";var cat=document.createElement("div");cat.className="card-kind";cat.textContent=w.kind;var title=document.createElement("h3");var t=document.createElement("b");t.textContent=w.title;var arrow=document.createElement("span");arrow.textContent=w.action==="toon"?"▷":"↗";arrow.setAttribute("aria-hidden","true");title.append(t,arrow);var desc=document.createElement("p");desc.textContent=w.desc;info.append(cat,title,desc);card.append(cover,info);grid.appendChild(card);
 });
 var buttons=[].slice.call(document.querySelectorAll("[data-filter]"));
-buttons.forEach(function(b){b.addEventListener("click",function(){var f=b.dataset.filter;buttons.forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});[].slice.call(grid.children).forEach(function(card){card.hidden=f!=="all"&&card.dataset.category!==f;});});});
+buttons.forEach(function(b){b.addEventListener("click",function(){
+var f=b.dataset.filter;
+buttons.forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+[].slice.call(grid.children).forEach(function(card){card.hidden=f!=="all"&&card.dataset.category!==f});
+if(f==="toon"&&window.SugarToons){window.SugarToons.open()}
+})});
 })();
-</script></body></html>
+</script>
+<div class="viewer" id="viewer" hidden>
+<button class="viewer-bg" type="button" data-close tabindex="-1" aria-label="뷰어 닫기"></button>
+<div class="viewer-panel" role="dialog" aria-modal="true" aria-labelledby="vwTitle">
+<div class="viewer-bar"><div><p class="viewer-kind" id="vwKind"></p><h2 id="vwTitle"></h2></div><button class="viewer-close" type="button" data-close aria-label="뷰어 닫기"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button></div>
+<div class="viewer-stage" id="vwStage">
+<button class="vw-nav vw-prev" type="button" id="vwPrev" aria-label="이전 컷">‹</button>
+<img id="vwImg" alt="">
+<video id="vwVideo" controls playsinline preload="none" hidden></video>
+<div class="vw-vertical" id="vwVertical"></div>
+<div class="vw-count" id="vwCount"></div>
+<button class="vw-nav vw-next" type="button" id="vwNext" aria-label="다음 컷">›</button>
+</div>
+<div class="viewer-foot">
+<p class="vw-meta" id="vwMeta"></p>
+<div class="vw-row" id="vwRow"></div>
+<div class="vw-strip" id="vwStrip"></div>
+</div>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+var TOONS=[
+{id:"allegro",title:"미들 알레그로가 끝나지 않아!",kind:"IMAGE TOON · 8 CUTS",cuts:8,dir:"assets/toons/allegro/",cover:"assets/toons/allegro/01.webp",desc:"다 외웠다고 생각한 순간, 다시 한 번. 반복되는 미들 알레그로 수업을 담은 8장 인스타툰입니다. 오른쪽을 마쳤으니 이제 왼쪽 — 힘들어도 다음 동작을 이어가는 슈가의 발레 일상.",src:{label:"기존 갤러리에서 보기 ↗",url:"https://sugar-works-gallery.sugar0506.chatgpt.site/works/middle-allegro"}},
+{id:"kingdom",title:"발레왕국의 2027년 준비",kind:"IMAGE TOON · 5 CUTS",cuts:5,dir:"assets/toons/kingdom/",cover:"assets/toons/kingdom/01.webp",desc:"2027년 슈가공주 달력을 소개하는 5장 인스타툰입니다. 발레를 계속하겠다는 다짐에서 시작해, 정령들과 함게하는 발레왕국의 사계절로 이어집니다.",src:{label:"기존 갤러리에서 보기 ↗",url:"https://sugar-works-gallery.sugar0506.chatgpt.site/works/kingdom-2027"}},
+{id:"ending",title:"최발러의 엔딩은 죽음뿐",kind:"IMAGE TOON · 9 CUTS",cuts:9,dir:"assets/toons/ending/",cover:"assets/toons/ending/01.webp",desc:"발레왕국 마을 <가든>의 프롤로그로 들어간 9킷 이야기입니다. 발레를 시작한 최미 발레러의 하루가 이어집니다.",src:{label:"발레왕국 마을에서 보기 ↗",url:"https://sheeny6-cmyk.github.io/magic-sugar-game/town/garden/"}},
+{id:"misconception",title:"발레 16년 했어요",kind:"IMAGE TOON · 8 CUTS",cuts:8,dir:"assets/toons/misconception/",cover:"assets/toons/misconception/01.webp",desc:"발레에 대한 오해. 그리고 나를 보며 드는 생각. '16년 했다고 말해도 되나...?' 오래 한 거지, 잘하는 건 또 다른 얘기. 그래도 취미는 취미니까. (2026년 7월 20일 인스타그램 게시)",src:{label:"인스타그램 원본 ↗",url:"https://www.instagram.com/sugar.ballet/p/DbCJVF9Er15/"}}
+];
+var REELS=[
+{n:1,code:"Df4ddDhze-4",date:"2026-11-18",dur:"0:10",title:"Welcome to Sugar Ballet Kingdom",cap:"🩰💕"},
+{n:2,code:"Df4WXmiIXQK",date:"2026-11-18",dur:"0:39",title:"AI 안경 쓰면 발레 잘할까?",cap:"AI 안경만 쓰면 발레도 쉽게 잘할 수 있을 것 같았는데…\n전혀 아니었다는! ㅋㅋ 😂\n역시 발레는 직접 연습해야 하나 봐요 🩰\n※ 상상으로 만든 이야기입니다."},
+{n:3,code:"Df4InaCPx4A",date:"2026-11-18",dur:"1:01",title:"공주의 날, 진정한 공주의 품격",cap:"👑 오늘은 공주의 날 🩰\n공주의 날이라길래 하루 종일 누워서 밀린 웺툰도 보고, 드라마도 보면서 푹 쉬리라고 했는데…\n우리 정령들은 생각이 좀 다른가 봐요? 😂\n그래서 보여줬습니다. 발레공주의 품격을! 🩰✨\n근데 이제 좀 쉬어도 되는 거지…? 🤭"},
+{n:4,code:"Df16547zwCO",date:"2026-11-17",dur:"0:11",title:"슈가공주 vs 현실 슈가",cap:"슈가공주 vs 현실슈가\n발레로 맞짱 뜨면...\n당연한 결과...\n언제쯤.... 다가갈 수 있을까요 하핫"},
+{n:5,code:"Dfo5hr1TcDl",date:"2026-11-12",dur:"0:34",title:"왜 알면서 안 해요?",cap:"알면서 왜 안해요 😂"},
+{n:6,code:"DfjwAERzxRU",date:"2026-11-10",dur:"0:18",title:"천천히! 발레쌤의 탄식",cap:"천천히 아이고.."},
+{n:7,code:"DficQrqPGUL",date:"2026-11-09",dur:"0:10",title:"스튜디오 바레 연습",cap:"💕🩰🩷"},
+{n:8,code:"DfN3SCAyXef",date:"2026-11-01",dur:"0:09",title:"작은 정령들과의 연습",cap:"😊"},
+{n:9,code:"DfIxz1AytqS",date:"2026-10-31",dur:"0:10",title:"제 하트를 받아주세요 🩷",cap:"제 하트를 받아주세요 🩷"},
+{n:10,code:"DfHiHVwT8CQ",date:"2026-10-30",dur:"0:32",title:"2027 달력 무료 배포",cap:"2027년 모바일 & pc 배경화면 무료로 받아가세요💕\n프로필 링크에서 받아가시면 되요 😊"},
+{n:11,code:"DfEour8T2Y6",date:"2026-10-29",dur:"0:44",title:"끝나지 않는 발레, 또 해요?!",cap:"이거시 발레 훈련인가요?\n헥헥..."},
+{n:12,code:"DfD0PtHTvn-",date:"2026-10-29",dur:"0:10",title:"제 이모지야 😘",cap:"제 이모지야 😘"}
+];
+REELS.forEach(function(r){r.file="assets/reels/"+String(r.n).padStart(2,"0")+"-"+r.code+".mp4";r.poster="assets/reels/"+String(r.n).padStart(2,"0")+"-"+r.code+".webp";r.url="https://www.instagram.com/sugar.ballet/reel/"+r.code+"/";});
+function cutPath(t,i){return t.dir+String(i+1).padStart(2,"0")+".webp"}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+var tGrid=document.getElementById("toonGrid"),rGrid=document.getElementById("reelGrid");
+TOONS.forEach(function(t,ti){
+var b=el("button","toon-card");b.type="button";b.setAttribute("aria-haspopup","dialog");b.setAttribute("aria-label",t.title+" — 사이트 내 뷰어 열기");
+var th=el("div","toon-thumb");var im=el("img");im.src=t.cover;im.alt=t.title+" 첫 컷";im.loading="lazy";th.appendChild(im);
+th.appendChild(el("span","toon-cut",t.cuts+" CUTS"));
+var op=el("span","toon-open");op.appendChild(el("span",null,"전체 보기"));var ic=el("i",null,"▷");op.appendChild(ic);th.appendChild(op);
+var info=el("div","toon-info");info.appendChild(el("b",null,t.title));info.appendChild(el("small",null,t.cuts+"컷 이미지 인스타툰 · 넘겨 보기 / 세로 보기"));
+b.append(th,info);b.addEventListener("click",function(){openToon(ti,0)});tGrid.appendChild(b);
+});
+REELS.forEach(function(r,ri){
+var b=el("button","reel-card");b.type="button";b.setAttribute("aria-haspopup","dialog");b.setAttribute("aria-label",r.title+" 릴스 재생");
+var th=el("div","reel-thumb");var im=el("img");im.src=r.poster;im.alt=r.title+" 포스터";im.loading="lazy";th.appendChild(im);
+var pl=el("div","reel-play");pl.appendChild(el("i",null,"▶"));th.appendChild(pl);th.appendChild(el("span","reel-len",r.dur));
+var info=el("div","reel-info");info.appendChild(el("b",null,r.title));info.appendChild(el("small",null,r.date.replace(/-/g,".")+" · 릴스"));
+b.append(th,info);b.addEventListener("click",function(){openReel(ri)});rGrid.appendChild(b);
+});
+var viewer=document.getElementById("viewer"),stage=document.getElementById("vwStage"),img=document.getElementById("vwImg"),vid=document.getElementById("vwVideo"),vert=document.getElementById("vwVertical"),cnt=document.getElementById("vwCount"),vwTitle=document.getElementById("vwTitle"),vwKind=document.getElementById("vwKind"),vwMeta=document.getElementById("vwMeta"),vwRow=document.getElementById("vwRow"),strip=document.getElementById("vwStrip"),prev=document.getElementById("vwPrev"),next=document.getElementById("vwNext");
+var st={mode:null,ti:0,i:0,ri:0,vertical:false},lastFocus=null;
+function lock(on){document.body.classList.toggle("vw-lock",on)}
+function openToon(ti,cut){st.mode="toon";st.ti=ti;st.i=cut||0;st.vertical=false;showToon(true)}
+function openReel(ri){st.mode="reel";st.ri=ri;st.vertical=false;showReel()}
+function showViewer(){if(viewer.hidden){lastFocus=document.activeElement;viewer.hidden=false;lock(true)}var panel=viewer.querySelector(".viewer-panel");if(panel)panel.dataset.mode=st.mode;var c=viewer.querySelector(".viewer-close");if(c)c.focus({preventScroll:true})}
+function closeViewer(){vid.pause();vid.removeAttribute("src");vid.load();viewer.hidden=true;lock(false);if(lastFocus&&lastFocus.focus)lastFocus.focus({preventScroll:true})}
+function buildStrip(items,active,onPick,tall){
+strip.className="vw-strip"+(tall?" tall":"");strip.innerHTML="";
+items.forEach(function(src,idx){var b=el("button");b.type="button";b.setAttribute("aria-label",(idx+1)+"번째 보기");if(idx===active)b.setAttribute("aria-current","true");var im=el("img");im.src=src;im.alt="";im.loading="lazy";b.appendChild(im);b.addEventListener("click",function(){onPick(idx)});strip.appendChild(b)});
+}
+function showToon(fresh){
+var t=TOONS[st.ti];
+vid.hidden=true;vid.pause();img.hidden=false;
+stage.classList.toggle("vertical",st.vertical);
+prev.hidden=false;next.hidden=false;cnt.hidden=false;
+vwKind.textContent=t.kind;
+vwTitle.textContent=t.title;
+img.src=cutPath(t,st.i);img.alt=t.title+" "+(st.i+1)+"번째 컷";
+cnt.textContent=(st.i+1)+" / "+t.cuts;
+prev.disabled=st.i===0;next.disabled=st.i===t.cuts-1;
+vwMeta.textContent=st.vertical?"세로 보기 — 모두 이어서 볼 수 있어요. 상하로 스크롤해 주세요.":t.desc;
+if(st.vertical&&fresh||st.vertical&&!vert.childElementCount)fillVertical(t);
+if(!st.vertical){if(st.i+1<t.cuts){var n=new Image();n.src=cutPath(t,st.i+1)}}
+vwRow.innerHTML="";
+TOONS.forEach(function(x,idx){var b=el("button","vw-btn",x.title);b.type="button";b.setAttribute("aria-pressed",String(idx===st.ti));b.addEventListener("click",function(){st.ti=idx;st.i=0;st.vertical=false;showToon(true)});vwRow.appendChild(b)});
+var tg=el("button","vw-btn",st.vertical?"한 컷씩 보기":"세로로 이어 보기");tg.type="button";tg.setAttribute("aria-pressed",String(st.vertical));tg.addEventListener("click",function(){st.vertical=!st.vertical;showToon(!st.vertical)});vwRow.appendChild(tg);
+var a=el("a","vw-src",t.src.label);a.href=t.src.url;a.target="_blank";a.rel="noopener noreferrer";vwRow.appendChild(a);
+var thumbs=[];for(var k=0;k<t.cuts;k++)thumbs.push(cutPath(t,k));
+buildStrip(thumbs,st.i,function(idx){st.i=idx;st.vertical=false;showToon()},true);
+showViewer();
+if(st.vertical){var target=vert.children[st.i];if(target)target.scrollIntoView({block:"start"})}
+}
+function fillVertical(t){vert.innerHTML="";for(var k=0;k<t.cuts;k++){var im2=el("img");im2.src=cutPath(t,k);im2.alt=t.title+" "+(k+1)+"번째 컷";im2.loading=k<2?"eager":"lazy";vert.appendChild(im2)}}
+function showReel(){
+var r=REELS[st.ri];
+img.hidden=true;stage.classList.remove("vertical");vert.innerHTML="";
+vid.hidden=false;prev.hidden=false;next.hidden=false;cnt.hidden=false;
+vwKind.textContent="REEL · "+r.date.replace(/-/g,".")+" · "+r.dur;
+vwTitle.textContent=r.title;
+vid.poster=r.poster;vid.src=r.file;vid.load();
+var p=vid.play();if(p&&p.catch)p.catch(function(){});
+cnt.textContent=(st.ri+1)+" / "+REELS.length;
+prev.disabled=st.ri===0;next.disabled=st.ri===REELS.length-1;
+vwMeta.textContent=r.cap;
+vwRow.innerHTML="";
+var prevB=el("button","vw-btn","‹ 이전 릴스");prevB.type="button";prevB.disabled=st.ri===0;prevB.addEventListener("click",function(){if(st.ri>0){st.ri--;showReel()}});vwRow.appendChild(prevB);
+var nextB=el("button","vw-btn","다음 릴스 ›");nextB.type="button";nextB.disabled=st.ri===REELS.length-1;nextB.addEventListener("click",function(){if(st.ri<REELS.length-1){st.ri++;showReel()}});vwRow.appendChild(nextB);
+var a=el("a","vw-src","인스타그램 원본에서 보기 ↗");a.href=r.url;a.target="_blank";a.rel="noopener noreferrer";vwRow.appendChild(a);
+buildStrip(REELS.map(function(x){return x.poster}),st.ri,function(idx){st.ri=idx;showReel()});
+showViewer();
+}
+function step(d){if(st.mode==="toon"){var t=TOONS[st.ti];var n=st.i+d;if(n<0||n>=t.cuts)return;st.i=n;st.vertical=false;showToon()}else if(st.mode==="reel"){var m=st.ri+d;if(m<0||m>=REELS.length)return;st.ri=m;showReel()}}
+prev.addEventListener("click",function(){step(-1)});
+next.addEventListener("click",function(){step(1)});
+[].slice.call(viewer.querySelectorAll("[data-close]")).forEach(function(b){b.addEventListener("click",closeViewer)});
+document.addEventListener("keydown",function(e){
+if(viewer.hidden)return;
+if(e.key==="Escape"){e.preventDefault();closeViewer();return}
+if(st.vertical&&st.mode==="toon")return;
+if(e.key==="ArrowLeft"){e.preventDefault();step(-1)}else if(e.key==="ArrowRight"){e.preventDefault();step(1)}
+});
+var downX=null,downY=null;
+stage.addEventListener("pointerdown",function(e){if(e.target.closest("button"))return;downX=e.clientX;downY=e.clientY});
+stage.addEventListener("pointerup",function(e){
+if(downX===null)return;var dx=e.clientX-downX,dy=e.clientY-downY;downX=null;
+if(st.vertical&&st.mode==="toon")return;
+if(Math.abs(dx)>44&&Math.abs(dx)>Math.abs(dy))step(dx<0?1:-1);
+});
+[].slice.call(document.querySelectorAll("[data-open-toon]")).forEach(function(b){b.addEventListener("click",function(){openToon(0,0)})});
+window.SugarToons={open:function(){openToon(0,0)}};
+})();
+</script>
+</body></html>
