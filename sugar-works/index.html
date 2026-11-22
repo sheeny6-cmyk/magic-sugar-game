@@ -268,6 +268,7 @@ body.vw-lock{overflow:hidden}
 <div class="ctas"><a class="primary" href="#about">슈가 소개 <span aria-hidden="true">→</span></a></div></div>
 <div class="hero-foot"><span>01 / THE KINGDOM</span><span>BROWSE BY TAB ↓</span></div>
 </div></section>
+<div class="tab-anchor" id="tabanchor" aria-hidden="true"></div>
 <nav class="tabbar" id="tabbar" aria-label="포트폴리오 탭"><div class="tabbar-inner"><div class="tabs"><a class="tab" href="#works" data-tab="works" aria-current="page">WORKS</a><a class="tab" href="#toon" data-tab="toon">INSTATOON</a><a class="tab" href="#ogq" data-tab="ogq">NAVER OGQ</a><a class="tab" href="#about" data-tab="about">ABOUT</a><a class="tab" href="#world" data-tab="world">SUGAR WORLD</a></div></div></nav>
 <main id="top">
 <div class="tab-panel is-active" id="panel-works" data-panel="works" role="region" aria-labelledby="workTitle">
@@ -337,7 +338,7 @@ function paint(name){
   }
   if(typeof tabEdgeHint==="function")setTimeout(tabEdgeHint,280);
 }
-function barTop(){var el=document.getElementById("tabbar");if(!el)return 0;var y=window.pageYOffset||document.documentElement.scrollTop||0;return Math.max(0,Math.round(el.getBoundingClientRect().top+y))}
+function barTop(){var a=document.getElementById("tabanchor");if(a)return Math.max(0,Math.round(a.offsetTop));var el=document.getElementById("tabbar");return el?Math.max(0,Math.round(el.offsetTop)):0}
 function go(name,keepScroll){
   if(names.indexOf(name)<0)name="works";
   paint(name);
@@ -354,8 +355,8 @@ document.addEventListener("click",function(e){
   if(location.hash!==target){try{history.pushState(null,"",target)}catch(err){location.hash=n}}
   go(n);
 });
-window.addEventListener("hashchange",function(){go(fromHash())});
-window.addEventListener("popstate",function(){go(fromHash())});
+window.addEventListener("hashchange",function(){go(fromHash(),!location.hash)});
+window.addEventListener("popstate",function(){go(fromHash(),!location.hash)});
 go(fromHash(),true);
 window.addEventListener("load",function(){if(location.hash&&names.indexOf(location.hash.slice(1))>=0)go(fromHash(),false)});
 var tabBar=document.querySelector(".tabbar .tabs");
