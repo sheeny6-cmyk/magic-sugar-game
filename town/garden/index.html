@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EDE4F7">
+<meta name="description" content="낡은 분장실을 별빛 드레스룸으로 꾸미는 발레 매치3 프로토타입. 슈가와 에튜 정령이 함께해요.">
+<title>꿈의 드레스룸 · 슈가의 발레왕국</title>
+<link rel="stylesheet" href="garden.css?v=20261122a">
+</head>
+<body>
+<div class="app" id="app">
+
+  <header class="bar">
+    <button class="bar-back" id="prologueBtn" type="button" aria-label="프롤로그 다시 보기" title="프롤로그 다시 보기">📖</button>
+    <div class="bar-title"><small>LILAC DRESSING ROOM</small><strong>꿈의 드레스룸</strong></div>
+    <div class="purse">
+      <span class="chip star" title="별"><i>⭐️</i><b id="starCount">1</b></span>
+      <span class="chip coin" title="코인"><i>🪙</i><b id="coinCount">0</b></span>
+      <button class="sound" id="soundBtn" type="button" aria-label="소리 끄기">🔊</button>
+    </div>
+  </header>
+
+  <main class="studio" id="studioScreen">
+
+    <section class="scene" id="scene" data-step="0" data-floor="none" data-vanity="none" data-dress="none" aria-label="왕립 분장실">
+      <div class="bg"></div>
+      <div class="warm"></div>
+
+      <div class="grime" aria-hidden="true">
+        <div class="dust-floor"></div>
+        <svg class="cobweb cw-l" viewBox="0 0 100 100"><g fill="none" stroke="#efe6ee" stroke-width="1.1" opacity=".62"><path d="M2 2 L78 30 M2 2 L40 62 M2 2 L14 84 M2 2 L54 12"/><path d="M14 12 Q30 14 33 26"/><path d="M26 22 Q44 26 48 40"/><path d="M37 36 Q56 42 58 56"/><path d="M20 44 Q40 52 42 66"/></g></svg>
+        <svg class="cobweb cw-r" viewBox="0 0 100 100"><g fill="none" stroke="#efe6ee" stroke-width="1.1" opacity=".5"><path d="M98 2 L22 30 M98 2 L60 62 M98 2 L86 84 M98 2 L46 12"/><path d="M86 12 Q70 14 67 26"/><path d="M74 22 Q56 26 52 40"/><path d="M63 36 Q44 42 42 56"/></g></svg>
+        <svg class="cracks" viewBox="0 0 400 140" preserveAspectRatio="none"><g fill="none" stroke="#2b2033" stroke-width="1.4" opacity=".5" stroke-linecap="round"><path d="M18 136 L46 104 L42 84 L64 62"/><path d="M46 104 L86 118 L104 96"/><path d="M196 140 L214 112 L206 92 L228 74"/><path d="M214 112 L252 126"/><path d="M300 138 L318 108 L348 100 L366 78"/></g></svg>
+        <div class="motes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+
+      <div class="floor"><span class="grain"></span><span class="sheen"></span><span class="twinkle"></span></div>
+
+      <div class="rags"><span></span><span></span></div>
+
+      <div class="curtains">
+        <div class="curtain l"><span class="folds"></span><span class="tie"></span></div>
+        <div class="curtain r"><span class="folds"></span><span class="tie"></span></div>
+        <div class="valance"><span class="scallop"></span><span class="fringe"></span></div>
+      </div>
+
+      <div class="chandelier">
+        <svg viewBox="0 0 140 170">
+          <ellipse cx="70" cy="76" rx="66" ry="62" fill="url(#cGlow)"/>
+          <g class="chand-metal">
+            <path d="M70 0v20" stroke="url(#cGold)" stroke-width="3"/>
+            <ellipse cx="70" cy="26" rx="16" ry="5.5" fill="none" stroke="url(#cGold)" stroke-width="2.4"/>
+            <ellipse cx="70" cy="48" rx="38" ry="9" fill="none" stroke="url(#cGold)" stroke-width="2.6"/>
+            <ellipse cx="70" cy="76" rx="56" ry="13" fill="none" stroke="url(#cGold)" stroke-width="2.2"/>
+            <path d="M70 32v44M32 44l-8 30M108 44l8 30" stroke="url(#cGold)" stroke-width="1.6" fill="none"/>
+          </g>
+          <g class="chand-drops">
+            <path d="M14 76v14M28 62v20M42 50v26M56 44v30M70 42v32M84 44v30M98 50v26M112 62v20M126 76v14" stroke="var(--chand-crystal)" stroke-width="1.2" opacity=".95"/>
+            <g fill="var(--chand-crystal)"><circle cx="14" cy="95" r="3.4"/><circle cx="28" cy="87" r="3.4"/><circle cx="42" cy="81" r="3.4"/><circle cx="56" cy="78" r="3.4"/><circle cx="70" cy="78" r="4"/><circle cx="84" cy="78" r="3.4"/><circle cx="98" cy="81" r="3.4"/><circle cx="112" cy="87" r="3.4"/><circle cx="126" cy="95" r="3.4"/></g>
+            <g fill="var(--chand-light)"><circle cx="28" cy="67" r="2.2"/><circle cx="56" cy="52" r="2.2"/><circle cx="84" cy="52" r="2.2"/><circle cx="112" cy="67" r="2.2"/></g>
+          </g>
+        </svg>
+      </div>
+      <div class="beams"></div>
+
+      <div class="old-rack">
+        <svg viewBox="0 0 130 190">
+          <ellipse cx="65" cy="182" rx="52" ry="7" fill="#241a2b" opacity=".2"/>
+          <g fill="none" stroke="#867a8c" stroke-width="5" stroke-linecap="round">
+            <path d="M22 30 q44 6 88 0"/>
+            <path d="M30 32 L24 168"/><path d="M102 32 L108 168"/>
+            <path d="M28 132 L104 132"/>
+          </g>
+          <g fill="none" stroke="#9a8d9f" stroke-width="2" stroke-linecap="round">
+            <path d="M46 41 v-5 q0 -6 6 -6 q6 0 6 6 q0 3 -2 4"/>
+            <path d="M38 64 h28 M38 64 L52 41 L66 64"/>
+            <path d="M70 41 v-5 q0 -6 6 -6 q6 0 6 6 q0 3 -2 4"/>
+            <path d="M62 64 h28 M62 64 L76 41 L90 64"/>
+          </g>
+          <g fill="none" stroke="#8d8093" stroke-width="2.6" stroke-linecap="round" opacity=".85">
+            <path d="M12 172 q10 -9 22 -3"/><path d="M14 176 q8 -6 16 -2"/>
+          </g>
+          <g fill="#6f6474" opacity=".8"><circle cx="24" cy="169" r="3.4"/><circle cx="108" cy="169" r="3.4"/></g>
+        </svg>
+      </div>
+
+      <div class="vanity">
+        <svg viewBox="0 0 150 210">
+          <ellipse cx="75" cy="196" rx="56" ry="8" fill="#2b2033" opacity=".18"/>
+          <g class="bulbs">
+            <g fill="url(#bulb)" stroke="#e6cf9a" stroke-width="1">
+              <circle cx="75" cy="8" r="4.6"/><circle cx="38" cy="17" r="4.3"/><circle cx="112" cy="17" r="4.3"/>
+              <circle cx="20" cy="45" r="4.1"/><circle cx="130" cy="45" r="4.1"/>
+              <circle cx="15" cy="78" r="4.1"/><circle cx="135" cy="78" r="4.1"/>
+              <circle cx="24" cy="108" r="4.1"/><circle cx="126" cy="108" r="4.1"/>
+            </g>
+            <ellipse cx="75" cy="60" rx="34" ry="42" fill="url(#mirrorFill)" stroke="var(--mir,#c9a869)" stroke-width="4.5"/>
+            <ellipse cx="75" cy="60" rx="34" ry="42" fill="none" stroke="#fff" stroke-width="1" opacity=".5"/>
+            <path d="M58 34 q14 -8 26 2 q-16 6 -26 -2Z" fill="#fff" opacity=".45"/>
+          </g>
+          <g class="vanity-body">
+            <rect x="18" y="128" width="114" height="13" rx="4" fill="url(#vWood)" stroke="#c9a869" stroke-width="1.6"/>
+            <rect x="26" y="141" width="98" height="17" rx="3" fill="url(#vWood2)" stroke="#c9a869" stroke-width="1.2"/>
+            <circle cx="75" cy="149" r="3" fill="url(#vGold)"/>
+            <path d="M34 158 q-4 26 2 44" fill="none" stroke="url(#vGold)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M116 158 q4 26 -2 44" fill="none" stroke="url(#vGold)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M36 202 h22M92 202 h22" stroke="#c9a869" stroke-width="4" stroke-linecap="round"/>
+            <rect x="44" y="112" width="13" height="16" rx="3" fill="#e9d9f7" stroke="#c9a869" stroke-width="1"/>
+            <rect x="47" y="104" width="7" height="9" rx="2" fill="url(#vGold)"/>
+            <ellipse cx="94" cy="122" rx="16" ry="6" fill="#f6e6f6" stroke="#c9a869" stroke-width="1.2"/>
+            <path d="M86 122 q8 -6 16 0" fill="none" stroke="#d8bde5" stroke-width="1.6"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="rack">
+        <svg viewBox="0 0 170 210">
+          <ellipse cx="85" cy="200" rx="66" ry="8" fill="#2b2033" opacity=".16"/>
+          <g class="rack-metal" fill="none" stroke="url(#rGold)" stroke-width="3.4" stroke-linecap="round">
+            <path d="M16 40 h138"/><path d="M32 42 L18 196"/><path d="M138 42 L152 196"/><path d="M28 148 h114"/>
+            <circle cx="14" cy="40" r="3.4" fill="url(#rGold)"/><circle cx="156" cy="40" r="3.4" fill="url(#rGold)"/>
+          </g>
+          <g class="dresses">
+            <g class="dress-tutu">
+              <path d="M40 40 q0 -8 6 -8 q6 0 6 7" fill="none" stroke="#b79bc6" stroke-width="2"/>
+              <path d="M40 48 h12 l4 18 l-20 0 Z" fill="var(--d1)"/>
+              <path d="M26 66 h40 q6 0 8 6 l6 26 q-34 12 -68 0 l6 -26 q2 -6 8 -6Z" fill="var(--d1)" opacity=".92"/>
+              <path d="M24 78 q36 12 72 0" fill="none" stroke="#ffffff" stroke-width="2" opacity=".7"/>
+              <path d="M28 90 q30 10 60 0" fill="none" stroke="#ffffff" stroke-width="1.6" opacity=".5"/>
+            </g>
+            <g class="dress-gown">
+              <path d="M78 40 q0 -8 6 -8 q6 0 6 7" fill="none" stroke="#b79bc6" stroke-width="2"/>
+              <path d="M78 48 h12 l5 22 l-22 0 Z" fill="var(--d2)"/>
+              <path d="M70 70 h28 q10 0 12 10 l10 84 q-36 14 -72 0 l10 -84 q2 -10 12 -10Z" fill="var(--d2)" opacity=".93"/>
+              <path d="M66 96 q30 10 60 0" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".55"/>
+              <path d="M74 118 q20 6 40 0" fill="none" stroke="#ffffff" stroke-width="1.4" opacity=".4"/>
+            </g>
+            <g class="dress-aline">
+              <path d="M112 40 q0 -8 6 -8 q6 0 6 7" fill="none" stroke="#b79bc6" stroke-width="2"/>
+              <path d="M112 48 h12 l5 20 l-22 0 Z" fill="var(--d3)"/>
+              <path d="M106 68 h24 q7 0 9 8 l9 58 q-30 10 -60 0 l9 -58 q2 -8 9 -8Z" fill="var(--d3)" opacity=".94"/>
+              <path d="M102 86 q24 8 48 0" fill="none" stroke="#ffffff" stroke-width="1.8" opacity=".6"/>
+            </g>
+          </g>
+          <g class="rack-extras" stroke="#c9a869" stroke-width="1.4" fill="none">
+            <path d="M20 158 q14 6 28 0"/><path d="M122 158 q14 6 28 0"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="mirror-stand">
+        <svg viewBox="0 0 120 200">
+          <ellipse cx="60" cy="191" rx="42" ry="7" fill="#2b2033" opacity=".2"/>
+          <path d="M60 7 C88 7 108 27 108 53 L108 160 Q108 170 98 170 L22 170 Q12 170 12 160 L12 53 C12 27 32 7 60 7 Z" fill="url(#mirFill)" fill-opacity=".72" stroke="var(--mir,#c9a869)" stroke-width="6"/>
+          <path d="M60 16 C83 16 99 32 99 54 L99 156 Q99 161 94 161 L26 161 Q21 161 21 156 L21 54 C21 32 37 16 60 16 Z" fill="none" stroke="#ffffff" stroke-width="1.4" opacity=".6"/>
+          <path d="M22 128 h76 v30 Q99 161 94 161 L26 161 Q21 161 21 158 Z" fill="#9c86bb" opacity=".18"/>
+          <path d="M31 154 L80 26" stroke="#ffffff" stroke-width="11" opacity=".32"/>
+          <path d="M45 156 L90 34" stroke="#ffffff" stroke-width="3" opacity=".38"/>
+          <path d="M60 7 v-3" stroke="var(--mir,#c9a869)" stroke-width="3"/>
+          <g stroke="var(--mir,#c9a869)" stroke-width="4.5" fill="none" stroke-linecap="round">
+            <path d="M24 170 q-8 14 0 22"/><path d="M96 170 q8 14 0 22"/><path d="M18 192 h84"/>
+          </g>
+          <g fill="#ffffff" opacity=".92">
+            <path d="M99 28 l2.3 6.6 6.6 2.3 -6.6 2.3 -2.3 6.6 -2.3 -6.6 -6.6 -2.3 6.6 -2.3z"/>
+            <path d="M31 118 l1.7 4.8 4.8 1.7 -4.8 1.7 -1.7 4.8 -1.7 -4.8 -4.8 -1.7 4.8 -1.7z"/>
+          </g>
+        </svg>
+      </div>
+
+      <div class="spots"><span class="spot a"></span><span class="spot b"></span></div>
+
+      <div class="spark-layer" id="sparkLayer" aria-hidden="true"></div>
+
+      <div class="sugar-wrap">
+        <span class="sugar-shadow"></span>
+        <img class="sugar" id="sugar" src="../assets/dancers/basic-ready.webp" alt="분장실에 선 슈가" fetchpriority="high">
+      </div>
+
+      <div class="spirit" id="spirit">
+        <span class="spirit-aura"></span>
+        <img class="etu" id="etu" src="../../kingdom/assets/av_etu.webp" alt="에튜 정령">
+        <span class="spirit-glint">✦</span>
+      </div>
+
+      <div class="bubble" id="bubble" aria-live="polite">
+        <b id="bubbleWho">에튜 정령</b>
+        <span id="bubbleText">여긴 왕립 극장의 오래된 분장실이에요. 같이 반짝이는 드레스룸으로 바꿔 봐요!</span>
+      </div>
+    </section>
+
+    <section class="sheet" aria-label="분장실 꾸미기">
+      <div class="sheet-head">
+        <div><small>RENOVATION NOTE</small><h2>드레스룸 수리 노트</h2></div>
+        <span class="progress" id="taskProgress">0 / 3</span>
+      </div>
+      <div class="finale-banner" id="finaleRibbon" hidden><span>✦ DREAM DRESSING ROOM ✦</span><b>꿈의 드레스룸 완성</b></div>
+      <ol class="task-list" id="taskList"></ol>
+      <button class="cta" id="puzzleCta" type="button"><span class="cta-star">⭐️</span> 퍼즐 풀고 별 모으기 <em id="ctaHint">스테이지 1</em></button>
+      <div class="stylebook">
+        <span class="sb-title">MY DRESSING ROOM</span>
+        <ul class="sb-list" id="sbList"></ul>
+      </div>
+      <p class="reset-line"><a href="../?v=20261122a">← 왕국 산책길</a><span>·</span><button id="resetBtn" type="button">처음부터 다시 꾸미기</button></p>
+    </section>
+  </main>
+
+  <main class="puzzle" id="puzzleScreen" hidden>
+    <div class="pz-top">
+      <button class="pz-back" id="pzBack" type="button">← 분장실</button>
+      <div class="pz-stage"><small id="pzKicker">STAGE 1</small><strong id="pzName">첫 박자</strong></div>
+      <div class="pz-moves"><small>남은 수</small><b id="pzMoves">14</b></div>
+    </div>
+    <div class="goal-card" id="goalCard"></div>
+    <div class="board-wrap">
+      <div class="board" id="board" role="grid" aria-label="발레 매치3 퍼즐"></div>
+      <div class="pz-fx" id="pzFx" aria-hidden="true"></div>
+    </div>
+    <div class="pz-reward" id="pzReward"><span>⭐️ +1</span><em>클리어 보상</em></div>
+    <p class="pz-help" id="pzHelp">타일을 톡톡 눌러 바꾸거나, 옆으로 살짝 밀어 보세요.</p>
+    <div class="pz-types" aria-hidden="true">
+      <span>🩰</span><span>🎀</span><span>👑</span><span>🪻</span><span>⭐️</span>
+      <em>4개 ✨️줄 · 5개 🌈튜튜폭탄</em>
+    </div>
+  </main>
+
+  <div class="modal" id="styleModal" hidden>
+    <div class="modal-card">
+      <header class="mc-head">
+        <small id="smKicker">STEP 1</small>
+        <h2 id="smTitle">바닥을 골라 주세요</h2>
+        <p id="smDesc">마음에 드는 스타일을 고르면 분장실이 바로 변해요.</p>
+      </header>
+      <div class="opt-list" id="smOptions" role="radiogroup" aria-label="스타일 선택"></div>
+      <footer class="mc-foot">
+        <button class="ghost" id="smCancel" type="button">다음에 할게요</button>
+        <button class="primary" id="smApply" type="button" disabled>⭐️1 · 이 스타일로 꾸미기</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="modal" id="resultModal" hidden>
+    <div class="modal-card result">
+      <div class="res-badge" id="rsBadge">🎉</div>
+      <h2 id="rsTitle">스테이지 클리어!</h2>
+      <p id="rsText">별 1개와 코인 50개를 받았어요.</p>
+      <div class="res-rewards" id="rsRewards"><span>⭐️ +1</span><span>🪙 +50</span></div>
+      <div class="mc-foot col">
+        <button class="primary" id="rsPrimary" type="button">분장실로 돌아가기</button>
+        <button class="ghost" id="rsSecondary" type="button">다시 도전</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <linearGradient id="cGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f8e5ba"/><stop offset=".55" stop-color="#d8b06a"/><stop offset="1" stop-color="#a97f3c"/></linearGradient>
+      <radialGradient id="cGlow"><stop offset="0" stop-color="var(--chand-light)" stop-opacity=".55"/><stop offset="1" stop-color="var(--chand-light)" stop-opacity="0"/></radialGradient>
+      <linearGradient id="vGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f6e2b6"/><stop offset="1" stop-color="#b78f4c"/></linearGradient>
+      <linearGradient id="vWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbeee4"/><stop offset="1" stop-color="#e5cdbb"/></linearGradient>
+      <linearGradient id="vWood2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e2d4"/><stop offset="1" stop-color="#d8bda8"/></linearGradient>
+      <radialGradient id="mirrorFill" cx=".35" cy=".25"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#eee5fb"/><stop offset="1" stop-color="#cbb9e2"/></radialGradient>
+      <linearGradient id="mirFill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fdfbff"/><stop offset=".42" stop-color="#e5daf6"/><stop offset=".72" stop-color="#cdbce6"/><stop offset="1" stop-color="#a892c6"/></linearGradient>
+      <radialGradient id="bulb"><stop offset="0" stop-color="#fffdf1"/><stop offset=".7" stop-color="#ffe9b6"/><stop offset="1" stop-color="#f6d489"/></radialGradient>
+      <linearGradient id="rGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7e3b8"/><stop offset="1" stop-color="#b78f4c"/></linearGradient>
+    </defs>
+  </svg>
+</div>
+<div class="prologue" id="prologue" hidden>
+  <div class="pl-bg" id="plBg" aria-hidden="true"></div>
+  <header class="pl-top">
+    <span class="pl-brand">PROLOGUE<em id="plCount">1 / 9</em></span>
+    <button class="pl-skip" id="plSkip" type="button">건너뛰기 ›</button>
+  </header>
+  <div class="pl-stage" id="plStage">
+    <div class="pl-chapter"><i></i><span>발레 왕국의 문</span><i></i></div>
+    <div class="pl-panel"><img class="pl-img" id="plImg" src="assets/story/01.webp" alt="프롤로그 만화 컷"></div>
+    <div class="pl-foot">
+      <div class="pl-bar"><i id="plBar"></i></div>
+      <p class="pl-hint" id="plHint">화면을 톡톡 눌러 다음 장면으로</p>
+      <button class="pl-cta" id="plCta" type="button" hidden>다시 도전해서 발레 FREE PASS 따기!</button>
+      <button class="pl-again" id="plAgain" type="button" hidden>처음부터 다시 보기</button>
+    </div>
+  </div>
+</div>
+<script src="garden.js?v=20261122a"></script>
+</body>
+</html>
