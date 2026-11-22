@@ -57,13 +57,28 @@ songTime = ctx.currentTime - t0             (waltz.js: clock())
 - 실패하면 슈가가 휘청이고 장애물은 붉은 빛을 남긴 채 그대로 지나간다.
 - 정지 이미지로 불가능한 부분(접힌 다리·180° 벌림·등 모습)은 `SPRITE_REQUIREMENTS.md`에 프레임 단위로 적었다.
 
-## 3. 검증
+## 3. 검증 (`tmp/waltz_final.py` · 로컬 http 서버 + Playwright, 라이브 URL 동일 스크립트)
 
-- `python3 tmp/waltz_verify.py` (로컬 http 서버 + Playwright)
-  - 390×844 · 360×640 두 화면에서 `scrollHeight == clientHeight`, 가로 넘침 0건
-  - 실제 버튼에 `pointerdown`을 보내 34개 노트를 끝까지 플레이 → 34/34 PERFECT, 판정 오차 -8~-24ms(의도한 -25ms 리드)
-  - 콘솔 오류 0건
-- 오디오·화면 동기: `__waltz.meter()`(AnalyserNode)로 곡의 에너지 피크를 재고, 각 피크가 박 격자와 얼마나 어긋나는지 측정한다.
+라이브 `https://sheeny6-cmyk.github.io/magic-sugar-game/town/waltz-stage/` · 390×844 · iPhone 계열 UA 없음(모바일 뷰포트 + 터치):
+
+| 항목 | 결과 |
+| --- | --- |
+| 레이아웃 | `scrollHeight 844 = clientHeight 844`, `scrollWidth 390 = clientWidth 390`, 가로 넘침 0건 |
+| 플레이 | 실제 버튼에 `pointerdown`을 보내 34개 노트 완주 → **34/34 PERFECT**, 판정 오차 -8~-24ms(테스트가 의도한 -25ms 리드) |
+| 결과 | 랭크 **S**, 정확도 100%, 파드샤 11/11 · 그랑제떼 8/8 · 아라베스크 6/6 · 피루엣 9/9 |
+| 콘솔/페이지 오류 | **0건** |
+| 오디오 | `AudioContext.state = running`, `baseLatency 0.01` |
+| 소리↔시계 | `__waltz.meter()`(AnalyserNode)로 카운트인 3클릭을 재면 -1.853 / -1.235 / -0.613초에 검출 — 예약 -1.875 / -1.25 / -0.625초와 **+12~22ms** 차이. 이 편향은 분석 창(1024샘플 ≈23ms)과 rAF 샘플링(16ms)에 해당하며 세 클릭이 같은 값을 보여 **오디오가 박 격자에 정확히 놓였음**을 보인다 |
+
+같은 스크립트를 360×640에서도 돌려 `scrollHeight 640 = clientHeight 640`, 넘침 0건을 확인했다.
+
+> 이 검증에서 카운트인 3박이 곡 시작과 *동시에* 울리는 버그를 찾아 고쳤다(`music.js`: `tOf(-3+i)` → `(i-LEAD)*BEAT`). 고치기 전에는 첫 1.9초가 무음이었다.
+
+### 남은 한계 (정직한 구분)
+
+- **되는 것**: 음악 박자·노트 이동·판정·도약 궤적·착지·박자 표시가 모두 한 시계로 맞는다. 장애물은 사라지지 않고 발밑을 지나간다. 720° 피루엣·화음 확장·아르페지오까지 곡이 코스 길이에 맞게 구성되어 있다.
+- **안 되는 것**: 정지 이미지 6장으로는 접힌 다리(파드샤 정점)·180° 벌림(그랑제떼)·등 모습(피루엣)을 만들 수 없다. 지금은 자세 변형과 잔상으로 흉내만 낸다. 필요한 프레임은 `SPRITE_REQUIREMENTS.md`에 적었다.
+- **모바일 실기기**: 검증은 Chromium 모바일 에뮬레이션(390×844, 터치)이다. 실제 안드로이드 Chrome에서의 오디오 잠금 해제·발열은 이 시제품에서 아직 재지 않았다.
 
 ## 4. 파일
 
@@ -73,3 +88,6 @@ songTime = ctx.currentTime - t0             (waltz.js: clock())
 | `waltz.js` | 마스터 클록 · 차트 · 판정 · 캔버스 렌더 · 슈가 동작 |
 | `music.js` | 3/4 왈츠 편곡(28마디) · 전곡 예약 재생기 · 효과음 |
 | `SPRITE_REQUIREMENTS.md` | 필요한 스프라이트 시트 사양과 현재 한계 |
+
+검증 스크립트는 작업 공간의 `tmp/waltz_final.py`(전체 플레이 + 스크린샷), `tmp/waltz_sync.py`(카운트인 소리 시각 측정)를 쓴다.
+스크린샷: `downloads/왈츠-시제품/왈츠-*.png` (커버 · 카운트인 · 도입 · 균형대 · 피루엣 · 결과).
