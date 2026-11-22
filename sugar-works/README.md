@@ -74,3 +74,14 @@ Update only `sheeny6-cmyk/magic-sugar-game/sugar-works/`. Report the exact commi
 - **WRITING (`#writing`, new)**: lilac magazine-style card grid — 01 「미치도록 아름다운 크리스마스」 (feature card, `brunch.co.kr/brunchbook/crazybchristmas`, 매주 화요일 · 1~20화), 02 브런치 `@sheeny6` (필명 루네), 03 티스토리 에튀튀드, 04 네이버 블로그 티나는 여행 중 (`sugaramor0506`), 05 네이버 블로그 슈가의 우당탕탕 일상 (`sugaramor`). Brunch pages redirect to a sign-in wall for anonymous readers, so episode counts come from the user's own copy and were not re-verified here.
 - **NAVER OGQ (`#ogq`)** gains a goods card under the three sticker sets: 2027 슈가공주 달력 12장 — cover + 3 month previews, a `▷ 사이트에서 12장 보기` button that opens the existing in-site `calendar` viewer (`data-open-calendar` → `SugarToons`), and a link to the Tistory post for the wallpaper download.
 - Kickers renumbered: 01 WORKS, 02 TOON & VIDEO, 03 WRITING & SERIALS, 04 ORIGINAL STICKER SERIES, 05 ABOUT THE CREATOR, 06 THE UNIVERSE. `town/` was not touched in this change.
+
+## Ballet Note card · About poster (2026-11-23)
+- **About (`#about`)**: the `S✳W` monogram (`.about-art` with the ✳ glyph) is gone. The left column is now a rounded poster frame — `assets/hero-kingdom-spirits.webp` in a 1122/1402 frame with an inner hairline and a small `SUGAR WORKS. / BALLET · STORY · ILLUSTRATION` caption badge. The About copy now lists 앱 alongside 발레·글쓰기·그림·영상 and names 발레노트.
+- **WORKS (`#works`)**: new card 01 「발레노트 (Ballet Note)」 (`type:"app"`, filter category `게임·웹`). It is the first card built as an `<article>` with two links (`links:[…]`) instead of one `href`, so the renderer now appends `.card-actions` with **Google Play ↗** and **웹앱 열기 ↗**. Cover is the Tistory post's own 800×450 key image; the app's Play icon rides in a `.cover-icon` badge at the top-right. Archive count `05 → 06`.
+- **SUGAR WORLD (`#world`)**: third tile `APP · 03` spanning both columns — app icon, copy and the same two links; on ≥900 px the 800×450 key image sits on the right as `.world-app-shot`.
+- Links (both returned HTTP 200 and render on 2026-11-23):
+  - Google Play `https://play.google.com/store/apps/details?id=com.sugar.balletnote` — page title 「발레노트 - Google Play 앱」, developer 슈가.
+  - Web app `https://ballet-note-ten.vercel.app` — Next.js PWA, `<title>발레노트 Ballet Note</title>`, renders the home screen. `https://ballet-log.vercel.app` also answers 200 but is not used.
+- Assets added: `assets/ballet-note.webp` (800×450, from the Tistory post's `img1.daumcdn.net` key image, q84) and `assets/ballet-note-icon.webp` (256×256 from the Play icon, q88). Both local; no hotlinked media.
+- The `ballet-note` migration item above is now satisfied: the app is listed only with these two verified public URLs.
+- `town/` was not touched. A local `town/garden/garden.js` modification was left unstaged and out of this commit.
