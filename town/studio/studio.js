@@ -4,11 +4,51 @@
   var classes = book.classes, MOVES = book.MOVES;
   var $ = function (id) { return document.getElementById(id); };
   var teachers = { bar: 'etu', center: 'piru', piece: 'ara' };
-  var dialogs = ['confirm', 'lesson', 'result'];
+  var dialogs = ['confirm', 'lesson', 'result', 'modes', 'gameover'];
   var APPROACH = 2300;              // 노트가 무대 오른쪽 끝에서 스포트라이트까지 걸어오는 시간(ms)
   var MARK = 50;                    // 판정 지점(무대 폭 %) = 슈가의 발밑 중심
   var IDLE_POSE = 'ready';
   var busy = false, lastReceipt = null, ses = null, p0 = 0;
+  var DIFF_KEY = 'sugartown.difficulty';
+
+  /* ================= 난이도 · HP 서바이벌 · 프리패스 =================
+     같은 곡이라도 모드에 따라 노트가 다가오는 속도(approach), 판정 창(window 배율),
+     한 번 놓칠 때 잃는 HP(damage)가 실제로 달라진다. */
+  var MODES = {
+    easy: {
+      key: 'easy', label: 'EASY', title: '발레가 조금은 쉬워져요',
+      note: '노트가 천천히 다가와요 · 판정 넉넉 · 놓쳐도 HP -12',
+      approach: 2900, window: 1.4, damage: 12
+    },
+    normal: {
+      key: 'normal', label: 'NORMAL', title: '발레가 꽤 쉬워져요',
+      note: '기본 속도 · 기준 판정 · 놓치면 HP -20',
+      approach: 2300, window: 1, damage: 20
+    },
+    hard: {
+      key: 'hard', label: 'HARD', title: '발레가 너무너무 쉬워져요',
+      note: '노트가 쏜살같이 · 판정 타이트 · 놓치면 HP -30',
+      approach: 1700, window: 0.72, damage: 30
+    }
+  };
+  // 의상마다 체력이 조금 더 버틴다. (기본 100 + 의상 보너스)
+  var OUTFIT_HP = { basic: 0, lilac: 6, swan: 12, black: 12, sugar: 20 };
+  // BALLET FREE PASS 네 조각: 세 코스 + 왕립 극장 공연
+  var PASS_PIECES = [
+    { key: 'bar', label: '레슨 바 워크', seal: '①', done: function (s) { return (s.stamps.bar || 0) > 0; } },
+    { key: 'center', label: '발레웨어 센터 워크', seal: '②', done: function (s) { return (s.stamps.center || 0) > 0; } },
+    { key: 'piece', label: '발레슈즈 작품반', seal: '③', done: function (s) { return (s.stamps.piece || 0) > 0; } },
+    { key: 'show', label: '공연 왕립 극장', seal: '④', done: function (s) { return (s.shows || 0) > 0; } }
+  ];
+  var KIND_PIECE = { bar: '레슨 바 워크', center: '발레웨어 센터 워크', piece: '발레슈즈 작품반' };
+  var pendingKind = null, deadMode = false, lastSurvived = null;
+
+  function readMode() {
+    try { var id = localStorage.getItem(DIFF_KEY); return MODES[id] ? id : 'normal'; } catch (e) { return 'normal'; }
+  }
+  function saveMode(id) {
+    try { localStorage.setItem(DIFF_KEY, MODES[id] ? id : 'normal'); } catch (e) { /* 기억하지 못해도 이번 수업은 진행돼요. */ }
+  }
 
   /* ================= 소리 ================= */
   var soundOn = readSound();
@@ -104,7 +144,122 @@
         '<b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
     renderMates(s);
+    renderPass(s);
     T.syncUI();
+  }
+
+  /* ================= BALLET FREE PASS 4조각 ================= */
+  function passPieces(s) {
+    s = s || T.get();
+    return PASS_PIECES.map(function (p) {
+      return { key: p.key, label: p.label, seal: p.seal, done: !!p.done(s) };
+    });
+  }
+  function passChip(p) {
+    return '<li class="pass-piece' + (p.done ? ' done' : '') + '"><span class="pass-seal">' + (p.done ? '✓' : p.seal) +
+      '</span><span class="pass-text"><b>' + p.label + '</b><small>' + (p.done ? '조각 획득' : '아직 비어 있음') + '</small></span></li>';
+  }
+  function passCountOf(pieces) { return pieces.filter(function (p) { return p.done; }).length; }
+  function renderPass(s) {
+    var pieces = passPieces(s), got = passCountOf(pieces);
+    $('passCount').textContent = got + ' / 4';
+    $('passBar').style.width = (got / 4 * 100) + '%';
+    $('passList').innerHTML = pieces.map(passChip).join('');
+    var next = pieces.filter(function (p) { return !p.done; })[0];
+    $('passNote').textContent = got >= 4
+      ? '네 조각 완성! 왕립 극장 발레 프리패스가 열렸어요 🎟️'
+      : '조각 ' + (4 - got) + '개 남았어요. ' + (next ? '‘' + next.label + '’ 완주로 한 조각이 채워져요.' : '');
+  }
+
+  /* ================= 난이도 선택 ================= */
+  function askMode(kind) {
+    if (!Object.hasOwn(classes, kind)) { closeToStudio(); return; }
+    pendingKind = kind;
+    var got = passCountOf(passPieces());
+    $('mCourse').textContent = classes[kind].name;
+    $('mPass').innerHTML = '지금 모은 프리패스 조각 <b>' + got + ' / 4</b>' +
+      (got >= 4 ? ' · 이미 네 조각을 다 모았어요!' : '');
+    var picked = readMode();
+    Array.prototype.forEach.call($('mOptions').children, function (btn) {
+      btn.setAttribute('aria-pressed', btn.dataset.mode === picked ? 'true' : 'false');
+    });
+    showDialog('modes');
+  }
+  function pickMode(id) {
+    if (!MODES[id] || busy) return;
+    saveMode(id);
+    var kind = pendingKind;
+    pendingKind = null;
+    deadMode = false;
+    if (!kind) { closeToStudio(); return; }
+    enroll(kind);
+  }
+
+  /* ================= HP 100 서바이벌 ================= */
+  function maxHPFor(s) {
+    s = s || T.get();
+    return 100 + (OUTFIT_HP[s.worn] || 0);
+  }
+  function paintHP() {
+    if (!ses) return;
+    var pct = Math.max(0, Math.min(100, ses.hp / ses.maxHP * 100));
+    $('lHpBar').style.width = pct.toFixed(1) + '%';
+    $('lHpText').textContent = Math.max(0, Math.round(ses.hp)) + ' / ' + ses.maxHP;
+    var danger = ses.hp <= 25;
+    $('lHpRow').classList.toggle('danger', danger);
+    $('lVignette').classList.toggle('on', danger);
+    $('lHpAlert').hidden = !danger;
+    $('lHpMode').textContent = (MODES[ses.mode] || MODES.normal).label;
+    var sh = $('lHpShield');
+    sh.hidden = !(ses.shields > 0);
+    if (ses.shields > 0) sh.textContent = '🛡 ' + ses.shields;
+  }
+  function warn(text, loss) {
+    var el = $('lWarn');
+    if (!el) return;
+    el.innerHTML = '<b>' + text + '</b>' + (loss ? '<small>HP -' + loss + '</small>' : '');
+    el.className = 'warn-bubble';
+    void el.offsetWidth;
+    el.className = 'warn-bubble on';
+  }
+  function hurtHP(loss, text) {
+    if (!ses || ses.dead) return;
+    ses.hp = Math.max(0, ses.hp - loss);
+    paintHP();
+    warn(text, loss);
+    var row = $('lHpRow');
+    row.classList.remove('hurt'); void row.offsetWidth; row.classList.add('hurt');
+    var scene = $('lScene');
+    if (scene) { scene.classList.remove('hurt'); void scene.offsetWidth; scene.classList.add('hurt'); }
+    if (ses.hp <= 0) gameOver();
+  }
+
+  /* ================= HP 0 · YOU DIED ================= */
+  function gameOver() {
+    if (!ses || ses.dead) return;
+    ses.dead = true;
+    ses.finished = true;
+    if (ses.raf) { cancelAnimationFrame(ses.raf); ses.raf = 0; }
+    stopMusic();
+    var info = {
+      kind: ses.kind, mode: ses.mode, damage: ses.damage,
+      judged: ses.judged, notes: ses.notes.length
+    };
+    if ($('lScene')) $('lScene').classList.remove('playing');
+    warn('💀 체력이 바닥났어요!');
+    deadMode = true;
+    renderGameover(info);
+    setTimeout(function () {
+      if (!deadMode) return;
+      stopSession();
+      showDialog('gameover');
+    }, 420);
+  }
+  function renderGameover(info) {
+    var m = MODES[info.mode] || MODES.normal;
+    $('goSub').textContent = classes[info.kind].name + ' · ' + m.label + ' 모드 (놓칠 때마다 HP -' + info.damage + ')' +
+      ' · 노트 ' + info.judged + ' / ' + info.notes;
+    $('goPass').textContent = 'BALLET FREE PASS ' + passCountOf(passPieces()) + ' / 4';
   }
 
   /* ================= 함께 연습할 정령 ================= */
@@ -131,6 +286,8 @@
   }
   function closeToStudio() {
     stopSession();
+    deadMode = false;
+    pendingKind = null;
     if (history.state && history.state.studioDialog) history.back();
     else routeTo('', true);
   }
@@ -229,6 +386,9 @@
     stopSession();
     var chart = run.chart && run.chart.notes && run.chart.notes.length ? run.chart : book.buildChart(run.kind, 0);
     var s = T.get(), kind = run.kind, c = classes[kind], buffs = buffFor(s.kingdom.prepared, kind);
+    var mode = MODES[readMode()] || MODES.normal;
+    buffs.window.perfect = Math.round(buffs.window.perfect * mode.window);
+    buffs.window.good = Math.round(buffs.window.good * mode.window);
     var power = T.practicePower(kind, s);
     buffs.window.good += power.timing;
     buffs.window.perfect = Math.min(buffs.window.good - 30, buffs.window.perfect + Math.floor(power.timing / 2) + power.perfect);
@@ -283,6 +443,11 @@
     $('lJudge').className = 'judge';
     $('lCombo').textContent = '콤보 0';
     $('lCombo').className = 'combo';
+    $('lWarn').className = 'warn-bubble';
+    $('lWarn').replaceChildren();
+    $('lHpRow').classList.remove('hurt', 'danger');
+    $('lVignette').classList.remove('on');
+    $('lHpAlert').hidden = true;
     $('lBuff').hidden = !(buffs.line || mealLine || ability);
     $('lBuff').innerHTML = [ability ? '<b class="ability">' + ability + '</b>' : '', mealLine, buffs.line].filter(Boolean).join('<span class="buff-sep"> · </span>');
     $('lTitle').textContent = c.name;
@@ -297,8 +462,11 @@
     $('lCue').className = 'now-cue';
     $('lScene').classList.toggle('stage-mode', !!c.stageMode);
     $('lFeedback').textContent = '노트가 빛나는 링에 닿는 순간, 노트와 같은 동작을 눌러요!';
+    var hpMax = maxHPFor(s);
     ses = {
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
+      mode: mode.key, approach: mode.approach, damage: mode.damage,
+      hp: hpMax, maxHP: hpMax, dead: false,
       judged: 0, combo: 0, maxCombo: 0, perfect: 0, good: 0, miss: 0,
       shields: buffs.shields, comboRate: buffs.comboRate, noteCoins: buffs.noteCoins, window: buffs.window,
       meal: meal ? meal.buff : {}, moveAt: -1, beatPose: 'plie', finished: false, sending: false,
@@ -306,6 +474,7 @@
     };
     paintDots();
     paintCount();
+    paintHP();
     applySound();
     var greet = T.SPIRITS[mate || teachers[kind]];
     if (greet && greet.cheer && greet.cheer.length) {
@@ -337,7 +506,7 @@
     var hot = false, pre = false, hotNote = null, hotDelta = Infinity;
     for (var i = 0; i < ses.notes.length; i++) {
       var n = ses.notes[i];
-      var p = 1 - (n.t - t) / APPROACH;
+      var p = 1 - (n.t - t) / ses.approach;
       if (n.judged) {
         if (n.el.style.display !== 'none' && !n.el.classList.contains('popped')) n.el.style.display = 'none';
         continue;
@@ -379,12 +548,13 @@
     for (var k = 0; k < ses.notes.length; k++) { if (!ses.notes[k].judged) { next = ses.notes[k]; break; } }
     if (next && !hot) {
       var left2 = next.t - t;
-      if (left2 < APPROACH - 80 && left2 > noteWindow(next)) {
+      if (left2 < ses.approach - 80 && left2 > noteWindow(next)) {
         $('lFeedback').textContent = (MOVES[next.type].kind || '') + ' ' + nextTypeLabel(next.type) + ' 준비';
       }
     } else if (!next && !hot) {
       $('lFeedback').textContent = '마지막 동작까지 왔어요. 마무리 자세를 지켜요.';
     }
+    if (ses.finished) return;
     if (t > ses.chart.total) { finishSession(); return; }
     ses.raf = requestAnimationFrame(loop);
   }
@@ -603,7 +773,7 @@
       advancePose(n.type);
       flashJudge('살짝 구했어요!', 'good'); sparkle(4, 'mint'); tone('good');
       cue(book.pickLine('shield', n.type));
-      comboBump(); paintDots(); paintCount();
+      comboBump(); paintDots(); paintCount(); paintHP();
       return;
     }
     ses.miss++; ses.combo = 0;
@@ -621,6 +791,8 @@
     bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
     cue(why === 'wrong' ? '노트와 같은 동작을 눌러야 해요. 다음 표시를 봐요.' : '한 박자 놓쳤어요. 음악은 계속돼요.');
     comboBump(); paintDots(); paintCount();
+    hurtHP(ses.damage, why === 'wrong' ? '⚠️ 방향 반대로!'
+      : n.type === 'jump' ? '⚠️ 점프 타이밍 늦음!' : '⚠️ 순서 놓침!');
   }
 
   function pressMove(move, soft) {
@@ -663,6 +835,7 @@
       comboCoins: Math.floor(ses.maxCombo / 4) * 2 * ses.comboRate,
       noteCoins: ses.noteCoins * (ses.perfect + ses.good)
     };
+    lastSurvived = { lessonId: run.id, hp: Math.round(ses.hp), maxHP: ses.maxHP, mode: ses.mode };
     ses.finished = true;
     if (ses.raf) cancelAnimationFrame(ses.raf);
     stopMusic();
@@ -737,6 +910,16 @@
     return teacher.name + '가 “' + line + '” 하고 말했어요.' +
       (mate && mate !== teachers[r.kind] ? ' ' + T.SPIRITS[mate].name + '도 옆에서 박수를 보냈어요.' : '');
   }
+  function renderResultPass(r) {
+    var pieces = passPieces(), got = passCountOf(pieces), gained = KIND_PIECE[r.kind];
+    $('rPassCount').textContent = got + ' / 4';
+    $('rPassRow').innerHTML = pieces.map(passChip).join('');
+    $('rPassNote').textContent = got >= 4
+      ? '네 조각 완성! 왕립 극장 발레 프리패스가 열렸어요 🎟️'
+      : gained
+        ? '이번 수업으로 ‘' + gained + '’ 조각을 받았어요. ' + (4 - got) + '조각 남았어요.'
+        : '조각 ' + (4 - got) + '개 남았어요.';
+  }
   function renderResult(r) {
     var s = T.get(), lv = T.level(), c = classes[r.kind], goal = T.nextDress();
     var key = r.lessonId || 'receipt';
@@ -756,6 +939,7 @@
     $('rGood').textContent = r.good || 0;
     $('rMiss').textContent = r.miss || 0;
     $('rCombo').textContent = r.maxCombo || 0;
+    renderResultPass(r);
     T.showDancer($('rDancer'), s.worn, s.kingdom.prepared ? 'arabesque' : (r.miss > 0 ? 'releve' : 'curtsy'));
     var gift = r.gift && T.dressOf(r.gift);
     $('rWear').dataset.gift = gift ? gift.id : '';
@@ -788,6 +972,14 @@
       (T.stageReady() ? '' : ' · 왕립 극장까지 ' + T.stageLeft() + '개');
     var st = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
     $('rGains').textContent = st + ' · 다음 수업 판정 여유 +' + T.practicePower(r.kind, s).timing + 'ms';
+    if (lastSurvived && lastSurvived.lessonId === r.lessonId) {
+      $('rSurvive').hidden = false;
+      $('rSurvive').textContent = '살아남은 HP ' + lastSurvived.hp + ' / ' + lastSurvived.maxHP +
+        ' · ' + (MODES[lastSurvived.mode] || MODES.normal).label + ' 모드';
+    } else {
+      $('rSurvive').hidden = true;
+      $('rSurvive').textContent = '';
+    }
     $('rDetails').open = true;
     var bonds = r.bonds || [];
     $('rBonds').hidden = !bonds.length;
@@ -806,8 +998,9 @@
   /* ================= 라우트 ================= */
   function renderRoute() {
     var hash = location.hash, s = T.get(), run = s.lesson, receipt = s.kingdom.receipt;
-    if (hash === '#first-bar') { enroll('bar'); return; }
+    if (hash === '#first-bar') { askMode('bar'); return; }
     if (hash === '#lesson' && run) {
+      if (deadMode) return;
       if (run.rounds) { migrateLegacy(run); return; }
       if (!ses || ses.id !== run.id) startSession(run);
       else if (!$('lesson').open) showDialog('lesson');
@@ -828,7 +1021,7 @@
     var b = e.target.closest('[data-cls]');
     if (b) routeTo(T.get().lesson ? '#lesson' : '#class-' + b.dataset.cls);
   });
-  $('resumeLesson').addEventListener('click', function () { routeTo('#lesson'); });
+  $('resumeLesson').addEventListener('click', function () { askMode(T.get().lesson.kind); });
   $('mates').addEventListener('click', function (e) {
     var b = e.target.closest('[data-mate]');
     if (!b || busy) return;
@@ -841,7 +1034,7 @@
       })
       .catch(function () { busy = false; });
   });
-  $('cGo').addEventListener('click', function () { audio(); applySound(); enroll(location.hash.slice(7)); });
+  $('cGo').addEventListener('click', function () { audio(); applySound(); askMode(location.hash.slice(7)); });
   $('cCancel').addEventListener('click', closeToStudio);
   $('lPause').addEventListener('click', closeToStudio);
   $('lSound').addEventListener('click', function () {
@@ -866,7 +1059,17 @@
       { '1': 'cat', '2': 'jump', '3': 'beam', '4': 'turn' }[e.key];
     if (key) { e.preventDefault(); pressMove(key); }
   });
-  $('rAgain').addEventListener('click', function () { enroll(T.get().kingdom.receipt.kind); });
+  $('rAgain').addEventListener('click', function () { askMode(T.get().kingdom.receipt.kind); });
+  $('mOptions').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-mode]');
+    if (b) pickMode(b.dataset.mode);
+  });
+  $('goRetry').addEventListener('click', function () {
+    var s = T.get();
+    deadMode = false;
+    if (s.lesson) askMode(s.lesson.kind);
+    else closeToStudio();
+  });
   $('rWear').addEventListener('click', async function () {
     if (busy) return;
     var gift = $('rWear').dataset.gift;
@@ -893,6 +1096,11 @@
   // 검증 도구가 읽는 공개 상태 (읽기 전용).
   window.__rhythm = {
     now: nowMs,
+    hp: function () {
+      return ses ? { hp: ses.hp, maxHP: ses.maxHP, mode: ses.mode, damage: ses.damage, shields: ses.shields, dead: !!ses.dead } : null;
+    },
+    mode: function () { return readMode(); },
+    pickMode: function (id) { pickMode(id); },
     notes: function () { return ses ? ses.notes.map(function (n) { return { t: n.t, type: n.type, judged: n.judged, result: n.result }; }) : []; },
     score: function () { return ses ? { perfect: ses.perfect, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, window: ses.window, shields: ses.shields } : null; },
     audio: function () { return actx ? { state: actx.state, time: actx.currentTime, sound: soundOn } : null; },
