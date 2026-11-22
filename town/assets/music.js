@@ -167,7 +167,9 @@
       return cur ? { started: playing, song: id, scheduled: at, total: cur.ev.length, length: cur.len } : null;
     }
     function elapsed() { return playing ? (ctx.currentTime - base) * 1000 : 0; }
-    return { start: start, stop: stop, info: info, elapsed: elapsed };
+    /* 실제로 곡 0ms가 스케줄된 오디오 시각. 게임 판정 시계를 이 값에 맞춘다. */
+    function startedAt() { return playing ? base : null; }
+    return { start: start, stop: stop, info: info, elapsed: elapsed, startedAt: startedAt };
   }
 
   /* 박수: 짧은 노이즈 버스트를 여러 번 겹쳐 만든다. */
