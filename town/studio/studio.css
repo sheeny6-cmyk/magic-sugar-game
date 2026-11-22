@@ -323,8 +323,8 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
   background:#fff7fceb;border-color:#d9bde8;box-shadow:0 3px 10px #3a23564d}
 #lesson .course-event.cat{bottom:calc(6% - 12px);background:#ffe1f1;border-color:#e8a9cf;box-shadow:0 0 0 2px #ffffffcc,0 4px 14px #49305955}
 #lesson .course-event.cat.hot{background:#fff2f9;border-color:#fff;box-shadow:0 0 0 5px #e8a9cf99,0 0 20px #e7a9cf,0 8px 22px #49305966}
-#lesson .course-event.jump{bottom:calc(6% - 11px);width:60px;height:56px}
-#lesson .course-event.beam{bottom:calc(6% - 7px);width:150px;height:46px}
+#lesson .course-event.jump{bottom:calc(6% - 11px);width:60px;height:56px;border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
+#lesson .course-event.beam{bottom:calc(6% - 7px);width:150px;height:46px;border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
 #lesson .course-event.turn{bottom:calc(6% - 14px);width:62px;height:62px;background:#f0e1ff;border-color:#b48ad8}
 #lesson .course-event.turn.hot{background:#f8edff;border-color:#fff;box-shadow:0 0 0 5px #b48ad8aa,0 0 20px #d9b8f3,0 8px 22px #49305966}
 #lesson .judge-line{left:var(--mark);bottom:6%;width:clamp(92px,25%,130px);height:32px;transform:translateX(-50%)}
