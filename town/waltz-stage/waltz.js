@@ -59,7 +59,15 @@
     releve: '../assets/dancers/lilac-releve.webp',
     arabesque: '../assets/dancers/lilac-arabesque.webp',
     tendu: '../assets/dancers/lilac-tendu.webp',
-    curtsy: '../assets/dancers/lilac-curtsy.webp'
+    curtsy: '../assets/dancers/lilac-curtsy.webp',
+    /* 동작 이름 그대로의 전용 그림 (waltz-stage/assets) */
+    pasdechat: 'assets/lilac-pasdechat.webp',
+    grandjete: 'assets/lilac-grandjete.webp',
+    pirouette: 'assets/lilac-pirouette.webp'
+  };
+  /* 포즈마다 그림 틀의 비율이 다르다 (기본 381/500 = 기존 도트 규격) */
+  var POSE_FRAME = {
+    grandjete: { ar: 640 / 500, hs: 0.85 }
   };
   var IMG = {};
   var spiritImg = new Image(); spiritImg.src = '../../kingdom/assets/av_etu.webp';
@@ -280,7 +288,7 @@
     if (dt < 0.36) {
       var q = clamp01((dt + 0.18) / 0.54);
       return {
-        pose: q > 0.9 ? 'plie' : 'releve',
+        pose: q > 0.9 ? 'plie' : 'pasdechat',
         dx: -6 + 16 * q, dy: -62 * 4 * q * (1 - q),
         rot: -7 * Math.sin(q * Math.PI), sx: 1, sy: 1, alpha: 1, trail: 3
       };
@@ -298,7 +306,7 @@
     if (dt < 0.44) {
       var q = clamp01((dt + 0.16) / 0.6);
       return {
-        pose: q > 0.92 ? 'plie' : 'tendu',
+        pose: q > 0.92 ? 'plie' : 'grandjete',
         dx: -8 + 24 * q, dy: -108 * 4 * q * (1 - q),
         rot: -11 * Math.sin(q * Math.PI), sx: 1 + 0.06 * Math.sin(q * Math.PI), sy: 1, alpha: 1, trail: 4
       };
@@ -336,14 +344,14 @@
     }
     if (dt < 0.04) {
       var q = clamp01((dt + 0.1) / 0.14);
-      return { pose: 'releve', dx: 0, dy: 7 * (1 - easeOut(q)) - 1.5 * q, rot: 0, sx: 1, sy: 1, alpha: 1 };
+      return { pose: 'pirouette', dx: 0, dy: 7 * (1 - easeOut(q)) - 1.5 * q, rot: 0, sx: 1, sy: 1, alpha: 1 };
     }
     if (dt < 0.62) {
       var s = clamp01((dt - 0.04) / 0.58);
       var ang = turns * Math.PI * 2 * s;
       var sx = Math.cos(ang);
       if (Math.abs(sx) < 0.42) sx = (sx < 0 ? -1 : 1) * 0.42;
-      return { pose: 'releve', dx: 0, dy: -1.5, rot: Math.sin(ang * 2) * 1.8, sx: sx, sy: 1, alpha: 1, trail: 6, spin: ang };
+      return { pose: 'pirouette', dx: 0, dy: -1.5, rot: Math.sin(ang * 2) * 1.8, sx: sx, sy: 1, alpha: 1, trail: 6, spin: ang };
     }
     if (dt < 0.8) {
       var r = 1 - clamp01((dt - 0.62) / 0.18);
@@ -791,7 +799,8 @@
   function drawPose(p, t, ghost) {
     var img = IMG[p.pose] || IMG.ready;
     if (!img || !img.complete) return;
-    var h = DANCER_H, w = h * (381 / 500);
+    var fr = POSE_FRAME[p.pose];
+    var h = DANCER_H * (fr && fr.hs ? fr.hs : 1), w = h * (fr && fr.ar ? fr.ar : (381 / 500));
     var x = judgeX + (p.dx || 0) + (ghost ? ghost.dx : 0);
     var y = groundY + (p.dy || 0) + (ghost ? ghost.dy : 0);
     ctx2d.save();
