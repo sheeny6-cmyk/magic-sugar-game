@@ -215,7 +215,7 @@
     var after = bondLevel(rec.bond), levels = [];
     for (var lv = before + 1; lv <= after; lv++) {
       levels.push(lv);
-      addJournal(s, 'bond-' + id + '-' + lv, '♥', josa(SPIRITS[id].name, '과', '와') + ' 친밀도 Lv.' + lv + josa(String(lv), '이', '가') + ' 되었어요. ' + SPIRITS[id].nature + josa(SPIRITS[id].nature, '이라고', '라고') + ' 해요.');
+      addJournal(s, 'bond-' + id + '-' + lv, '♥', josa(SPIRITS[id].name, '과', '와') + ' 친밀도 Lv.' + josa(String(lv), '이', '가') + ' 되었어요. ' + josa(SPIRITS[id].nature, '이라고', '라고') + ' 해요.');
     }
     return { id: id, name: SPIRITS[id].name, before: before, level: after, points: rec.bond, levels: levels };
   }
@@ -425,7 +425,7 @@
         buff: m.buff, line: m.line, at: Date.now()
       };
       addJournal(s, 'meal-' + kind + '-' + m.id, kind === 'cafe' ? '☕' : '🍢',
-        nick() + '님이 ' + m.name + josa(m.name, '을', '를') + ' 주문했어요. 다음 연습에 그 기운이 남아 있어요.');
+        nick() + '님이 ' + josa(m.name, '을', '를') + ' 주문했어요. 다음 연습에 그 기운이 남아 있어요.');
       return { ok: true, menu: m, price: price, coins: s.coins, meal: clone(s.kingdom.meal) };
     });
   }
