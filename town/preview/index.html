@@ -3,276 +3,797 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f9f5f0">
+<meta name="theme-color" content="#EDE4F7">
 <title>첫 무대 시제품 · 슈가의 발레왕국</title>
-<meta name="description" content="슈가의 발레왕국 V2 시제품. 정령과 연습해 첫 의상을 얻고 공연을 완성해 보세요.">
+<meta name="description" content="슈가의 발레왕국 V2 시제품. 정령과 함께 연습하고 코인을 모아 첫 의상을 사 입고, 왕립 극장의 첫 공연을 완성해 보세요.">
 <style>
-:root{--paper:#fcf9f4;--ink:#49374d;--muted:#837687;--lav:#82619a;--soft:#f2e9f2;--border:#e1d6df;--gold:#c7a56b;--shadow:0 15px 44px #5c426118;font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif}
-*{box-sizing:border-box}body{margin:0;background:#eee7eb;color:var(--ink)}button{font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #8d68a7;outline-offset:3px}button:disabled{opacity:.48;cursor:not-allowed}
-.shell{max-width:560px;min-height:100dvh;margin:auto;padding:15px 18px calc(27px + env(safe-area-inset-bottom));background:var(--paper);box-shadow:0 10px 60px #594a5630}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 15px}
-.brand{display:grid;gap:4px}.brand span{font-family:Georgia,serif;letter-spacing:.15em;color:#947798;font-size:.65rem}.brand strong{font-size:1.18rem;letter-spacing:-.04em}
-.top small{color:#917d88;font-size:.73rem;white-space:nowrap}
-.story{border:1px solid #dbc9d8;background:linear-gradient(160deg,#fffdf8,#f4eaf1);border-radius:22px;padding:17px 17px 13px;box-shadow:var(--shadow)}
-.eyebrow{margin:0;color:#8a6d85;letter-spacing:.1em;font-size:.69rem;font-weight:800}
-.story h1{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:clamp(1.55rem,6.2vw,2.2rem);line-height:1.3;margin:8px 0 7px;letter-spacing:-.065em}
-.story-lead{margin:0;font-size:.87rem;line-height:1.6;color:#6e6172;word-break:keep-all}
-.scene{position:relative;margin-top:15px;isolation:isolate;border-radius:19px;min-height:285px;height:clamp(290px,41svh,350px);background:#cfb9ca url('../assets/rehearsal-room.webp') center 55%/cover;overflow:hidden}
-.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#fffafa18 0%,transparent 62%,#3d2c4a2b 100%);z-index:-1}
-.scene img.dancer{display:block;position:absolute;left:17%;bottom:2%;width:66%;height:91%;object-fit:contain;object-position:center bottom;filter:drop-shadow(1px 5px 3px #45344736)}
-.scene img.dancer.bow{animation:bow .52s ease-in-out}
-@keyframes bow{0%{transform:translateY(6px) scale(.96)}60%{transform:translateY(-4px) scale(1.02)}100%{transform:none}}
-.coach{position:absolute;left:10px;bottom:9px;display:flex;align-items:center;gap:6px;padding:5px 9px 5px 4px;background:#fff9f4ed;border:1px solid #fff3e5;border-radius:99px;z-index:3}
-.coach img{width:35px;height:35px;object-fit:contain;border-radius:50%}.coach span{font-size:.73rem;font-weight:700}
-.scene-note{position:absolute;top:12px;left:12px;background:#fffdf7ed;border-radius:9px;padding:7px 10px;font-size:.73rem;letter-spacing:-.02em;font-weight:800}
-.stage-lights{display:none;position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 17%,#fff9cc29 38%,transparent 55%),linear-gradient(65deg,transparent 35%,#fff4cb35 55%,transparent 70%)}
+/* ===== 라일락 테마 토큰 ===== */
+:root{
+  --paper:#fbf7fe;--paper2:#f6eefc;--ink:#432e52;--ink-soft:#5f4a70;--muted:#8b7a9b;
+  --lav:#9b7bb8;--lav-deep:#7d5c9b;--lav-mid:#b995cf;--lilac:#c8a2c8;--lilac-soft:#ede4f7;
+  --border:#e3d4f1;--border-soft:#eee5f7;--pearl:#fffdfd;--gold:#c2a069;
+  --shadow:0 16px 44px #6b4a8a1f;--shadow-soft:0 6px 18px #6b4a8a14;
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:
+  radial-gradient(circle at 12% 4%,#f3e6ff 0,transparent 42%),
+  radial-gradient(circle at 88% 0%,#efe0fb 0,transparent 38%),
+  linear-gradient(170deg,#efe4fb,#e6daf4 48%,#f4ecfb);
+  color:var(--ink);-webkit-text-size-adjust:100%}
+button{font:inherit;cursor:pointer;color:inherit}
+button:focus-visible{outline:3px solid #8d68a7;outline-offset:3px}
+button:disabled{opacity:.5;cursor:not-allowed}
+
+/* ===== 첫 화면 ===== */
+.shell{max-width:560px;min-height:100dvh;margin:auto;padding:14px 16px calc(28px + env(safe-area-inset-bottom));
+  background:
+    radial-gradient(circle at 18% 2%,#ffffffd9 0,transparent 30%),
+    radial-gradient(circle at 82% 8%,#f3e8ffcc 0,transparent 34%),
+    linear-gradient(180deg,#fdfaff,#f7f0fe 44%,#fbf6ff);
+  box-shadow:0 12px 70px #5c3d7a2e}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0 13px}
+.brand{display:grid;gap:3px}
+.brand span{font-family:Georgia,serif;letter-spacing:.16em;color:#a184b6;font-size:.63rem}
+.brand strong{font-size:1.17rem;letter-spacing:-.045em}
+.coin-chip{display:inline-flex;align-items:center;gap:5px;padding:7px 11px;border-radius:999px;
+  border:1px solid #e6d6f4;background:linear-gradient(160deg,#fffdf9,#f8f0ff);box-shadow:var(--shadow-soft);
+  font-weight:850;font-size:.85rem;color:#6d4f86;white-space:nowrap}
+.coin-chip i{font-style:normal;font-size:.95rem}
+.coin-chip.bump{animation:coinBump .5s ease-out}
+@keyframes coinBump{0%{transform:scale(1)}38%{transform:scale(1.16) rotate(-3deg)}100%{transform:scale(1)}}
+
+.story{position:relative;border:1px solid var(--border);border-radius:24px;padding:17px 16px 14px;
+  background:
+    radial-gradient(circle at 14% 4%,#ffffffcc 0,transparent 44%),
+    radial-gradient(circle at 92% 6%,#ecd9ffb0 0,transparent 40%),
+    linear-gradient(158deg,#fffdfe,#f6ecfd 62%,#f2e6fb);
+  box-shadow:var(--shadow);overflow:hidden}
+.story:before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,#d3b7ea55 1px,transparent 1.4px),radial-gradient(circle,#e6d0f766 1.2px,transparent 1.6px);
+  background-size:52px 52px,78px 78px;background-position:6px 12px,34px 40px;opacity:.6}
+.story>*{position:relative}
+.eyebrow{margin:0;color:#9c7cb0;letter-spacing:.11em;font-size:.68rem;font-weight:800}
+.story h1{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:clamp(1.5rem,6vw,2.15rem);line-height:1.28;
+  margin:7px 0 6px;letter-spacing:-.065em}
+.story-lead{margin:0;font-size:.865rem;line-height:1.62;color:#6b587c;word-break:keep-all}
+
+.scene{position:relative;margin-top:14px;isolation:isolate;border-radius:20px;min-height:270px;
+  height:clamp(272px,39svh,340px);background:#d3c2e3 url('../assets/rehearsal-room.webp') center 55%/cover;overflow:hidden;
+  box-shadow:inset 0 0 0 1px #ffffff66}
+.scene:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 110%,#7a4fa64d 0,transparent 62%),
+    linear-gradient(180deg,#f6ecff2e 0%,transparent 48%,#3b2a4e38 100%)}
+.scene img.dancer{display:block;position:absolute;left:16%;bottom:2%;width:68%;height:92%;object-fit:contain;
+  object-position:center bottom;filter:drop-shadow(1px 6px 4px #46305a3d);z-index:2;transition:opacity .24s}
+.scene img.dancer.pop{animation:bow .52s ease-in-out}
+@keyframes bow{0%{transform:translateY(6px) scale(.97)}62%{transform:translateY(-4px) scale(1.015)}100%{transform:none}}
+.coach{position:absolute;left:9px;bottom:8px;display:flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;
+  background:#fffaffed;border:1px solid #f0e4fb;border-radius:99px;z-index:3;box-shadow:0 3px 10px #5b3f7a1f}
+.coach img{width:32px;height:32px;object-fit:contain;border-radius:50%;background:#f5ecff}
+.coach span{font-size:.71rem;font-weight:800;color:#6a4f7f}
+.scene-note{position:absolute;top:10px;left:10px;z-index:3;background:#fffaffea;border:1px solid #f0e2fb;
+  border-radius:10px;padding:5px 9px;font-size:.7rem;letter-spacing:-.02em;font-weight:850;color:#6b4f83}
+.level-badge{position:absolute;top:10px;right:10px;z-index:3;display:flex;align-items:center;gap:5px;
+  background:linear-gradient(150deg,#9b7bb8,#c8a2c8);color:#fff;border-radius:10px;padding:5px 9px;
+  font-size:.7rem;font-weight:850;box-shadow:0 4px 12px #6b4a8a45;letter-spacing:-.02em}
+.level-badge b{font-size:.76rem;letter-spacing:0}
+.worn-tag{position:absolute;right:9px;bottom:8px;z-index:3;background:#fffaffef;border:1px solid #efe1fb;
+  border-radius:99px;padding:4px 9px;font-size:.66rem;font-weight:800;color:#7d5f96;max-width:58%;text-align:center}
+.stage-lights{display:none;position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(112deg,transparent 18%,#fff6cc38 38%,transparent 54%),
+             linear-gradient(66deg,transparent 34%,#f3dcff3d 54%,transparent 68%)}
 .stage-lights.on{display:block}
-.hero-message{display:flex;align-items:center;gap:11px;margin:13px 0 2px;min-height:48px}
-.hero-message img{width:43px;height:43px;border-radius:50%;object-fit:contain;background:#f1e8ed;border:1px solid #e7d8e5}
-.hero-message p{margin:0;color:#69546e;line-height:1.5;font-size:.82rem}
-.action{display:block;width:100%;min-height:54px;border:0;border-radius:13px;background:#715388;color:#fffaf7;font-weight:800;font-size:1rem;box-shadow:0 8px 16px #7251832b}
-.action:active{transform:translateY(2px)}.action:disabled{background:#a6a0a8}
-.reward-strip{display:flex;align-items:center;gap:10px;border:1px solid #dfd0de;background:#f7eff6;border-radius:12px;margin-top:11px;padding:7px 11px}
-.reward-strip img{width:53px;height:65px;object-fit:contain}
-.reward-strip span{display:block;font-size:.71rem;color:#8b6685;font-weight:750}.reward-strip b{display:block;font-size:.93rem;margin:2px 0}.reward-strip p{margin:0;color:#7e7082;line-height:1.4;font-size:.73rem}
-.steps{margin-top:24px}.section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:11px}.section-head h2{margin:0;font-size:1.03rem}.section-head small{color:#958798;font-size:.71rem}
-.step-list{display:grid;gap:8px}.step{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:10px;min-height:60px;padding:11px 13px;border:1px solid #e8e0e7;background:#fffefa;border-radius:12px}
-.step.active{border-color:#a385b0;background:#f8f1fb}.step.done{border-color:#d4dfcd;background:#f9fcf7}.step-num{display:grid;place-items:center;height:29px;width:29px;border:1px solid #dbccda;border-radius:50%;font-weight:800;font-size:.77rem;color:#856e89}.step.active .step-num{background:#805c96;color:white;border-color:#805c96}.step.done .step-num{background:#e3eadc;border-color:#d5dfcf;color:#5f8660}
-.step b{display:block;font-size:.85rem}.step small{display:block;margin-top:3px;font-size:.72rem;color:#8b7c8a}.step em{font-style:normal;font-size:.68rem;color:#8b778d}
-.support{margin-top:20px}.support details{border:1px solid var(--border);border-radius:12px;background:#fffdf9;overflow:hidden}.support summary{cursor:pointer;list-style:none;padding:13px;font-weight:800;font-size:.86rem;display:flex;justify-content:space-between}.support summary::-webkit-details-marker{display:none}.support summary span{font-weight:500;color:#8e7d8a;font-size:.74rem}
-.support-body{padding:0 12px 15px}.support p{font-size:.75rem;line-height:1.5;color:#726476;margin:6px 0 10px}.spirit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}.spirit{border:1px solid #e6d8e6;background:#fffaf9;border-radius:10px;padding:5px 1px 6px;display:grid;justify-items:center;gap:4px;color:#64536e;font-size:.67rem}.spirit img{width:45px;height:45px;object-fit:contain}.spirit.selected{border:2px solid #8f6ca1;background:#f4eaf7;padding:4px 0 5px}.support .visit{display:flex;margin-top:12px;justify-content:space-between;gap:8px;font-size:.75rem}.support .visit a{color:#7d608e}
-.reset{margin-top:25px;text-align:center}.reset button{border:0;color:#9c8e9a;background:transparent;text-decoration:underline;font-size:.73rem;padding:10px}
-.overlay{display:none;position:fixed;inset:0;z-index:30;background:#f8f2f7;padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom);overflow:auto}
-.overlay.on{display:block}.playwrap{max-width:510px;margin:auto;min-height:100%;display:flex;flex-direction:column;gap:11px}
-.play-top{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:9px}.play-top div{display:grid;gap:3px}.play-top small{font-size:.69rem;color:#8d7889}.play-top strong{font-size:1.17rem}.quiet{border:0;background:#f1e6ef;border-radius:9px;padding:9px 13px;color:#76637a;font-size:.8rem;font-weight:700}
-.play-progress{height:5px;background:#e3d8e4;border-radius:99px;overflow:hidden}.play-progress i{display:block;width:0;height:100%;background:#9673a9;transition:width .2s}
-.play-scene{position:relative;flex:1;min-height:230px;height:clamp(245px,43svh,430px);max-height:430px;border:1px solid #dac9d7;overflow:hidden;border-radius:23px;background:#d0c0c6 url('../assets/rehearsal-room.webp') center 57%/cover}
-.play-scene.stage-mode{background-image:linear-gradient(180deg,#5e395880,#39264726),url('../assets/palace-court.webp');background-position:center}
-.play-scene img{display:block;position:absolute;left:15%;bottom:1%;width:70%;height:96%;object-fit:contain;object-position:50% 100%;filter:drop-shadow(1px 3px 3px #4e2d4b50)}
-.play-scene img.move{animation:bow .42s ease-out}
-.float-cue{position:absolute;top:12px;left:12px;right:12px;text-align:center;z-index:3;color:#5d4467;background:#fffdf7d9;border-radius:10px;padding:7px 10px;font-size:.77rem;font-weight:800}
-.judge{position:absolute;top:24%;left:50%;transform:translateX(-50%);font-size:1.28rem;font-weight:900;color:#704b8e;text-shadow:0 2px 6px #fff;opacity:0;z-index:4;white-space:nowrap}
-.judge.pop{animation:pop .62s forwards}@keyframes pop{0%{opacity:0;transform:translate(-50%,12px) scale(.88)}22%{opacity:1;transform:translate(-50%,0) scale(1)}65%{opacity:1}100%{opacity:0;transform:translate(-50%,-12px)}}
-.lane-label{font-size:.76rem;color:#7c6881;font-weight:700}
-.track{height:64px;border:1px solid #d1bdd5;border-radius:13px;background:linear-gradient(180deg,#fffaff,#eee1f2);position:relative;overflow:hidden}
-.track:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 29px,#ffffff80 29px 30px)}
-.hit-ring{position:absolute;left:40px;top:50%;width:43px;height:43px;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%;border:3px solid #9973ad;background:#fffafce8;box-shadow:0 0 0 5px #fff9}.hit-ring:after{content:"♪";font-size:1.2rem;color:#865d98}
-.note{position:absolute;top:50%;width:28px;height:28px;border-radius:50%;margin-top:-14px;background:#c9a6d3;box-shadow:0 2px 7px #9968a655;border:2px solid #fff;display:none}
-.tap{margin-top:auto;min-height:80px;width:100%;border:0;border-radius:21px;background:#7d5b99;color:white;font-size:1.24rem;font-weight:850;touch-action:manipulation;box-shadow:0 9px 0 #593e71}.tap:active{transform:translateY(5px);box-shadow:0 4px 0 #593e71}
-.play-help{text-align:center;font-size:.75rem;color:#87778b;margin:6px 0 14px;min-height:22px}
-.result{display:none;position:fixed;inset:0;z-index:40;background:#f9f4f8eF;align-items:center;justify-content:center;padding:16px}
-.result.on{display:flex}.result-card{background:#fffefa;border:1px solid #d7bed7;border-radius:23px;padding:25px 20px;width:min(100%,400px);text-align:center;box-shadow:0 22px 70px #46304a25}
-.result-card .eyebrow{color:#8d668f}.result-card h2{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:1.65rem;line-height:1.35;margin:10px 0}.result-card p{font-size:.86rem;line-height:1.6;color:#7d7180;word-break:keep-all}
-.result-card img{display:block;height:185px;width:100%;object-fit:contain}.result-card .action{margin-top:15px}
-.result-stats{font-size:.76rem;color:#9a7f9e}
-@media(max-height:690px){.playwrap{gap:6px}.play-scene{height:clamp(190px,35svh,260px);min-height:190px}.tap{min-height:64px}.play-help{margin:0 0 5px}}
-@media(max-width:360px){.shell{padding-inline:12px}.scene{min-height:240px;height:280px}.story{padding:13px}.spirit img{width:39px;height:39px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 
-/* V2 리듬: 음악에 맞춰 상황을 파악하고 동작 선택 */
-.play-controls{display:flex;gap:6px;align-items:center;flex:none}
-.play-controls .quiet{min-height:40px;padding:7px 9px;font-size:.72rem}
-.play-scene img.pas-de-chat{animation:pas-de-chat .65s ease-out}
-.play-scene img.grand-jete{animation:grand-jete .75s ease-out}
-.play-scene img.balance-arabesque{animation:balance-arabesque .85s ease-out}
-.play-scene img.wobble{animation:step-wobble .42s ease-in-out}
-@keyframes pas-de-chat{0%{transform:translateY(0) scale(1)}35%{transform:translateY(-35px) scale(.97) rotate(-4deg)}65%{transform:translateY(-25px) scale(1.02) rotate(3deg)}100%{transform:none}}
-@keyframes grand-jete{0%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-45px) scale(1.06) rotate(-4deg)}100%{transform:none}}
-@keyframes balance-arabesque{0%,100%{transform:rotate(0)}35%{transform:rotate(-5deg)}65%{transform:rotate(2deg)}}
-@keyframes step-wobble{0%,100%{transform:none}25%{transform:translateX(-7px) rotate(-3deg)}65%{transform:translateX(5px) rotate(3deg)}}
-.scene-event{position:absolute;z-index:3;left:90%;bottom:12%;width:74px;height:65px;display:none;align-items:center;justify-content:center;transform:translateX(-50%);background:#fff9f0f0;border:2px solid #e6d1c8;border-radius:13px;box-shadow:0 4px 12px #4e3b4d22;font-size:2.05rem;pointer-events:none;will-change:left,opacity}
-.scene-event.cat{background:#fff1e4;border-color:#ead2b7}.scene-event.jump{background:#f2e9ff;border-color:#c5afe5}.scene-event.beam{background:#e6f3ed;border-color:#a0cfb6}
-.scene-event.beam{font-size:0;width:110px;height:48px;background:transparent;border:0;box-shadow:none}
-.scene-event.beam:before{content:"";position:absolute;top:20px;left:3px;right:3px;height:9px;background:#a2adac;border:2px solid #708a85;border-radius:5px}
-.scene-event.beam:after{content:"";position:absolute;top:29px;left:19px;right:19px;height:19px;border-left:7px solid #94aaa3;border-right:7px solid #94aaa3}
-.note{width:36px;height:36px;margin-top:-18px;place-items:center;box-shadow:0 2px 6px #68496a3b;font-size:1.1rem}
-.note.cat{background:#ffe2c9}.note.jump{background:#d8c8fc}.note.beam{background:#c6e9dd}
-.move-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:auto}
-.move-button{min-width:0;min-height:90px;border:2px solid #d9c6df;border-radius:16px;background:#fffafc;color:#5e4966;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;touch-action:manipulation;-webkit-tap-highlight-color:transparent;transition:transform .08s,background .08s}
-.move-button span{font-size:1.45rem;line-height:1.3}.move-button b{font-size:.91rem}.move-button small{font-size:.7rem;color:#76667b}
-.move-button.cat{border-color:#e6caaf;background:#fff3e7}.move-button.jump{border-color:#c6b5e7;background:#f5f0fc}.move-button.beam{border-color:#a5cebe;background:#eef8f3}
-.move-button:active,.move-button.pressed{transform:translateY(3px) scale(.98);filter:brightness(.98)}
-.move-button:disabled{opacity:.5}
-.play-help{margin-bottom:11px}
-@media(max-width:370px){.move-button{min-height:76px}.move-button b{font-size:.81rem}.play-controls .quiet{font-size:.67rem;padding:6px 7px}.move-button span{font-size:1.22rem}}
-@media(max-height:700px){.move-button{min-height:72px}.play-help{font-size:.7rem;margin:4px 0 7px}}
+.hero-message{display:flex;align-items:center;gap:10px;margin:12px 0 3px;min-height:44px}
+.hero-message img{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#f4ebfd;border:1px solid #e8d9f7}
+.hero-message p{margin:0;color:#6a537e;line-height:1.5;font-size:.81rem;word-break:keep-all}
+.action{display:block;width:100%;min-height:54px;border:0;border-radius:15px;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;font-weight:850;font-size:1rem;
+  box-shadow:0 10px 22px #6b4a8a3d,inset 0 1px 0 #ffffff40;letter-spacing:-.02em}
+.action:active{transform:translateY(2px)}
+.action.wait{background:linear-gradient(150deg,#d8c9ea,#c3addb);color:#5b4770;box-shadow:none}
+.free-note{margin:7px 0 0;text-align:center;font-size:.69rem;color:#9a86ab}
+.reward-strip{display:flex;align-items:center;gap:10px;border:1px solid #ecdcf9;border-radius:14px;margin-top:10px;
+  padding:8px 11px;background:linear-gradient(150deg,#fffbfe,#f7ecff)}
+.reward-strip img{width:50px;height:62px;object-fit:contain;filter:drop-shadow(0 3px 4px #6b4a8a26)}
+.reward-strip .rs-body{min-width:0}
+.reward-strip span{display:block;font-size:.68rem;color:#9a76ad;font-weight:800}
+.reward-strip b{display:block;font-size:.9rem;margin:1px 0;letter-spacing:-.03em}
+.reward-strip p{margin:0;color:#857494;line-height:1.4;font-size:.71rem}
+.reward-strip .lv-pill{margin-left:auto;flex:none;border-radius:9px;background:#9b7bb8;color:#fff;
+  font-size:.66rem;font-weight:850;padding:4px 7px}
 
+/* ===== 섹션 공통 ===== */
+section.block{margin-top:22px}
+.section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;gap:8px}
+.section-head h2{margin:0;font-size:1.01rem;letter-spacing:-.03em}
+.section-head small{color:#9c89ab;font-size:.69rem;text-align:right}
+.lead{margin:0 0 10px;font-size:.76rem;line-height:1.55;color:#7d6b8d;word-break:keep-all}
 
-/* 실제 코스를 달리는 V3 연출: 3개의 반응 장애물과 회전 구간 */
-.play-scene{isolation:isolate;background-size:140% auto;overflow:hidden;--runner-step:0%;--walk:0px}
-.play-scene #playDancer{left:calc(8% + var(--runner-step));width:66%;height:91%;bottom:7%;z-index:4;transition:left .32s ease;object-position:50% 100%}
-.play-scene #playDancer.cruise{animation:cruise-steps .76s ease-in-out infinite}
-@keyframes cruise-steps{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-.runner-ground{position:absolute;bottom:0;left:0;right:0;height:22%;z-index:0;background:linear-gradient(180deg,#e7dce293,#a898a6bb),repeating-linear-gradient(90deg,#fff7f3a0 0 21px,#c5abbda0 21px 26px,transparent 26px 65px);background-position:0 0,var(--walk) center;border-top:2px solid #ffffffbb}
+/* ===== 정령 ===== */
+.spirit-block{border:1px solid var(--border);border-radius:20px;padding:14px 13px 12px;
+  background:linear-gradient(160deg,#fffdfe,#f7efff);box-shadow:var(--shadow-soft)}
+.spirit-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.spirit{border:1px solid #eadcf8;background:#fffbfe;border-radius:13px;padding:6px 1px 6px;display:grid;
+  justify-items:center;gap:3px;color:#65527a;font-size:.66rem;font-weight:800;transition:transform .12s,box-shadow .12s}
+.spirit img{width:44px;height:44px;object-fit:contain}
+.spirit .heart{font-size:.58rem;color:#c093c9;font-weight:700;letter-spacing:-.02em}
+.spirit:active{transform:scale(.97)}
+.spirit.selected{border:2px solid #9b7bb8;background:linear-gradient(160deg,#f6ecff,#eddefb);padding:5px 0 5px;
+  box-shadow:0 6px 16px #7d5c9b33}
+.spirit.focus-hint{animation:hintPulse 1.1s ease-in-out 2}
+@keyframes hintPulse{0%,100%{box-shadow:0 0 0 0 #b995cf00}50%{box-shadow:0 0 0 5px #b995cf55}}
+.spirit-focus{display:flex;gap:10px;align-items:center;margin-top:10px;padding:9px 10px;border-radius:13px;
+  background:#f5ecff;border:1px solid #e9d9f8}
+.spirit-focus img{width:38px;height:38px;object-fit:contain;flex:none}
+.spirit-focus b{display:block;font-size:.82rem}
+.spirit-focus small{display:block;font-size:.71rem;color:#7c5f97;line-height:1.4;margin-top:1px}
+.spirit-focus p{margin:0;font-size:.72rem;color:#8a7799;line-height:1.4}
+
+/* ===== 코스 단계 ===== */
+.step-list{display:grid;gap:7px}
+.step{display:grid;grid-template-columns:28px minmax(0,1fr) auto;align-items:center;gap:9px;min-height:56px;
+  padding:10px 12px;border:1px solid #ece3f6;background:#fffdfe;border-radius:13px}
+.step.active{border-color:#b995cf;background:linear-gradient(150deg,#faf3ff,#f2e7fd);box-shadow:0 6px 16px #7d5c9b1f}
+.step.done{border-color:#d9e4d4;background:#fbfef9}
+.step.locked{background:#f8f4fb;border-color:#eee6f6;opacity:.9}
+.step-num{display:grid;place-items:center;height:27px;width:27px;border:1px solid #ddccec;border-radius:50%;
+  font-weight:850;font-size:.74rem;color:#8b6fa2}
+.step.active .step-num{background:#8d6bab;color:#fff;border-color:#8d6bab}
+.step.done .step-num{background:#e5eedd;border-color:#d6e2cf;color:#60855f}
+.step b{display:block;font-size:.84rem;letter-spacing:-.02em}
+.step small{display:block;margin-top:2px;font-size:.71rem;color:#8d7c9d}
+.step em{font-style:normal;font-size:.67rem;color:#9a86ad;text-align:right;max-width:96px}
+
+/* ===== 의상 레벨 · 드레스룸 ===== */
+.wardrobe{border:1px solid var(--border);border-radius:20px;padding:14px 12px 12px;
+  background:linear-gradient(160deg,#fffdfe,#f8f1ff);box-shadow:var(--shadow-soft)}
+.rail{display:flex;gap:9px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+  mask-image:linear-gradient(90deg,#000 0,#000 92%,#0000 100%)}
+.rail::-webkit-scrollbar{height:4px}.rail::-webkit-scrollbar-thumb{background:#ddcbea;border-radius:9px}
+.dress{flex:0 0 148px;scroll-snap-align:start;border:1px solid #ebdff8;border-radius:15px;background:#fffbfe;
+  padding:9px 9px 10px;display:flex;flex-direction:column;gap:6px;text-align:left;transition:border-color .15s,box-shadow .15s}
+.dress.worn{border:2px solid #9b7bb8;background:linear-gradient(165deg,#fbf3ff,#f2e6fd);box-shadow:0 8px 20px #7d5c9b2b;padding:8px 8px 9px}
+.dress.locked{background:#f9f4fc}
+.dress .art{position:relative;height:96px;display:grid;place-items:end center;border-radius:11px;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 88%,#e8d8f54d,#fff0)}
+.dress .art img{max-height:96px;max-width:100%;object-fit:contain;filter:drop-shadow(0 3px 4px #5f477a2b)}
+.dress.locked .art img{filter:grayscale(.72) opacity(.72) drop-shadow(0 2px 3px #5f477a1f)}
+.dress .lv{position:absolute;top:4px;left:4px;background:#9b7bb8;color:#fff;font-size:.6rem;font-weight:850;
+  border-radius:7px;padding:2px 6px;letter-spacing:.01em}
+.dress.locked .lv{background:#bcb0c9}
+.dress b{font-size:.79rem;line-height:1.3;letter-spacing:-.03em}
+.dress .grade{font-size:.65rem;color:#9a7cb0;font-weight:800}
+.dress .gate{font-size:.63rem;color:#a58bb8;font-weight:750;line-height:1.35;word-break:keep-all}
+.dress .bonus{font-size:.66rem;color:#7f6b91;line-height:1.38;min-height:2.6em;word-break:keep-all}
+.dress .state{margin-top:auto;font-size:.66rem;font-weight:850;border-radius:8px;padding:5px 6px;text-align:center;
+  background:#f0e6fa;color:#795a95}
+.dress.worn .state{background:#8d6bab;color:#fff}
+.dress .state.buy{background:#fff3dc;color:#8a6420}
+.dress .state.need{background:#f3eef8;color:#9d8cab}
+.growth-note{margin:8px 2px 0;font-size:.71rem;color:#8b7799;line-height:1.5}
+
+/* ===== 상점 ===== */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.shop{border:1px solid #ebdcf7;border-radius:16px;background:linear-gradient(165deg,#fffdfe,#faf2ff);
+  padding:10px;display:flex;flex-direction:column;gap:7px;text-align:left;box-shadow:var(--shadow-soft)}
+.shop .art{height:84px;display:grid;place-items:center;border-radius:12px;background:#f7efff;overflow:hidden}
+.shop .art img{max-height:80px;max-width:100%;object-fit:contain;filter:drop-shadow(0 4px 6px #5f477a26)}
+.shop b{font-size:.82rem;letter-spacing:-.03em;line-height:1.3}
+.shop .eff{font-size:.68rem;color:#7f6b91;line-height:1.42;flex:1}
+.shop .buy-btn{border:0;border-radius:10px;min-height:38px;font-size:.78rem;font-weight:850;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b);color:#fff;box-shadow:0 5px 12px #6b4a8a33}
+.shop .buy-btn.on{background:linear-gradient(150deg,#e9dcf8,#d9c7ef);color:#6d5385;box-shadow:none}
+.shop .buy-btn:active{transform:translateY(1px)}
+.eco-note{margin:9px 2px 0;font-size:.7rem;color:#8f7c9e;line-height:1.55;
+  border-left:3px solid #d9c4ee;padding-left:8px}
+.visit{display:flex;margin-top:18px;justify-content:space-between;gap:8px;font-size:.73rem}
+.visit a{color:#81629a}
+.reset{margin-top:20px;text-align:center}
+.reset button{border:0;color:#a190b0;background:transparent;text-decoration:underline;font-size:.71rem;padding:10px}
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom));transform:translate(-50%,20px);
+  z-index:60;max-width:88vw;padding:11px 15px;border-radius:14px;background:#4b3363f2;color:#fdf8ff;
+  font-size:.79rem;font-weight:700;line-height:1.45;text-align:center;opacity:0;pointer-events:none;
+  transition:opacity .22s,transform .22s;box-shadow:0 12px 34px #301f422e}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ===== 연습 무대 ===== */
+.overlay{display:none;position:fixed;inset:0;z-index:30;
+  background:radial-gradient(ellipse at 50% 0%,#f3e7ff,#efe3fa 55%,#f7f0fd);
+  padding:env(safe-area-inset-top) 8px env(safe-area-inset-bottom);overflow:hidden}
+.overlay.on{display:block}
+.playwrap{max-width:540px;margin:auto;height:100%;display:flex;flex-direction:column;gap:6px;padding:6px 0 0}
+.play-top{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:2px;flex:none}
+.play-top>div:first-child{display:grid;gap:1px;min-width:0}
+.play-top small{font-size:.66rem;color:#9b86ab;letter-spacing:-.01em}
+.play-top strong{font-size:1.04rem;letter-spacing:-.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.play-controls{display:flex;gap:5px;align-items:center;flex:none}
+.quiet{border:0;background:#efe3fb;border-radius:9px;padding:8px 10px;color:#6f5686;font-size:.72rem;font-weight:800}
+.quiet:active{transform:translateY(1px)}
+.play-progress{height:5px;background:#e4d5f3;border-radius:99px;overflow:hidden;flex:none}
+.play-progress i{display:block;width:0;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,#c8a2c8,#9b7bb8);transition:width .18s}
+
+/* 안내 배너: 무대 밖(위)으로 옮겨 슈가 머리와 겹치지 않게 */
+.cue-bar{flex:none;display:flex;align-items:center;gap:8px;min-height:32px;padding:0 2px}
+.cue-bar p{margin:0;flex:1;min-width:0;font-size:.75rem;font-weight:800;color:#61477a;letter-spacing:-.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cue-bar .combo{flex:none;display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:900;
+  color:#7a5b95;background:#f3e7fd;border-radius:999px;padding:4px 9px;letter-spacing:-.01em}
+.cue-bar .combo.hot{background:linear-gradient(140deg,#c8a2c8,#9b7bb8);color:#fff;box-shadow:0 4px 12px #7d5c9b3d}
+.cue-bar .combo.pop{animation:comboPop .34s ease-out}
+@keyframes comboPop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(1)}}
+
+/* 무대: 남는 높이를 모두 쓰고, 아래 동작 버튼과 바로 붙는다 */
+.play-scene{position:relative;flex:1 1 auto;min-height:190px;isolation:isolate;
+  border:1px solid #ddc9ee;border-bottom:0;border-radius:22px 22px 0 0;overflow:hidden;
+  background:#d5c3e4 url('../assets/rehearsal-room.webp') center 62%/cover;
+  box-shadow:inset 0 0 0 1px #ffffff55}
+.play-scene.stage-mode{background-image:linear-gradient(180deg,#5a3a6d80,#2f204026),url('../assets/palace-court.webp')}
+.play-scene:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 108%,#5d3a8355 0,transparent 60%),
+             linear-gradient(180deg,#f7edff1f,transparent 40%,#33234a33)}
+.play-scene.spot .spotlight{opacity:1}
+
+#playDancer{position:absolute;left:-2%;bottom:6%;width:60%;height:82%;object-fit:contain;object-position:50% 100%;
+  filter:drop-shadow(1px 4px 4px #4a2f633d);z-index:4;will-change:transform}
+#playDancer.cruise{animation:cruise-steps .74s ease-in-out infinite}
+@keyframes cruise-steps{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+/* 동작별 손맛 연출 */
+#playDancer.pas-de-chat{animation:pasDeChat .8s cubic-bezier(.3,.18,.3,1.05) forwards}
+#playDancer.grand-jete{animation:grandJete .92s ease-out forwards}
+#playDancer.grand-jete.leap-high{animation:grandJeteHigh 1s cubic-bezier(.3,.16,.3,1.02) forwards}
+#playDancer.balance-arabesque{animation:balanceBeam 1.1s ease-in-out forwards}
+#playDancer.pirouette{animation:pirouette .92s ease-in-out forwards}
+#playDancer.pirouette.spin-double{animation:pirouetteDouble 1.24s cubic-bezier(.4,.1,.4,1) forwards}
+#playDancer.wobble{animation:stepWobble .44s ease-in-out}
+@keyframes pasDeChat{0%{transform:translateY(0) translateX(0) scale(1)}
+  26%{transform:translateY(-30px) translateX(9px) scale(.96) rotate(-3deg)}
+  54%{transform:translateY(-72px) translateX(20px) scale(1.02) rotate(2deg)}
+  74%{transform:translateY(-30px) translateX(34px) scale(1)}
+  100%{transform:translateY(0) translateX(42px)}}
+@keyframes grandJete{0%{transform:translateY(0) translateX(0) scale(1)}
+  26%{transform:translateY(-18px) translateX(8px) scale(.97)}
+  52%{transform:translateY(-96px) translateX(44px) scale(1.07) rotate(-4deg)}
+  76%{transform:translateY(-52px) translateX(70px) scale(1.04)}
+  100%{transform:translateY(0) translateX(82px)}}
+@keyframes grandJeteHigh{0%{transform:translateY(0) translateX(0) scale(1)}
+  22%{transform:translateY(-26px) translateX(10px) scale(.95)}
+  50%{transform:translateY(-136px) translateX(48px) scale(1.1) rotate(-5deg)}
+  78%{transform:translateY(-62px) translateX(76px) scale(1.05)}
+  100%{transform:translateY(0) translateX(88px)}}
+@keyframes balanceBeam{0%,100%{transform:translateY(0) rotate(0)}
+  24%{transform:translateY(-30px) rotate(-3deg)}35%,72%{transform:translateY(-42px) rotate(-1.5deg)}
+  86%{transform:translateY(-18px) rotate(1deg)}}
+@keyframes pirouette{0%{transform:scaleX(1) translateY(0)}
+  22%{transform:scaleX(.34) translateY(-8px)}50%{transform:scaleX(-1) translateY(-12px)}
+  74%{transform:scaleX(-.34) translateY(-5px)}100%{transform:scaleX(1) translateY(0)}}
+@keyframes pirouetteDouble{0%{transform:scaleX(1) translateY(0)}
+  12%{transform:scaleX(.3) translateY(-6px)}25%{transform:scaleX(-1) translateY(-11px)}
+  37%{transform:scaleX(-.3) translateY(-4px)}50%{transform:scaleX(1) translateY(-10px)}
+  62%{transform:scaleX(.3) translateY(-6px)}75%{transform:scaleX(-1) translateY(-12px)}
+  87%{transform:scaleX(-.3) translateY(-4px)}100%{transform:scaleX(1) translateY(0)}}
+@keyframes stepWobble{0%,100%{transform:none}24%{transform:translateX(-8px) rotate(-3deg)}66%{transform:translateX(6px) rotate(3deg)}}
+
+/* 무대 바닥: 발밑에 은은한 빛만 남기고 상단은 배경에 녹인다 */
+.runner-ground{position:absolute;bottom:0;left:0;right:0;height:20%;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 60% 100% at 64% 100%,#efe3fbcc 0%,#d9c6ee88 46%,#c8b3e000 78%),
+             linear-gradient(180deg,#f6eefd00 0%,#e3d2f333 55%,#cdb6e455 100%)}
+.spotlight{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:linear-gradient(104deg,transparent 26%,#fff6cd33 41%,transparent 52%),
+             linear-gradient(76deg,transparent 45%,#ffe9b82e 58%,transparent 70%)}
+
 .course-events{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.course-event{position:absolute;bottom:10%;left:110%;display:grid;place-items:center;transform:translateX(-50%);width:68px;height:59px;border-radius:13px;background:#fff8f0eb;border:2px solid #ebd4c5;box-shadow:0 4px 10px #49334828;font-size:2rem;will-change:left,opacity}
-.course-event.cat{border-radius:28px;background:#fff0dd;border-color:#eacbb1;bottom:13%}
-.course-event.jump{width:62px;height:58px;border:0;box-shadow:none;background:transparent;border-radius:0;font-size:0;bottom:9%}
-.course-event.jump:before{content:"";position:absolute;bottom:0;left:3px;right:3px;height:47px;border:4px solid #ad8c85;background:repeating-linear-gradient(135deg,#e3d3c6 0 10px,#cbb3a6 10px 16px);border-radius:8px}
-.course-event.beam{width:162px;height:50px;bottom:8%;border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
-.course-event.beam:before{content:"";position:absolute;top:7px;left:2px;right:2px;height:10px;background:#bdb49e;border:2px solid #8d8679;border-radius:5px}
-.course-event.beam:after{content:"";position:absolute;top:16px;left:18px;right:18px;height:33px;border-left:8px solid #a6a18e;border-right:8px solid #a6a18e}
-.course-event.turn{bottom:13%;width:65px;height:65px;border-radius:50%;background:#f0e6f9d9;border:3px dashed #9a79b9;color:#8c6eac;font-size:2.2rem}
-.course-event.cleared{opacity:.68;filter:saturate(.8)}
-.course-event.failed{background:#fae7e5}
-.play-scene img.pas-de-chat{animation:pas-de-chat-runner .85s cubic-bezier(.3,.18,.3,1.05) forwards}
-.play-scene img.grand-jete{animation:grand-jete-runner .92s ease-out forwards}
-.play-scene img.balance-arabesque{animation:balance-beam-runner 1.1s ease-in-out forwards}
-.play-scene img.pirouette{animation:pirouette-runner .9s ease-in-out forwards;backface-visibility:visible}
-.play-scene img.wobble{animation:step-wobble .42s ease-in-out}
-@keyframes pas-de-chat-runner{0%{transform:translateY(0) translateX(0) scale(1)}24%{transform:translateY(-26px) translateX(8px) scale(.96)}53%{transform:translateY(-66px) translateX(18px) scale(1.02)}72%{transform:translateY(-29px) translateX(33px) scale(1)}100%{transform:translateY(0) translateX(40px)}}
-@keyframes grand-jete-runner{0%{transform:translateY(0) translateX(0) scale(1)}25%{transform:translateY(-17px) translateX(8px) scale(.97)}53%{transform:translateY(-95px) translateX(44px) scale(1.07)}75%{transform:translateY(-55px) translateX(68px) scale(1.04)}100%{transform:translateY(0) translateX(79px)}}
-@keyframes balance-beam-runner{0%{transform:translateY(0)}25%{transform:translateY(-27px)}35%,75%{transform:translateY(-38px) rotate(-1deg)}100%{transform:translateY(0)}}
-@keyframes pirouette-runner{0%{transform:scaleX(1) translateY(0)}22%{transform:scaleX(.35) translateY(-7px)}50%{transform:scaleX(-1) translateY(-10px)}72%{transform:scaleX(-.35) translateY(-4px)}100%{transform:scaleX(1) translateY(0)}}
-.move-pad{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
-.move-button{min-height:79px;padding:5px 1px}
-.move-button span{font-size:1.3rem}.move-button b{font-size:.79rem;letter-spacing:-.05em}.move-button small{font-size:.64rem}
-.move-button.turn{border-color:#cdb6e0;background:#f6eefb}
-.note.turn{background:#e2d1f4}
-/* JS 좌표는 노트의 중심점이다. 왼쪽 가장자리가 아닌 중심을 링에 일치시킨다. */
-.track .note{transform:translateX(-50%)}
-.track .note.in-window{box-shadow:0 0 0 4px #fffefca8,0 0 13px #ab7acc91;filter:brightness(1.04)}
-.track.timing-now .hit-ring{border-color:#82559e;box-shadow:0 0 0 5px #fff9,0 0 0 10px #d8b9e869}
-.prep-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.prep-button{min-height:100px;padding:11px;border:1px solid #ded0e2;border-radius:12px;background:#fffafc;color:#5b4862;text-align:left;display:flex;flex-direction:column;gap:6px}
-.prep-button b{font-size:.84rem;line-height:1.3}.prep-button span{font-size:.74rem;color:#705c78}.prep-button small{font-size:.7rem;color:#87718b}
-.prep-button.ready{background:#eef5ec;border-color:#a6bea9}.prep-button.ready small{color:#4b7b4f;font-weight:700}
-@media(max-width:420px){.move-button b{font-size:.72rem}.move-button small{font-size:.59rem}.move-button{min-height:76px}.prep-grid{grid-template-columns:1fr}.prep-button{min-height:70px}}
-@media(max-height:670px){.move-button{min-height:62px}.move-button span{font-size:1.05rem}.move-button b{font-size:.71rem}.play-scene{min-height:177px}}
+.course-event{position:absolute;left:108%;bottom:11%;display:grid;place-items:center;transform:translateX(-50%);
+  width:64px;height:56px;border-radius:14px;background:#fff9feeb;border:2px solid #ead5f6;
+  box-shadow:0 5px 14px #4930592e;font-size:1.9rem;will-change:left,opacity}
+.course-event.cat{border-radius:26px;background:#fff2f8;border-color:#eecfe6;bottom:12%}
+.course-event.jump{width:58px;height:54px;border:0;box-shadow:none;background:transparent;border-radius:0;font-size:0;bottom:10%}
+.course-event.jump:before{content:"";position:absolute;bottom:0;left:3px;right:3px;height:44px;border:4px solid #a892b5;
+  background:repeating-linear-gradient(135deg,#e8dccf 0 10px,#cdb9c9 10px 16px);border-radius:8px;box-shadow:0 3px 8px #4b345c2b}
+.course-event.beam{width:150px;height:46px;bottom:9%;border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
+.course-event.beam:before{content:"";position:absolute;top:6px;left:2px;right:2px;height:9px;background:#c3b6d2;border:2px solid #9184a3;border-radius:5px}
+.course-event.beam:after{content:"";position:absolute;top:14px;left:17px;right:17px;height:30px;border-left:7px solid #ac9fbd;border-right:7px solid #ac9fbd}
+.course-event.turn{bottom:11%;width:60px;height:60px;border-radius:50%;background:#f3e6ffdf;border:3px dashed #9b79bb;color:#8a66ab;font-size:2rem}
+.course-event.cleared{opacity:.6;filter:saturate(.85)}
+.course-event.popped{animation:evPop .42s ease-out forwards}
+@keyframes evPop{0%{transform:translateX(-50%) scale(1);opacity:1}60%{transform:translateX(-50%) scale(1.32) rotate(8deg);opacity:.9}100%{transform:translateX(-50%) scale(.5);opacity:0}}
 
+/* 무대 바닥의 단 하나의 판정 지점 */
+.judge-line{position:absolute;left:64%;bottom:6.5%;width:100px;height:31px;transform:translateX(-50%);z-index:5;pointer-events:none}
+.judge-line .floor{position:absolute;left:50%;top:50%;width:220px;height:1px;transform:translate(-50%,-50%);
+  background:linear-gradient(90deg,#ffffff00,#ffffffcc 38%,#ffffffcc 62%,#ffffff00)}
+.judge-line .shaft{position:absolute;left:50%;bottom:52%;width:92px;height:130px;transform:translateX(-50%);
+  background:linear-gradient(0deg,#e2cdf8aa,#e2cdf800);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);opacity:.6}
+.judge-line .ring{position:absolute;inset:0;border-radius:50%;border:3px solid #fff;
+  background:radial-gradient(ellipse at 50% 45%,#ffffff8a,#ffffff10 62%,#ffffff00 78%);
+  box-shadow:0 0 14px #c8a2c8aa,inset 0 0 10px #ffffffcc;transition:box-shadow .12s,transform .12s}
+.judge-line .ring:after{content:"";position:absolute;inset:5px;border-radius:50%;border:1px dashed #ffffffb3}
+.judge-line.hot .ring{border-color:#fff;transform:scale(1.08);
+  box-shadow:0 0 26px #fff,0 0 0 7px #c8a2c880,inset 0 0 14px #fff}
+.judge-line.great .ring{border-color:#ffeaa8;box-shadow:0 0 32px #ffe9a8,0 0 0 8px #ffe9a866,inset 0 0 16px #fff}
+.judge-line.pre .ring{border-color:#f3e6ff;box-shadow:0 0 16px #e2cdf7aa}
+.judge-line.burst .ring{animation:ringBurst .5s ease-out}
+@keyframes ringBurst{0%{transform:scale(1);opacity:1}55%{transform:scale(1.9);opacity:.6}100%{transform:scale(1);opacity:1}}
+
+.sparkles{position:absolute;inset:0;z-index:6;pointer-events:none;overflow:hidden}
+.spark{position:absolute;width:10px;height:10px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0,#ffe9ff 40%,#c8a2c8 100%);
+  box-shadow:0 0 12px #fff,0 0 22px #d9b8f3;animation:sparkFly .8s cubic-bezier(.2,.6,.4,1) forwards}
+.spark.star{width:10px;height:10px;border-radius:2px;transform:rotate(45deg);background:linear-gradient(140deg,#fff,#e0c4ff)}
+@keyframes sparkFly{0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}60%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.15) rotate(160deg)}}
+
+.judge{position:absolute;left:64%;bottom:22%;transform:translateX(-50%);font-size:1.16rem;font-weight:900;
+  color:#6d4790;text-shadow:0 2px 0 #fff,0 4px 12px #fff;opacity:0;z-index:7;white-space:nowrap;letter-spacing:-.02em}
+.judge.pop{animation:pop .68s forwards}
+.judge.great{color:#a2742c;font-size:1.32rem}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.86)}20%{opacity:1;transform:translate(-50%,0) scale(1.04)}64%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px) scale(1)}}
+
+/* 무대 구석의 정령 */
+.buddy{position:absolute;right:8px;top:8px;z-index:8;display:flex;align-items:flex-start;gap:6px;max-width:88%}
+.buddy .bubble{order:1;max-width:172px;background:#fffafff2;border:1px solid #ecd9fa;border-radius:12px;
+  padding:6px 9px;font-size:.68rem;line-height:1.4;color:#60467a;font-weight:750;
+  box-shadow:0 4px 14px #4c34631f;opacity:0;transform:translateY(-4px) scale(.94);transition:opacity .18s,transform .18s}
+.buddy .bubble.on{opacity:1;transform:none}
+.buddy img{order:2;width:44px;height:44px;object-fit:contain;border-radius:50%;background:#f7eeff;
+  border:2px solid #e7d5f8;box-shadow:0 4px 12px #4c34632b;transition:transform .18s}
+.buddy.cheer img{animation:buddyCheer .5s ease-out}
+@keyframes buddyCheer{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-8px) scale(1.14)}100%{transform:none}}
+
+/* 동작 버튼: 무대에 딱 붙여 한 손으로 */
+.move-pad{flex:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;
+  margin:0;padding:7px 6px calc(7px + env(safe-area-inset-bottom));
+  border:1px solid #ddc9ee;border-top:0;border-radius:0 0 22px 22px;
+  background:linear-gradient(180deg,#f7edff,#efe1fb);box-shadow:0 14px 30px #5c3d7a1f}
+.move-button{min-width:0;min-height:86px;border:2px solid #e0cdf1;border-radius:14px;background:#fffbfe;
+  color:#4f3a63;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  transition:transform .07s,background .07s,box-shadow .07s;padding:4px 1px;position:relative;overflow:hidden}
+.move-button span{font-size:1.42rem;line-height:1.15}
+.move-button b{font-size:.82rem;letter-spacing:-.05em}
+.move-button small{font-size:.63rem;color:#7c6a8c}
+.move-button.cat{border-color:#eccbe0;background:linear-gradient(170deg,#fff7fb,#fdeaf4)}
+.move-button.jump{border-color:#cdb6e7;background:linear-gradient(170deg,#faf5ff,#f1e7fe)}
+.move-button.beam{border-color:#aecfbe;background:linear-gradient(170deg,#f7fdfa,#e9f6ef)}
+.move-button.turn{border-color:#cdb6e0;background:linear-gradient(170deg,#faf3ff,#f0e5fc)}
+.move-button:active,.move-button.pressed{transform:translateY(3px) scale(.975);filter:brightness(.97);
+  box-shadow:inset 0 3px 10px #5c3d7a24}
+.move-button:disabled{opacity:.55}
+.move-button.hit::after{content:"";position:absolute;inset:0;background:radial-gradient(circle,#ffffffd9,#ffffff00 70%);animation:hitFlash .34s ease-out}
+@keyframes hitFlash{0%{opacity:1}100%{opacity:0}}
+
+/* 결과 */
+.result{display:none;position:fixed;inset:0;z-index:40;background:#f6eefdf7;backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:16px}
+.result.on{display:flex}
+.result-card{background:linear-gradient(165deg,#fffdfe,#f7edff);border:1px solid #e0cdf1;border-radius:24px;
+  padding:22px 18px;width:min(100%,400px);text-align:center;box-shadow:0 22px 70px #46304a2e;max-height:92dvh;overflow:auto}
+.result-card .eyebrow{color:#9d7cb2}
+.result-card h2{font-family:"Nanum Myeongjo","Noto Serif KR",serif;font-size:1.5rem;line-height:1.35;margin:8px 0 4px;letter-spacing:-.05em}
+.result-card img{display:block;height:168px;width:100%;object-fit:contain;filter:drop-shadow(0 8px 14px #5c3d7a26)}
+.result-card .new-dress[hidden]{display:none}
+.result-card .new-dress{display:inline-block;margin:2px 0 8px;padding:5px 11px;border-radius:999px;
+  background:linear-gradient(140deg,#c8a2c8,#9b7bb8);color:#fff;font-size:.72rem;font-weight:850}
+.result-card p{font-size:.83rem;line-height:1.6;color:#736280;word-break:keep-all;margin:6px 0}
+.result-stats{font-size:.73rem;color:#93789f;line-height:1.7;margin:6px 0 2px}
+.result-coins{font-size:.82rem;font-weight:850;color:#7a5b95;margin:4px 0 0}
+.result-card .action{margin-top:12px}
+
+@media(max-width:370px){
+  .shell{padding-inline:12px}
+  .spirit img{width:38px;height:38px}
+  .move-button b{font-size:.72rem}.move-button small{font-size:.58rem}.move-button span{font-size:1.2rem}
+  .move-button{min-height:78px}
+}
+@media(max-height:720px){
+  .move-button{min-height:72px}.move-button span{font-size:1.15rem}
+  .play-scene{min-height:160px}
+  .cue-bar{min-height:28px}
+}
+@media(min-width:900px){
+  .shell{max-width:640px}
+  .scene{height:clamp(320px,42svh,380px)}
+}
+@media(min-width:700px){
+  .playwrap{max-width:600px}
+  .play-scene{min-height:300px}
+  .move-button{min-height:104px}
+  .move-button b{font-size:.92rem}.move-button small{font-size:.68rem}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <main class="shell">
-  <header class="top"><div class="brand"><span>SUGAR'S ROYAL BALLET</span><strong>슈가의 발레왕국</strong></div><small>첫 공연 시제품</small></header>
+  <header class="top">
+    <div class="brand"><span>SUGAR'S ROYAL BALLET</span><strong>슈가의 발레왕국</strong></div>
+    <div class="coin-chip" id="coinChip"><i aria-hidden="true">🪙</i><b id="coinCount">0</b></div>
+  </header>
+
   <section class="story" aria-label="진행 중인 공연">
     <p class="eyebrow">ROYAL THEATER · 첫 번째 작품</p>
     <h1>별빛의 첫 왈츠</h1>
     <p class="story-lead" id="lead">첫 무대에 설 발레리나에게 에튜가 작은 초대장을 건넸어요.</p>
     <div class="scene">
-      <div class="stage-lights" id="lights"></div><span class="scene-note" id="sceneNote">첫 무대 준비 중</span>
+      <div class="stage-lights" id="lights"></div>
+      <span class="scene-note" id="sceneNote">첫 무대 준비 중</span>
+      <span class="level-badge" id="levelBadge"><b>Lv.1</b> 입문</span>
       <img class="dancer" id="homeDancer" src="../assets/dancers/basic-ready.webp" alt="첫 연습을 준비하는 발레리나">
-      <div class="coach"><img id="coachPic" src="../../kingdom/assets/av_etu.webp" alt=""><span id="coachName">에튜와 함께</span></div>
+      <span class="worn-tag" id="wornTag">기본 핑크 레오타드</span>
+      <div class="coach"><img id="coachPic" src="../../kingdom/assets/av_etu.webp" alt=""><span id="coachName">함께할 정령을 골라요</span></div>
     </div>
-    <div class="hero-message"><img id="portrait" src="../../kingdom/assets/av_etu.webp" alt=""><p id="talk">"첫 음악은 제가 옆에서 세어 드릴게요."</p></div>
-    <button type="button" class="action" id="mainAction">첫 안무 연습하기</button>
-    <div class="reward-strip"><img id="rewardPic" src="../assets/dancers/lilac-curtsy.webp" alt="첫 의상"><div><span id="rewardKicker">첫 완주 선물</span><b id="rewardName">라일락 쉬폰 스커트</b><p id="rewardNote">완주하면 바로 입어 볼 수 있어요.</p></div></div>
+    <div class="hero-message"><img id="portrait" src="../../kingdom/assets/av_etu.webp" alt=""><p id="talk">“무대에는 꼭 한 명의 정령이 함께 서요. 오늘은 누가 같이 갈까요?”</p></div>
+    <button type="button" class="action wait" id="mainAction">함께할 정령 고르기</button>
+    <p class="free-note">연습과 공연은 무료예요 · 완주하면 코인이 쌓여요</p>
+    <div class="reward-strip">
+      <img id="rewardPic" src="../assets/dancers/lilac-curtsy.webp" alt="다음 의상">
+      <div class="rs-body"><span id="rewardKicker">다음 의상 예고</span><b id="rewardName">라일락 쉬폰 스커트</b><p id="rewardNote">첫 코스를 완주하면 바로 입어요.</p></div>
+      <span class="lv-pill" id="rewardLv">Lv.2</span>
+    </div>
   </section>
-  <section class="steps" aria-labelledby="stepsTitle">
-    <div class="section-head"><h2 id="stepsTitle">첫 공연을 완성하는 길</h2><small id="stepCount">0 / 3 완료</small></div>
+
+  <section class="block" id="spiritBlock">
+    <div class="section-head"><h2>함께 무대에 설 정령</h2><small>한 명은 꼭 함께해요</small></div>
+    <div class="spirit-block">
+      <div class="spirit-row" id="spirits"></div>
+      <div class="spirit-focus" id="spiritFocus"></div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><h2>첫 공연을 완성하는 길</h2><small id="stepCount">0 / 4 완료</small></div>
     <div class="step-list" id="stepList"></div>
   </section>
-  <section class="support">
-    <details class="prep-stations" id="prepDetails">
-      <summary>공연 전에 들를 곳 <span>선택 사항 · 실제 도움을 받을 수 있어요</span></summary>
-      <div class="support-body">
-        <p>한 번 준비하면 다음 연습이나 공연에서 효과가 적용돼요. 본편 카페·분식집과는 별도인 V2 테스트 기능이야.</p>
-        <div class="prep-grid">
-          <button type="button" class="prep-button" id="cafePrep"><b>발레 카페 · 응원 포션</b><span>다음 곡 판정 여유 +65ms</span><small id="cafePrepStatus">아직 준비하지 않음</small></button>
-          <button type="button" class="prep-button" id="snackPrep"><b>꿈속 분식집 · 회복 간식</b><span>다음 곡에서 첫 실수 1회 구제</span><small id="snackPrepStatus">아직 준비하지 않음</small></button>
-        </div>
+
+  <section class="block">
+    <div class="section-head"><h2>드레스룸 · 의상 레벨</h2><small>레벨이 오르면 열리는 옷</small></div>
+    <div class="wardrobe">
+      <div class="rail" id="dressRail"></div>
+      <p class="growth-note" id="growthNote">옷마다 무대 보너스가 달라요. 레벨이 오르면 다음 옷을 살 수 있어요.</p>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="section-head"><h2>연습 전에 들를 상점</h2><small>코인으로 사 먹어요</small></div>
+    <div class="shop-grid">
+      <div class="shop">
+        <div class="art"><img src="../assets/full/tteokbokki.webp" alt=""></div>
+        <b>분식집 · 다리 쫙 떡볶이</b>
+        <div class="eff">먹으면 다음 코스에서 그랑제떼 판정 +60ms · 도약이 커지고 · 체력 1회 구제</div>
+        <button type="button" class="buy-btn" id="buySnack">40 코인에 사 먹기</button>
       </div>
-    </details>
-    <details id="spiritDetails">
-      <summary>곁에서 도와줄 정령 <span>선택 사항 · 탭해서 열기</span></summary>
-      <div class="support-body"><p>한 명만 선택하세요. 정령마다 유리한 판정이 달라져요. 에튜는 전체, 아라는 균형대, 샹즈는 도약, 피루는 피루엣, 알레는 리듬 판정에 도움을 줘요.</p><div class="spirit-grid" id="spirits"></div></div>
-    </details>
-    <div class="visit"><a href="../?v=20261122a">기존 발레왕국으로 돌아가기</a><a href="../REDESIGN_V2.md">재설계 문서 보기</a></div>
+      <div class="shop">
+        <div class="art"><img src="../../cafe/assets/drink-arabesque.webp" alt=""></div>
+        <b>카페 · 아라베스크 밀크</b>
+        <div class="eff">마시면 함께한 정령이 기뻐해요 · 정령 버프 +25ms · 아라베스크 판정 +40ms · 친밀도 +1</div>
+        <button type="button" class="buy-btn" id="buyCafe">50 코인에 사 마시기</button>
+      </div>
+    </div>
+    <p class="eco-note">코인은 연습·공연을 완주해야만 쌓여요. 연습에 입장료는 없고, 코인은 이 상점과 드레스룸에서만 써요.</p>
+  </section>
+
+  <section class="support visit" aria-label="돌아가기">
+    <a href="../?v=20261122a">기존 발레왕국으로 돌아가기</a>
+    <a href="../REDESIGN_V2.md">재설계 문서 보기</a>
   </section>
   <div class="reset"><button type="button" id="reset">시제품 진행 초기화</button></div>
 </main>
+
 <section class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="playTitle">
   <div class="playwrap">
-    <div class="play-top"><div><small id="playKicker">첫 안무 · 1/3</small><strong id="playTitle">바 워크</strong></div><div class="play-controls"><button type="button" class="quiet" id="musicToggle" aria-pressed="true">음악 켜짐</button><button type="button" class="quiet" id="exit">나가기</button></div></div>
+    <div class="play-top">
+      <div><small id="playKicker">첫 코스 · 1/4</small><strong id="playTitle">첫 코스 연습</strong></div>
+      <div class="play-controls">
+        <button type="button" class="quiet" id="musicToggle" aria-pressed="true">음악</button>
+        <button type="button" class="quiet" id="exit">나가기</button>
+      </div>
+    </div>
     <div class="play-progress"><i id="playBar"></i></div>
-    <div class="play-scene" id="playScene"><div class="runner-ground" aria-hidden="true"></div><div class="course-events" id="courseEvents" aria-hidden="true"></div><img id="playDancer" src="../assets/dancers/basic-ready.webp" alt="코스를 따라 전진하는 발레리나"><span class="float-cue" id="cue">상황에 맞는 발레 동작을 골라요</span><span class="judge" id="judge" aria-live="polite"></span></div>
-    <div class="lane-label" id="laneLabel">박자 0 / 8</div>
-    <div class="track" id="track"><div class="hit-ring" aria-hidden="true"></div><div id="notes"></div></div>
+    <div class="cue-bar"><p id="cue">상황에 맞는 발레 동작을 골라요</p><span class="combo" id="comboChip">콤보 0</span></div>
+    <div class="play-scene" id="playScene">
+      <div class="runner-ground" aria-hidden="true"></div>
+      <div class="spotlight" aria-hidden="true"></div>
+      <div class="course-events" id="courseEvents" aria-hidden="true"></div>
+      <img id="playDancer" src="../assets/dancers/basic-ready.webp" alt="코스를 따라 전진하는 발레리나">
+      <div class="judge-line" id="judgeLine" aria-hidden="true"><span class="floor"></span><span class="shaft"></span><span class="ring"></span></div>
+      <span class="judge" id="judge" aria-live="polite"></span>
+      <div class="buddy" id="buddy"><span class="bubble" id="buddyLine"></span><img id="buddyPic" src="../../kingdom/assets/av_etu.webp" alt=""></div>
+      <div class="sparkles" id="sparkles" aria-hidden="true"></div>
+    </div>
     <div class="move-pad" id="movePad" role="group" aria-label="발레 동작 선택">
       <button class="move-button cat" type="button" data-move="cat"><span aria-hidden="true">🐈</span><b>파드샤</b><small>고양이</small></button>
       <button class="move-button jump" type="button" data-move="jump"><span aria-hidden="true">🚧</span><b>그랑제떼</b><small>장애물</small></button>
       <button class="move-button beam" type="button" data-move="beam"><span aria-hidden="true">⚖</span><b>아라베스크</b><small>균형대</small></button>
       <button class="move-button turn" type="button" data-move="turn"><span aria-hidden="true">↻</span><b>피루엣</b><small>회전 구간</small></button>
     </div>
-    <p class="play-help" id="help">상황이 링에 도착하는 박자에 맞춰 알맞은 동작을 누르세요.</p>
   </div>
 </section>
+
 <section class="result" id="result" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
   <div class="result-card">
     <p class="eyebrow" id="resultKicker">FIRST LESSON</p>
-    <h2 id="resultTitle">첫 안무 완성!</h2>
+    <h2 id="resultTitle">첫 코스를 완주했어요!</h2>
     <img id="resultDancer" src="../assets/dancers/lilac-curtsy.webp" alt="">
+    <div id="resultNew" class="new-dress" hidden>Lv.2 라일락 쉬폰 스커트</div>
     <p id="resultBody">라일락 스커트를 선물로 받았어요.</p>
     <div class="result-stats" id="resultStats"></div>
+    <p class="result-coins" id="resultCoins"></p>
     <button class="action" id="resultNext" type="button">계속하기</button>
   </div>
 </section>
-<script src="../assets/music.js?v=20261122r"></script>
+
+<script src="../assets/music.js?v=20261122e"></script>
 <script>
 (function(){
   'use strict';
-  var KEY='sugar-royal-preview-v2', spirits=[
-    {id:'etu',name:'에튜',line:'한 박자씩, 천천히 같이 가요.'},
-    {id:'ara',name:'아라',line:'손끝의 선을 조금 더 멀리 뻗어봐요.'},
-    {id:'piru',name:'피루',line:'흔들려도 다시 중심을 찾으면 돼요.'},
-    {id:'shangz',name:'샹즈',line:'가볍게 뛰고 사뿐히 착지해요!'},
-    {id:'alle',name:'알레',line:'하나, 둘, 셋! 박자는 제가 셀게요.'}
-  ], poses=['plie','tendu','releve','arabesque'];
-  var state={step:0,spirit:'etu',cafeReady:false,snackReady:false},session=null,raf=0,audio=null,band=null,musicGain=null,soundOn=true,motionTimers=[];
-  function $(id){return document.getElementById(id)}
-  try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&Number.isInteger(saved.step)&&saved.step>=0&&saved.step<=3){state.step=saved.step;state.spirit=spirits.some(function(x){return x.id===saved.spirit})?saved.spirit:'etu';state.cafeReady=!!saved.cafeReady;state.snackReady=!!saved.snackReady}}catch(e){}
-  function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
-  function dancerSrc(pose){return '../assets/dancers/'+(state.step>=1?'lilac':'basic')+'-'+pose+'.webp'}
-  function chosen(){return spirits.find(function(x){return x.id===state.spirit})||spirits[0]}
-  function portrait(id){return '../../kingdom/assets/av_'+id+'.webp'}
-  function setImage(img,src){if(img.getAttribute('src')!==src)img.src=src}
-  function home(){
-    var s=state.step,sp=chosen(),labels=['첫 발레 코스 도전하기','다음 코스 도전하기','왕립 극장 첫 공연하기','다시 공연 감상하기'];
-    $('lead').textContent=[
-      '발레왕국의 길을 따라 달려요. 고양이를 피하고 장애물을 넘고 균형대와 회전 구간을 통과해 봐요.',
-      '첫 의상을 얻었어요! 한 번 더 연습하면 공연 초대장이 열려요.',
-      '무대 준비가 끝났어요. 익힌 동작으로 첫 공연을 완성해 봐요.',
-      '첫 공연을 완성했어요! 다음 작품은 새로운 안무와 함께 열릴 거예요.'
-    ][s];
-    $('sceneNote').textContent=['첫 무대 준비 중','라일락 의상 획득','첫 공연 초대장 도착','첫 무대 완성'][s];
-    $('lights').classList.toggle('on',s>=2);
-    $('homeDancer').src=dancerSrc(s>=1?'arabesque':'ready');
-    $('coachName').textContent=sp.name+'와 함께';
-    $('coachPic').src=portrait(sp.id);$('portrait').src=portrait(sp.id);
-    $('talk').textContent='“'+sp.line+'”';
-    $('mainAction').textContent=labels[s];
-    $('rewardKicker').textContent=['첫 완주 선물','다음 보상','첫 공연 기념','완성한 첫 공연'][s];
-    $('rewardName').textContent=['라일락 쉬폰 스커트','왕립 극장 초대장','나의 첫 공연 기록','별빛의 첫 왈츠'][s];
-    $('rewardNote').textContent=['완주하면 자동 지급돼요.','한 번 더 연습하면 열려요.','공연을 완성하면 받을 수 있어요.','다음 작품 준비 전, 공연을 다시 해 볼 수 있어요.'][s];
-    $('rewardPic').src='../assets/dancers/'+(s===0?'lilac':'lilac')+'-curtsy.webp';
-    $('stepCount').textContent=s+' / 3 완료';
-    var parts=[
-      {name:'첫 코스 연습',desc:'파드샤·그랑제떼·아라베스크·피루엣',gift:'라일락 스커트'},
-      {name:'안무 이어 연습',desc:'배운 동작을 음악과 연결하기',gift:'공연 초대장'},
-      {name:'첫 왕립 공연',desc:'무대에서 완성하는 첫 왈츠',gift:'첫 공연 기록'}
-    ];
-    $('stepList').innerHTML=parts.map(function(x,i){return '<div class="step '+(s>i?'done':s===i?'active':'')+'"><span class="step-num">'+(s>i?'✓':i+1)+'</span><div><b>'+x.name+'</b><small>'+x.desc+'</small></div><em>'+(s>i?'완료':s===i?'진행 중':x.gift)+'</em></div>'}).join('');
-    $('spirits').innerHTML=spirits.map(function(x){return '<button type="button" class="spirit '+(x.id===state.spirit?'selected':'')+'" data-id="'+x.id+'" aria-pressed="'+(x.id===state.spirit)+'"><img src="'+portrait(x.id)+'" alt=""><b>'+x.name+'</b></button>'}).join('');
-    $('cafePrepStatus').textContent=state.cafeReady?'준비됨 · 다음 곡에 적용':'다음 곡을 위해 준비';
-    $('snackPrepStatus').textContent=state.snackReady?'포장 완료 · 다음 곡에 적용':'다음 곡을 위해 준비';
-    $('cafePrep').classList.toggle('ready',state.cafeReady);
-    $('snackPrep').classList.toggle('ready',state.snackReady);
-  }
-  $('spirits').addEventListener('click',function(e){var b=e.target.closest('[data-id]');if(!b)return;state.spirit=b.dataset.id;save();home()});
-  $('reset').addEventListener('click',function(){if(!confirm('이 시제품 진행만 처음부터 다시 시작할까요? 기존 발레왕국 기록은 유지돼요.'))return;state.step=0;state.spirit='etu';state.cafeReady=false;state.snackReady=false;save();home()});
+  var KEY='sugar-royal-preview-v3', OLD_KEY='sugar-royal-preview-v2';
 
-  /* 같은 악보에서 상황 노트를 뽑는다. 음악과 판정은 동일한 시간을 사용한다. */
+  /* ===== 의상 레벨: Lv.1~5. 레벨이 오르면 열리고, 코인으로 사서 입는다 ===== */
+  var DRESS=[
+    {lv:1,id:'basic',name:'기본 핑크 레오타드',grade:'입문 발레리나',price:0,win:0,shield:0,mult:1,combo:0,
+      gate:'바 워크 연습',bonus:'기본 연습복 · 추가 보너스 없음',need:'처음부터 보유'},
+    {lv:2,id:'lilac',name:'라일락 쉬폰 스커트',grade:'견습 발레리나',price:0,win:30,shield:0,mult:1,combo:0,
+      gate:'2단계 안무 해금',bonus:'판정 여유 +30ms',need:'첫 코스 완주 선물'},
+    {lv:3,id:'swan',name:'백조 화이트 튜튜',grade:'코르 드 발레',price:300,win:45,shield:0,mult:1.1,combo:0,
+      gate:'왕립 극장 입장',bonus:'판정 여유 +45ms · 점수 ×1.1',need:'2단계 안무 완주 + 300코인'},
+    {lv:4,id:'black',name:'블랙 스완 레오타드',grade:'솔리스트',price:600,win:45,shield:1,mult:1.15,combo:0,
+      gate:'스포트라이트 앙코르',bonus:'판정 여유 +45ms · 실수 1회 구제 · 점수 ×1.15',need:'왕립 첫 공연 완주 + 600코인'},
+    {lv:5,id:'sugar',name:'마법 슈가 드레스',grade:'프리마 발레리나',price:1000,win:60,shield:1,mult:1.25,combo:1,
+      gate:'대 피날레 무대',bonus:'판정 여유 +60ms · 실수 1회 구제 · 콤보 +1 · 점수 ×1.25',need:'앙코르 피날레 완주 + 1000코인'}
+  ];
+
+  /* ===== 정령 5인: 무대에서 실제로 발동하는 능력 ===== */
+  var SPIRITS=[
+    {id:'etu',name:'에튜',role:'균형의 정령',ability:'모든 판정 여유 +55ms',
+      home:'한 박자씩, 천천히 같이 가요. 넘어져도 제가 잡아 줄게요.',
+      cheer:{hit:'숨 고르고, 다음 박자.',great:'딱 맞았어요! 그 느낌 기억해요.'},flat:55,type:null,typeWin:0},
+    {id:'alle',name:'알레',role:'박자 세는 정령',ability:'모든 판정 +40ms · 링이 미리 반짝여요',
+      home:'하나, 둘, 셋! 박자는 제가 셀게요. 링이 반짝이면 그때예요.',
+      cheer:{hit:'박자, 딱 맞았어요.',great:'완벽한 박자!'},flat:40,type:null,typeWin:0,pre:true},
+    {id:'ara',name:'아라',role:'선의 정령',ability:'아라베스크 +70ms · 성공하면 콤보 +2',
+      home:'손끝의 선을 조금 더 멀리 뻗어봐요. 균형대는 제가 잡아 줄게요.',
+      cheer:{hit:'선이 살아 있어요.',great:'그 선, 무대 위에서 빛났어요!'},flat:0,type:'beam',typeWin:70,comboType:2},
+    {id:'shangz',name:'샹즈',role:'도약의 정령',ability:'그랑제떼 +70ms · 도약 강화 · 콤보 +2',
+      home:'가볍게 뛰고 사뿐히 착지해요! 장애물은 제가 세어 줄게요.',
+      cheer:{hit:'가볍게 떴다, 사뿐히!',great:'하늘까지 닿았어요!'},flat:0,type:'jump',typeWin:70,comboType:2,leap:true},
+    {id:'piru',name:'피루',role:'회전의 정령',ability:'피루엣 +70ms · 이중 회전 · 회전 실수 1회 보호',
+      home:'흔들려도 다시 중심을 찾으면 돼요. 회전은 제가 붙잡아 줄게요.',
+      cheer:{hit:'돌아도 중심은 그대로.',great:'두 바퀴, 완벽했어요!'},flat:0,type:'turn',typeWin:70,comboType:2,spin:true,protect:true}
+  ];
+
+  var CHARTS=[
+    {song:'bar',title:'첫 코스 연습',label:'첫 코스 · 1/4',count:11,minGap:650,coins:100,need:1,
+      pattern:['cat','jump','beam','turn','cat','jump','beam','turn','jump','cat','beam']},
+    {song:'center',title:'2단계 안무 · 발레 어드벤처',label:'두 번째 코스 · 2/4',count:14,minGap:560,coins:140,need:2,
+      pattern:['jump','cat','beam','turn','beam','jump','cat','turn','jump','beam','cat','turn','beam','jump']},
+    {song:'stage',title:'별빛의 첫 왈츠',label:'왕립 극장 · 3/4',count:16,minGap:600,coins:200,need:3,stage:true,
+      pattern:['cat','jump','beam','turn','cat','turn','jump','beam','cat','turn','jump','beam','turn','cat','jump','beam']},
+    {song:'piece',title:'별빛 피날레 · 앙코르',label:'앙코르 무대 · 4/4',count:20,minGap:430,coins:260,need:4,stage:true,spot:true,
+      pattern:['cat','turn','jump','beam','turn','cat','jump','turn','beam','cat','turn','jump','beam','turn','jump','cat','beam','turn','jump','beam']}
+  ];
+
   var ACTIONS={
     cat:{name:'고양이',move:'파드샤',sign:'🐈',pose:'releve',anim:'pas-de-chat'},
     jump:{name:'장애물',move:'그랑제떼',sign:'▥',pose:'arabesque',anim:'grand-jete'},
     beam:{name:'균형대',move:'아라베스크',sign:'═',pose:'arabesque',anim:'balance-arabesque'},
     turn:{name:'회전 구간',move:'피루엣',sign:'↻',pose:'releve',anim:'pirouette'}
   };
-  var CHARTS=[
-    {song:'bar',title:'첫 코스 연습',label:'첫 코스 · 1/3',count:11,minGap:650,pattern:['cat','jump','beam','turn','cat','jump','beam','turn','jump','cat','beam']},
-    {song:'center',title:'발레 어드벤처',label:'두 번째 코스 · 2/3',count:13,minGap:570,pattern:['jump','cat','beam','turn','beam','jump','cat','turn','jump','beam','cat','turn','beam']},
-    {song:'stage',title:'별빛의 첫 왈츠',label:'왕립 극장 · 첫 공연',count:16,minGap:620,pattern:['cat','jump','beam','turn','cat','turn','jump','beam','cat','turn','jump','beam','turn','cat','jump','beam']}
-  ];
+
+  var SUGAR_POSES={
+    ready:'../../kingdom/assets/sugar_front.webp',
+    plie:'../assets/dancers/sugar-plie.webp',
+    tendu:'../assets/dancers/sugar-tendu.webp',
+    releve:'../../kingdom/assets/sugar_releve.webp',
+    arabesque:'../../kingdom/assets/sugar_arabesque.webp',
+    curtsy:'../../kingdom/assets/sugar_curtsy.webp'
+  };
+
+  var state={stage:0,spirit:null,worn:'basic',owned:['basic'],coins:130,snack:false,cafe:false,bonds:{},poster:0};
+  var session=null,raf=0,audio=null,band=null,musicGain=null,soundOn=true,motionTimers=[],bubbleTimer=0;
+
+  function $(id){return document.getElementById(id)}
+  function dressOf(id){return DRESS.find(function(d){return d.id===id})||DRESS[0]}
+  function wornDress(){return dressOf(state.worn)}
+  function curLv(){return Math.min(5,state.stage+1)}
+  function spiritOf(id){return SPIRITS.find(function(s){return s.id===id})||null}
+  function chosen(){return spiritOf(state.spirit)}
+  function bond(id){return state.bonds[id]||0}
+  function portrait(id){return '../../kingdom/assets/av_'+id+'.webp'}
+
+  function load(){
+    try{
+      var raw=localStorage.getItem(KEY);
+      if(raw){
+        var s=JSON.parse(raw)||{};
+        state.stage=Math.max(0,Math.min(4,Number(s.stage)||0));
+        state.spirit=spiritOf(s.spirit)?s.spirit:null;
+        state.owned=Array.isArray(s.owned)?s.owned.filter(function(id){return DRESS.some(function(d){return d.id===id})}):['basic'];
+        if(state.owned.indexOf('basic')<0)state.owned.unshift('basic');
+        state.worn=state.owned.indexOf(s.worn)>=0?s.worn:'basic';
+        state.coins=Number.isFinite(s.coins)?Math.max(0,Math.round(s.coins)):130;
+        state.snack=!!s.snack;state.cafe=!!s.cafe;state.bonds=s.bonds||{};state.poster=Number(s.poster)||0;
+        return;
+      }
+      // v2 시제품 기록이 있으면 이어서 시작한다.
+      var old=JSON.parse(localStorage.getItem(OLD_KEY)||'null');
+      if(old&&Number.isInteger(old.step)){
+        state.stage=Math.max(0,Math.min(4,old.step));
+        state.spirit=spiritOf(old.spirit)?old.spirit:null;
+        state.coins=130+state.stage*120;
+        if(state.stage>=1){state.owned=['basic','lilac'];state.worn='lilac'}
+      }
+    }catch(e){}
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}}
+
+  function poseSrc(pose){
+    if(state.worn==='sugar')return SUGAR_POSES[pose]||SUGAR_POSES.ready;
+    return '../assets/dancers/'+state.worn+'-'+pose+'.webp';
+  }
+  function dressArt(d,pose){
+    if(d.id==='sugar')return SUGAR_POSES[pose||'curtsy'];
+    return '../assets/dancers/'+d.id+'-'+(pose||'curtsy')+'.webp';
+  }
+  function setImage(img,src){if(img&&img.getAttribute('src')!==src)img.src=src}
+
+  /* ===== 알림 ===== */
+  var toastTimer=0;
+  function toast(msg){
+    var el=$('toast');
+    if(!el){el=document.createElement('div');el.className='toast';el.id='toast';document.body.appendChild(el)}
+    el.textContent=msg;el.classList.add('on');
+    clearTimeout(toastTimer);toastTimer=setTimeout(function(){el.classList.remove('on')},2600);
+  }
+  function bumpCoins(){var c=$('coinChip');c.classList.remove('bump');void c.offsetWidth;c.classList.add('bump')}
+
+  /* ===== 첫 화면 렌더 ===== */
+  function render(){
+    var lv=curLv(),d=wornDress(),sp=chosen(),done=state.stage>=4;
+    var actIdx=Math.min(state.stage,3),nextChart=CHARTS[actIdx];
+    $('coinCount').textContent=state.coins;
+
+    $('lead').textContent=done
+      ? '첫 작품을 완성했어요! 이제 코인을 모아 다음 의상을 사 입고, 앙코르 무대를 다시 즐길 수 있어요.'
+      : ['발레왕국의 길을 따라 달려요. 고양이는 피하고 장애물은 넘고, 균형대와 회전 구간을 통과해 봐요.',
+         '첫 의상을 얻었어요! 이제 2단계 안무로 넘어가요. 완주할 때마다 코인이 쌓여요.',
+         '왕립 극장 무대가 열렸어요. 코인을 모아 백조 튜튜를 사면 무대 보너스가 올라가요.',
+         '스포트라이트 앙코르가 기다려요. 마법 슈가 드레스까지 한 걸음이에요.'][state.stage];
+    $('sceneNote').textContent=['첫 무대 준비 중','라일락 의상 획득','왕립 극장 입장','스포트라이트 대기','첫 무대 완성'][state.stage];
+    $('lights').classList.toggle('on',state.stage>=2);
+    setImage($('homeDancer'),poseSrc(state.stage>=1?'arabesque':'ready'));
+    $('levelBadge').innerHTML='<b>의상 Lv.'+d.lv+'</b> '+d.grade.replace(' 발레리나','');
+    $('wornTag').textContent=d.name;
+    if(sp){
+      $('coachName').textContent=sp.name+'와 함께';
+      setImage($('coachPic'),portrait(sp.id));setImage($('portrait'),portrait(sp.id));
+      $('talk').textContent='“'+sp.home+'”';
+    }else{
+      $('coachName').textContent='함께할 정령을 골라요';
+      $('talk').textContent='“무대에는 꼭 한 명의 정령이 함께 서요. 오늘은 누가 같이 갈까요?”';
+    }
+
+    var btn=$('mainAction');
+    if(!sp){btn.textContent='함께할 정령 고르기';btn.classList.add('wait')}
+    else{
+      btn.classList.remove('wait');
+      btn.textContent=done?'앙코르 피날레 다시 하기':['첫 코스 연습하기','2단계 안무 연습하기','왕립 첫 공연하기','앙코르 피날레 오르기'][state.stage];
+    }
+
+    // 다음 의상 예고
+    if(lv<5){
+      var nextDress=DRESS[lv];
+      $('rewardKicker').textContent='다음 레벨 예고';
+      setImage($('rewardPic'),dressArt(nextDress,'arabesque'));
+      $('rewardName').textContent=nextDress.name;
+      $('rewardNote').textContent=nextDress.need;
+      $('rewardLv').textContent='Lv.'+nextDress.lv;
+    }else{
+      $('rewardKicker').textContent='완성한 첫 작품';
+      setImage($('rewardPic'),SUGAR_POSES.curtsy);
+      $('rewardName').textContent=state.owned.indexOf('sugar')>=0?'별빛의 첫 왈츠 · 프리마':'마법 슈가 드레스';
+      $('rewardNote').textContent=state.owned.indexOf('sugar')>=0?'왕관과 함께 첫 작품을 남겼어요.':'드레스룸에서 1000코인으로 살 수 있어요.';
+      $('rewardLv').textContent='Lv.5';
+    }
+
+    // 정령
+    $('spirits').innerHTML=SPIRITS.map(function(x){
+      var b=bond(x.id);
+      return '<button type="button" class="spirit '+(x.id===state.spirit?'selected':'')+'" data-id="'+x.id+'" aria-pressed="'+(x.id===state.spirit)+'">'+
+        '<img src="'+portrait(x.id)+'" alt=""><b>'+x.name+'</b><span class="heart">'+(b>0?'♥'+b:'—')+'</span></button>';
+    }).join('');
+    $('spiritFocus').innerHTML=sp
+      ? '<img src="'+portrait(sp.id)+'" alt=""><div><b>'+sp.name+' · '+sp.role+'</b><small>'+sp.ability+'</small><p>'+sp.cheer.hit+'</p></div>'
+      : '<div><b>아직 정령을 고르지 않았어요</b><small>정령이 함께해야 무대 판정이 열려요. 한 명을 탭해 주세요.</small></div>';
+
+    // 코스
+    $('stepCount').textContent=Math.min(4,state.stage)+' / 4 완료';
+    $('stepList').innerHTML=CHARTS.map(function(c,i){
+      var cls=state.stage>i?'done':state.stage===i?'active':'locked';
+      var label=state.stage>i?'완료':state.stage===i?'진행 중':'Lv.'+c.need+' 필요';
+      return '<div class="step '+cls+'"><span class="step-num">'+(state.stage>i?'✓':i+1)+'</span>'+
+        '<div><b>'+c.title+'</b><small>'+c.pattern.map(function(t){return ACTIONS[t].move}).filter(function(v,idx,a){return a.indexOf(v)===idx}).join(' · ')+'</small></div>'+
+        '<em>'+label+'</em></div>';
+    }).join('');
+
+    // 드레스룸
+    $('dressRail').innerHTML=DRESS.map(function(x){
+      var owned=state.owned.indexOf(x.id)>=0,open=lv>=x.lv,wornX=state.worn===x.id;
+      var stateTxt=wornX?'착용 중':owned?'입기':open?(x.price>0?'구매 '+x.price+'🪙':'무료로 받기'):x.need;
+      var cls='dress'+(wornX?' worn':'')+(!owned&&!open?' locked':'');
+      var stateCls='state'+(wornX?'':owned?'':open?' buy':' need');
+      return '<button type="button" class="'+cls+'" data-dress="'+x.id+'" '+(owned||open?'':'disabled')+'>'+
+        '<div class="art"><span class="lv">Lv.'+x.lv+'</span><img src="'+dressArt(x,'curtsy')+'" loading="lazy" alt=""></div>'+
+        '<span class="grade">'+x.grade+'</span><b>'+x.name+'</b>'+
+        '<span class="gate">해금 · '+x.gate+'</span>'+
+        '<span class="bonus">'+x.bonus+'</span>'+
+        '<span class="'+stateCls+'">'+stateTxt+'</span></button>';
+    }).join('');
+    $('growthNote').textContent=lv>=5
+      ? '지금 레벨 Lv.5 프리마 발레리나 · 입은 옷: '+d.name+' ('+d.bonus+'). 마법 슈가 드레스를 입으면 대 피날레 무대가 가장 반짝여요.'
+      : '지금 레벨 Lv.'+lv+' '+DRESS[lv-1].grade+' · 입은 옷 Lv.'+d.lv+' '+d.name+'. Lv.'+(lv+1)+'이 되면 '+DRESS[lv].gate+'이 열려요.';
+
+    // 상점
+    var snack=$('buySnack'),cafe=$('buyCafe');
+    if(state.snack){snack.textContent='먹었어요 · 다음 코스에 적용';snack.classList.add('on');snack.disabled=false}
+    else{snack.textContent='40 코인에 사 먹기';snack.classList.remove('on');snack.disabled=state.coins<40}
+    if(state.cafe){cafe.textContent='마셨어요 · 정령이 기뻐해요';cafe.classList.add('on');cafe.disabled=false}
+    else{cafe.textContent='50 코인에 사 마시기';cafe.classList.remove('on');cafe.disabled=state.coins<50}
+  }
+
+  /* ===== 상점 ===== */
+  function buySnack(){
+    if(state.coins<40){toast('코인이 모자라요. 연습을 완주하면 코인이 쌓여요.');return}
+    state.coins-=40;state.snack=true;save();render();bumpCoins();
+    toast('다리 쫙 떡볶이를 먹었어요! 다음 코스에서 그랑제떼가 가볍고 커져요.');
+  }
+  function buyCafe(){
+    if(!state.spirit){toast('먼저 함께할 정령을 골라 주세요. 정령에게 사 주는 음료예요.');return}
+    if(state.coins<50){toast('코인이 모자라요. 연습을 완주하면 코인이 쌓여요.');return}
+    state.coins-=50;state.cafe=true;
+    state.bonds[state.spirit]=(state.bonds[state.spirit]||0)+1;
+    save();render();bumpCoins();
+    toast(chosen().name+'(이)가 아라베스크 밀크를 마시고 기뻐해요! 다음 코스에서 정령 버프가 강해져요.');
+  }
+  $('buySnack').addEventListener('click',buySnack);
+  $('buyCafe').addEventListener('click',buyCafe);
+
+  /* ===== 정령·의상 선택 ===== */
+  $('spirits').addEventListener('click',function(e){
+    var b=e.target.closest('[data-id]');if(!b)return;
+    state.spirit=b.dataset.id;save();render();
+    toast(chosen().name+'(이)가 무대에 함께 서요. '+chosen().ability);
+  });
+  $('dressRail').addEventListener('click',function(e){
+    var b=e.target.closest('[data-dress]');if(!b)return;
+    var d=dressOf(b.dataset.dress),lv=curLv();
+    if(state.owned.indexOf(d.id)>=0){state.worn=d.id;save();render();toast(d.name+'으로 갈아입었어요. '+d.bonus);return}
+    if(lv<d.lv){toast('Lv.'+d.lv+' '+d.grade+'이 되면 열려요. '+d.need);return}
+    if(d.price>0){
+      if(state.coins<d.price){toast(d.name+'은 '+d.price+'코인이에요. 지금은 '+state.coins+'코인이라 조금 더 연습해야 해요.');return}
+      if(!confirm(d.price+'코인으로 '+d.name+'을 살까요?'))return;
+      state.coins-=d.price;
+    }
+    state.owned.push(d.id);state.worn=d.id;save();render();bumpCoins();
+    toast(d.name+'을 입었어요! '+d.bonus);
+  });
+  $('reset').addEventListener('click',function(){
+    if(!confirm('이 시제품 진행만 처음부터 다시 시작할까요? 기존 발레왕국 기록은 유지돼요.'))return;
+    state={stage:0,spirit:null,worn:'basic',owned:['basic'],coins:130,snack:false,cafe:false,bonds:{},poster:0};
+    save();render();toast('시제품 진행을 초기화했어요. 코인 130개로 시작해요.');
+  });
+  $('mainAction').addEventListener('click',function(){
+    if(!state.spirit){
+      $('spiritBlock').scrollIntoView({behavior:'smooth',block:'center'});
+      document.querySelectorAll('.spirit').forEach(function(el){el.classList.remove('focus-hint');void el.offsetWidth;el.classList.add('focus-hint')});
+      toast('먼저 함께할 정령을 한 명 골라 주세요. 정령이 함께해야 무대에 설 수 있어요.');
+      return;
+    }
+    run();
+  });
+
+  /* ===== 음악 ===== */
   function musicReady(){
     try{
       if(!audio){
@@ -282,9 +803,7 @@
       }
       if(audio.state==='suspended')audio.resume();
       if(!musicGain){
-        musicGain=audio.createGain();
-        musicGain.gain.value=soundOn?0.78:0;
-        musicGain.connect(audio.destination);
+        musicGain=audio.createGain();musicGain.gain.value=soundOn?0.78:0;musicGain.connect(audio.destination);
       }
       if(!band&&window.SugarMusic)band=window.SugarMusic.create(audio,musicGain);
       return !!band;
@@ -296,8 +815,6 @@
     if(musicGain)musicGain.gain.value=soundOn?0.78:0;
   }
   function stopSound(){if(band)band.stop()}
-  $('cafePrep').addEventListener('click',function(){state.cafeReady=true;save();home()});
-  $('snackPrep').addEventListener('click',function(){state.snackReady=true;save();home()});
   function osc(freq,when,duration,volume){
     if(!audio||!soundOn)return;
     var o=audio.createOscillator(),g=audio.createGain();
@@ -310,48 +827,13 @@
   function correctSound(great){
     if(!audio||!soundOn)return;
     osc(great?988:784,audio.currentTime+.005,.13,.027);
+    if(great)osc(1318,audio.currentTime+.09,.12,.02);
   }
-  function flash(word){
-    var el=$('judge');el.textContent=word;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
-  }
-  function clearMotion(){
-    motionTimers.forEach(function(t){clearTimeout(t)});
-    motionTimers=[];
-  }
-  function later(ms,fn){motionTimers.push(setTimeout(fn,ms))}
-  function updatePose(type){
-    var a=ACTIONS[type],img=$('playDancer');
-    clearMotion();
-    var first=(type==='cat'||type==='jump')?'plie':a.pose;
-    setImage(img,dancerSrc(first));
-    img.className='';
-    void img.offsetWidth;
-    img.classList.add(a.anim);
-    if(type==='cat')later(170,function(){setImage(img,dancerSrc('releve'))});
-    if(type==='jump')later(180,function(){setImage(img,dancerSrc('arabesque'))});
-    if(type==='beam')later(140,function(){setImage(img,dancerSrc('arabesque'))});
-    if(type==='turn')later(310,function(){setImage(img,dancerSrc('releve'))});
-    later(type==='beam'?1150:980,function(){
-      setImage(img,dancerSrc('ready'));
-      img.className='cruise';
-    });
-    $('cue').textContent=a.name+' 통과! '+a.move+' 성공';
-  }
-  function wrongPose(){
-    clearMotion();
-    var img=$('playDancer');
-    img.className='';void img.offsetWidth;img.classList.add('wobble');
-    later(450,function(){img.className='cruise';setImage(img,dancerSrc('ready'))});
-  }
-  function clearRun(){
-    if(raf)cancelAnimationFrame(raf);raf=0;
-    clearMotion();
-    stopSound();
-    session=null;
-    $('overlay').classList.remove('on');
-    $('track').classList.remove('timing-now');
-    $('courseEvents').replaceChildren();
-  }
+  $('musicToggle').addEventListener('click',function(){
+    soundOn=!soundOn;if(soundOn)musicReady();syncSound();
+  });
+
+  /* ===== 연습 ===== */
   function chartFor(spec){
     var song=window.SugarMusic&&window.SugarMusic.SONGS&&window.SugarMusic.SONGS[spec.song];
     if(!song)return null;
@@ -360,221 +842,300 @@
       var t=Math.round(entry[0]*beat);
       if(t-previous>=spec.minGap){selected.push(t);previous=t}
     });
-    // 곡의 앞부분에 노트가 몰리지 않도록 전체 선율에서 고르게 추린다.
     if(selected.length>spec.count){
-      var all=selected;
-      selected=[];
+      var all=selected;selected=[];
       for(var i=0;i<spec.count;i++)selected.push(all[Math.round(i*(all.length-1)/(spec.count-1))]);
     }
     return {song:spec.song,notes:selected.map(function(t,i){
-      return {t:t,type:spec.pattern[i%spec.pattern.length],judged:false,el:null};
+      return {t:t,type:spec.pattern[i%spec.pattern.length],judged:false,el:null,prop:null};
     }),end:Math.round(Math.max(song.length*beat+650,selected[selected.length-1]+1200))};
   }
+
+  function clearMotion(){motionTimers.forEach(function(t){clearTimeout(t)});motionTimers=[]}
+  function later(ms,fn){motionTimers.push(setTimeout(fn,ms))}
+  function burst(n,kind){
+    var ring=$('judgeLine'),host=$('sparkles'),w=ring.offsetWidth,h=ring.offsetHeight;
+    for(var i=0;i<n;i++){
+      var s=document.createElement('i');
+      s.className='spark'+(kind==='great'&&i%2?' star':'');
+      var a=Math.random()*Math.PI*2,r=26+Math.random()*(kind==='great'?92:60);
+      s.style.setProperty('--dx',(Math.cos(a)*r).toFixed(1)+'px');
+      s.style.setProperty('--dy',(Math.sin(a)*r*.72-18).toFixed(1)+'px');
+      s.style.left=(ring.offsetLeft+w/2)+'px';
+      s.style.top=(ring.offsetTop+h/2)+'px';
+      s.style.animationDelay=Math.round(Math.random()*70)+'ms';
+      host.appendChild(s);
+      (function(el){setTimeout(function(){el.remove()},920)})(s);
+    }
+    ring.classList.remove('burst');void ring.offsetWidth;ring.classList.add('burst');
+    later(520,function(){ring.classList.remove('burst')});
+  }
+  function cheer(text){
+    var sp=chosen();if(!sp)return;
+    $('buddyLine').textContent=text;
+    $('buddyLine').classList.add('on');
+    var b=$('buddy');b.classList.remove('cheer');void b.offsetWidth;b.classList.add('cheer');
+    clearTimeout(bubbleTimer);
+    bubbleTimer=setTimeout(function(){$('buddyLine').classList.remove('on')},1900);
+  }
+  function flash(word,great){
+    var el=$('judge');el.textContent=word;el.classList.remove('pop');el.classList.toggle('great',!!great);
+    void el.offsetWidth;el.classList.add('pop');
+  }
+  function setCombo(n,pop){
+    var c=$('comboChip');
+    c.textContent='콤보 '+n;
+    c.classList.toggle('hot',n>=3);
+    if(pop){c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop')}
+  }
+  function updatePose(type,move,boosted){
+    var a=ACTIONS[type],img=$('playDancer'),sp=chosen();
+    clearMotion();
+    var first=(type==='cat'||type==='jump')?'plie':a.pose;
+    setImage(img,poseSrc(first));
+    img.className='';
+    void img.offsetWidth;
+    img.classList.add(a.anim);
+    if(type==='jump'&&(boosted||(sp&&sp.leap)))img.classList.add('leap-high');
+    if(type==='turn'&&(sp&&sp.spin))img.classList.add('spin-double');
+    if(type==='cat')later(170,function(){setImage(img,poseSrc('releve'))});
+    if(type==='jump')later(190,function(){setImage(img,poseSrc('arabesque'))});
+    if(type==='beam')later(140,function(){setImage(img,poseSrc('arabesque'))});
+    if(type==='turn')later(340,function(){setImage(img,poseSrc('releve'))});
+    later(type==='beam'?1250:1050,function(){
+      setImage(img,poseSrc('ready'));img.className='cruise';
+    });
+    $('cue').textContent=a.name+' 통과! '+a.move+' 성공';
+  }
+  function wrongPose(){
+    clearMotion();
+    var img=$('playDancer');
+    img.className='';void img.offsetWidth;img.classList.add('wobble');
+    later(460,function(){img.className='cruise';setImage(img,poseSrc('ready'))});
+  }
+
+  function clearRun(){
+    if(raf)cancelAnimationFrame(raf);raf=0;
+    clearMotion();stopSound();session=null;
+    $('overlay').classList.remove('on');
+    $('courseEvents').replaceChildren();$('sparkles').replaceChildren();
+    $('judgeLine').classList.remove('hot','pre','great','burst');
+    $('buddyLine').classList.remove('on');
+  }
+
+  function windowFor(n){
+    var d=wornDress(),sp=chosen(),w=280+d.win;
+    if(sp){
+      w+=sp.flat;
+      if(sp.type&&sp.type===n.type)w+=sp.typeWin;
+      w+=Math.min(30,bond(sp.id)*10);
+    }
+    if(state.cafe){w+=sp?25:0;if(n.type==='beam')w+=40}
+    if(state.snack&&n.type==='jump')w+=60;
+    return w;
+  }
+
+  function resolveNote(n,move,why){
+    if(!session||n.judged)return;
+    var d=wornDress(),sp=chosen();
+    n.judged=true;session.done++;
+    var correct=n.type===move&&why!=='late',saved=false,protect=false;
+    if(!correct&&session.shields>0){session.shields--;session.rescued++;saved=true}
+    if(!correct&&!saved&&sp&&sp.protect&&n.type==='turn'&&!session.turnProtect){
+      session.turnProtect=true;protect=true;saved=true;session.rescued++;
+    }
+    if(correct||saved){
+      session.hits++;
+      var great=correct&&session.delta<=140;
+      if(great)session.perfect++;
+      session.combo+=1+(correct?(sp&&sp.comboType&&sp.type===n.type?sp.comboType:0)+(d.combo||0):0);
+      if(session.combo>session.maxCombo)session.maxCombo=session.combo;
+      session.score+=Math.round(100*(great?1.5:1)*d.mult+session.combo*8);
+      if(n.prop){n.prop.classList.add('cleared','popped');n.prop.style.opacity='';
+        setTimeout(function(){if(n.prop)n.prop.style.display='none'},520);}
+      updatePose(n.type,move);
+      flash(saved?(protect?'피루가 잡아줬어요!':'체력으로 버텼어요!'):great?'PERFECT!':'GOOD!',great);
+      burst(great?16:9,great?'great':'');
+      setCombo(session.combo,true);
+      if(correct)correctSound(great);
+      if(navigator.vibrate)try{navigator.vibrate(great?[10,28,10]:12)}catch(e){}
+      if(sp)cheer(saved?sp.cheer.hit:(great?sp.cheer.great:sp.cheer.hit));
+      $('cue').textContent=great?'완벽한 박자! '+ACTIONS[n.type].move:'좋아요! '+ACTIONS[n.type].move+' 통과';
+    }else{
+      session.miss++;session.combo=0;
+      if(n.prop){n.prop.classList.add('failed');n.prop.style.opacity='';
+        setTimeout(function(){if(n.prop){n.prop.classList.add('popped');n.prop.style.display='none'}},360);}
+      wrongPose();flash('아쉬워요!',false);setCombo(0,true);
+      $('cue').textContent=why==='wrong'
+        ? ACTIONS[n.type].name+'에는 '+ACTIONS[n.type].move+'를 눌러야 해요.'
+        : '박자를 놓쳤어요. 다음 구간은 맞춰 봐요.';
+    }
+    $('playBar').style.width=(100*session.done/session.notes.length)+'%';
+  }
+
+  function pressMove(move){
+    if(!session||session.finished||!session.ready)return;
+    var b=$('movePad').querySelector('[data-move="'+move+'"]');
+    if(b){b.classList.add('pressed','hit');setTimeout(function(){b.classList.remove('pressed','hit')},180)}
+    var t=elapsedMs(),closest=null,matched=null,bestAny=Infinity,bestMatch=Infinity,next=null;
+    session.notes.forEach(function(n){
+      if(n.judged)return;
+      var d=Math.abs(n.t-t),w=windowFor(n);
+      if(n.t>t&&(!next||n.t<next.t))next=n;
+      if(d>w)return;
+      if(d<bestAny){bestAny=d;closest=n}
+      if(n.type===move&&d<bestMatch){bestMatch=d;matched=n}
+    });
+    var candidate=matched||closest;
+    if(candidate){session.delta=Math.abs(candidate.t-t);resolveNote(candidate,move,candidate.type===move?'hit':'wrong')}
+    else if(next&&next.t-t<650){$('cue').textContent='링이 빛날 때 눌러요. 노트가 링 중앙에 오는 순간이에요.'}
+  }
+
+  function elapsedMs(){
+    if(!session||!session.ready)return 0;
+    var t=session.audioStart!==null&&audio?(audio.currentTime-session.audioStart)*1000:performance.now()-session.start;
+    session.lastElapsed=Math.max(0,t);
+    return session.lastElapsed;
+  }
+
   async function run(){
     if(session)return;
-    var act=state.step===3?2:state.step,c=CHARTS[act],chart=chartFor(c);
-    if(!chart||!chart.notes.length){
-      alert('왈츠 악보를 불러오지 못했어요. 페이지를 새로 열어 주세요.');return;
-    }
-    session={act:act,notes:chart.notes,done:0,hits:0,perfect:0,miss:0,rescued:0,shields:state.snackReady?1:0,finished:false,ready:false,start:0,audioStart:null,lastElapsed:0,end:chart.end};
+    var act=Math.min(state.stage,3),c=CHARTS[act],chart=chartFor(c);
+    if(!chart||!chart.notes.length){alert('왈츠 악보를 불러오지 못했어요. 페이지를 새로 열어 주세요.');return}
+    var d=wornDress(),sp=chosen();
+    session={act:act,notes:chart.notes,done:0,hits:0,perfect:0,miss:0,rescued:0,combo:0,maxCombo:0,score:0,delta:0,
+      shields:(d.shield||0)+(state.snack?1:0),turnProtect:false,finished:false,ready:false,start:0,audioStart:null,
+      lastElapsed:0,end:chart.end};
     $('overlay').classList.add('on');
-    $('playScene').classList.toggle('stage-mode',act===2);
-    $('playKicker').textContent=c.label;
+    $('playScene').classList.toggle('stage-mode',!!c.stage);
+    $('playScene').classList.toggle('spot',!!c.spot);
+    $('playKicker').textContent=c.label+' · 의상 Lv.'+d.lv+' '+d.grade;
     $('playTitle').textContent=c.title;
-    $('playDancer').src=dancerSrc('ready');$('playDancer').className='cruise';$('playScene').style.setProperty('--runner-step','0%');
+    $('playDancer').src=poseSrc('ready');$('playDancer').className='cruise';
+    setCombo(0,false);
+    if(sp)$('buddyPic').src=portrait(sp.id);
+    $('buddyLine').classList.remove('on');
     clearMotion();
-    ['ready','releve','arabesque'].forEach(function(pose){var image=new Image();image.src=dancerSrc(pose)});
-    $('cue').textContent='하나, 둘, 셋! 상황을 보고 맞는 발레 동작을 골라요.';
-    $('help').textContent='고양이→파드샤 · 장애물→그랑제떼 · 균형대→아라베스크 · 회전→피루엣';
-    $('courseEvents').replaceChildren();
-    $('notes').replaceChildren();
-    $('playBar').style.width='0%';$('track').classList.remove('timing-now');
-    $('laneLabel').textContent='동작 0 / '+chart.notes.length;
+    ['ready','releve','arabesque','plie'].forEach(function(pose){var image=new Image();image.src=poseSrc(pose)});
+    $('cue').textContent='하나, 둘, 셋! 링이 빛나면 맞는 동작을 눌러요.';
+    $('courseEvents').replaceChildren();$('sparkles').replaceChildren();
+    $('playBar').style.width='0%';
+    $('judgeLine').classList.remove('hot','pre','great');
     chart.notes.forEach(function(n){
-      var el=document.createElement('span');el.className='note '+n.type;el.textContent=ACTIONS[n.type].sign;
-      el.setAttribute('aria-hidden','true');$('notes').appendChild(el);n.el=el;
-      var prop=document.createElement('span');prop.className='course-event '+n.type;prop.textContent=ACTIONS[n.type].sign;
+      var prop=document.createElement('span');prop.className='course-event '+n.type;
+      prop.textContent=ACTIONS[n.type].sign;
       $('courseEvents').appendChild(prop);n.prop=prop;
     });
     syncSound();
     var current=session,available=musicReady();
     $('movePad').querySelectorAll('button').forEach(function(b){b.disabled=true});
-    if(available && audio.state==='suspended'){
-      try{await audio.resume()}catch(err){}
-    }
-    // 사용자가 사운드 초기화 도중 나갔다면 이전 세션을 다시 시작하지 않는다.
+    if(available&&audio.state==='suspended'){try{await audio.resume()}catch(err){}}
     if(session!==current)return;
     session.start=performance.now();
-    if(available && audio.state==='running'){
-      // 음악 엔진과 판정, 노트 위치에 같은 AudioContext 시계를 사용한다.
+    if(available&&audio.state==='running'){
       session.audioStart=audio.currentTime;
-      if(!band.start(c.song,0)){
-        session.audioStart=null;
-        $('help').textContent='음악 시작이 안 됐어요. 무음으로 진행할게요.';
-      }
-    }else $('help').textContent='기기에서 음악을 재생할 수 없어 무음으로 진행해요.';
+      if(!band.start(c.song,0)){session.audioStart=null}
+    }
     session.ready=true;
     $('movePad').querySelectorAll('button').forEach(function(b){b.disabled=false});
+    if(sp)cheer(sp.home.length>44?'같이 가요!':sp.home);
     raf=requestAnimationFrame(tick);
   }
-  function elapsedMs(){
-    if(!session||!session.ready)return 0;
-    var t=session.audioStart!==null&&audio
-      ? (audio.currentTime-session.audioStart)*1000
-      : performance.now()-session.start;
-    session.lastElapsed=Math.max(0,t);
-    return session.lastElapsed;
-  }
-  function updateCount(){
-    if(!session)return;
-    $('laneLabel').textContent='동작 '+session.done+' / '+session.notes.length;
-    $('playBar').style.width=(100*session.done/session.notes.length)+'%';
-  }
-  function resolveNote(n,move,why,delta){
-    if(!session||n.judged)return;
-    n.judged=true;n.el.style.display='none';session.done++;
-    var correct=n.type===move&&why!=='late',saved=false;
-    if(!correct && session.shields>0){
-      session.shields--;
-      session.rescued++;
-      saved=true;
-    }
-    if(correct || saved){
-      session.hits++;
-      var great=correct&&delta<=140;
-      if(great)session.perfect++;
-      n.prop.classList.add('cleared');
-      updatePose(n.type);
-      flash(saved?'간식이 구했어요!':great?'PERFECT!':'GOOD!');
-      if(correct)correctSound(great);
-      $('help').textContent=saved?'분식집에서 챙긴 간식이 실수를 한 번 구해줬어요.':'좋아요! 슈가가 코스를 계속 통과하고 있어요.';
-    }else{
-      session.miss++;
-      n.prop.classList.add('failed');
-      wrongPose();
-      flash('아쉬워요!');
-      $('cue').textContent='조금 흔들렸지만 다시 출발!';
-      $('help').textContent=why==='wrong'
-        ? ACTIONS[n.type].name+'에는 '+ACTIONS[n.type].move+'를 눌러야 해요.'
-        : '박자를 놓쳤어요. 다음 장애물은 통과해 봐요.';
-    }
-    updateCount();
-  }
-  function windowFor(n){
-    var w=280;
-    if(state.spirit==='etu')w+=55;
-    if(state.spirit==='ara'&&n.type==='beam')w+=70;
-    if(state.spirit==='shangz'&&n.type==='jump')w+=70;
-    if(state.spirit==='piru'&&n.type==='turn')w+=70;
-    if(state.cafeReady)w+=65;
-    if(state.spirit==='alle')w+=40;
-    return w;
-  }
-  function pressMove(move){
-    if(!session||session.finished||!session.ready)return;
-    var b=$('movePad').querySelector('[data-move="'+move+'"]');
-    if(b){
-      b.classList.add('pressed');
-      setTimeout(function(){b.classList.remove('pressed')},120);
-    }
-    var t=elapsedMs(),closest=null,matched=null,bestAny=Infinity,bestMatch=Infinity,next=null;
-    session.notes.forEach(function(n){
-      if(n.judged)return;
-      var d=Math.abs(n.t-t),windowMs=windowFor(n);
-      if(n.t>t && (!next||n.t<next.t))next=n;
-      if(d>windowMs)return;
-      if(d<bestAny){bestAny=d;closest=n}
-      if(n.type===move && d<bestMatch){bestMatch=d;matched=n}
-    });
-    // 다가오는 노트가 겹쳐도 정확한 동작을 눌렀다면 그 동작을 우선 인정한다.
-    var candidate=matched||closest;
-    if(candidate){
-      resolveNote(candidate,move,candidate.type===move?'hit':'wrong',
-        Math.abs(candidate.t-t));
-    }else if(next && next.t-t<650){
-      $('help').textContent='노트가 링 중앙에 올 때 눌러 주세요.';
-    }
-  }
+
   function tick(){
     if(!session||session.finished)return;
-    var t=elapsedMs(),trackW=$('track').clientWidth||320;
-    var scene=$('playScene'),approach=1750,target=$('track').querySelector('.hit-ring').offsetLeft,startX=Math.max(target+170,trackW-25);
-    var noteOnTarget=false;
-    // 슈가는 앞으로 이동하고 왕국 길은 뒤로 스크롤한다.
-    var advance=Math.min(13,session.done*.5+session.hits*.45);
+    var t=elapsedMs(),scene=$('playScene'),APPROACH=1900;
+    var advance=Math.min(9,session.hits*.4);
+    scene.style.setProperty('--walk',(-Math.round(t*.24)%180)+'px');
     scene.style.setProperty('--runner-step',advance.toFixed(2)+'%');
-    scene.style.setProperty('--walk',(-Math.round(t*.23)%180)+'px');
-    scene.style.backgroundPosition='calc(50% - '+Math.round(t*.045)+'px) 55%';
-    var eventTarget=41+advance;
-    // 한 자리에 서 있는 스틸 이미지가 아닌 이동감을 주기 위한 러닝 포즈 순환.
+    scene.style.backgroundPosition='calc(50% - '+Math.round(t*.04)+'px) 56%';
     var runner=$('playDancer');
     if(runner.classList.contains('cruise')){
       var walkPoses=['ready','tendu','releve','tendu'];
-      setImage(runner,dancerSrc(walkPoses[Math.floor(Math.max(0,t)/340)%walkPoses.length]));
+      setImage(runner,poseSrc(walkPoses[Math.floor(Math.max(0,t)/340)%walkPoses.length]));
     }
+    var hot=false,pre=false;
     session.notes.forEach(function(n){
-      var p=1-(n.t-t)/approach;
-      // 이미 피하거나 넘은 장애물도 캐릭터 뒤편으로 흘러가며 실제로 통과한 듯 보이게 한다.
-      if(p>=-.05 && p<2.8){
-        n.prop.style.display='grid';
-        n.prop.style.left=(100+(eventTarget-100)*p)+'%';
-        n.prop.style.opacity=p>2.4?String(Math.max(0,(2.8-p)*2.5)):n.judged?'.64':'1';
-      }else n.prop.style.display='none';
+      var p=1-(n.t-t)/APPROACH;
+      if(n.prop){
+        if(!n.judged){
+          if(p>=-.04){n.prop.style.display='grid';n.prop.style.left=(106+(64-106)*Math.min(p,1.7))+'%';
+            n.prop.style.opacity=String(Math.min(1,.4+p*2));}
+          else n.prop.style.display='none';
+        }else if(p>1.55) n.prop.style.display='none';
+      }
       if(n.judged)return;
-      var windowMs=windowFor(n),delta=Math.abs(n.t-t);
-      if(delta<=windowMs)noteOnTarget=true;
-      var late=windowMs+20;
-      if(t-n.t>late){resolveNote(n,null,'late',0);return}
-      if(p<0){n.el.style.display='none';return}
-      n.el.style.display='grid';
-      n.el.classList.toggle('in-window',delta<=windowMs);
-      // X 좌표와 판정 원 모두 중심점을 기준으로 정렬한다.
-      n.el.style.left=(startX+(target-startX)*p)+'px';
-      n.el.style.opacity=p>1?Math.max(0,1-(p-1)*3):Math.min(1,.3+p*2);
+      var w=windowFor(n),delta=Math.abs(n.t-t);
+      if(p>0&&delta<=w)hot=true;
+      if(p>0&&delta<=w+300&&delta>w)pre=true;
+      if(t-n.t>w+20){resolveNote(n,null,'late');return}
     });
-    $('track').classList.toggle('timing-now',noteOnTarget);
+    $('judgeLine').classList.toggle('hot',hot);
+    $('judgeLine').classList.toggle('pre',!hot&&pre);
+    $('judgeLine').classList.toggle('great',hot&&session.combo>=5);
     var next=session.notes.find(function(n){return !n.judged});
-    if(next&&next.t-t<1250&&next.t-t>180){
-      var a=ACTIONS[next.type];
-      $('cue').textContent=a.name+' 접근 중! '+a.move+' 준비';
+    if(next){
+      var left=next.t-t;
+      if(left<1450&&left>200&&!hot){
+        var a=ACTIONS[next.type];
+        $('cue').textContent=a.name+' 접근 중! '+a.move+' 준비';
+      }
     }
-    if(t>session.end&&session.done>=session.notes.length){finish();return}
+    if(t>=session.end&&session.done>=session.notes.length){finish();return}
+    if(t>session.end+2600){finish();return}
     raf=requestAnimationFrame(tick);
   }
+
   function finish(){
     if(!session||session.finished)return;
-    var result=session;result.finished=true;
+    var r=session;r.finished=true;
     if(raf)cancelAnimationFrame(raf);raf=0;
     stopSound();
-    $('overlay').classList.remove('on');$('track').classList.remove('timing-now');$('courseEvents').replaceChildren();
+    $('overlay').classList.remove('on');
+    $('courseEvents').replaceChildren();$('sparkles').replaceChildren();
+    $('judgeLine').classList.remove('hot','pre','great','burst');
+    $('buddyLine').classList.remove('on');
+
+    var c=CHARTS[r.act],oldLv=curLv();
+    var earned=c.coins+Math.round(r.score/400)+(r.miss===0?50:0);
+    state.coins+=earned;
+    state.stage=Math.max(state.stage,Math.min(4,r.act+1));
+    var newLv=curLv();
+    var fresh=null;
+    if(newLv>oldLv){
+      var d=DRESS[newLv-1];
+      if(state.owned.indexOf(d.id)<0&&d.price===0){state.owned.push(d.id);state.worn=d.id;fresh=d}
+      else if(state.owned.indexOf(d.id)<0){fresh=d}
+    }
+    state.snack=false;state.cafe=false;
+    clearMotion();save();
+
     $('result').classList.add('on');
-    $('resultStats').textContent='PERFECT '+result.perfect+' · 통과 '+result.hits+'/'+result.notes.length+' · 실수 '+result.miss+(result.rescued?' · 간식 도움 '+result.rescued:'');
-    $('resultKicker').textContent=['FIRST CLASS','SECOND CLASS','ROYAL DEBUT'][result.act];
-    $('resultTitle').textContent=['첫 안무를 배웠어요!','이제 무대에 설 준비 완료!','첫 왕립 공연 완성!'][result.act];
-    $('resultBody').textContent=[
-      '고양이는 피하고 장애물은 넘고 균형대를 통과했어요. 라일락 스커트를 선물로 받았어요.',
-      '파드샤·그랑제떼·아라베스크·피루엣을 연결했어요. 이제 무대에 올라갈 차례예요.',
-      '별빛의 첫 왈츠를 완성했어요. 다음에는 더 다양한 안무와 공연에 도전해 봐요.'
-    ][result.act];
-    $('resultDancer').src='../assets/dancers/lilac-'+(result.act===2?'arabesque':'curtsy')+'.webp';
-    $('resultNext').textContent=result.act===2?'왕국으로 돌아가기':'다음 장면으로';
-    state.step=Math.max(state.step,result.act+1);
-    state.cafeReady=false;state.snackReady=false;
-    clearMotion();save();session=null;
+    $('resultKicker').textContent='Lv.'+newLv+' '+DRESS[newLv-1].grade+(r.act===3?' · 앙코르':'');
+    $('resultTitle').textContent=r.act===3?'별빛 피날레를 완성했어요!':['첫 코스를 완주했어요!','2단계 안무를 마쳤어요!','왕립 첫 공연을 완성했어요!'][r.act];
+    var artDress=fresh||wornDress();
+    $('resultDancer').src=dressArt(artDress,r.act===3?'arabesque':'curtsy');
+    var newEl=$('resultNew');
+    if(fresh&&fresh.price===0){newEl.hidden=false;newEl.textContent='Lv.'+fresh.lv+' '+fresh.name+' 선물'}
+    else if(fresh){newEl.hidden=false;newEl.textContent='Lv.'+fresh.lv+' '+fresh.name+' 해금 · 드레스룸에서 '+fresh.price+'코인'}
+    else newEl.hidden=true;
+    $('resultBody').textContent=r.act===3
+      ? '완주하면 코인이 쌓여요. 모은 코인으로 마법 슈가 드레스를 사 입으면 대 피날레 무대가 가장 반짝여요.'
+      : ['첫 코스를 끝까지 달렸어요. 완주 보상으로 코인을 받았어요.','배운 동작을 음악과 연결했어요. 코인이 쌓였어요.','조명이 켜진 왕립 극장에서 첫 왈츠를 완성했어요.'][r.act];
+    $('resultStats').innerHTML='PERFECT '+r.perfect+' · 통과 '+r.hits+'/'+r.notes.length+'<br>최고 콤보 '+r.maxCombo+
+      (r.rescued?' · 구제 '+r.rescued:'')+' · 점수 '+r.score;
+    $('resultCoins').textContent='🪙 +'+earned+' 코인 (보유 '+state.coins+')';
+    $('resultNext').textContent='계속하기';
+    session=null;
+    render();
   }
 
-  $('mainAction').addEventListener('click',run);
   $('movePad').addEventListener('pointerdown',function(e){
     var b=e.target.closest('[data-move]');if(!b)return;
     e.preventDefault();pressMove(b.dataset.move);
   });
   $('movePad').addEventListener('click',function(e){
     var b=e.target.closest('[data-move]');if(b&&e.detail===0)pressMove(b.dataset.move);
-  });
-  $('musicToggle').addEventListener('click',function(){
-    soundOn=!soundOn;
-    if(soundOn)musicReady();
-    syncSound();
   });
   window.addEventListener('keydown',function(e){
     if(!session||session.finished||e.repeat)return;
@@ -583,8 +1144,12 @@
   });
   $('exit').addEventListener('click',clearRun);
   $('resultNext').addEventListener('click',function(){$('result').classList.remove('on');home()});
-  document.addEventListener('visibilitychange',function(){if(document.hidden && session)clearRun()});
-  home();
+  document.addEventListener('visibilitychange',function(){if(document.hidden&&session)clearRun()});
+  function home(){render()}
+
+  load();
+  if(!state.spirit&&state.stage>0)state.spirit='etu';
+  render();
 })();
 </script>
 </body>
