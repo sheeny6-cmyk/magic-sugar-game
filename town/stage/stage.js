@@ -1,7 +1,7 @@
 (function () {
   'use strict';
   var T = window.SugarTown, $ = function (id) { return document.getElementById(id); };
-  var APPROACH = 1500;                       // 링이 좁혀오는 시간(ms)
+  var APPROACH = 2300;                       // 링이 좁혀오는 시간(ms)
   var WINDOW = { perfect: 150, good: 330 };
   var SONG = 'stage', LEAD = 60;
 
@@ -134,7 +134,8 @@
     if (!T.stageReady() || show) return;
     var ctx = audio();
     var s = T.get(), times = cueTimes(), power = T.stagePower(s);
-    WINDOW = { perfect: 150 + power.perfect, good: 330 + power.good };
+    var meal = s.kingdom.meal && s.kingdom.meal.buff ? s.kingdom.meal.buff : {};
+    WINDOW = { perfect: 150 + power.perfect + Math.round((meal.all || 0) / 2), good: 330 + power.good + (meal.all || 0) };
     show = {
       times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
       p0: performance.now() + LEAD, done: false, sending: false, raf: 0, pose: null
@@ -149,7 +150,7 @@
     T.showDancer($('sDancer'), s.worn, 'ready');
     Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     $('sMove').textContent = '준비 자세';
-    $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms. 링이 겹치는 순간을 탭!';
+    $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms' + (s.kingdom.meal ? ' · ' + s.kingdom.meal.name + ' 기운' : '') + '. 링이 겹치는 순간을 탭!';
     var begin = function () { if (band && show) band.start(SONG, Math.max(0, performance.now() - show.p0)); };
     if (ctx && ctx.state === 'suspended') ctx.resume().then(begin).catch(begin);
     else begin();

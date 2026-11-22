@@ -173,3 +173,101 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
 
 .studio .practice-scene{height:clamp(180px,30svh,285px)}.studio .practice-dancer{height:96%;width:76%;left:12%;z-index:2}.scene-coach{position:absolute;left:3%;bottom:12%;width:17%;height:29%;object-fit:contain;z-index:3;border-radius:50%;background:#fff8f3c9;border:1px solid #cbb1d2}.pose-cue{position:absolute;right:7px;top:8px;z-index:3;background:#fffaf2ed;color:#5a3e66;padding:6px 9px;border-radius:9px;font-size:.8rem;font-weight:750}.studio .move{touch-action:manipulation}.studio .lcard{padding:12px}.studio .rhythm-pad{gap:6px}
 @media(max-height:650px){.studio .practice-scene{height:clamp(120px,25svh,180px)}}
+/* ===== 라일락 리듬 무대: 슈가 발밑 스포트라이트 하나로 눈길을 모은다 ===== */
+.practice-scene{--mark:50%;background-color:#dccde8;background-image:url('../assets/rehearsal-room.webp')}
+.practice-scene:before{border-color:#ffffff66}
+.studio .practice-dancer{left:calc(var(--mark) - 38%);width:76%;bottom:4%;height:92%;z-index:4;will-change:transform}
+.runner-ground{position:absolute;bottom:0;left:0;right:0;height:22%;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 62% 100% at var(--mark) 100%,#f3e8ffcc 0%,#ddc9f088 46%,#c8b3e000 78%),
+             linear-gradient(180deg,#f8f1ff00 0%,#e7d7f433 55%,#cdb6e455 100%)}
+.stage-spot{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .5s;
+  background:linear-gradient(104deg,transparent 26%,#fff6cd33 41%,transparent 52%),
+             linear-gradient(76deg,transparent 45%,#ffe9b82e 58%,transparent 70%)}
+.practice-scene.stage-mode .stage-spot{opacity:1}
+.course-events{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.course-event{position:absolute;left:108%;bottom:calc(4% - 10px);display:grid;place-items:center;transform:translateX(-50%);
+  width:60px;height:52px;border-radius:14px;background:#fff9feeb;border:2px solid #e2d0f2;
+  box-shadow:0 5px 14px #4930592e;font-size:1.7rem;line-height:1;will-change:left,opacity;color:#7a5b95}
+.course-event.cat{border-radius:26px;background:#fff2f8;border-color:#eecfe6;bottom:calc(4% - 10px)}
+.course-event.turn{width:56px;height:56px;border-radius:50%;background:#f3e6ffdf;border:3px dashed #9b79bb;color:#8a66ab;bottom:calc(4% - 12px)}
+.course-event.jump{width:54px;height:50px;border:0;box-shadow:none;background:transparent;border-radius:0;font-size:0;bottom:calc(4% - 10px)}
+.course-event.jump:before{content:"";position:absolute;bottom:0;left:3px;right:3px;height:42px;border:4px solid #a892b5;
+  background:repeating-linear-gradient(135deg,#e8dccf 0 10px,#cdb9c9 10px 16px);border-radius:8px;box-shadow:0 3px 8px #4b345c2b}
+.course-event.beam{width:140px;height:44px;bottom:calc(4% - 8px);border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
+.course-event.beam:before{content:"";position:absolute;top:6px;left:2px;right:2px;height:9px;background:linear-gradient(180deg,#e8d0ae,#c6a179 55%,#9a7a55);border:2px solid #7d5f3f;border-radius:5px;box-shadow:0 2px 5px #5b3f2a3d}
+.course-event.beam:after{content:"";position:absolute;top:14px;left:16px;right:16px;height:28px;border-left:8px solid #9b7c58;border-right:8px solid #9b7c58}
+.course-event.hot{z-index:6}
+.course-event.cat.hot,.course-event.turn.hot{background:#fff8fc;border-color:#fff;box-shadow:0 0 0 4px #c8a2c877,0 0 18px #d9b8f3,0 8px 22px #4930594d}
+.course-event.turn.hot{background:#f8edff;border-color:#fff}
+.course-event.jump.hot:before{border-color:#fff;box-shadow:0 0 0 4px #c8a2c877,0 4px 14px #4930594d}
+.course-event.beam.hot:before{box-shadow:0 0 0 3px #c8a2c877,0 4px 14px #4930594d}
+.course-event.popped{animation:evPop .32s ease-out forwards}
+.course-event.bonked{animation:evBonk .34s ease-out forwards}
+@keyframes evPop{0%{transform:translateX(-50%) scale(1);opacity:1}38%{transform:translateX(-50%) scale(1.3) rotate(6deg);opacity:.95}100%{transform:translateX(-50%) translateY(-24px) scale(.4);opacity:0}}
+@keyframes evBonk{0%{transform:translateX(-50%) rotate(0)}30%{transform:translateX(-50%) rotate(9deg)}70%{transform:translateX(-50%) rotate(-7deg);opacity:.6}100%{transform:translateX(-50%) scale(.7);opacity:0}}
+.judge-line{position:absolute;left:var(--mark);bottom:4%;width:clamp(82px,23%,120px);height:30px;transform:translateX(-50%);z-index:5;pointer-events:none}
+.judge-line .floor{position:absolute;left:50%;top:50%;width:210px;height:1px;transform:translate(-50%,-50%);
+  background:linear-gradient(90deg,#ffffff00,#ffffffcc 38%,#ffffffcc 62%,#ffffff00)}
+.judge-line .shaft{position:absolute;left:50%;bottom:52%;width:86px;height:120px;transform:translateX(-50%);
+  background:linear-gradient(0deg,#e2cdf8aa,#e2cdf800);clip-path:polygon(38% 0,62% 0,100% 100%,0 100%);opacity:.55}
+.judge-line .ring{position:absolute;inset:0;border-radius:50%;border:3px solid #fff;background:radial-gradient(ellipse at 50% 45%,#ffffff8a,#ffffff10 62%,#ffffff00 78%);
+  box-shadow:0 0 14px #c8a2c8aa,inset 0 0 10px #ffffffcc;transition:box-shadow .12s,transform .12s}
+.judge-line .ring:after{content:"";position:absolute;inset:5px;border-radius:50%;border:1px dashed #ffffffb3}
+.judge-line.hot .ring{border-color:#fff;transform:scale(1.26);
+  box-shadow:0 0 40px #fff,0 0 0 12px #fff2c4aa,0 0 0 24px #c8a2c855,inset 0 0 18px #fff}
+.judge-line.hot .floor{height:3px;background:linear-gradient(90deg,#ffffff00,#fff 30%,#fff 70%,#ffffff00);box-shadow:0 0 14px #fff}
+.judge-line.hot .shaft{opacity:1;background:linear-gradient(0deg,#fff6cddd,#e2cdf800)}
+.judge-line.great .ring{border-color:#ffeaa8;box-shadow:0 0 34px #ffe9a8,0 0 0 10px #ffe9a866,inset 0 0 16px #fff}
+.judge-line.perfect .ring{border-color:#ffe08a;box-shadow:0 0 30px #ffe08a,0 0 0 9px #ffe08a55,inset 0 0 14px #fff}
+.judge-line.good .ring{border-color:#9fe6d3;box-shadow:0 0 26px #9fe6d3,0 0 0 8px #9fe6d355,inset 0 0 12px #fff}
+.judge-line.miss .ring{border-color:#f3b3c2;box-shadow:0 0 22px #f3b3c2aa,0 0 0 7px #f3b3c244}
+.now-cue{position:absolute;left:50%;bottom:calc(4% + 34px);transform:translate(-50%,6px);z-index:6;margin:0;
+  padding:3px 10px;border-radius:99px;background:#fffaf0ef;border:1px solid #f0dfc4;color:#7a5b2a;
+  font-size:.72rem;font-weight:850;white-space:nowrap;opacity:0;transition:opacity .14s,transform .14s}
+.now-cue.on{opacity:1;transform:translate(-50%,0)}
+/* 손맛 연출: 링 위에서 제자리로 뛰고 돈다 */
+.practice-dancer.pas-de-chat{animation:pasDeChat .78s cubic-bezier(.3,.18,.3,1.05) forwards}
+.practice-dancer.grand-jete{animation:grandJete .9s ease-out forwards}
+.practice-dancer.balance-arabesque{animation:balanceBeam 1.05s ease-in-out forwards}
+.practice-dancer.pirouette{animation:pirouette .9s ease-in-out forwards}
+@keyframes pasDeChat{0%{transform:translateY(0) scale(1)}26%{transform:translateY(-24px) scale(.97) rotate(-3deg)}
+  54%{transform:translateY(-58px) scale(1.02) rotate(2deg)}74%{transform:translateY(-24px) scale(1)}100%{transform:none}}
+@keyframes grandJete{0%{transform:none}26%{transform:translateY(-14px) scale(.98)}
+  52%{transform:translateY(-74px) scale(1.05) rotate(-4deg)}76%{transform:translateY(-40px) scale(1.02)}100%{transform:none}}
+@keyframes balanceBeam{0%,100%{transform:none}24%{transform:translateY(-22px) rotate(-3deg)}
+  35%,72%{transform:translateY(-32px) rotate(-1.5deg)}86%{transform:translateY(-14px) rotate(1deg)}}
+@keyframes pirouette{0%{transform:scaleX(1)}22%{transform:scaleX(.34) translateY(-6px)}
+  50%{transform:scaleX(-1) translateY(-9px)}74%{transform:scaleX(-.34) translateY(-4px)}100%{transform:scaleX(1)}}
+.practice-dancer.snap{animation:snap-pose .42s ease-out}
+.practice-dancer.wobble{animation:wobble-pose .5s ease-in-out}
+/* 네 동작 버튼 */
+.rhythm-pad{grid-template-columns:repeat(5,1fr);gap:5px}
+.move{min-height:58px;padding:5px 1px 6px;border-radius:13px;font-size:.74rem}
+.move span{font-size:1.12rem}
+.move small{font-size:.53rem}
+.move.beam{background:linear-gradient(180deg,#fff6e3,#f6dfb4);border-color:#dcc08a;color:#6f4f1d}
+.move.turn{background:linear-gradient(180deg,#f3e9ff,#ddc9f3);border-color:#b79bd6;color:#543a75}
+.buff-badge b.ability{color:#7d4f9c;font-weight:850}
+.buff-badge .buff-sep{color:#b9a7c9}
+@media(max-width:360px){.move{font-size:.68rem}.move span{font-size:1rem}.move small{font-size:.5rem}}
+
+/* 박자 노트: 동글동글한 음표 하나 */
+.course-event.beat{width:44px;height:44px;border-radius:50%;background:#fff7fceb;border:2px solid #f0d8ea;
+  color:#c2719c;font-size:1.24rem;bottom:calc(4% - 6px)}
+.course-event.beat.hot{background:#fff;border-color:#fff;box-shadow:0 0 0 4px #f2c6dd88,0 0 16px #e7b7d3,0 6px 18px #4930593d}
+/* 판정 링은 발밑에서 은은하게, 발끝을 가리지 않게 */
+.judge-line{width:clamp(74px,20%,106px);height:26px}
+.judge-line .ring{background:radial-gradient(ellipse at 50% 45%,#ffffff70,#ffffff0d 62%,#ffffff00 80%);border-width:2px}
+.judge-line .ring:after{inset:4px}
+/* 다음 동작 표시는 왼쪽 위로 옮겨 슈가 머리·판정 문구를 가리지 않게 */
+.pose-cue{left:8px;right:auto;top:8px;font-size:.74rem;padding:5px 8px;background:#fffaf2e6}
+/* 지금 누를 동작 안내는 링 위로 */
+.now-cue{bottom:calc(4% + 46px);font-size:.7rem}
+
+/* 안내 문구는 한 곳(아래 반응 줄 + 왼쪽 위 다음 동작)으로 모은다 */
+.now-cue{display:none}
+.course-event.cat{font-size:1.9rem}
+.course-event.turn{font-size:1.8rem}
+.course-event.beat{font-size:1.5rem}
+/* 다음 동작 표시는 오른쪽 위 (콤보 배지와 겹치지 않게) */
+.pose-cue{left:auto;right:8px;top:8px}

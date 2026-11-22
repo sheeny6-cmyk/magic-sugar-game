@@ -5,7 +5,9 @@
   var $ = function (id) { return document.getElementById(id); };
   var teachers = { bar: 'etu', center: 'piru', piece: 'ara' };
   var dialogs = ['confirm', 'lesson', 'result'];
-  var APPROACH = 1700;              // 노트가 트랙을 건너오는 시간(ms)
+  var APPROACH = 2300;              // 노트가 무대 오른쪽 끝에서 스포트라이트까지 걸어오는 시간(ms)
+  var MARK = 50;                    // 판정 지점(무대 폭 %) = 슈가의 발밑 중심
+  var IDLE_POSE = 'ready';
   var busy = false, lastReceipt = null, ses = null, p0 = 0;
 
   /* ================= 소리 ================= */
@@ -94,9 +96,11 @@
       var c = classes[kind], sp = teachers[kind];
       var waiting = s.lesson && kind !== s.lesson.kind;
       var prize = T.rewardFor(kind, waiting ? null : potion).coins;
+      var chart = book.buildChart(kind, s.stamps[kind] || 0);
+      var count = chart && chart.notes ? chart.notes.length : 0;
       return '<button class="cls" data-cls="' + kind + '" type="button"' + (waiting ? ' disabled' : '') + '>' +
         '<img src="' + T.spiritArt(sp, true) + '" alt=""><span class="course-info"><strong>' + c.name + '</strong>' +
-        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + c.count + '노트 · ' + Object.keys(c.stats).map(function (k) { return T.STATS[k].label; }).join('·') + '</small></span>' +
+        '<small>' + T.SPIRITS[sp].name + ' 선생님 · ' + count + '노트 · ' + Object.keys(c.stats).map(function (k) { return T.STATS[k].label; }).join('·') + '</small></span>' +
         '<b class="course-prize">+' + T.fmt(prize) + '코인</b><span aria-hidden="true">›</span></button>';
     }).join('');
     renderMates(s);
@@ -140,7 +144,8 @@
   function confirmCourse(kind) {
     var c = classes[kind], s = T.get(), potion = s.kingdom.prepared;
     var song = window.SugarMusic && window.SugarMusic.SONGS ? window.SugarMusic.SONGS[kind] : null;
-    $('cKicker').textContent = '무료 수업 · ' + c.count + '노트' + (song ? ' · ' + song.name : ' · ' + c.mood);
+    var chart = book.buildChart(kind, s.stamps[kind] || 0);
+    $('cKicker').textContent = '무료 수업 · ' + (chart ? chart.notes.length : 0) + '노트' + (song ? ' · ' + song.name : ' · ' + c.mood);
     $('cName').textContent = c.name;
     $('cDesc').textContent = c.desc;
     $('cReward').textContent = '+' + T.fmt(T.rewardFor(kind, potion).coins) + '코인';
@@ -204,6 +209,21 @@
     return out;
   }
 
+  /* 정령마다 무대에서 도와주는 능력. 함께 연습할 정령을 고르면 이 힘이 실제로 발동한다. */
+  function mateAbility(id) {
+    if (!id || !T.SPIRITS[id]) return '';
+    var sp = T.SPIRITS[id], text = (book.ABILITY && book.ABILITY[id]) || '';
+    return sp.name + ' 능력 · ' + text;
+  }
+  function noteWindow(n) {
+    var meal = (ses && ses.meal) || {};
+    return ses.window.good + (meal.all || 0) + (meal[n.type] || 0);
+  }
+  function notePerfectWindow(n) {
+    var meal = (ses && ses.meal) || {};
+    return ses.window.perfect + Math.round(((meal.all || 0) + (meal[n.type] || 0)) / 2);
+  }
+
   /* ================= 리듬 수업 ================= */
   function startSession(run) {
     stopSession();
@@ -215,28 +235,43 @@
     buffs.comboRate *= power.combo;
     buffs.noteCoins += power.notes;
     buffs.shields += power.shields;
-    buffs.line = ['성장 효과 · 판정 +' + power.timing + 'ms', power.label, buffs.line].filter(Boolean).join(' · ');
-    var lane = $('lane');
+    var growth = [];
+    if (power.timing) growth.push('성장 판정 +' + power.timing + 'ms');
+    if (power.label) growth.push(power.label);
+    if (buffs.line) growth.push(buffs.line);
+    buffs.line = growth.join(' · ');
+    /* 분식집·카페에서 주문한 메뉴의 버프. 다음 수업 한 번에 발동하고 사라진다. */
+    var meal = s.kingdom.meal && s.kingdom.meal.buff ? s.kingdom.meal : null;
+    var mealLine = '';
+    if (meal) {
+      buffs.comboRate += meal.buff.combo || 0;
+      buffs.shields += meal.buff.shield || 0;
+      var parts = [];
+      var all = meal.buff.all || 0;
+      if (all) parts.push('판정 +' + all + 'ms');
+      ['cat', 'jump', 'beam', 'turn', 'beat'].forEach(function (k) {
+        if (meal.buff[k]) parts.push((MOVES[k].label || '박자') + ' +' + meal.buff[k] + 'ms');
+      });
+      if (meal.buff.shield) parts.push('삐끗 ' + meal.buff.shield + '회 보호');
+      if (meal.buff.combo) parts.push('콤보 +' + meal.buff.combo);
+      mealLine = (meal.kind === 'cafe' ? '☕ ' : '🍢 ') + meal.name + ' · ' + parts.join(' · ');
+    }
+    var ability = mateAbility(s.practiceWith);
+    var lane = $('lProps');
     lane.replaceChildren();
     var props = $('lProps');
-    props.replaceChildren();
     var notes = chart.notes.map(function (n, i) {
       var el = document.createElement('span');
-      el.className = 'note ' + n.type;
-      el.textContent = ({beat:'♩',cat:'◇',jump:'↑'})[n.type];
+      el.className = 'course-event ' + n.type;
+      var mv = MOVES[n.type] || MOVES.beat;
+      if (n.type === 'cat') el.textContent = '🐈';
+      else if (n.type === 'turn') el.textContent = '↻';
+      else if (n.type === 'beat') el.textContent = '♪';
       el.setAttribute('aria-hidden', 'true');
+      el.dataset.label = mv.label;
       el.style.display = 'none';
       lane.appendChild(el);
-      var prop = null;
-      if (false) {
-        prop = document.createElement('span');
-        prop.className = 'prop ' + n.type;
-        prop.setAttribute('aria-hidden', 'true');
-        prop.innerHTML = '<i>' + (n.type === 'cat' ? '🐱' : '🚧') + '</i>';
-        prop.style.display = 'none';
-        props.appendChild(prop);
-      }
-      return { t: n.t, type: n.type, index: i, judged: false, result: null, el: el, prop: prop };
+      return { t: n.t, type: n.type, index: i, judged: false, result: null, el: el, prop: null };
     });
     $('lDots').innerHTML = notes.map(function () { return '<i></i>'; }).join('');
     $('lSparks').replaceChildren();
@@ -248,8 +283,8 @@
     $('lJudge').className = 'judge-flash';
     $('lCombo').hidden = true;
     $('lCombo').querySelector('b').textContent = '0';
-    $('lBuff').hidden = !buffs.line;
-    $('lBuff').textContent = buffs.line;
+    $('lBuff').hidden = !(buffs.line || mealLine || ability);
+    $('lBuff').innerHTML = [ability ? '<b class="ability">' + ability + '</b>' : '', mealLine, buffs.line].filter(Boolean).join('<span class="buff-sep"> · </span>');
     $('lTitle').textContent = c.name;
     $('lPose').textContent = '준비 자세';
     $('lPrize').textContent = '완주 +' + T.fmt(T.rewardFor(kind, s.kingdom.prepared).coins) + '코인';
@@ -266,16 +301,19 @@
       (mate && mate !== teachers[kind] ? ' · ' + T.SPIRITS[mate].name + '와 함께'
         : mate ? ' · 단둘이 연습' : '');
     $('lComfort').hidden = true;
-    T.showDancer($('lDancer'), s.worn, 'ready');
-    $('lDancer').classList.remove('snap', 'wobble');
+    T.showDancer($('lDancer'), s.worn, IDLE_POSE);
+    $('lDancer').className = 'practice-dancer';
+    $('lJudgeLine').className = 'judge-line';
+    $('lCue').className = 'now-cue';
+    $('lScene').classList.toggle('stage-mode', !!c.stageMode);
     $('lFeedback').textContent = kind === 'bar'
-      ? '노트가 판정 원에 닿으면 기본 동작 버튼을 눌러요.'
-      : '노트가 판정 원에 닿는 순간, 노트와 같은 동작을 눌러요!';
+      ? '노트가 빛나는 링에 닿으면 박자 버튼을 눌러요.'
+      : '노트가 빛나는 링에 닿는 순간, 노트와 같은 동작을 눌러요!';
     ses = {
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
       judged: 0, combo: 0, maxCombo: 0, perfect: 0, good: 0, miss: 0,
       shields: buffs.shields, comboRate: buffs.comboRate, noteCoins: buffs.noteCoins, window: buffs.window,
-      poses: c.poses, poseIdx: -1, finished: false, sending: false,
+      meal: meal ? meal.buff : {}, moveAt: -1, beatPose: 'plie', finished: false, sending: false,
       musicStarted: false, raf: 0, interrupted: false
     };
     paintDots();
@@ -302,48 +340,68 @@
 
   function loop() {
     if (!ses || ses.finished) return;
-    var t = nowMs(), lane = $('lane'), laneW = lane.clientWidth || 280;
-    var targetX = 39, startX = Math.max(targetX + 150, laneW - 46);
+    var t = nowMs();
+    var hot = false, pre = false, hotNote = null, hotDelta = Infinity;
     for (var i = 0; i < ses.notes.length; i++) {
       var n = ses.notes[i];
+      var p = 1 - (n.t - t) / APPROACH;
       if (n.judged) {
-        if (n.el.style.display !== 'none') n.el.style.display = 'none';
-        if (n.prop && n.prop.dataset.done !== '1') { n.prop.dataset.done = '1'; n.prop.style.display = 'none'; }
+        if (n.el.style.display !== 'none' && !n.el.classList.contains('popped')) n.el.style.display = 'none';
         continue;
       }
-      if (t - n.t > ses.window.good) { missNote(n, 'late'); continue; }
-      var p = 1 - (n.t - t) / APPROACH;
-      if (p < -0.02) {
+      if (t - n.t > noteWindow(n) + 20) { missNote(n, 'late'); continue; }
+      if (p < -0.04) {
         if (n.el.style.display !== 'none') n.el.style.display = 'none';
-        if (n.prop) n.prop.style.display = 'none';
         continue;
       }
       if (n.el.style.display !== 'grid') n.el.style.display = 'grid';
-      var x = startX + (targetX - startX) * p;
-      n.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,0,0)';
-      n.el.style.opacity = p > 1 ? Math.max(0, 1 - (p - 1) / 0.32).toFixed(2) : Math.min(1, Math.max(0, p / 0.12 + 0.25)).toFixed(2);
-      n.el.classList.toggle('near', Math.abs(p - 1) < 0.085);
-      if (n.prop && n.prop.dataset.done !== '1') paintProp(n.prop, n.type, p);
+      /* 아이콘은 무대 오른쪽 끝에서 슈가 발밑 스포트라이트까지 같은 속도로 다가온다. */
+      var left = 108 + (MARK - 108) * Math.min(p, 1.7);
+      n.el.style.left = left.toFixed(1) + '%';
+      n.el.style.opacity = Math.min(1, Math.max(0, 0.45 + p * 2)).toFixed(2);
+      var w = noteWindow(n), delta = Math.abs(n.t - t);
+      if (p > 0 && delta <= w) {
+        hot = true;
+        if (delta < hotDelta) { hotDelta = delta; hotNote = n; }
+      }
+      if (p > 0 && delta <= w + 300 && delta > w) pre = true;
     }
-    var next = ses.notes.find(function(n){return !n.judged;});
-    $('lNextMove').textContent = next ? ({beat:'♩ 기본 동작',cat:'◇ 밸런스',jump:'↑ 도약'})[next.type] : '마무리 자세';
+    ses.notes.forEach(function (n) { if (n.el) n.el.classList.toggle('hot', !n.judged && n === hotNote); });
+    var line = $('lJudgeLine');
+    line.classList.toggle('hot', hot);
+    line.classList.toggle('pre', !hot && pre);
+    line.classList.toggle('great', hot && ses.combo >= 5);
+    var cue = $('lCue');
+    if (hot && hotNote) {
+      if (ses.moveAt !== hotNote.index) {
+        ses.moveAt = hotNote.index;
+        cue.textContent = (MOVES[hotNote.type].label || '박자') + '!';
+      }
+      cue.classList.add('on');
+    } else {
+      ses.moveAt = -1;
+      cue.classList.remove('on');
+    }
+    var next = null;
+    for (var k = 0; k < ses.notes.length; k++) { if (!ses.notes[k].judged) { next = ses.notes[k]; break; } }
+    $('lNextMove').textContent = next ? nextTypeLabel(next.type) : '마무리 자세';
+    if (next && !hot) {
+      var left2 = next.t - t;
+      if (left2 < APPROACH - 80 && left2 > noteWindow(next)) {
+        $('lFeedback').textContent = (MOVES[next.type].kind || '') + ' ' + nextTypeLabel(next.type) + ' 준비';
+      }
+    }
     if (t > ses.chart.total) { finishSession(); return; }
     ses.raf = requestAnimationFrame(loop);
   }
 
-  // 무대 위 고양이·장애물: 오른쪽에서 슈가 발치까지 걸어온다.
-  function paintProp(prop, type, p) {
-    if (p < 0 || p > 1.06) { if (prop.style.display !== 'none') prop.style.display = 'none'; return; }
-    if (prop.style.display !== 'block') prop.style.display = 'block';
-    var from = 104, to = 52;                       // scene 기준 % (슈가는 가운데)
-    var left = from + (to - from) * Math.min(1, p);
-    var size = 0.72 + 0.38 * Math.min(1, p);
-    var bob = type === 'cat' ? Math.sin(p * 16) * 2.4 : 0;
-    prop.style.left = left.toFixed(1) + '%';
-    prop.style.transform = 'translate(-50%,' + bob.toFixed(1) + 'px) scale(' + size.toFixed(3) + ')';
-    prop.style.opacity = p > 1 ? Math.max(0, (1.06 - p) / 0.06).toFixed(2) : '1';
-    prop.classList.toggle('near', p > 0.88);
+  function nextTypeLabel(type) {
+    var mv = MOVES[type] || MOVES.beat;
+    return mv.label + ' ' + (type === 'beat' ? '♪' : mv.icon);
   }
+
+  /* 예전 무대 소품(고양이·장애물)은 코스 이벤트가 그 역할을 이어받았다. */
+  function paintProp() {}
 
   function paintDots() {
     if (!ses) return;
@@ -364,9 +422,9 @@
     el.className = 'judge-flash';
     void el.offsetWidth;
     el.className = 'judge-flash ' + kind;
-    var target = $('target');
-    target.className = 'target-zone ' + kind;
-    setTimeout(function () { if (target.className !== 'target-zone') target.className = 'target-zone'; }, 240);
+    var line = $('lJudgeLine');
+    line.classList.add(kind);
+    setTimeout(function () { if (line && !line.classList.contains('hot')) line.classList.remove(kind); }, 260);
   }
   function sparkle(count, kind) {
     var layer = $('lSparks');
@@ -381,22 +439,53 @@
       (function (node) { setTimeout(function () { node.remove(); }, 700); })(s);
     }
   }
-  function setPose(pose, snap) {
+  function setPose(pose, snap, anim, type) {
     T.showDancer($('lDancer'), T.get().worn, pose);
-    $('lPose').textContent = T.POSES[pose];
+    var mv = (type && MOVES[type]) || null;
+    $('lPose').textContent = mv ? mv.label + ' · ' + T.POSES[pose] : T.POSES[pose];
     var img = $('lDancer');
-    if (snap) { img.classList.remove('snap', 'wobble', 'hop', 'leap'); void img.offsetWidth; img.classList.add('snap'); }
+    img.className = 'practice-dancer';
+    if (snap) {
+      void img.offsetWidth;
+      img.classList.add('snap');
+      if (anim) img.classList.add(anim);
+    }
   }
   function wobble() {
     var img = $('lDancer');
-    img.classList.remove('wobble', 'snap', 'hop', 'leap'); void img.offsetWidth; img.classList.add('wobble');
+    img.className = 'practice-dancer';
+    void img.offsetWidth;
+    img.classList.add('wobble');
     $('lPose').textContent = '휘청!';
+    var mine = ses;
+    clearTimeout(poseTimer);
+    poseTimer = setTimeout(function () {
+      if (ses !== mine || !ses) return;
+      T.showDancer($('lDancer'), T.get().worn, IDLE_POSE);
+      $('lDancer').className = 'practice-dancer';
+      $('lPose').textContent = '준비 자세';
+    }, 760);
   }
-  // 고양이는 사뿐히 폴짝, 장애물은 크게 도약.
-  function hopOver(kind) {
-    var img = $('lDancer');
-    img.classList.remove('snap', 'wobble', 'hop', 'leap'); void img.offsetWidth;
-    img.classList.add(kind === 'jump' ? 'leap' : 'hop');
+  /* 판정된 노트 아이콘은 링 위에서 반짝하며 사라진다. */
+  function popNote(n) {
+    if (!n.el || n.el.dataset.done === '1') return;
+    n.el.dataset.done = '1';
+    n.el.classList.add('cleared', 'popped');
+    setTimeout(function () { if (n.el) n.el.style.display = 'none'; }, 320);
+  }
+  function bonkNote(n) {
+    if (!n.el || n.el.dataset.done === '1') return;
+    n.el.dataset.done = '1';
+    n.el.classList.add('bonked');
+    setTimeout(function () { if (n.el) n.el.style.display = 'none'; }, 380);
+  }
+  /* 함께 연습하는 정령의 응원 한마디 */
+  function spCheer(group, type) {
+    var mate = T.get().practiceWith;
+    if (!mate || !T.SPIRITS[mate] || !T.SPIRITS[mate].cheer) return;
+    var lines = T.SPIRITS[mate].cheer, n = T.nick();
+    var text = String(lines[(ses.perfect + ses.good + ses.miss) % lines.length]).replace(/\{n\}/g, n);
+    bubble(text, group === 'miss' ? 'sad' : 'happy');
   }
   var bubbleTimer = 0;
   function bubble(text, kind) {
@@ -415,11 +504,22 @@
     badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop');
   }
   function advancePose(over) {
-    ses.poseIdx = (ses.poseIdx + 1) % ses.poses.length;
-    if (over === 'cat') setPose('arabesque', true);
-    else if (over === 'jump') { setPose('releve', false); hopOver('jump'); }
-    else setPose(ses.poses[ses.poseIdx], true);
+    /* 평소에는 ready 포즈로 우아하게 서 있고, 판정된 순간에만 그 동작 포즈로 바뀌었다가 돌아온다. */
+    var type = over || 'beat';
+    var mv = MOVES[type] || MOVES.beat;
+    var pose = type === 'beat' ? (ses.beatPose === 'plie' ? 'tendu' : 'plie') : mv.pose;
+    if (type === 'beat') ses.beatPose = pose;
+    setPose(pose, true, mv.anim, type);
+    var mine = ses;
+    clearTimeout(poseTimer);
+    poseTimer = setTimeout(function () {
+      if (ses !== mine || !ses) return;
+      T.showDancer($('lDancer'), T.get().worn, IDLE_POSE);
+      $('lDancer').className = 'practice-dancer';
+      $('lPose').textContent = '준비 자세';
+    }, 980);
   }
+  var poseTimer = 0;
 
   function clearProp(n) {
     if (!n.prop || n.prop.dataset.done === '1') return;
@@ -440,17 +540,17 @@
     if (verdict === 'perfect') ses.perfect++; else ses.good++;
     ses.combo++;
     if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
-    if (n.type !== 'beat') clearProp(n);
-    advancePose(n.type === 'beat' ? '' : n.type);
+    popNote(n);
+    advancePose(n.type);
     if (verdict === 'perfect') {
       flashJudge('PERFECT!', 'perfect'); sparkle(10, 'gold'); tone('perfect');
-      if (n.type === 'cat') bubble('균형 성공!', 'happy');
-      else if (n.type === 'jump') bubble('가벼운 도약!', 'happy');
-      cue(n.type === 'beat' ? '음악과 발끝이 맞았어요!' : '정확한 동작이에요!');
+      bubble('정확해요!', 'happy');
+      cue(book.pickLine('perfect', n.type));
     } else {
       flashJudge('GOOD!', 'good'); sparkle(5, 'mint'); tone('good');
-      cue('좋아요. 다음 동작을 이어 가요.');
+      cue(book.pickLine('good', n.type));
     }
+    if (ses.combo % 3 === 0) spCheer('hit', n.type);
     comboBump(); paintDots(); paintCount();
   }
   function missNote(n, why) {
@@ -459,23 +559,27 @@
       ses.shields--;
       ses.good++; ses.combo++;
       if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
-      if (n.type !== 'beat') clearProp(n);
-      advancePose(n.type === 'beat' ? '' : n.type);
+      if (n.type !== 'beat') popNote(n);
+      advancePose(n.type);
       flashJudge('살짝 구했어요!', 'good'); sparkle(4, 'mint'); tone('good');
       cue(book.pickLine('shield', n.type));
       comboBump(); paintDots(); paintCount();
       return;
     }
     ses.miss++; ses.combo = 0;
-    if (n.type !== 'beat') bonkProp(n);
+    bonkNote(n);
     wobble(); flashJudge('삐끗!', 'miss'); tone('miss');
     var jokes = n.type === 'cat'
       ? ['야웅… 고양이가 밟고 갔어요 🐱', '고양이가 ' + T.nick() + '님 리본을 물었어요 🎀', '고양이 앞에서 중심을 잃었어요 😹']
       : n.type === 'jump'
         ? ['튜튜가 장애물에 걸렸어요! 🚧', '도약은 했는데 장애물이 더 높았어요 😵', '장애물이 오늘따라 커 보여요 🧱']
-        : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
-    bubble('다음 박자에 다시 도전!', 'sad');
-    cue(why === 'wrong' ? '다음 동작 표시를 보고 눌러요.' : '한 박자 놓쳤어요. 음악은 계속돼요.');
+        : n.type === 'beam'
+          ? ['균형대에서 중심이 살짝 흔들렸어요 ═', '아라베스크 다리가 균형대에 걸렸어요 😅']
+          : n.type === 'turn'
+            ? ['빙글 돌다가 제자리를 못 찾았어요 ↻', '피루엣이 반 바퀴만 돌았어요 😵‍💫']
+            : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
+    bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
+    cue(why === 'wrong' ? '노트와 같은 동작을 눌러야 해요. 다음 표시를 봐요.' : '한 박자 놓쳤어요. 음악은 계속돼요.');
     showComfort();
     comboBump(); paintDots(); paintCount();
   }
@@ -505,20 +609,20 @@
       var n = ses.notes[i];
       if (n.judged) continue;
       var dt = t - n.t;
-      if (dt < -ses.window.good) { upcoming = n; break; }
-      if (dt > ses.window.good) continue;
+      var w = noteWindow(n);
+      if (dt < -w - 200) { upcoming = n; break; }
+      if (dt > w) continue;
       var abs = Math.abs(dt);
       if (abs < bestAbs) { best = n; bestAbs = abs; }
     }
     if (best) {
-      if (best.type === move) hitNote(best, bestAbs <= ses.window.perfect ? 'perfect' : 'good');
-      else if (soft) tone('tap');          // 트랙을 살짝 누른 건 벌하지 않아요.
+      if (best.type === move) hitNote(best, bestAbs <= notePerfectWindow(best) ? 'perfect' : 'good');
+      else if (soft) tone('tap');          // 화면을 살짝 스친 건 벌하지 않아요.
       else missNote(best, 'wrong');
       return;
     }
-    if (upcoming && upcoming.type === move && upcoming.t - t < ses.window.good * 2) {
+    if (upcoming && upcoming.type === move && upcoming.t - t < noteWindow(upcoming) * 2) {
       cue(book.pickLine('early', move));
-      $('lPose').textContent = '한 박자 기다려요';
       return;
     }
     tone('tap');
@@ -720,14 +824,23 @@
   });
   $('pad').addEventListener('click', function (e) {
     var b = e.target.closest('[data-move]');
-    if (b) pressMove(b.dataset.move);
+    if (b && e.detail === 0) pressMove(b.dataset.move);   // 키보드로 누른 경우만 (터치는 pointerdown에서 처리)
   });
-  $('track').addEventListener('pointerdown', function (e) { e.preventDefault(); pressMove('beat', true); });
+  $('track') && $('track').addEventListener('pointerdown', function (e) { e.preventDefault(); pressMove('beat', true); });
+  $('pad').addEventListener('pointerdown', function (e) {
+    var b = e.target.closest('[data-move]');
+    if (!b) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    if (e.cancelable) e.preventDefault();
+    pressMove(b.dataset.move);
+  });
   document.addEventListener('keydown', function (e) {
     if (!$('lesson').open || !ses) return;
     if (e.code === 'Space' || e.key === '1') { e.preventDefault(); pressMove('beat'); }
     else if (e.key === '2') { e.preventDefault(); pressMove('cat'); }
     else if (e.key === '3') { e.preventDefault(); pressMove('jump'); }
+    else if (e.key === '4') { e.preventDefault(); pressMove('beam'); }
+    else if (e.key === '5') { e.preventDefault(); pressMove('turn'); }
   });
   $('rAgain').addEventListener('click', function () { enroll(T.get().kingdom.receipt.kind); });
   $('rWear').addEventListener('click', async function () {

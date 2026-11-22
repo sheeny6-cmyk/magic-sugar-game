@@ -1,0 +1,17 @@
+.cafe{background:#e9dff5}
+.cafe .app{max-width:520px;background:linear-gradient(180deg,#fdfaff,#f7f0fe 46%,#fbf6ff);box-shadow:0 0 60px #5c3d7a2e}
+.cafe-hero{position:relative;margin:12px 14px 0;border-radius:20px;overflow:hidden;min-height:196px;isolation:isolate;
+  border:1px solid #ddc9ee;box-shadow:0 12px 30px #6b4a8a26}
+.cafe-hero .hero-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cafe-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,#3f2a52d9 0%,#4c3153aa 46%,transparent 78%)}
+.cafe-hero .hero-copy{position:relative;padding:20px 18px;max-width:78%;color:#fff8ff}
+.cafe-hero .kicker{margin:0;font-family:Georgia,serif;font-size:.62rem;letter-spacing:.18em;color:#e6d4f6}
+.cafe-hero h1{margin:6px 0 8px;font-family:"Nanum Myeongjo","Noto Serif KR",Georgia,serif;font-size:1.62rem;line-height:1.24;letter-spacing:-.055em}
+.cafe-hero .lead{margin:0;font-size:.79rem;line-height:1.55;color:#f0e6f8;word-break:keep-all}
+.cafe-extra{display:grid;gap:9px;margin:14px 14px 0}
+.cafe-extra .mini-game{display:flex;align-items:center;gap:11px;padding:9px 11px;border:1px solid #e3d4f1;border-radius:16px;
+  background:#fffdfe;text-decoration:none;color:inherit;box-shadow:0 6px 16px #6b4a8a14}
+.cafe-extra .mini-game img{width:52px;height:52px;border-radius:12px;object-fit:cover;flex:none;background:#f3e8ff}
+.cafe-extra .mini-game b{display:block;font-size:.88rem;letter-spacing:-.03em}
+.cafe-extra .mini-game small{display:block;font-size:.7rem;color:#8a7799;line-height:1.4;margin-top:2px}
+.cafe .foot{margin-top:18px}

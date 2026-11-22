@@ -1,0 +1,251 @@
+/* ===== 라일락 왕국 테마: 본편(town/) 전체를 은은하고 로맨틱한 라일락으로 통일 ===== */
+:root{
+  --lav:#9b7bb8;--lav-d:#7d5c9b;--lav-soft:#ede4f7;--line:#e6d8f2;
+  --cream:#fbf7fe;--paper:#fffdfe;--gold:#b99a6b;
+  --ink:#432e52;--ink-soft:#7c6a8b;
+  --lilac:#c8a2c8;--lilac-soft:#ede4f7;--lilac-deep:#9b7bb8;
+}
+
+/* ---------- 공통 배경 ---------- */
+body{background:#e9dff5}
+body.court{background:
+  radial-gradient(circle at 12% 4%,#f3e6ff 0,transparent 42%),
+  radial-gradient(circle at 88% 0%,#efe0fb 0,transparent 38%),
+  linear-gradient(170deg,#efe4fb,#e6daf4 48%,#f4ecfb);color:#432e52}
+body.sub{background:#e9dff5}
+body.sub .app{background:linear-gradient(180deg,#fdfaff,#f7f0fe 46%,#fbf6ff)}
+.subbar{background:rgba(253,250,255,.92);border-bottom:1px solid #e6d8f2}
+.subbar .title{color:#432e52}
+.back{background:#fff;border:1px solid #e6d8f2;color:#7d5c9b}
+.coin{background:linear-gradient(135deg,#fff7e6,#ffeccd);border:1px solid #eed9b4;color:#7a5a1e}
+.btn.primary{background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;border:0;box-shadow:0 8px 18px #6b4a8a33}
+.btn.ghost{background:#fffdfe;border:1px solid #e3d4f1;color:#7d5c9b}
+.foot{color:#a291b2}
+
+/* ---------- 본편 홈 ---------- */
+.court{--edge:#dfcdec;--wine:#7d5c9b;--gold:#b99a6b;--cream:#fbf7fe;--ink:#432e52;--muted:#7c6a8b}
+.court-shell{background:
+  radial-gradient(circle at 16% 0,#ffffffc4 0,transparent 34%),
+  radial-gradient(circle at 84% 4%,#f1e4ffc4 0,transparent 32%),
+  linear-gradient(180deg,#fdfaff,#f8f1fe 42%,#fbf6ff);box-shadow:0 12px 70px #5c3d7a2e}
+.courtbar{border-bottom:1px solid #e6d8f2}
+.identity{color:#432e52}
+.identity img{border:1px solid #d8c0e8;background:#f5ecff}
+.identity .id-text small{color:#8d7ba0}
+.nick-edit{border:1px solid #dcc8ec;background:#fffdfe;color:#7d5c9b}
+.purse{color:#7c6a8b}.purse b{color:#432e52}
+.coin-unit i{background:linear-gradient(160deg,#f6dc9d,#d9a94e);border:2px solid #b58a44;box-shadow:inset 0 0 0 1px #fff3cf}
+
+.opening{border:1px solid #e0cdec;background:#fffdfe;box-shadow:0 12px 34px #6b4a8a1f}
+.palace{background:#c3b0d6}
+.palace:before{background:linear-gradient(18deg,#3a2447e6 0%,#4c315361 30%,transparent 62%)}
+.palace:after{border:1px solid #f4e4f580}
+.palace-hi{color:#fff7ff}
+.palace h1{color:#fffaff}
+.practice-ticket{background:
+  radial-gradient(100% 70% at 100% 0,#f3e7ffcc,transparent 75%),
+  linear-gradient(160deg,#fffdfe,#f8f0ff);
+  border-left:1px solid #e3d2f0}
+.ticket-top{color:#8a6fa6}
+.music{color:#b488cf}
+.practice-ticket h2{color:#432e52}
+.practice-ticket>p,.section-intro,.staff-line{color:#7c6a8b}
+.ticket-reward{color:#7c6a8b}.ticket-reward b{color:#8a5f9e}
+.action{border:0;background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;
+  border-radius:12px;box-shadow:0 10px 22px #6b4a8a3d}
+.action:hover{background:linear-gradient(150deg,#a98ac5,#8a68a8 72%,#7d5c9b)}
+.practice-ticket .ticket-note{color:#8d7a9e}
+.ticket-stage{color:#7d5c9b}
+.journey-steps span{background:#f2e8fb;color:#8a7599}
+.journey-steps .done{background:#e5ddff;color:#5f4a86}
+.journey-steps .active{background:#e0d0f5;color:#52366a;border:1px solid #b9a0d6}
+.first-gift{background:linear-gradient(160deg,#fdf7ff,#f4ebfd);border:1px solid #e6d8f4}
+.first-gift-copy span{color:#9a6fb2}
+.place-label{color:#9a7bb4}
+.rank-chip{color:#6d4f86;background:#f1e6fb;border:1px solid #e0cdf0}
+.rank-chip.crown{background:linear-gradient(135deg,#f8e4aa,#dfae55);color:#5a3c12;border-color:#c9a15f}
+
+.venues .venue{border:1px solid #e3d4f1;background:#fffdfe}
+.venues .venue:hover{border-color:#b995cf}
+.venue p{color:#7c6a8b}
+.venue i{color:#a184b6}
+.venue-art{background:#efe4fa}
+.studio-art{background:linear-gradient(150deg,#f4eaff,#e6d8f7)}
+.stage-art{background:linear-gradient(110deg,#4d3459,#9b7bb8,#3f2a4e)}
+.wardrobe-art{background:#f8efff}
+.walk-order{display:block;font-family:Georgia,serif;font-size:.6rem;letter-spacing:.14em;color:#a98cc0;margin-bottom:2px}
+.walk-line path{stroke:#d8c4ea!important}
+
+.side-streets{border:1px solid #e6d8f2!important;background:#fffdfe!important}
+.side-streets summary strong{color:#5a4270!important}
+.side-streets summary small{color:#8d7ba0!important}
+.side-streets summary>span:last-child{color:#a98cc0!important}
+.side-venues{padding:11px}
+.side-venue{border:1px solid #e7dbf3!important;background:#fffdfe!important;border-radius:12px!important}
+.side-venue b{color:#533f63!important}
+.side-venue small{color:#8d7ba0!important}
+
+.deep-dive{border:1px solid #e6d8f2;border-radius:16px;background:#fffdfe;margin-top:18px;overflow:hidden}
+.deep-dive summary{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:58px;padding:12px 16px;list-style:none;cursor:pointer}
+.deep-dive summary::-webkit-details-marker{display:none}
+.deep-dive summary strong{display:block;font-size:.94rem;color:#4b3560;letter-spacing:-.03em}
+.deep-dive summary small{display:block;font-size:.76rem;color:#927fa4;margin-top:2px}
+.deep-dive summary .deep-toggle{font-size:.72rem;color:#a184b6;font-weight:700}
+.deep-dive[open] summary{border-bottom:1px solid #eee3f8;background:linear-gradient(180deg,#fdf8ff,#fbf5ff)}
+.deep-dive-body{padding:0 0 14px}
+
+.record{background:linear-gradient(180deg,#fffdfe,#f7f0fd);border:1px solid #e6d8f2}
+.record-track{background:#efe4f9}.record-track i{background:linear-gradient(90deg,#b995cf,#c8a2c8)}
+.record-stats dt{color:#8d7ba0}.record-stats dd{color:#432e52}
+.diary-list b{color:#4a3556}.diary-list small,.diary-head span,.diary-empty{color:#927fa4}
+.diary-icon{background:#fffdfe;border:1px solid #e6d8f2}
+.diary-more{background:#fffdfe;border:1px solid #e0cdec;color:#7d5c9b}
+.voice-card{background:linear-gradient(180deg,#fffdfe,#f6eefc);border:1px solid #e6d8f2}
+.voice-bubble{background:#fffdfe;border:1px solid #e6d8f2}
+.voice-bubble:before{background:#fffdfe;border-left:1px solid #e6d8f2;border-bottom:1px solid #e6d8f2}
+.voice-bubble b{color:#9a6fb2}.voice-bubble p{color:#574469}
+.next-look{background:#fffdfe;border:1px dashed #ddc9ee}
+.next-kicker{color:#a97fc0}.next-kicker,.next-copy h3{color:#4b3560}
+.next-hints span{background:#f2e8fb;color:#8a6fa6}
+.next-hints b{color:#5d4a6b}
+.next-silhouette{background:radial-gradient(62% 62% at 50% 38%,#f8f0ff,#ece0f7)}
+.roadmap{background:linear-gradient(180deg,#fffdfe,#f7f0fd);border:1px solid #e3d4f1;box-shadow:0 10px 24px #6b4a8a14}
+.road-step{border:1px solid #e8dcf4;background:#fffdfe}
+.road-step .rs-mark{background:#efe4f9;color:#8a6fa6}
+.road-step.done{border-color:#d9cdea;background:#f7f1ff}
+.road-step.done .rs-mark{background:#9b7bb8;color:#fff}
+.road-step.now{border-color:#b995cf;background:#f9f1ff;box-shadow:0 3px 10px #7d5c9b26}
+.road-step.now .rs-mark{background:linear-gradient(135deg,#d8c0ee,#b995cf);color:#40265a}
+.road-step small{color:#8d7ba0}
+.road-panel{border-top:1px solid #e8dcf4}
+.road-next{color:#5d4a6b}
+.need-row{color:#6a5678}.need-row b{color:#4a3556}
+.need-row i{background:#efe4f9}.need-row em{background:#b995cf}
+.need-row.done em{background:#a4c79a}
+.road-note{color:#8d7ba0}
+.text-link{color:#7d5c9b}
+.cameo{border:1px solid #ddc9ee;background:linear-gradient(165deg,#fffdfe,var(--tint))}
+.staff-link small{color:#927fa4}
+.counter .roster,.counter .staff-link+.staff-link:before{border-color:#e8dcf4}
+.record-stats div+div{border-color:#e8dcf4}
+.court-foot{color:#a291b2}
+.nick-card,.bond-card{background:linear-gradient(180deg,#fffdfe,#f8f1ff);border:1px solid #dfcdec;color:#432e52}
+.nick-kicker,.bond-kicker{color:#a979c2}
+.nick-field input{border:1px solid #dcc8ec;background:#fffdfe;color:#432e52}
+.nick-field span{color:#7c6a8b}
+.nick-hint{color:#927fa4}
+.nick-ghost{background:#fffdfe;border:1px solid #e0cdec;color:#7d5c9b}
+.nick-primary{background:linear-gradient(150deg,#9b7bb8,#7d5c9b);color:#fffafd;border:0}
+.bond-meter{background:#f3eafc}
+.bond-face{border:1px solid #ddc9ee;background:linear-gradient(165deg,#fffdfe,#f2e7fc)}
+.bond-line{background:#fffdfe;border:1px solid #e6d8f2;color:#574469}
+.letter{background:#fffdfe;border:1px solid #e6d8f2}
+.letter-title{color:#5d4a6b}.letter-at{background:#f2e8fb;color:#8a6fa6}
+.letter p{color:#5f4d6b}
+.letter.locked{background:#f8f2fe;color:#9485a4}
+.bond-foot{color:#9383a4}
+.hrt{color:#e4d6ea}.hrt.on{color:#d97fa4}
+
+/* ---------- 하위 화면 토큰 ---------- */
+.studio{--wine:#7d5c9b;--muted:#7c6a8b;--edge:#e3d4f1;--paper:#fffdfe;background:#e9dff5;color:#432e52}
+.studio .app{background:linear-gradient(180deg,#fdfaff,#f8f1fe 46%,#fbf6ff);box-shadow:0 0 54px #5c3d7a1f}
+.studio .subbar{background:#fdfaffef;border-color:#e6d8f2}
+.studio .btn.primary{background:linear-gradient(150deg,#9b7bb8,#7d5c9b);border:0;color:#fffafd}
+.studio .btn.ghost{background:#fffdfe;border:1px solid #e3d4f1;color:#7d5c9b}
+.attend{border:1px solid #dfcdec;background-color:#d9c8e8}
+.attend:before{background:linear-gradient(90deg,#fdf8fff7 8%,#fdf8ffd9 40%,transparent 76%)}
+.attend-txt p{color:#7c6a8b}.attend-txt a,.lv a,.r-links a{color:#7d5c9b}
+.course-board h2{color:#432e52}
+.cls{border:1px solid #e6d8f2;background:#fffdfe}
+.cls:disabled{background:#f6effc;color:#9a8bab}
+.cls img{background:#f0e4fb}
+.course-info small{color:#8d7ba0}.course-prize{color:#8a5f9e}
+.lv{background:#f6eefc;border:1px solid #e6d8f2}
+.lv-bar{background:#e9dcf6}.lv-bar i{background:linear-gradient(90deg,#b995cf,#c8a2c8)}
+.mates{background:#fffdfe;border:1px solid #e6d8f2}
+.mates-head span{color:#8d7ba0}
+.mate-face{border:1px solid #ddc9ee;background:linear-gradient(165deg,#fffdfe,var(--tint,#efe4fa))}
+.mate[aria-pressed=true]{border-color:#b995cf;background:#f9f1ff;box-shadow:0 2px 8px #7d5c9b1f}
+.mate[aria-pressed=true] .mate-face{outline:2px solid #b995cf;outline-offset:1px}
+.practice-kit,.resume-lesson{background:#fdf5ff;border:1px solid #e0cdec;color:#7d5c9b}
+.lcard,.sheet-card,.rcard{background:linear-gradient(180deg,#fffdfe,#faf4ff);border:1px solid #dfcdec;color:#432e52}
+.c-fee{background:#f4e9fd;color:#6d4f86}.c-fee b{color:#5a3d75}
+.sheet-card h2,.rcard h2{color:#4e3350}
+.buff-badge{background:#f4eafd;border:1px solid #e2d2f3;color:#6a4a8c}
+.reaction span{color:#7a5c8d}.reaction b{color:#5a4359}
+.rvoice{background:#f7f0fd;border:1px solid #e6d8f2;color:#5a4359}
+.lcomfort{background:#f8f1fd;border:1px dashed #e2d2f3;color:#6a5470}
+.score-row div{background:#f7f0fd;border:1px solid #e6d8f2}
+.score-row span{color:#8a7599}.score-row b{color:#4f3652}
+.reward-feature{background:#faf2ff;border:1px solid #e3d4f1}
+.reward-figure{background-color:#ded0ef}
+.reward-text .feature-label{color:#8a6fa6}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+
+.dressroom .app,.dress .app{background:linear-gradient(180deg,#fdfaff,#f8f1fe 46%,#fbf6ff)}
+.stage .app{background:linear-gradient(180deg,#fdfaff,#f6eefe 46%,#fbf6ff)}
+.snack .app{background:linear-gradient(180deg,#fdfaff,#f7efff 46%,#fbf6ff)}
+
+/* 왕립 극장 무대 대기: 라일락 조명 */
+.stage .stage-card,.stage .show-card{background:linear-gradient(180deg,#fffdfe,#f7efff)}
+
+/* 골목 상점: 펼치지 않고 늘 보이는 두 상점 */
+.court .side-streets{margin-top:10px;background:#fffdfe;border:1px solid #e6d8f2;border-radius:14px;overflow:hidden}
+.court .side-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:12px 15px 2px;flex-wrap:wrap}
+.court .side-head strong{font-size:.9rem;color:#4b3560;letter-spacing:-.03em}
+.court .side-head small{font-size:.71rem;color:#927fa4}
+.court .side-venues{padding:10px 11px 12px}
+
+/* 왕국 산책길: 크림색 지도 판을 라일락 정원으로 */
+.court .kingdom-map.royal-walk{background:
+  radial-gradient(ellipse at 50% 20%,#f7edff 0,#fdfaff 68%),
+  linear-gradient(160deg,#faf3ff,#f5ecfb);border:1px solid #e6d8f2}
+.court .royal-walk .venue,.court .royal-walk .venue:nth-of-type(n){background:#fffdfe;border:1px solid #e6d8f2;box-shadow:0 5px 16px #6b4a8a14}
+.court .royal-walk .venue:hover{border-color:#b995cf;box-shadow:0 6px 20px #7d5c9b26}
+.court .royal-walk .venue .venue-art{background:#f7efff;border-bottom:1px solid #eee3f8}
+.court .royal-walk .walk-order{color:#a184b6}
+.court .royal-walk .venue h3{color:#432e52}
+.court .royal-walk .venue p{color:#7c6a8b}
+.court .royal-walk .venue.is-next{outline:2px solid #b995cf;border-color:#b995cf}
+
+/* 분식집: 사진은 그대로, 껍데기만 라일락으로 */
+.snack{background:#e9dff5}
+.snack .shop-sign h1{color:#4b3560}
+.snack .shop-sign p{color:#a184b6}
+.snack .shop-sign .sign-note{color:#7d5c9b;background:#fffdfe;border:1px solid #e6d8f2}
+.snack .owner-bubble{background:#fffdfe;border:1px solid #e6d8f2;box-shadow:0 6px 14px #6b4a8a14}
+.snack .owner-bubble b{color:#9a6fb2}
+.snack .owner-bubble p{color:#5d4a6b}
+.snack .lead{color:#6a5678}
+.snack .start-cta{background:linear-gradient(180deg,#fdfaffcc 0%,#fbf6ff 40%,#fbf6ff)}
+.snack .start-scroll{padding-bottom:calc(112px + var(--safe-b))}
+.snack .shop-order{margin-top:16px}
+
+/* 드레스룸: 금색 액자를 라일락 진주빛으로 */
+.dress .fitting{border:1px solid #dfcdec;background:#fffdfe;box-shadow:0 9px 26px #6b4a8a1f}
+.dress .outfit-card{background:#fffdfe;border:1px solid #e6d8f2}
+.dress .fitting .arch,.dress .fitting-frame,.dress .frame{border-color:#dfcdec}
+.dress .look-chip,.dress .chip{background:#f6eefc;border-color:#e6d8f2;color:#6d4f86}
+/* 극장 대기 패널 */
+.stage .cue-panel{background:linear-gradient(180deg,#fffdfe,#f9f2ff);border-bottom:1px solid #e6d8f2}
+.stage .stage-info{background:linear-gradient(180deg,#fffdfe,#f8f1fe)}
+/* 포션 주문대 */
+.potions .app,.shop .app{background:linear-gradient(180deg,#fdfaff,#f7efff 46%,#fbf6ff)}
+.potions .recipe,.shop .recipe{background:#fffdfe;border:1px solid #e6d8f2}
+.potions .shop-window,.shop .shop-window{border-color:#dcc8ec}
+
+/* 드레스룸 거울 액자: 금색 → 라일락 진주 */
+.dress .app{background:linear-gradient(180deg,#fdfaff,#f9f3ff 48%,#fbf6ff)}
+.dress .subbar{background:#fdfaffef;border-color:#e6d8f2}
+.dress-intro p{color:#7c6a8b}
+.eyebrow,.outfit-kicker{color:#a98cc0}
+.dress .mirror{background:linear-gradient(180deg,#f7f1ff73 0%,#fbf5ff1a 60%,#e2d2f4a8 100%),url('assets/rehearsal-room.webp') center 49%/cover}
+.dress .mirror:before{border:2px solid #e2cff4;box-shadow:inset 0 0 0 4px #fffaff88,0 0 0 1px #efe3fb}
+.dress .mirror-frame{border-color:#f4ecfeaa}
+.dress .mirror-sign{color:#8a74a0}
+.dress .outfit-state{border:1px solid #e2d2f3;background:#f6eefd;color:#7d5c9b}
+.dress .outfit-info #lookDesc{color:#7c6a8b}
+.dress .outfit-actions .btn.primary{background:linear-gradient(150deg,#9b7bb8,#7d5c9b);color:#fffafd}
+.dress .outfit-actions .btn.ghost{background:#fffdfe;border:1px solid #e3d4f1;color:#7d5c9b}
+.dress .wear-tip{color:#8d7ba0}
+.dress .spirit-note{background:#f8f1fe;border:1px solid #e6d8f2}

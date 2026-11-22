@@ -315,7 +315,7 @@
 
   var DEFAULT = {
     v: 1, coins: GRANT, nick: '', named: false, shows: 0, bestGrade: '',
-    kingdom: { charter: 1, life: 1, orders: { etu: 0, ara: 0, piru: 0, shangz: 0, alle: 0 }, prepared: null, receipt: null, debutOutfit: null },
+    kingdom: { charter: 1, life: 1, orders: { etu: 0, ara: 0, piru: 0, shangz: 0, alle: 0 }, prepared: null, meal: null, receipt: null, debutOutfit: null },
     spirits: {
       etu: { bond: 0, met: 0 }, ara: { bond: 0, met: 0 }, piru: { bond: 0, met: 0 },
       shangz: { bond: 0, met: 0 }, alle: { bond: 0, met: 0 }
@@ -358,7 +358,77 @@
     return String(word || '') + (hasBatchim(word) ? afterConsonant : afterVowel);
   }
 
-  var NOTE_TYPES = { beat: 1, cat: 1, jump: 1 };
+  var NOTE_TYPES = { beat: 1, cat: 1, jump: 1, beam: 1, turn: 1 };
+
+  /* ---------- 상점 메뉴 (기존 사진 그대로 · 가격은 코인) ---------- */
+  // 분식집: 기존 메뉴 사진과 이름을 그대로 쓴다.
+  var SNACK_PRICE = { tteokbokki: 40, fried: 45, sundae: 35, jjolmyeon: 50, skewer: 30, cola: 25, orderset: 90, fullset: 120 };
+  var SNACK_BUFF = {
+    tteokbokki: { jump: 60, shield: 1 }, fried: { shield: 1, all: 10 }, sundae: { all: 25 },
+    jjolmyeon: { turn: 55, combo: 1 }, skewer: { beam: 55 }, cola: { all: 15 },
+    orderset: { all: 35, shield: 1 }, fullset: { all: 45, shield: 1, combo: 1 }
+  };
+  var SNACK_LINE = {
+    tteokbokki: '냠냠, 매콤해! 다리가 쫙 펴졌어요.', fried: '바삭! 넘어져도 다시 일어날 힘이 생겼어요.',
+    sundae: '한 입에 든든해요. 이제 침착하게 할 수 있어요.', jjolmyeon: '쫄깃쫄깃, 돌아도 중심이 안 흔들려요.',
+    skewer: '호호, 따뜻해요. 균형대가 가볍게 느껴져요.', cola: '탄산 톡! 몸이 가벼워졌어요.',
+    orderset: '와, 한 상 가득! 오늘은 뭐든 할 수 있어요.', fullset: '전메뉴 클리어! 오늘 발레는 무조건 잘 돼요.'
+  };
+  MENU.forEach(function (m) {
+    m.price = SNACK_PRICE[m.id] || 40;
+    m.buff = SNACK_BUFF[m.id] || { all: 20 };
+    m.line = SNACK_LINE[m.id] || m.magic;
+  });
+
+  // 카페: 기존 음료 사진(cafe/assets)을 그대로 쓴다. 경로는 /town/cafe/ 기준.
+  var CAFE = [
+    { id: 'arabesque', name: '아라베스크 밀크', price: 50, img: '../../cafe/assets/drink-arabesque.webp',
+      desc: '거품 위에 아라베스크가 그려진 시그니처', buff: { all: 25, beam: 40 }, tag: '선 · 균형',
+      line: '홀짝, 거품이 부드러워요. 아라도 기뻐해요!' },
+    { id: 'turnout', name: '턴아웃 라떼', price: 45, img: '../../cafe/assets/drink-turnout.webp',
+      desc: '턴아웃이 잡히는 진한 라떼', buff: { all: 30 }, tag: '중심 · 턴아웃',
+      line: '홀짝, 다리가 밖으로 도는 느낌이 딱 와요.' },
+    { id: 'battement', name: '발레 카푸치노', price: 45, img: '../../cafe/assets/drink-battement.webp',
+      desc: '거품 위에 발레리나가 그려진 카푸치노', buff: { turn: 45, all: 10 }, tag: '회전',
+      line: '홀짝, 거품이 포근해요. 박자가 또렷하게 들려요.' },
+    { id: 'americano', name: '아이스 아메리카노', price: 35, img: '../../cafe/assets/drink-americano.webp',
+      desc: '차갑게 정신을 깨우고 콤보를 이어요', buff: { combo: 1, all: 15 }, tag: '콤보',
+      line: '시원해! 머리가 맑아지고 손이 가벼워요.' }
+  ];
+  var TURN_LABEL = { cat: '파드샤', jump: '그랑제떼', beam: '아라베스크', turn: '피루엣', beat: '박자' };
+  function buffChips(buff) {
+    var out = [];
+    if (!buff) return out;
+    if (buff.all) out.push('판정 여유 +' + buff.all + 'ms');
+    ['cat', 'jump', 'beam', 'turn', 'beat'].forEach(function (k) {
+      if (buff[k]) out.push(TURN_LABEL[k] + ' +' + buff[k] + 'ms');
+    });
+    if (buff.shield) out.push('삐끗 ' + buff.shield + '회 보호');
+    if (buff.combo) out.push('콤보 +' + buff.combo);
+    return out;
+  }
+  function mealOf(kind, id) {
+    var list = kind === 'cafe' ? CAFE : MENU;
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  /* 코인으로 메뉴를 주문한다. 다음 연습·공연 한 번에 버프가 걸리고, 끝나면 사라진다. */
+  function orderMeal(kind, id) {
+    return updateWallet(function (s) {
+      var m = mealOf(kind, id);
+      if (!m) return { ok: false, reason: 'menu' };
+      var price = m.price || 40;
+      if (s.coins < price) return { ok: false, reason: 'coins', need: price - s.coins, menu: m };
+      s.coins -= price;
+      s.kingdom.meal = {
+        kind: kind, id: m.id, name: m.name, price: price, tag: m.tag || '',
+        buff: m.buff, line: m.line, at: Date.now()
+      };
+      addJournal(s, 'meal-' + kind + '-' + m.id, kind === 'cafe' ? '☕' : '🍢',
+        nick() + '님이 ' + m.name + josa(m.name, '을', '를') + ' 주문했어요. 다음 연습에 그 기운이 남아 있어요.');
+      return { ok: true, menu: m, price: price, coins: s.coins, meal: clone(s.kingdom.meal) };
+    });
+  }
   function validChart(chart) {
     return !!chart && Array.isArray(chart.notes) && chart.notes.length >= 4 && chart.notes.length <= 40 &&
       typeof chart.total === 'number' && isFinite(chart.total) && chart.total > 0 && chart.total < 600000 &&
@@ -383,6 +453,11 @@
         s.kingdom.prepared = { id: potion.id, level: potion.level };
       }
       if (DRESS.some(function (d) { return d.id === kingdom.debutOutfit; })) s.kingdom.debutOutfit = kingdom.debutOutfit;
+      var meal = kingdom.meal;
+      if (meal && (meal.kind === 'cafe' || meal.kind === 'snack') && mealOf(meal.kind, meal.id)) {
+        var menu = mealOf(meal.kind, meal.id);
+        s.kingdom.meal = { kind: meal.kind, id: menu.id, name: menu.name, price: menu.price, tag: menu.tag || '', buff: menu.buff, line: menu.line, at: Number.isFinite(meal.at) ? meal.at : Date.now() };
+      }
       var receipt = kingdom.receipt;
       if (receipt && Object.hasOwn(PRACTICE, receipt.kind) && Number.isFinite(receipt.coins) &&
           ((Array.isArray(receipt.keys) && receipt.keys.length === 3) ||
@@ -613,6 +688,8 @@
     s.coins = receipt.after;
     k.life += reward.life;
     k.prepared = null;
+    if (k.meal) receipt.meal = clone(k.meal);
+    k.meal = null;
     Object.keys(stats).forEach(function (key) { s.stats[key] += stats[key]; });
     s.classes += 1;
     s.stamps[run.kind] += 1;
@@ -981,7 +1058,10 @@
       if (s.shows === 1) addJournal(s, 'first-show', '🎭', nick() + '님이 왕립 극장 첫 무대에 올랐어요. 마지막 인사까지 박수가 이어졌어요.');
       if (!s.bestGrade || 'SABC'.indexOf(grade) < 'SABC'.indexOf(s.bestGrade)) s.bestGrade = grade;
       s.show = record;
-      if (!s.kingdom.debutOutfit) s.kingdom.debutOutfit = s.worn;
+      if (s.kingdom.debutOutfit) { /* 이미 데뷔 의상이 있으면 유지한다 */ }
+      else s.kingdom.debutOutfit = s.worn;
+      if (s.kingdom.meal) record.meal = { name: s.kingdom.meal.name, kind: s.kingdom.meal.kind };
+      s.kingdom.meal = null;
       grantGifts(s);
       return record;
     });
@@ -999,6 +1079,7 @@
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast,
+    CAFE: CAFE, orderMeal: orderMeal, mealOf: mealOf, buffChips: buffChips, TURN_LABEL: TURN_LABEL,
     BOND_STEPS: BOND_STEPS, BOND_MAX: BOND_MAX, BOND_IDS: BOND_IDS, TEACHER: TEACHER, LETTERS: LETTERS,
     bondLevel: bondLevel, bondOf: bondOf, bonds: bonds, topBonds: topBonds, heartsHTML: heartsHTML,
     lettersFor: lettersFor, unreadLetters: unreadLetters, readLetter: readLetter, cheerOf: cheerOf,
