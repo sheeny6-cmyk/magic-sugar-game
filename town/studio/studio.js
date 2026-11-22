@@ -278,6 +278,7 @@
     $('lBubble').className = 'bubble';
     $('lBubble').textContent = '';
     $('lDancer').className = 'practice-dancer';
+    if ($('lFx')) $('lFx').className = 'motion-fx';
     $('lJudge').textContent = '';
     $('lJudge').className = 'judge';
     $('lCombo').textContent = '콤보 0';
@@ -436,8 +437,56 @@
     img.className = 'practice-dancer';
     if (snap) {
       void img.offsetWidth;
-      img.classList.add('snap');
-      if (anim) img.classList.add(anim);
+      /* 동작 모션이 있으면 그림만 갈아 끼우지 않고 그 동작대로 몸이 실제로 움직인다. */
+      if (anim) { img.classList.add(anim); playMotion(anim); }
+      else img.classList.add('snap');
+    }
+  }
+  /* 발밑 빛 궤적·금빛 아우라·착지 먼지·도약 잔상. 캐릭터 이미지는 그대로 두고 무대 위에만 얹는다. */
+  var fxTimer = 0;
+  function playMotion(anim) {
+    var fx = $('lFx'), scene = $('lScene');
+    if (!scene) return;
+    if (fx) {
+      fx.className = 'motion-fx ' + anim;
+      void fx.offsetWidth;
+      clearTimeout(fxTimer);
+      fxTimer = setTimeout(function () { if ($('lFx')) $('lFx').className = 'motion-fx'; }, 1150);
+    }
+    if (anim === 'grand-jete') {
+      leapGhosts();
+      leapSparkles();
+    }
+  }
+  /* 그랑제떼: 공중에 남는 반짝이 잔상 두 장 */
+  function leapGhosts() {
+    var img = $('lDancer'), scene = $('lScene');
+    if (!img || !scene || !img.src) return;
+    [1, 2].forEach(function (i) {
+      setTimeout(function () {
+        if (!$('lScene')) return;
+        var g = document.createElement('img');
+        g.className = 'dancer-ghost ghost-' + i;
+        g.src = img.src;
+        g.alt = '';
+        g.setAttribute('aria-hidden', 'true');
+        scene.appendChild(g);
+        setTimeout(function () { if (g.parentNode) g.remove(); }, 560);
+      }, i * 110);
+    });
+  }
+  function leapSparkles() {
+    var layer = $('lSparks');
+    if (!layer) return;
+    for (var i = 0; i < 7; i++) {
+      var s = document.createElement('span');
+      s.className = 'spark rise';
+      var ang = -0.9 + Math.random() * 1.8;
+      var dist = 26 + Math.random() * 58;
+      s.style.setProperty('--dx', (Math.sin(ang) * dist).toFixed(1) + 'px');
+      s.style.setProperty('--dy', (-28 - Math.random() * 44).toFixed(1) + 'px');
+      layer.appendChild(s);
+      (function (node) { setTimeout(function () { node.remove(); }, 760); })(s);
     }
   }
   function wobble() {
@@ -452,6 +501,7 @@
       if (ses !== mine || !ses) return;
       T.showDancer($('lDancer'), T.get().worn, IDLE_POSE);
       $('lDancer').className = 'practice-dancer';
+      if ($('lFx')) $('lFx').className = 'motion-fx';
       $('lPose').textContent = '준비 자세';
     }, 760);
   }
@@ -506,8 +556,9 @@
       if (ses !== mine || !ses) return;
       T.showDancer($('lDancer'), T.get().worn, IDLE_POSE);
       $('lDancer').className = 'practice-dancer';
+      if ($('lFx')) $('lFx').className = 'motion-fx';
       $('lPose').textContent = '준비 자세';
-    }, 980);
+    }, 1180);
   }
   var poseTimer = 0;
 
@@ -598,6 +649,8 @@
       cue(book.pickLine('early', move));
       return;
     }
+    /* 노트가 없을 때도 버튼을 누르면 그 동작을 한 번 보여 준다. */
+    advancePose(move);
     tone('tap');
   }
 
