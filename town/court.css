@@ -361,3 +361,46 @@
   .deep-dive-body{padding:12px}
   .practice-ticket #nextAction{margin-top:10px}
 }
+
+/* ---- V3: 차분한 왕국 산책길 · 3개 중심 장소 ---- */
+.court .district{margin-top:clamp(25px,4vw,38px)}
+.court .district .section-line h2{font-size:clamp(1.45rem,3vw,1.9rem)}
+.court .map-intro{margin-top:5px!important;line-height:1.55;word-break:keep-all}
+.court .kingdom-map.royal-walk{position:relative;isolation:isolate;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:1fr;align-items:stretch;aspect-ratio:auto;min-height:0;gap:17px;padding:34px 13px 12px;margin-top:10px;background:radial-gradient(ellipse at 50% 25%,#f4eaf4 0,#f9f6f1 65%);border:1px solid #e2d7dd;border-radius:18px;overflow:hidden}
+.court .royal-walk .walk-line{position:absolute;inset:2px 0 auto;width:100%;height:32px;z-index:-1;pointer-events:none}
+.court .royal-walk .venue,.court .royal-walk .venue:nth-of-type(n){display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;grid-area:auto;gap:0;padding:0;text-align:center;min-height:165px;box-shadow:0 5px 14px #65496d0a;background:#fffdfa;border:1px solid #e0d5dc;border-radius:12px}
+.court .royal-walk .venue:hover{border-color:#a88cba;box-shadow:0 6px 20px #8c6c9926}
+.court .royal-walk .venue .venue-art{width:100%;height:113px;align-self:auto;background:#f5edf3;border-bottom:1px solid #e8dce2;border-radius:11px 11px 0 0}
+.court .royal-walk .venue .venue-art img{object-fit:contain;object-position:center bottom;padding-top:7px}
+.court .royal-walk .venue>div:nth-child(2){padding:10px 8px 12px;min-width:0}
+.court .royal-walk .walk-order{font-size:.61rem;font-weight:700;letter-spacing:.09em;color:#977997}
+.court .royal-walk .venue h3{font-size:1rem;margin:3px 0;line-height:1.36}
+.court .royal-walk .venue p{font-size:.72rem;word-break:keep-all;line-height:1.4}
+.court .royal-walk .venue i{display:none}
+.court .royal-walk .venue.is-next{outline:2px solid #9474ad;outline-offset:0;border-color:#9474ad}
+.court .side-streets{margin-top:10px;background:#fbf8f6;border:1px solid #e4d9db;border-radius:13px;overflow:hidden}
+.court .side-streets summary{display:flex;justify-content:space-between;gap:10px;align-items:center;min-height:58px;padding:11px 15px;list-style:none;cursor:pointer}
+.court .side-streets summary::-webkit-details-marker{display:none}
+.court .side-streets summary>span:first-child{display:grid;gap:3px}
+.court .side-streets summary strong{font-size:.87rem;color:#65536d}
+.court .side-streets summary small{font-size:.74rem;color:#8b7987}
+.court .side-streets summary>span:last-child{font-size:1.1rem;color:#957c9b}
+.court .side-streets[open] summary{border-bottom:1px solid #e5d9df}
+.court .side-venues{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:11px}
+.court .side-venue{display:flex;align-items:center;gap:9px;min-height:67px;min-width:0;border:1px solid #e8dce4;border-radius:10px;background:#fffefa;padding:9px;text-decoration:none;color:#533f59}
+.court .side-venue img{flex:none;width:51px;height:51px;border-radius:8px;object-fit:cover}
+.court .side-venue span{min-width:0;display:grid;gap:4px}
+.court .side-venue b{font-size:.85rem;word-break:keep-all}
+.court .side-venue small{font-size:.7rem;color:#8a7687;line-height:1.3;word-break:keep-all}
+.court .side-venue i{font-size:.82rem;margin-left:auto;color:#987c97;font-style:normal}
+.court .spirit-fold .counter{margin-top:0}
+@media(max-width:650px){
+.court .kingdom-map.royal-walk{gap:8px;padding:29px 8px 9px;grid-template-columns:repeat(3,minmax(0,1fr));min-height:0;grid-template-rows:1fr}
+.court .royal-walk .venue,.court .royal-walk .venue:nth-of-type(n){min-height:145px}
+.court .royal-walk .venue .venue-art{height:93px}
+.court .royal-walk .venue>div:nth-child(2){padding:7px 3px 10px}
+.court .royal-walk .venue h3{font-size:clamp(.79rem,3vw,.95rem)}
+.court .royal-walk .walk-order{font-size:.53rem}
+.court .royal-walk .venue p{font-size:.64rem}
+.court .side-venues{grid-template-columns:1fr}
+}
