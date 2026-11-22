@@ -278,7 +278,7 @@ section.block{margin-top:22px}
 @keyframes comboPop{0%{transform:scale(1)}45%{transform:scale(1.22)}100%{transform:scale(1)}}
 
 /* 무대: 남는 높이를 모두 쓰고, 아래 동작 버튼과 바로 붙는다 */
-.play-scene{position:relative;flex:1 1 auto;min-height:190px;isolation:isolate;
+.play-scene{--mark:46%;position:relative;flex:1 1 auto;min-height:190px;isolation:isolate;
   border:1px solid #ddc9ee;border-bottom:0;border-radius:22px 22px 0 0;overflow:hidden;
   background:#d5c3e4 url('../assets/rehearsal-room.webp') center 62%/cover;
   box-shadow:inset 0 0 0 1px #ffffff55}
@@ -288,11 +288,12 @@ section.block{margin-top:22px}
              linear-gradient(180deg,#f7edff1f,transparent 40%,#33234a33)}
 .play-scene.spot .spotlight{opacity:1}
 
-#playDancer{position:absolute;left:-2%;bottom:6%;width:60%;height:82%;object-fit:contain;object-position:50% 100%;
+/* 슈가의 가로 중심을 판정 지점(--mark)에 정확히 맞춘다: left = --mark - 30%(박스 폭의 절반) */
+#playDancer{position:absolute;left:calc(var(--mark) - 30%);bottom:6%;width:60%;height:82%;object-fit:contain;object-position:50% 100%;
   filter:drop-shadow(1px 4px 4px #4a2f633d);z-index:4;will-change:transform}
 #playDancer.cruise{animation:cruise-steps .74s ease-in-out infinite}
 @keyframes cruise-steps{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
-/* 동작별 손맛 연출 */
+/* 동작별 손맛 연출: 스포트라이트 링 위에서 제자리로 뛰고 돌기 때문에 옆으로 크게 빠지지 않는다 */
 #playDancer.pas-de-chat{animation:pasDeChat .8s cubic-bezier(.3,.18,.3,1.05) forwards}
 #playDancer.grand-jete{animation:grandJete .92s ease-out forwards}
 #playDancer.grand-jete.leap-high{animation:grandJeteHigh 1s cubic-bezier(.3,.16,.3,1.02) forwards}
@@ -301,20 +302,20 @@ section.block{margin-top:22px}
 #playDancer.pirouette.spin-double{animation:pirouetteDouble 1.24s cubic-bezier(.4,.1,.4,1) forwards}
 #playDancer.wobble{animation:stepWobble .44s ease-in-out}
 @keyframes pasDeChat{0%{transform:translateY(0) translateX(0) scale(1)}
-  26%{transform:translateY(-30px) translateX(9px) scale(.96) rotate(-3deg)}
-  54%{transform:translateY(-72px) translateX(20px) scale(1.02) rotate(2deg)}
-  74%{transform:translateY(-30px) translateX(34px) scale(1)}
-  100%{transform:translateY(0) translateX(42px)}}
+  26%{transform:translateY(-30px) translateX(2px) scale(.96) rotate(-3deg)}
+  54%{transform:translateY(-72px) translateX(5px) scale(1.02) rotate(2deg)}
+  74%{transform:translateY(-30px) translateX(7px) scale(1)}
+  100%{transform:translateY(0) translateX(0)}}
 @keyframes grandJete{0%{transform:translateY(0) translateX(0) scale(1)}
-  26%{transform:translateY(-18px) translateX(8px) scale(.97)}
-  52%{transform:translateY(-96px) translateX(44px) scale(1.07) rotate(-4deg)}
-  76%{transform:translateY(-52px) translateX(70px) scale(1.04)}
-  100%{transform:translateY(0) translateX(82px)}}
+  26%{transform:translateY(-18px) translateX(1px) scale(.97)}
+  52%{transform:translateY(-96px) translateX(4px) scale(1.07) rotate(-4deg)}
+  76%{transform:translateY(-52px) translateX(6px) scale(1.04)}
+  100%{transform:translateY(0) translateX(0)}}
 @keyframes grandJeteHigh{0%{transform:translateY(0) translateX(0) scale(1)}
-  22%{transform:translateY(-26px) translateX(10px) scale(.95)}
-  50%{transform:translateY(-136px) translateX(48px) scale(1.1) rotate(-5deg)}
-  78%{transform:translateY(-62px) translateX(76px) scale(1.05)}
-  100%{transform:translateY(0) translateX(88px)}}
+  22%{transform:translateY(-26px) translateX(1px) scale(.95)}
+  50%{transform:translateY(-136px) translateX(5px) scale(1.1) rotate(-5deg)}
+  78%{transform:translateY(-62px) translateX(7px) scale(1.05)}
+  100%{transform:translateY(0) translateX(0)}}
 @keyframes balanceBeam{0%,100%{transform:translateY(0) rotate(0)}
   24%{transform:translateY(-30px) rotate(-3deg)}35%,72%{transform:translateY(-42px) rotate(-1.5deg)}
   86%{transform:translateY(-18px) rotate(1deg)}}
@@ -326,30 +327,30 @@ section.block{margin-top:22px}
   37%{transform:scaleX(-.3) translateY(-4px)}50%{transform:scaleX(1) translateY(-10px)}
   62%{transform:scaleX(.3) translateY(-6px)}75%{transform:scaleX(-1) translateY(-12px)}
   87%{transform:scaleX(-.3) translateY(-4px)}100%{transform:scaleX(1) translateY(0)}}
-@keyframes stepWobble{0%,100%{transform:none}24%{transform:translateX(-8px) rotate(-3deg)}66%{transform:translateX(6px) rotate(3deg)}}
+@keyframes stepWobble{0%,100%{transform:none}24%{transform:translateX(-6px) rotate(-3deg)}66%{transform:translateX(5px) rotate(3deg)}}
 
 /* 무대 바닥: 발밑에 은은한 빛만 남기고 상단은 배경에 녹인다 */
 .runner-ground{position:absolute;bottom:0;left:0;right:0;height:20%;z-index:1;pointer-events:none;
-  background:radial-gradient(ellipse 60% 100% at 64% 100%,#efe3fbcc 0%,#d9c6ee88 46%,#c8b3e000 78%),
+  background:radial-gradient(ellipse 60% 100% at var(--mark) 100%,#efe3fbcc 0%,#d9c6ee88 46%,#c8b3e000 78%),
              linear-gradient(180deg,#f6eefd00 0%,#e3d2f333 55%,#cdb6e455 100%)}
 .spotlight{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .5s;
   background:linear-gradient(104deg,transparent 26%,#fff6cd33 41%,transparent 52%),
              linear-gradient(76deg,transparent 45%,#ffe9b82e 58%,transparent 70%)}
 
 .course-events{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-/* 판정 링 중심 = left:64%, bottom:calc(6.5% + 15.5px). 아이콘도 그 점에 정확히 중심을 맞춘다. */
-.course-event{position:absolute;left:108%;bottom:calc(6.5% - 12.5px);display:grid;place-items:center;transform:translateX(-50%);
+/* 판정 링 중심 = left:var(--mark), bottom:calc(6% + 16px). 아이콘도 그 점에 정확히 중심을 맞춘다. */
+.course-event{position:absolute;left:108%;bottom:calc(6% - 12px);display:grid;place-items:center;transform:translateX(-50%);
   width:64px;height:56px;border-radius:14px;background:#fff9feeb;border:2px solid #ead5f6;
   box-shadow:0 5px 14px #4930592e;font-size:1.9rem;will-change:left,opacity;
   transition:box-shadow .1s,border-color .1s}
-.course-event.cat{border-radius:26px;background:#fff2f8;border-color:#eecfe6;bottom:calc(6.5% - 12.5px)}
-.course-event.jump{width:58px;height:54px;border:0;box-shadow:none;background:transparent;border-radius:0;font-size:0;bottom:calc(6.5% - 11.5px)}
+.course-event.cat{border-radius:26px;background:#fff2f8;border-color:#eecfe6;bottom:calc(6% - 12px)}
+.course-event.jump{width:58px;height:54px;border:0;box-shadow:none;background:transparent;border-radius:0;font-size:0;bottom:calc(6% - 11px)}
 .course-event.jump:before{content:"";position:absolute;bottom:0;left:3px;right:3px;height:44px;border:4px solid #a892b5;
   background:repeating-linear-gradient(135deg,#e8dccf 0 10px,#cdb9c9 10px 16px);border-radius:8px;box-shadow:0 3px 8px #4b345c2b}
-.course-event.beam{width:150px;height:46px;bottom:calc(6.5% - 7.5px);border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
+.course-event.beam{width:150px;height:46px;bottom:calc(6% - 7px);border:0;background:transparent;box-shadow:none;border-radius:0;font-size:0}
 .course-event.beam:before{content:"";position:absolute;top:6px;left:2px;right:2px;height:10px;background:linear-gradient(180deg,#e8d0ae,#c6a179 55%,#9a7a55);border:2px solid #7d5f3f;border-radius:5px;box-shadow:0 2px 5px #5b3f2a3d}
 .course-event.beam:after{content:"";position:absolute;top:15px;left:17px;right:17px;height:30px;border-left:8px solid #9b7c58;border-right:8px solid #9b7c58}
-.course-event.turn{bottom:calc(6.5% - 14.5px);width:60px;height:60px;border-radius:50%;background:#f3e6ffdf;border:3px dashed #9b79bb;color:#8a66ab;font-size:2rem}
+.course-event.turn{bottom:calc(6% - 14px);width:60px;height:60px;border-radius:50%;background:#f3e6ffdf;border:3px dashed #9b79bb;color:#8a66ab;font-size:2rem}
 /* 링에 딱 닿는 순간(hot)의 노트는 아이콘 자체도 살아나게 */
 .course-event.hot{z-index:4}
 .course-event.cat.hot,.course-event.turn.hot{background:#fff8fc;border-color:#fff;
@@ -361,8 +362,8 @@ section.block{margin-top:22px}
 .course-event.popped{animation:evPop .3s ease-out forwards}
 @keyframes evPop{0%{transform:translateX(-50%) scale(1);opacity:1}38%{transform:translateX(-50%) scale(1.34) rotate(6deg);opacity:.92}100%{transform:translateX(-50%) translateY(-26px) scale(.42);opacity:0}}
 
-/* 무대 바닥의 단 하나의 판정 지점 */
-.judge-line{position:absolute;left:64%;bottom:6.5%;width:100px;height:31px;transform:translateX(-50%);z-index:5;pointer-events:none}
+/* 무대 바닥의 단 하나의 판정 지점: 슈가 발밑 중심 */
+.judge-line{position:absolute;left:var(--mark);bottom:6%;width:92px;height:32px;transform:translateX(-50%);z-index:5;pointer-events:none}
 .judge-line .floor{position:absolute;left:50%;top:50%;width:220px;height:1px;transform:translate(-50%,-50%);
   background:linear-gradient(90deg,#ffffff00,#ffffffcc 38%,#ffffffcc 62%,#ffffff00)}
 .judge-line .shaft{position:absolute;left:50%;bottom:52%;width:92px;height:130px;transform:translateX(-50%);
@@ -371,11 +372,12 @@ section.block{margin-top:22px}
   background:radial-gradient(ellipse at 50% 45%,#ffffff8a,#ffffff10 62%,#ffffff00 78%);
   box-shadow:0 0 14px #c8a2c8aa,inset 0 0 10px #ffffffcc;transition:box-shadow .12s,transform .12s}
 .judge-line .ring:after{content:"";position:absolute;inset:5px;border-radius:50%;border:1px dashed #ffffffb3}
-.judge-line.hot .ring{border-color:#fff;transform:scale(1.26);
-  box-shadow:0 0 34px #fff,0 0 0 9px #c8a2c899,inset 0 0 16px #fff;
-  animation:ringHot .32s ease-in-out infinite alternate}
-.judge-line.hot .floor{height:2px;box-shadow:0 0 10px #fff}
-@keyframes ringHot{from{transform:scale(1.16)}to{transform:scale(1.3)}}
+.judge-line.hot .ring{border-color:#fff;transform:scale(1.3);
+  box-shadow:0 0 46px #fff,0 0 0 13px #fff2c4aa,0 0 0 26px #c8a2c855,inset 0 0 20px #fff;
+  animation:ringHot .3s ease-in-out infinite alternate}
+.judge-line.hot .floor{height:3px;background:linear-gradient(90deg,#ffffff00,#fff 30%,#fff 70%,#ffffff00);box-shadow:0 0 14px #fff}
+.judge-line.hot .shaft{opacity:1;background:linear-gradient(0deg,#fff6cddd,#e2cdf800)}
+@keyframes ringHot{from{transform:scale(1.22)}to{transform:scale(1.42)}}
 .judge-line.great .ring{border-color:#ffeaa8;box-shadow:0 0 34px #ffe9a8,0 0 0 10px #ffe9a866,inset 0 0 16px #fff}
 .judge-line.pre .ring{border-color:#e8d9f7;transform:scale(.9);opacity:.72;box-shadow:0 0 10px #e2cdf780}
 .judge-line.burst .ring{animation:ringBurst .5s ease-out}
@@ -388,11 +390,20 @@ section.block{margin-top:22px}
 .spark.star{width:10px;height:10px;border-radius:2px;transform:rotate(45deg);background:linear-gradient(140deg,#fff,#e0c4ff)}
 @keyframes sparkFly{0%{opacity:1;transform:translate(-50%,-50%) scale(.4)}60%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.15) rotate(160deg)}}
 
-.judge{position:absolute;left:64%;bottom:22%;transform:translateX(-50%);font-size:1.16rem;font-weight:900;
+.judge{position:absolute;left:var(--mark);bottom:22%;transform:translateX(-50%);font-size:1.16rem;font-weight:900;
   color:#6d4790;text-shadow:0 2px 0 #fff,0 4px 12px #fff;opacity:0;z-index:7;white-space:nowrap;letter-spacing:-.02em}
 .judge.pop{animation:pop .68s forwards}
 .judge.great{color:#a2742c;font-size:1.32rem}
 @keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.86)}20%{opacity:1;transform:translate(-50%,0) scale(1.04)}64%{opacity:1}100%{opacity:0;transform:translate(-50%,-16px) scale(1)}}
+
+/* 링에 노트가 닿는 순간의 "지금!" 안내 */
+.now-cue{position:absolute;left:var(--mark);bottom:calc(6% + 42px);z-index:6;pointer-events:none;
+  transform:translateX(-50%) translateY(4px) scale(.88);opacity:0;
+  padding:3px 10px;border-radius:999px;background:#6d4790f2;color:#fff;font-size:.72rem;font-weight:900;
+  letter-spacing:-.01em;white-space:nowrap;box-shadow:0 4px 14px #3a23564d,0 0 0 2px #ffffff55;
+  transition:opacity .09s ease-out,transform .09s ease-out}
+.now-cue.on{opacity:1;transform:translateX(-50%) translateY(0) scale(1);animation:nowCuePop .3s ease-out}
+@keyframes nowCuePop{0%{transform:translateX(-50%) scale(.82)}60%{transform:translateX(-50%) scale(1.08)}100%{transform:translateX(-50%) scale(1)}}
 
 /* 무대 구석의 정령 */
 .buddy{position:absolute;right:8px;top:8px;z-index:8;display:flex;align-items:flex-start;gap:6px;max-width:88%}
@@ -530,7 +541,7 @@ section.block{margin-top:22px}
   </section>
 
   <section class="support visit" aria-label="돌아가기">
-    <a href="../?v=20261122i">기존 발레왕국으로 돌아가기</a>
+    <a href="../?v=20261122j">기존 발레왕국으로 돌아가기</a>
     <a href="../REDESIGN_V2.md">재설계 문서 보기</a>
   </section>
   <div class="reset"><button type="button" id="reset">시제품 진행 초기화</button></div>
@@ -554,6 +565,7 @@ section.block{margin-top:22px}
       <img id="playDancer" src="../assets/dancers/basic-ready.webp" alt="코스를 따라 전진하는 발레리나">
       <div class="judge-line" id="judgeLine" aria-hidden="true"><span class="floor"></span><span class="shaft"></span><span class="ring"></span></div>
       <span class="judge" id="judge" aria-live="polite"></span>
+      <span class="now-cue" id="nowCue" aria-hidden="true"></span>
       <div class="buddy" id="buddy"><span class="bubble" id="buddyLine"></span><img id="buddyPic" src="../../kingdom/assets/av_etu.webp" alt=""></div>
       <div class="sparkles" id="sparkles" aria-hidden="true"></div>
     </div>
@@ -599,7 +611,7 @@ section.block{margin-top:22px}
   </div>
 </section>
 
-<script src="../assets/music.js?v=20261122i"></script>
+<script src="../assets/music.js?v=20261122j"></script>
 <script>
 (function(){
   'use strict';
@@ -1023,35 +1035,28 @@ section.block{margin-top:22px}
   });
 
   /* ===== 연습 ===== */
-  var START_MIN=1800;   // 첫 노트는 최소 이만큼 뒤에. 링까지 걸어올 APPROACH(1900ms)를 볼 수 있게.
+  var START_MIN=2000;      // 첫 노트는 최소 이만큼 뒤의 마디 첫 박에서 시작한다.
+  var MIN_NOTE_GAP=2200;   // 노트 사이 간격은 최소 이만큼. 한 마디가 짧으면 두 마디 간격으로 둔다.
+  var APPROACH=2300;       // 장애물이 오른쪽 끝에서 스포트라이트까지 걸어오는 시간.
   function chartFor(spec){
     var song=window.SugarMusic&&window.SugarMusic.SONGS&&window.SugarMusic.SONGS[spec.song];
     if(!song)return null;
-    var beat=60000/song.bpm;
-    /* 곡 앞 3박자 인트로가 이미 melody에 더해져 있다. 그 뒤 왈츠 정박에 놓인 선율 음만 후보로 삼아
-       시각적 링 도달과 실제 피아노 소리가 같은 순간에 오게 한다. */
-    var onset=[];
-    song.melody.forEach(function(entry){
-      var b=entry[0];
-      if(Math.abs(b-Math.round(b))>1e-6)return;   // 잇단음표·꾸밈음은 건너뛴다
-      var t=Math.round(b*beat);
-      if(t<START_MIN)return;
-      onset.push({beat:Math.round(b),t:t});
-    });
-    if(!onset.length)return null;
-    var selected=[],previous=-1e6;
-    onset.forEach(function(o){
-      if(o.t-previous>=spec.minGap){selected.push(o.t);previous=o.t}
-    });
-    /* 후보가 많으면 음이 몰린 곳에서만 하나씩 덜어낸다. 프레이즈가 시작하는 음과 첫·끝 음은 남긴다. */
-    while(selected.length>spec.count){
-      var dropAt=1,bestGap=Infinity;
-      for(var k=1;k<selected.length-1;k++){
-        var g=(selected[k]-selected[k-1])+(selected[k+1]-selected[k]);
-        if(g<bestGap){bestGap=g;dropAt=k}
-      }
-      selected.splice(dropAt,1);
+    var beat=60000/song.bpm,meter=song.meter||3,bar=beat*meter;
+    /* 3/4 왈츠는 매 마디 첫 박에 베이스 '쿵'이 울린다. 선율의 잇단음표·꾸밈음은 무시하고
+       그 마디 첫 박에만 노트를 놓아, 박자 간격이 일정하고 다음 장애물을 예측할 수 있게 한다. */
+    var stepBars=Math.max(1,Math.ceil(MIN_NOTE_GAP/bar));
+    var lastBar=Math.floor((song.length*beat-1)/bar);
+    var selected=[];
+    for(var b=0;b<=lastBar;b++){
+      if(b%stepBars)continue;
+      var t=Math.round(b*bar);
+      if(t<START_MIN)continue;
+      selected.push(t);
     }
+    if(!selected.length)return null;
+    /* 마디 수가 예정된 노트 수보다 많을 때만, 간격을 일정하게 유지한 채 촘촘한 쪽을 덜어낸다. */
+    var keep=Math.max(1,Math.ceil(selected.length/spec.count));
+    if(keep>1)selected=selected.filter(function(_,i){return i%keep===0});
     return {song:spec.song,notes:selected.map(function(t,i){
       return {t:t,type:spec.pattern[i%spec.pattern.length],judged:false,el:null,prop:null};
     }),first:selected[0],end:Math.round(Math.max(song.length*beat+650,selected[selected.length-1]+1200))};
@@ -1126,12 +1131,13 @@ section.block{margin-top:22px}
     $('overlay').classList.remove('on');
     $('courseEvents').replaceChildren();$('sparkles').replaceChildren();
     $('judgeLine').classList.remove('hot','pre','great','burst');
+    $('nowCue').classList.remove('on');
     $('buddyLine').classList.remove('on');
   }
 
   function windowFor(n){
     var d=wornDress(),sp=chosen(),pb=(session&&session.prep)||prepBuffs();
-    var w=280+d.win+pb.all+(pb[n.type]||0);
+    var w=460+d.win+pb.all+(pb[n.type]||0);
     if(sp){
       w+=sp.flat;
       if(sp.type&&sp.type===n.type)w+=sp.typeWin;
@@ -1151,7 +1157,7 @@ section.block{margin-top:22px}
     }
     if(correct||saved){
       session.hits++;
-      var great=correct&&session.delta<=140;
+      var great=correct&&session.delta<=190;
       if(great)session.perfect++;
       session.combo+=1+(correct?(sp&&sp.comboType&&sp.type===n.type?sp.comboType:0)+(d.combo||0)+pb.combo:0);
       if(session.combo>session.maxCombo)session.maxCombo=session.combo;
@@ -1210,7 +1216,7 @@ section.block{margin-top:22px}
     var d=wornDress(),sp=chosen();
     session={act:act,notes:chart.notes,done:0,hits:0,perfect:0,miss:0,rescued:0,combo:0,maxCombo:0,score:0,delta:0,
       shields:(d.shield||0)+prepBuffs().shield,turnProtect:false,finished:false,ready:false,start:0,audioStart:null,
-      lastElapsed:0,end:chart.end,prep:prepBuffs()};
+      lastElapsed:0,end:chart.end,prep:prepBuffs(),cueNote:null};
     $('overlay').classList.add('on');
     $('playScene').classList.toggle('stage-mode',!!c.stage);
     $('playScene').classList.toggle('spot',!!c.spot);
@@ -1253,7 +1259,8 @@ section.block{margin-top:22px}
 
   function tick(){
     if(!session||session.finished)return;
-    var t=elapsedMs(),scene=$('playScene'),APPROACH=1900;
+    var t=elapsedMs(),scene=$('playScene');
+    var mark=parseFloat(getComputedStyle(scene).getPropertyValue('--mark'))||46;
     var advance=Math.min(9,session.hits*.4);
     scene.style.setProperty('--walk',(-Math.round(t*.24)%180)+'px');
     scene.style.setProperty('--runner-step',advance.toFixed(2)+'%');
@@ -1268,7 +1275,7 @@ section.block{margin-top:22px}
       var p=1-(n.t-t)/APPROACH;
       if(n.prop){
         if(!n.judged){
-          if(p>=-.04){n.prop.style.display='grid';n.prop.style.left=(106+(64-106)*Math.min(p,1.7))+'%';
+          if(p>=-.04){n.prop.style.display='grid';n.prop.style.left=(108+(mark-108)*Math.min(p,1.7))+'%';
             n.prop.style.opacity=String(Math.min(1,.4+p*2));}
           else n.prop.style.display='none';
         }else if(p>1.55) n.prop.style.display='none';
@@ -1283,10 +1290,21 @@ section.block{margin-top:22px}
     $('judgeLine').classList.toggle('hot',hot);
     $('judgeLine').classList.toggle('pre',!hot&&pre);
     $('judgeLine').classList.toggle('great',hot&&session.combo>=5);
+    /* 링이 빛나는 순간 = 지금 누르면 맞는 순간. 어떤 동작인지도 링 위에 바로 알려 준다. */
+    var cue=$('nowCue');
+    if(hot&&hotNote){
+      if(session.cueNote!==hotNote){
+        session.cueNote=hotNote;
+        cue.textContent=ACTIONS[hotNote.type].sign+' 지금 '+ACTIONS[hotNote.type].move+'!';
+      }
+      cue.classList.add('on');
+    }else{
+      session.cueNote=null;cue.classList.remove('on');
+    }
     var next=session.notes.find(function(n){return !n.judged});
     if(next){
       var left=next.t-t;
-      if(left<1450&&left>200&&!hot){
+      if(left<APPROACH-80&&left>windowFor(next)&&!hot){
         var a=ACTIONS[next.type];
         $('cue').textContent=a.name+' 접근 중! '+a.move+' 준비';
       }
@@ -1304,6 +1322,7 @@ section.block{margin-top:22px}
     $('overlay').classList.remove('on');
     $('courseEvents').replaceChildren();$('sparkles').replaceChildren();
     $('judgeLine').classList.remove('hot','pre','great','burst');
+    $('nowCue').classList.remove('on');
     $('buddyLine').classList.remove('on');
 
     var c=CHARTS[r.act],oldLv=curLv();
