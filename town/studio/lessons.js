@@ -11,9 +11,9 @@
   var classes = {
     bar: {
       name: '바 워크', kick: 'BARRE WORK', icon: '🩰', grad: 'linear-gradient(140deg,#f3e6ff,#fce9f4)',
-      stats: { flex: 8, axis: 4 }, desc: '한 마디에 한 번, 박자 버튼과 고양이·장애물 버튼을 구분해 눌러요.',
+      stats: { flex: 8, axis: 4 }, desc: '한 마디에 한 번, 고양이·장애물·균형대·회전 동작을 구분해 눌러요.',
       teacher: 'etu', bpm: 76, lead: 2500, window: { perfect: 190, good: 460 },
-      moves: ['beat', 'cat', 'beat', 'jump', 'beat', 'beat', 'cat', 'beat'],
+      moves: ['cat', 'jump', 'beam', 'turn', 'cat', 'jump', 'beam', 'turn'],
       mood: '호른이 노래하는 느린 왈츠', energy: '느긋하게 한 박자씩'
     },
     center: {

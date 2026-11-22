@@ -68,7 +68,7 @@
   function stopMusic() { if (band) band.stop(); }
   function applySound() {
     var b = $('lSound');
-    b.textContent = soundOn ? '🔊 소리' : '🔇 무음';
+    b.textContent = soundOn ? '🔊 음악' : '🔇 무음';
     b.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
     if (musicBus) musicBus.gain.value = soundOn ? 0.42 : 0;
     if (sfxBus) sfxBus.gain.value = soundOn ? 0.5 : 0;
@@ -259,7 +259,6 @@
     var ability = mateAbility(s.practiceWith);
     var lane = $('lProps');
     lane.replaceChildren();
-    var props = $('lProps');
     var notes = chart.notes.map(function (n, i) {
       var el = document.createElement('span');
       el.className = 'course-event ' + n.type;
@@ -273,42 +272,30 @@
       lane.appendChild(el);
       return { t: n.t, type: n.type, index: i, judged: false, result: null, el: el, prop: null };
     });
-    $('lDots').innerHTML = notes.map(function () { return '<i></i>'; }).join('');
+    $('lBar').style.width = '0%';
     $('lSparks').replaceChildren();
     $('lScene').classList.add('playing');
     $('lBubble').className = 'bubble';
     $('lBubble').textContent = '';
     $('lDancer').className = 'practice-dancer';
     $('lJudge').textContent = '';
-    $('lJudge').className = 'judge-flash';
-    $('lCombo').hidden = true;
-    $('lCombo').querySelector('b').textContent = '0';
+    $('lJudge').className = 'judge';
+    $('lCombo').textContent = '콤보 0';
+    $('lCombo').className = 'combo';
     $('lBuff').hidden = !(buffs.line || mealLine || ability);
     $('lBuff').innerHTML = [ability ? '<b class="ability">' + ability + '</b>' : '', mealLine, buffs.line].filter(Boolean).join('<span class="buff-sep"> · </span>');
     $('lTitle').textContent = c.name;
     $('lPose').textContent = '준비 자세';
-    $('lPrize').textContent = '완주 +' + T.fmt(T.rewardFor(kind, s.kingdom.prepared).coins) + '코인';
-    $('lPortrait').src = T.spiritArt(teachers[kind], true);
     var mate = s.practiceWith;
     $('lCoach').src = T.spiritArt(mate || teachers[kind],true);
     $('lCoach').alt = T.SPIRITS[mate || teachers[kind]].name;
-    var pad = $('pad');
-    pad.querySelectorAll('[data-move]').forEach(function(b){b.hidden = !notes.some(function(n){return n.type===b.dataset.move;});});
-    pad.style.gridTemplateColumns = 'repeat('+pad.querySelectorAll('[data-move]:not([hidden])').length+',1fr)';
-    $('lNextMove').textContent = '음악에 맞춰 준비';
     Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
-    $('lTeacher').textContent = T.SPIRITS[teachers[kind]].name + ' 선생님' +
-      (mate && mate !== teachers[kind] ? ' · ' + T.SPIRITS[mate].name + '와 함께'
-        : mate ? ' · 단둘이 연습' : '');
-    $('lComfort').hidden = true;
     T.showDancer($('lDancer'), s.worn, IDLE_POSE);
     $('lDancer').className = 'practice-dancer';
     $('lJudgeLine').className = 'judge-line';
     $('lCue').className = 'now-cue';
     $('lScene').classList.toggle('stage-mode', !!c.stageMode);
-    $('lFeedback').textContent = kind === 'bar'
-      ? '노트가 빛나는 링에 닿으면 박자 버튼을 눌러요.'
-      : '노트가 빛나는 링에 닿는 순간, 노트와 같은 동작을 눌러요!';
+    $('lFeedback').textContent = '노트가 빛나는 링에 닿는 순간, 노트와 같은 동작을 눌러요!';
     ses = {
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
       judged: 0, combo: 0, maxCombo: 0, perfect: 0, good: 0, miss: 0,
@@ -319,6 +306,11 @@
     paintDots();
     paintCount();
     applySound();
+    var greet = T.SPIRITS[mate || teachers[kind]];
+    if (greet && greet.cheer && greet.cheer.length) {
+      var mine = ses, hello = String(greet.cheer[0]).replace(/\{n\}/g, T.nick());
+      setTimeout(function () { if (ses === mine) bubble(hello, 'happy'); }, 600);
+    }
     p0 = performance.now() + 140;
     showDialog('lesson');
     ses.musicStarted = startMusic(chart, 0);
@@ -384,12 +376,13 @@
     }
     var next = null;
     for (var k = 0; k < ses.notes.length; k++) { if (!ses.notes[k].judged) { next = ses.notes[k]; break; } }
-    $('lNextMove').textContent = next ? nextTypeLabel(next.type) : '마무리 자세';
     if (next && !hot) {
       var left2 = next.t - t;
       if (left2 < APPROACH - 80 && left2 > noteWindow(next)) {
         $('lFeedback').textContent = (MOVES[next.type].kind || '') + ' ' + nextTypeLabel(next.type) + ' 준비';
       }
+    } else if (!next && !hot) {
+      $('lFeedback').textContent = '마지막 동작까지 왔어요. 마무리 자세를 지켜요.';
     }
     if (t > ses.chart.total) { finishSession(); return; }
     ses.raf = requestAnimationFrame(loop);
@@ -405,23 +398,19 @@
 
   function paintDots() {
     if (!ses) return;
-    var dots = $('lDots').children, firstOpen = -1;
-    for (var i = 0; i < ses.notes.length; i++) { if (!ses.notes[i].judged) { firstOpen = i; break; } }
-    for (var d = 0; d < dots.length; d++) {
-      dots[d].className = ses.notes[d] && ses.notes[d].judged ? 'done' : d === firstOpen ? 'current' : '';
-    }
+    $('lBar').style.width = (100 * ses.judged / ses.notes.length).toFixed(1) + '%';
   }
   function paintCount() {
     if (!ses) return;
-    $('lCount').textContent = '노트 ' + ses.judged + ' / ' + ses.notes.length + (ses.combo >= 2 ? ' · 콤보 ' + ses.combo : '');
+    $('lCount').textContent = '노트 ' + ses.judged + ' / ' + ses.notes.length;
   }
 
   function flashJudge(text, kind) {
     var el = $('lJudge');
     el.textContent = text;
-    el.className = 'judge-flash';
+    el.className = 'judge';
     void el.offsetWidth;
-    el.className = 'judge-flash ' + kind;
+    el.className = 'judge ' + kind + ' pop';
     var line = $('lJudgeLine');
     line.classList.add(kind);
     setTimeout(function () { if (line && !line.classList.contains('hot')) line.classList.remove(kind); }, 260);
@@ -492,16 +481,17 @@
     var el = $('lBubble');
     el.textContent = text;
     el.className = 'bubble on' + (kind ? ' ' + kind : '');
+    var buddy = $('lBuddy');
+    buddy.classList.remove('cheer'); void buddy.offsetWidth; buddy.classList.add('cheer');
     clearTimeout(bubbleTimer);
-    bubbleTimer = setTimeout(function () { el.className = 'bubble'; }, 1500);
+    bubbleTimer = setTimeout(function () { el.className = 'bubble'; }, 1900);
   }
   function cue(text) { $('lFeedback').textContent = text; }
   function comboBump() {
-    var badge = $('lCombo');
-    if (ses.combo < 2) { badge.hidden = true; return; }
-    badge.hidden = false;
-    badge.querySelector('b').textContent = ses.combo;
-    badge.classList.remove('pop'); void badge.offsetWidth; badge.classList.add('pop');
+    var chip = $('lCombo');
+    chip.textContent = '콤보 ' + ses.combo;
+    chip.classList.toggle('hot', ses.combo >= 3);
+    chip.classList.remove('pop'); void chip.offsetWidth; chip.classList.add('pop');
   }
   function advancePose(over) {
     /* 평소에는 ready 포즈로 우아하게 서 있고, 판정된 순간에만 그 동작 포즈로 바뀌었다가 돌아온다. */
@@ -536,7 +526,6 @@
 
   function hitNote(n, verdict) {
     n.judged = true; n.result = verdict; ses.judged++;
-    $('lComfort').hidden = true;
     if (verdict === 'perfect') ses.perfect++; else ses.good++;
     ses.combo++;
     if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
@@ -580,23 +569,7 @@
             : ['발끝이 잠깐 미끄러졌어요 😅', '음악이 살짝 모르는 척했어요 🎵'];
     bubble(jokes[Math.floor(Math.random() * jokes.length)], 'sad');
     cue(why === 'wrong' ? '노트와 같은 동작을 눌러야 해요. 다음 표시를 봐요.' : '한 박자 놓쳤어요. 음악은 계속돼요.');
-    showComfort();
     comboBump(); paintDots(); paintCount();
-  }
-
-  // 삐끗해도 정령이 다독여 준다. 벌점 대신 한 박자 쉬어 가는 느낌.
-  var COMFORT = [
-    '괜찮아요. 한 박자 놓쳐도 음악은 계속돼요.',
-    '숨 한 번 고르고, 다음 박자만 봐요.',
-    '오늘은 여기까지 해도 충분해요. 잘 따라오고 있어요.',
-    '떨려도 괜찮아요. 저도 처음엔 그랬어요.'
-  ];
-  function showComfort() {
-    if (!ses) return;
-    var el = $('lComfort'), mate = T.get().practiceWith;
-    var who = T.SPIRITS[mate || teachers[ses.kind]];
-    el.textContent = who.name + '가 “' + COMFORT[(ses.miss + ses.good) % COMFORT.length] + '” 하고 말해요.';
-    el.hidden = false;
   }
 
   function pressMove(move, soft) {
@@ -836,11 +809,9 @@
   });
   document.addEventListener('keydown', function (e) {
     if (!$('lesson').open || !ses) return;
-    if (e.code === 'Space' || e.key === '1') { e.preventDefault(); pressMove('beat'); }
-    else if (e.key === '2') { e.preventDefault(); pressMove('cat'); }
-    else if (e.key === '3') { e.preventDefault(); pressMove('jump'); }
-    else if (e.key === '4') { e.preventDefault(); pressMove('beam'); }
-    else if (e.key === '5') { e.preventDefault(); pressMove('turn'); }
+    var key = { '1': 'cat', '2': 'jump', '3': 'beam', '4': 'turn', 'Numpad1': 'cat', 'Numpad2': 'jump', 'Numpad3': 'beam', 'Numpad4': 'turn' }[e.code] ||
+      { '1': 'cat', '2': 'jump', '3': 'beam', '4': 'turn' }[e.key];
+    if (key) { e.preventDefault(); pressMove(key); }
   });
   $('rAgain').addEventListener('click', function () { enroll(T.get().kingdom.receipt.kind); });
   $('rWear').addEventListener('click', async function () {
