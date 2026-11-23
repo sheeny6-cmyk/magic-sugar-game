@@ -10,9 +10,9 @@
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://sheeny6-cmyk.github.io/magic-sugar-game/town/assets/palace-court.webp">
 <title>슈가의 발레왕국</title>
-<link rel="stylesheet" href="style.css?v=20261123a">
-<link rel="stylesheet" href="court.css?v=20261123a">
-<link rel="stylesheet" href="lilac.css?v=20261123a">
+<link rel="stylesheet" href="style.css?v=20261123g">
+<link rel="stylesheet" href="court.css?v=20261123g">
+<link rel="stylesheet" href="lilac.css?v=20261123g">
 </head>
 <body class="court">
 <div class="court-shell">
@@ -20,6 +20,7 @@
     <div class="identity"><img src="assets/chars/sugar-face.webp" alt=""><span class="id-text"><strong data-nick>슈가</strong><small id="idRank">Lv.1 입문 발레리나</small></span><button class="nick-edit" id="nickEdit" type="button" aria-label="닉네임 바꾸기" title="닉네임 바꾸기">✎</button></div>
     <div class="purse" aria-label="왕국 지갑"><span class="coin-unit"><i aria-hidden="true"></i>코인 <b data-coin>0</b></span><span class="life-unit"><i aria-hidden="true"></i>생명력 <b data-life>0</b></span></div>
   </header>
+  <div class="buff-strip" id="buffStrip" aria-label="지금 걸린 효과" hidden></div>
   <main>
     <div class="opening">
       <section class="palace" aria-labelledby="kingdomTitle">
@@ -31,36 +32,36 @@
         </div>
       </section>
       <section class="practice-ticket" aria-labelledby="nextTitle">
-        <div class="ticket-top"><span class="music" aria-hidden="true">𝄞</span><span>왕립 발레 스튜디오</span></div>
+        <div class="ticket-top"><span class="music" aria-hidden="true">𝄞</span><span id="todayKicker">오늘의 한 걸음 · 왕립 발레 스튜디오</span></div>
         <h2 id="nextTitle">첫 바 연습</h2>
         <p id="nextGoal">에튜 선생님과 3/4 왈츠에 맞춰 박자를 타요.</p>
-        <div class="ticket-reward" id="nextReward">노트 완주 <b>+50코인</b></div>
+        <a class="action" id="nextAction" href="studio/?v=20261123g#first-bar">바 연습 시작 <span aria-hidden="true">→</span></a>
+        <p class="action-hint" id="actionHint">수업은 무료 · 노트를 다 타면 코인이 쌓여요</p>
         <div class="first-gift" id="firstGift" aria-live="polite">
           <img id="firstGiftImg" src="assets/dancers/lilac-curtsy.webp" alt="라일락 쉬폰 스커트를 입은 발레리나">
           <div class="first-gift-copy"><span id="firstGiftKicker">첫 연습 완주 선물</span><strong id="firstGiftTitle">라일락 쉬폰 스커트</strong><small id="firstGiftText">연습을 마치면 내 옷장에서 입을 수 있어요.</small></div>
         </div>
-        <a class="action" id="nextAction" href="studio/?v=20261123a#first-bar">바 연습 시작 <span aria-hidden="true">→</span></a>
+        <div class="ticket-reward" id="nextReward">노트 완주 <b>+50코인</b></div>
         <div class="journey-steps" id="journeySteps" aria-label="첫 공연 진행 단계"></div><p class="ticket-note" id="ticketNote">첫 수업 선물 · 라일락 쉬폰 스커트</p>
-        <a class="ticket-stage" id="stageShortcut" href="stage/?v=20261123a" hidden>첫 리허설 초대장 열기 →</a>
       </section>
     </div>
 
     <section class="district" aria-labelledby="townMap">
       <div class="section-line"><div><p class="place-label">A WALK THROUGH THE KINGDOM</p><h2 id="townMap">왕국 산책길</h2></div></div>
-      <p class="map-intro">연습하고, 사고, 갈아입고 — 오늘은 이 세 곳이면 충분해요.</p>
+      <p class="map-intro">오늘 할 일은 위 초대장에 한 가지로 적어 두었어요. 여기서는 가고 싶은 곳을 골라 들어가면 돼요.</p>
       <div class="venues kingdom-map royal-walk" aria-label="왕국의 세 갈래 길">
         <svg class="walk-line" viewBox="0 0 900 100" preserveAspectRatio="none" aria-hidden="true">
           <path d="M110 60 Q290 5 450 54 Q630 96 790 37" fill="none" stroke="#dac9d8" stroke-width="3" stroke-dasharray="4 11" stroke-linecap="round"/>
         </svg>
-        <a class="venue" href="studio/?v=20261123a"><div class="venue-art studio-art"><img data-worn-pose="releve" src="assets/dancers/basic-releve.webp" loading="lazy" alt=""></div><div><span class="walk-order">01 · PRACTICE</span><h3>🩰 연습하기</h3><p>바 · 센터 워크</p></div><i aria-hidden="true">↗</i></a>
-        <a class="venue" href="shop/?v=20261123a"><div class="venue-art shop-art"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt=""></div><div><span class="walk-order">02 · SHOP</span><h3>🛍️ 상점</h3><p>의상 · 발레 카페 · 분식집</p></div><i aria-hidden="true">↗</i></a>
-        <a class="venue" href="dressroom/?v=20261123a"><div class="venue-art wardrobe-art"><img data-worn-pose="ready" src="assets/dancers/basic-ready.webp" loading="lazy" alt=""></div><div><span class="walk-order">03 · WARDROBE</span><h3>👗 내 옷장</h3><p data-worn-name>기본 핑크 레오타드</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="studio/?v=20261123g"><div class="venue-art studio-art"><img data-worn-pose="releve" src="assets/dancers/basic-releve.webp" loading="lazy" alt=""></div><div><span class="walk-order">01 · STUDIO</span><h3>🩰 연습실</h3><p id="walkStudio">바 · 센터 · 작품 3코스</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="shop/?v=20261123g"><div class="venue-art shop-art"><img src="../cafe/assets/bg-entrance.webp" loading="lazy" alt=""></div><div><span class="walk-order">02 · SHOP</span><h3>🛍️ 상점</h3><p id="walkShop">의상 · 발레 카페 · 분식집</p></div><i aria-hidden="true">↗</i></a>
+        <a class="venue" href="dressroom/?v=20261123g"><div class="venue-art wardrobe-art"><img data-worn-pose="ready" src="assets/dancers/basic-ready.webp" loading="lazy" alt=""></div><div><span class="walk-order">03 · WARDROBE</span><h3>👗 내 옷장</h3><p data-worn-name>기본 핑크 레오타드</p></div><i aria-hidden="true">↗</i></a>
       </div>
       <div class="side-streets" aria-labelledby="sideTitle">
-        <div class="side-head"><strong id="sideTitle">그 밖의 무대</strong><small>공연 · 리듬 챌린지</small></div>
+        <div class="side-head"><strong id="sideTitle">그 밖의 무대</strong><small>산책길 밖 · 원할 때 여는 무대</small></div>
         <div class="side-venues">
-          <a class="side-venue" href="stage/?v=20261123a"><img data-worn-pose="curtsy" src="assets/dancers/basic-curtsy.webp" loading="lazy" alt=""><span><b>왕립 극장</b><small id="stageLine">첫 리허설 초대장까지 도장 2개</small></span><i aria-hidden="true">↗</i></a>
-          <a class="side-venue" href="waltz-stage/?v=20261123a"><img src="assets/dancers/lilac-pasdechat.webp" loading="lazy" alt=""><span><b>3/4 왈츠 무대</b><small>파드샤 · 그랑제떼 · 피루엣 리듬</small></span><i aria-hidden="true">↗</i></a>
+          <a class="side-venue" href="stage/?v=20261123g"><img data-worn-pose="curtsy" src="assets/dancers/basic-curtsy.webp" loading="lazy" alt=""><span><b>왕립 극장</b><small id="stageLine">첫 리허설 초대장까지 도장 2개</small></span><i aria-hidden="true">↗</i></a>
+          <a class="side-venue" href="waltz-stage/?v=20261123g"><img src="assets/dancers/lilac-pasdechat.webp?v=20261123g" loading="lazy" alt=""><span><b>3/4 왈츠 무대</b><small>파드샤 · 그랑제떼 · 피루엣 리듬 챌린지</small></span><i aria-hidden="true">↗</i></a>
         </div>
       </div>
     </section>
@@ -110,13 +111,13 @@
     <div class="bond-letters" id="bondLetters"></div>
     <div class="bond-btns">
       <button class="nick-ghost" id="bondPractice" type="button">함께 연습하기</button>
-      <a class="nick-primary" id="bondPotion" href="potions/?v=20261123a">포션 주문</a>
+      <a class="nick-primary" id="bondPotion" href="potions/?v=20261123g">포션 주문</a>
     </div>
     <p class="bond-foot" id="bondFoot">함께 연습하면 친밀도가 +1 올라요</p>
   </div>
 </dialog>
 
-<script src="assets/town.js?v=20261123a"></script>
-<script src="court.js?v=20261123a"></script>
+<script src="assets/town.js?v=20261123g"></script>
+<script src="court.js?v=20261123g"></script>
 </body>
 </html>

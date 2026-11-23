@@ -25,13 +25,28 @@
   function cardHTML(m) {
     var img = kind === 'cafe' ? m.img : m.thumb;
     var chips = T.buffChips(m.buff);
-    return '<button class="menu-card" type="button" data-id="' + m.id + '" aria-pressed="false">' +
+    var tasted = T.tastedOf(kind, m.id);
+    return '<button class="menu-card' + (tasted ? ' tried' : '') + '" type="button" data-id="' + m.id + '" aria-pressed="false">' +
       '<span class="pic"><img src="' + img + '" alt="' + m.name + '" loading="lazy">' +
-      '<span class="coin">' + m.price + ' 🪙</span></span>' +
+      '<span class="coin">' + m.price + ' 🪙</span>' +
+      (tasted ? '<span class="tasted" aria-label="먹어본 메뉴 ' + tasted + '번">✓ ' + tasted + '번</span>' : '') +
+      '</span>' +
       '<b>' + m.name + '</b>' +
       '<span class="desc">' + (m.desc || '') + '</span>' +
-      '<span class="chips">' + chips.slice(0, 2).map(function (c) { return '<i>' + c + '</i>'; }).join('') + '</span>' +
+      '<span class="chips">' + chips.slice(0, 3).map(function (c) { return '<i>' + c + '</i>'; }).join('') + '</span>' +
       '</button>';
+  }
+
+  /* 먹어본 메뉴 도감: 한 번이라도 주문한 메뉴가 체크되고 개수가 쌓인다. */
+  function renderDex() {
+    var el = box.querySelector('.dex-line');
+    if (!el) return;
+    var got = T.tastedCount(kind), size = T.dexSize(kind);
+    var left = list.filter(function (m) { return !T.tastedOf(kind, m.id); });
+    el.innerHTML = '<b>📖 ' + (kind === 'cafe' ? '음료 도감' : '메뉴 도감') + ' ' + got + ' / ' + size + '</b>' +
+      '<span>' + (left.length
+        ? '아직 안 먹어본 ' + left.slice(0, 2).map(function (m) { return m.name; }).join(' · ') + (left.length > 2 ? ' 외 ' + (left.length - 2) + '개' : '')
+        : '전부 먹어봤어요! 도감이 가득 찼어요 ✨') + '</span>';
   }
 
   function render() {
@@ -40,6 +55,7 @@
     box.querySelector('.now-meal').textContent = meal
       ? '지금 걸린 기운 · ' + meal.name + ' (' + T.buffChips(meal.buff).join(' · ') + ')'
       : '주문한 메뉴의 기운은 다음 연습·공연 한 번에 걸려요.';
+    renderDex();
     paintCta();
   }
   function paintCta() {

@@ -345,9 +345,15 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
   padding:6px 9px;font-size:.68rem;line-height:1.4;color:#60467a;font-weight:750;text-align:left;
   box-shadow:0 4px 14px #4c34631f;opacity:0;transform:translateY(-4px) scale(.94);transition:opacity .18s,transform .18s}
 #lesson .buddy .bubble.on{opacity:1;transform:none}
-#lesson .buddy img{order:2;width:44px;height:44px;object-fit:contain;border-radius:50%;background:#f7eeff;
-  border:2px solid #e7d5f8;box-shadow:0 4px 12px #4c34632b;transition:transform .18s}
-#lesson .buddy.cheer img{animation:buddyCheer .5s ease-out}
+#lesson .buddy .buddy-face{order:2;position:relative;flex:none;display:grid;place-items:center;width:44px;height:44px;
+  border-radius:50%;overflow:hidden;border:2px solid #e7d5f8;box-shadow:0 4px 12px #4c34632b;
+  background:radial-gradient(circle at 50% 32%,#fffdf8 12%,#f4eaff 58%,var(--tint,#e7d5f8) 100%);transition:transform .18s}
+#lesson .buddy .buddy-face:before{content:attr(data-initial);font-family:var(--serif);font-size:.98rem;font-weight:700;
+  color:#6f5488;opacity:.9;line-height:1}
+#lesson .buddy .buddy-face img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;
+  border:0;background:none;box-shadow:none;opacity:0;transition:opacity .2s ease}
+#lesson .buddy .buddy-face img.ready{opacity:1}
+#lesson .buddy.cheer .buddy-face{animation:buddyCheer .5s ease-out}
 @keyframes buddyCheer{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-8px) scale(1.14)}100%{transform:none}}
 #lesson .buff-badge{flex:none;margin:0;padding:3px 9px;border-radius:9px;background:#f4eafd;
   border:1px solid #e4d3f5;color:#6d4f86;font-size:.62rem;font-weight:700;line-height:1.35;
@@ -640,3 +646,54 @@ dialog.levelup.prima .gcard h2{color:#5a3a12}
 /* 게임오버 어두운 카드 위의 이동 버튼 */
 #gameover .go-shop .btn,#gameover .go-shop .btn.ghost{background:#ffffff14;border:1px solid #ffffff2e;color:#f7e8f2;font-weight:800}
 #gameover .go-shop .btn:active{background:#ffffff22}
+
+/* ================= 20261123g · 판정 손맛 강화 (GREAT · 링 파동 · 콤보 배너) ================= */
+/* 대성공과 성공 사이를 한 단계 더 나눠, 잘 눌렀을 때의 보상감을 촘촘하게 만든다. */
+#lesson .judge.great{color:#158a72;font-size:1.58rem;text-shadow:0 2px 0 #fff,0 0 16px #9fe6d3,0 4px 12px #fff}
+#lesson .judge.good{color:#6b5296;font-size:1.3rem;text-shadow:0 2px 0 #fff,0 4px 10px #fff}
+#lesson .judge.perfect{text-shadow:0 2px 0 #fff,0 0 20px #ffe08a,0 4px 14px #fff}
+#lesson .judge.pop{animation:judgeHit .78s cubic-bezier(.2,.9,.3,1.1) forwards}
+@keyframes judgeHit{
+  0%{opacity:0;transform:translate(-50%,14px) scale(.62) rotate(-4deg)}
+  16%{opacity:1;transform:translate(-50%,-4px) scale(1.16) rotate(1.5deg)}
+  30%{transform:translate(-50%,0) scale(.98) rotate(-.5deg)}
+  40%{transform:translate(-50%,0) scale(1.04)}
+  72%{opacity:1;transform:translate(-50%,-2px) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-20px) scale(.94)}}
+
+/* 판정 링에서 퍼져 나가는 빛의 파동 */
+#lesson .judge-wave{position:absolute;left:var(--mark);bottom:6%;width:clamp(92px,25%,130px);height:32px;z-index:6;
+  transform:translate(-50%,0);border-radius:50%;border:3px solid #fff;pointer-events:none;
+  animation:judgeWave .62s cubic-bezier(.18,.72,.24,1) forwards}
+#lesson .judge-wave.perfect{border-color:#ffe4a0;box-shadow:0 0 20px #ffdf9a,inset 0 0 14px #fff6d6}
+#lesson .judge-wave.great{border-color:#9fe6d3;box-shadow:0 0 16px #9fe6d3,inset 0 0 10px #e7fff8}
+#lesson .judge-wave.good{border-color:#d3c3ec;box-shadow:0 0 12px #cdbaeb,inset 0 0 8px #f2ebfd}
+@keyframes judgeWave{
+  0%{opacity:.95;transform:translate(-50%,0) scale(.52)}
+  62%{opacity:.42}
+  100%{opacity:0;transform:translate(-50%,0) scale(2.15)}}
+
+/* 판정 순간 무대가 살짝 숨을 들이쉬는 박동 */
+#lesson .play-scene.pop{animation:scenePop .26s ease-out}
+@keyframes scenePop{0%{transform:scale(1)}42%{transform:scale(1.007)}100%{transform:scale(1)}}
+
+/* 콤보 5마다 무대 위에 뜨는 배너 */
+#lesson .combo-banner{position:absolute;left:var(--mark);top:25%;z-index:9;pointer-events:none;
+  display:grid;gap:1px;place-items:center;padding:8px 17px 7px;border-radius:15px;
+  background:linear-gradient(155deg,#fffaea,#ffe6b3);border:2px solid #e8bf6d;color:#7a4f12;
+  box-shadow:0 12px 30px #6b441b42,inset 0 0 0 1px #fff8e4;
+  transform:translate(-50%,0) scale(.7);opacity:0;animation:comboBanner 1.02s cubic-bezier(.18,.86,.26,1) forwards}
+#lesson .combo-banner b{font:900 1.34rem/1 var(--serif);letter-spacing:-.03em}
+#lesson .combo-banner small{font-size:.62rem;font-weight:800;color:#9a6a25;letter-spacing:-.01em}
+#lesson .combo-banner.hot{background:linear-gradient(155deg,#fff3d0,#ffcf87);border-color:#dda94c;
+  box-shadow:0 14px 34px #8a541b5c,0 0 0 4px #ffe4a855,inset 0 0 0 1px #fff8e4;color:#6d3f06}
+@keyframes comboBanner{
+  0%{opacity:0;transform:translate(-50%,12px) scale(.66) rotate(-3deg)}
+  16%{opacity:1;transform:translate(-50%,-2px) scale(1.1) rotate(1.5deg)}
+  30%{transform:translate(-50%,0) scale(1) rotate(0)}
+  74%{opacity:1;transform:translate(-50%,0) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-16px) scale(.95)}}
+
+/* 10콤보부터 콤보 칩이 금빛으로 달아오른다 */
+#lesson .cue-bar .combo.blaze{background:linear-gradient(140deg,#f2ce7d,#c98f34);color:#fff;
+  box-shadow:0 4px 14px #a470212e,0 0 0 2px #ffe4a066}

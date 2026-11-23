@@ -89,6 +89,7 @@
     if (!actx || !soundOn) return;
     var at = actx.currentTime + 0.005;
     if (kind === 'perfect') { [1046.5, 1318.5, 1568].forEach(function (f, i) { piano(f, at + i * 0.055, 0.5, 0.16, sfxBus); }); }
+    else if (kind === 'great') { [880, 1108.7, 1318.5].forEach(function (f, i) { piano(f, at + i * 0.05, 0.46, 0.15, sfxBus); }); }
     else if (kind === 'good') { [784, 1046.5].forEach(function (f, i) { piano(f, at + i * 0.045, 0.42, 0.13, sfxBus); }); }
     else if (kind === 'miss') { piano(196, at, 0.32, 0.14, sfxBus); piano(174.6, at + 0.07, 0.28, 0.1, sfxBus); }
     else { piano(660, at, 0.16, 0.05, sfxBus); }
@@ -145,7 +146,21 @@
     }).join('');
     renderMates(s);
     renderPass(s);
+    renderBuffs();
     T.syncUI();
+  }
+
+  /* ================= 지금 걸린 효과 배지 ================= */
+  function renderBuffs() {
+    var host = $('buffStrip');
+    if (!host) return;
+    var list = T.activeBuffs();
+    host.hidden = !list.length;
+    host.innerHTML = list.length
+      ? '<span class="buff-strip-lead">지금 걸린 기운</span>' + list.map(function (b) {
+        return '<span class="buff-chip ' + b.kind + '"><i aria-hidden="true">' + b.icon + '</i><b>' + b.name + '</b><small>' + b.chips.join(' · ') + '</small></span>';
+      }).join('')
+      : '';
   }
 
   /* ================= BALLET FREE PASS 4조각 ================= */
@@ -414,6 +429,8 @@
       });
       if (meal.buff.shield) parts.push('삐끗 ' + meal.buff.shield + '회 보호');
       if (meal.buff.combo) parts.push('콤보 +' + meal.buff.combo);
+      if (meal.buff.heal) parts.push('HP +' + meal.buff.heal);
+      if (meal.buff.coins) parts.push('코인 +' + meal.buff.coins);
       mealLine = (meal.kind === 'cafe' ? '☕ ' : '🍢 ') + meal.name + ' · ' + parts.join(' · ');
     }
     var ability = mateAbility(s.practiceWith);
@@ -453,8 +470,21 @@
     $('lTitle').textContent = c.name;
     $('lPose').textContent = '준비 자세';
     var mate = s.practiceWith;
-    $('lCoach').src = T.spiritArt(mate || teachers[kind],true);
-    $('lCoach').alt = T.SPIRITS[mate || teachers[kind]].name;
+    var coachId = mate || teachers[kind];
+    var face = $('lCoachFace'), coach = $('lCoach');
+    if (face) {
+      face.style.setProperty('--tint', T.SPIRITS[coachId].color);
+      face.dataset.initial = T.SPIRITS[coachId].name.slice(0, 1);
+    }
+    if (coach) {
+      var want = T.spiritArt(coachId, true);
+      coach.classList.remove('ready');
+      coach.alt = T.SPIRITS[coachId].name + ' 정령';
+      coach.onload = function () { coach.classList.add('ready'); };
+      coach.onerror = function () { coach.classList.remove('ready'); };
+      if (coach.getAttribute('src') === want && coach.complete && coach.naturalWidth) coach.classList.add('ready');
+      else coach.src = want;
+    }
     Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     T.showDancer($('lDancer'), s.worn, IDLE_POSE);
     $('lDancer').className = 'practice-dancer';
@@ -462,7 +492,7 @@
     $('lCue').className = 'now-cue';
     $('lScene').classList.toggle('stage-mode', !!c.stageMode);
     $('lFeedback').textContent = '노트가 빛나는 링에 닿는 순간, 노트와 같은 동작을 눌러요!';
-    var hpMax = maxHPFor(s);
+    var hpMax = maxHPFor(s) + (meal && meal.buff.heal ? meal.buff.heal : 0);
     ses = {
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
       mode: mode.key, approach: mode.approach, damage: mode.damage,
@@ -585,6 +615,47 @@
     var line = $('lJudgeLine');
     line.classList.add(kind);
     setTimeout(function () { if (line && !line.classList.contains('hot')) line.classList.remove(kind); }, 260);
+  }
+  /* 판정 링에서 바깥으로 번지는 빛의 파동 */
+  function ringWave(kind) {
+    if (!$('lScene')) return;
+    var rounds = kind === 'perfect' ? 2 : 1;
+    for (var i = 0; i < rounds; i++) {
+      (function (delay) {
+        setTimeout(function () {
+          var scene = $('lScene');
+          if (!scene || !ses || ses.finished) return;
+          var w = document.createElement('span');
+          w.className = 'judge-wave ' + kind;
+          w.setAttribute('aria-hidden', 'true');
+          scene.appendChild(w);
+          setTimeout(function () { if (w.parentNode) w.remove(); }, 700);
+        }, delay);
+      })(i * 100);
+    }
+  }
+  /* 무대가 살짝 숨을 들이쉬는 박동 (타격감) */
+  function scenePop(kind) {
+    var scene = $('lScene');
+    if (!scene) return;
+    scene.classList.remove('pop');
+    void scene.offsetWidth;
+    scene.classList.add('pop');
+    setTimeout(function () { if (scene) scene.classList.remove('pop'); }, 260);
+  }
+  /* 콤보 5·10·15…마다 무대 위에 잠깐 뜨는 배너 */
+  function comboBanner(n) {
+    var scene = $('lScene');
+    if (!scene) return;
+    var words = n >= 20 ? '무대가 전부 ' + T.nick() + '님 편이에요!' : n >= 15 ? '멈출 수 없어요!' : n >= 10 ? '무대가 뜨거워져요!' : '완벽한 흐름!';
+    var old = scene.querySelector('.combo-banner');
+    if (old) old.remove();
+    var el = document.createElement('div');
+    el.className = 'combo-banner' + (n >= 10 ? ' hot' : '');
+    el.setAttribute('aria-hidden', 'true');
+    el.innerHTML = '<b>' + n + ' COMBO</b><small>' + words + '</small>';
+    scene.appendChild(el);
+    setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 1050);
   }
   function sparkle(count, kind) {
     var layer = $('lSparks');
@@ -713,7 +784,9 @@
     var chip = $('lCombo');
     chip.textContent = '콤보 ' + ses.combo;
     chip.classList.toggle('hot', ses.combo >= 3);
+    chip.classList.toggle('blaze', ses.combo >= 10);
     chip.classList.remove('pop'); void chip.offsetWidth; chip.classList.add('pop');
+    if (ses.combo > 0 && ses.combo % 5 === 0) comboBanner(ses.combo);
   }
   function advancePose(over) {
     /* 평소에는 ready 포즈로 우아하게 서 있고, 판정된 순간에만 그 동작 포즈로 바뀌었다가 돌아온다. */
@@ -755,11 +828,14 @@
     popNote(n);
     advancePose(n.type);
     if (verdict === 'perfect') {
-      flashJudge('PERFECT!', 'perfect'); sparkle(10, 'gold'); tone('perfect');
+      flashJudge('PERFECT!', 'perfect'); sparkle(14, 'gold'); ringWave('perfect'); scenePop('perfect'); tone('perfect');
       bubble('정확해요!', 'happy');
       cue(book.pickLine('perfect', n.type));
+    } else if (verdict === 'great') {
+      flashJudge('GREAT!', 'great'); sparkle(9, 'mint'); ringWave('great'); tone('great');
+      cue(book.pickLine('perfect', n.type));
     } else {
-      flashJudge('GOOD!', 'good'); sparkle(5, 'mint'); tone('good');
+      flashJudge('GOOD!', 'good'); sparkle(5, 'mint'); ringWave('good'); tone('good');
       cue(book.pickLine('good', n.type));
     }
     if (ses.combo % 3 === 0) spCheer('hit', n.type);
@@ -814,7 +890,11 @@
       if (abs < bestAbs) { best = n; bestAbs = abs; }
     }
     if (best) {
-      if (best.type === move) hitNote(best, bestAbs <= notePerfectWindow(best) ? 'perfect' : 'good');
+      if (best.type === move) {
+        var pWin = notePerfectWindow(best), gWin = noteWindow(best);
+        var greatWin = Math.round(pWin + (gWin - pWin) * 0.42);
+        hitNote(best, bestAbs <= pWin ? 'perfect' : bestAbs <= greatWin ? 'great' : 'good');
+      }
       else if (soft) tone('tap');          // 화면을 살짝 스친 건 벌하지 않아요.
       else missNote(best, 'wrong');
       return;
@@ -934,6 +1014,7 @@
     if (Number.isFinite(r.baseCoins)) parts.push('기본 ' + r.baseCoins);
     if (r.comboCoins) parts.push('콤보 ' + r.comboCoins);
     if (r.noteCoins) parts.push('정령 ' + r.noteCoins);
+    if (r.mealCoins) parts.push('메뉴 ' + r.mealCoins);
     if (r.techniqueCoins) parts.push('동작 성공 ' + r.techniqueCoins);
     $('rCoinsDetail').hidden = parts.length < 2;
     $('rCoinsDetail').textContent = parts.join(' + ') + '코인';
@@ -1118,6 +1199,11 @@
   };
 
   refresh(); renderRoute();
+  /* 무대 위 정령 얼굴은 수업이 시작되기 전에 미리 받아 두어 빈 원이 생기지 않게 한다. */
+  ['etu', 'ara', 'piru', 'shangz', 'alle'].forEach(function (id) {
+    var pre = new Image();
+    pre.src = T.spiritArt(id, true);
+  });
   // 지난번에 받지 못한 레벨업 보상이 있으면 한 번만 보여 준다.
   (function () {
     var pending = T.get().levelUp;

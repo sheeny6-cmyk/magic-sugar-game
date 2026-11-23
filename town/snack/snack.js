@@ -339,15 +339,20 @@
   }
 
   /* ---------- 도감 ---------- */
-  var dexBuilt = false;
+  /* 열 때마다 다시 그려, 방금 주문한 메뉴의 '먹어본 횟수'가 바로 보이게 한다. */
   function buildDex() {
-    if (dexBuilt) return;
-    dexBuilt = true;
     $('dexGrid').innerHTML = T.MENU.map(function (m) {
-      return '<button class="dcard" data-id="' + m.id + '" type="button">' +
+      var n = T.tastedOf('snack', m.id);
+      return '<button class="dcard' + (n ? ' tried' : '') + '" data-id="' + m.id + '" type="button">' +
         '<img src="' + m.thumb + '" alt="' + m.name + '" loading="lazy">' +
-        '<span class="cap"><b>' + m.name + '</b><span>' + m.effect + '</span></span></button>';
+        '<span class="cap"><b>' + m.name + '</b><span>' + m.effect + '</span></span>' +
+        (n ? '<span class="dex-count">✓ ' + n + '번</span>' : '') + '</button>';
     }).join('');
+    var got = T.tastedCount('snack');
+    var cnt = $('dexBtn') && $('dexBtn').querySelector('b');
+    if (cnt) cnt.textContent = got + '/' + T.MENU.length;
+    var head = document.querySelector('.dex-head span');
+    if (head) head.textContent = '마법 분식 ' + T.MENU.length + '종 + 원본 메뉴판 · 먹어본 ' + got + ' / ' + T.MENU.length;
   }
   function openDex() {
     buildDex();

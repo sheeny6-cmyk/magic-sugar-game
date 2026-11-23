@@ -199,3 +199,15 @@ a{color:inherit}
 .heart-row{display:inline-flex;gap:1px;align-items:center;line-height:1}
 .hrt{font-size:.72rem;color:#e2cfda;font-style:normal}
 .hrt.on{color:#df7f9e}
+
+/* ---------- 지금 걸린 효과 배지 (홈·스튜디오 공통) ---------- */
+.buff-strip{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:10px 14px 0}
+.buff-strip[hidden]{display:none!important}
+.buff-strip-lead{font-size:.68rem;font-weight:800;letter-spacing:.02em;color:#8a7590;white-space:nowrap}
+.buff-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;
+  background:#f7f1fb;border:1px solid #e6d8f0;color:#654a80;font-size:.73rem;font-weight:700;line-height:1.3;word-break:keep-all}
+.buff-chip i{font-style:normal;font-size:.85rem;line-height:1}
+.buff-chip b{font-weight:800;letter-spacing:-.02em}
+.buff-chip small{font-weight:600;color:#8b76a3;font-size:.7rem}
+.buff-chip.potion{background:#f0f5fd;border-color:#d3e0f5;color:#3f5e8c}
+.buff-chip.potion small{color:#7189b0}

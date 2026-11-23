@@ -6,17 +6,18 @@
 <meta name="theme-color" content="#EDE4F7">
 <meta name="description" content="3/4 왈츠 박자를 타는 왕립 발레 스튜디오. 파드샤·그랑제떼·아라베스크·피루엣을 눌러 노래를 완주하면 코인과 도장이 쌓여요.">
 <title>왕립 발레 스튜디오 · 슈가의 발레왕국</title>
-<link rel="stylesheet" href="../style.css?v=20261122u">
-<link rel="stylesheet" href="studio.css?v=20261122u">
-<link rel="stylesheet" href="../lilac.css?v=20261122u">
+<link rel="stylesheet" href="../style.css?v=20261123g">
+<link rel="stylesheet" href="studio.css?v=20261123g">
+<link rel="stylesheet" href="../lilac.css?v=20261123g">
 </head>
 <body class="sub studio">
 <main class="app">
-  <header class="subbar"><a class="back" href="../?v=20261122u" aria-label="왕국으로">←</a><h1 class="title">왕립 발레 스튜디오</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
+  <header class="subbar"><a class="back" href="../?v=20261123g" aria-label="왕국으로">←</a><h1 class="title">왕립 발레 스튜디오</h1><span class="coin"><span aria-hidden="true">🪙</span><b data-coin>0</b></span></header>
+  <div class="buff-strip" id="buffStrip" aria-label="지금 걸린 효과" hidden></div>
   <button class="resume-lesson" id="resumeLesson" type="button" hidden></button>
   <section class="attend" aria-label="오늘의 연습복">
     <img class="attend-sugar" data-worn-pose="ready" src="../assets/dancers/basic-ready.webp" alt="">
-    <div class="attend-txt"><p><span data-nick>슈가</span>님의 오늘의 연습복</p><h2 data-worn-name>기본 핑크 레오타드</h2><a href="../dressroom/?v=20261122u">갈아입기 →</a></div>
+    <div class="attend-txt"><p><span data-nick>슈가</span>님의 오늘의 연습복</p><h2 data-worn-name>기본 핑크 레오타드</h2><a href="../dressroom/?v=20261123g">갈아입기 →</a></div>
   </section>
   <section class="free-pass" aria-labelledby="passTitle">
     <div class="pass-head"><div><p class="pass-kicker">BALLET FREE PASS</p><h2 id="passTitle">발레 프리패스 4조각</h2></div><b class="pass-count" id="passCount">0 / 4</b></div>
@@ -29,8 +30,8 @@
     <div class="mate-row" id="mates" role="group" aria-label="함께 연습할 정령"></div>
   </section>
   <section class="course-board" aria-labelledby="classList"><h2 id="classList">오늘의 연습</h2><p id="courseNote">수업은 모두 무료예요. 음악이 끝날 때까지 박자를 타면 코인이 쌓여요.</p><div class="classes" id="classes"></div></section>
-  <a class="practice-kit" href="../potions/?v=20261122u"><span id="practiceKit">정령에게 연습 포션 주문하기</span><span aria-hidden="true">→</span></a>
-  <section class="lv"><div class="level-line"><b id="lvName"></b><span id="lvClasses"></span></div><div class="lv-bar"><i id="lvBar"></i></div><p id="lvNote"></p><div id="stamps"></div><a id="stageLink" href="../stage/?v=20261122u"></a></section>
+  <a class="practice-kit" href="../potions/?v=20261123g"><span id="practiceKit">정령에게 연습 포션 주문하기</span><span aria-hidden="true">→</span></a>
+  <section class="lv"><div class="level-line"><b id="lvName"></b><span id="lvClasses"></span></div><div class="lv-bar"><i id="lvBar"></i></div><p id="lvNote"></p><div id="stamps"></div><a id="stageLink" href="../stage/?v=20261123g"></a></section>
   <footer class="foot">© 슈가의 발레왕국</footer>
 
   <dialog class="sheet" id="confirm" aria-labelledby="cName">
@@ -60,7 +61,7 @@
         <div class="judge-line" id="lJudgeLine" aria-hidden="true"><span class="floor"></span><span class="shaft"></span><span class="ring"></span></div>
         <span class="judge" id="lJudge" aria-live="polite"></span>
         <span class="now-cue" id="lCue" aria-hidden="true"></span>
-        <div class="buddy" id="lBuddy"><span class="bubble" id="lBubble" aria-hidden="true"></span><img id="lCoach" alt=""></div>
+        <div class="buddy" id="lBuddy"><span class="bubble" id="lBubble" aria-hidden="true"></span><span class="buddy-face" id="lCoachFace" aria-hidden="true"><img id="lCoach" alt=""></span></div>
         <span class="hp-alert" id="lHpAlert" hidden>⚠️ 체력 소진 임박!</span>
         <div class="warn-bubble" id="lWarn" role="status" aria-live="polite"></div>
         <span class="pose-tag" id="lPose">준비 자세</span>
@@ -68,10 +69,10 @@
       </figure>
       <div class="hp-vignette" id="lVignette" aria-hidden="true"></div>
       <div class="move-pad" id="pad" role="group" aria-label="발레 동작 버튼">
-        <button class="move cat" data-move="cat" type="button"><span aria-hidden="true">🐈</span><b>파드샤</b><small>고양이</small></button>
-        <button class="move jump" data-move="jump" type="button"><span aria-hidden="true">🦋</span><b>그랑제떼</b><small>장애물</small></button>
-        <button class="move beam" data-move="beam" type="button"><span aria-hidden="true">═</span><b>아라베스크</b><small>균형대</small></button>
-        <button class="move turn" data-move="turn" type="button"><span aria-hidden="true">↻</span><b>피루엣</b><small>회전</small></button>
+        <button class="move cat" data-move="cat" type="button" aria-label="파드샤 · 고양이처럼 사뿐히 뛰어 옮겨 서기"><span aria-hidden="true">🐈</span><b>파드샤</b><small>사뿐 뛰기</small></button>
+        <button class="move jump" data-move="jump" type="button" aria-label="그랑제떼 · 공중으로 크게 뛰어오르기"><span aria-hidden="true">🦋</span><b>그랑제떼</b><small>크게 도약</small></button>
+        <button class="move beam" data-move="beam" type="button" aria-label="아라베스크 · 한 다리로 중심을 잡기"><span aria-hidden="true">═</span><b>아라베스크</b><small>한 다리 균형</small></button>
+        <button class="move turn" data-move="turn" type="button" aria-label="피루엣 · 제자리에서 한 바퀴 돌기"><span aria-hidden="true">↻</span><b>피루엣</b><small>제자리 회전</small></button>
       </div>
     </div>
   </dialog>
@@ -101,7 +102,7 @@
       <div class="go-btns">
         <button class="btn primary" id="goRetry" type="button">다시 도전하기</button>
         <p class="go-shop-lead">체력을 챙기고 올래요?</p>
-        <div class="go-shop"><a class="btn ghost" href="../snack/?v=20261122u">🍢 분식집</a><a class="btn ghost" href="../dressroom/?v=20261122u">👗 옷장</a></div>
+        <div class="go-shop"><a class="btn ghost" href="../snack/?v=20261123g">🍢 분식집</a><a class="btn ghost" href="../dressroom/?v=20261123g">👗 옷장</a></div>
       </div>
       <p class="go-badge">재부팅 시 HARD MODE?! <small>— 농담이에요. 원하는 모드로 다시 고를 수 있어요.</small></p>
     </div>
@@ -148,12 +149,12 @@
       <p class="bond-gain" id="rBonds" hidden></p>
       <p class="rvoice" id="rVoice"></p>
       <details id="rDetails"><summary>연습 기록</summary><p id="rRecord"></p><p id="rGains"></p><p id="rSurvive" hidden></p><p id="rStamp"></p><p id="rPotion" hidden></p><p id="rRefund" hidden></p></details>
-      <div class="r-btns"><button type="button" class="btn primary" id="rAgain">한 번 더!</button><a class="btn ghost" href="../potions/?v=20261122u">정령 포션 주문대</a></div>
-      <div class="r-links"><a id="rStage" href="../stage/?v=20261122u">왕립 극장</a><a href="../?v=20261122u">왕국으로</a></div>
+      <div class="r-btns"><button type="button" class="btn primary" id="rAgain">한 번 더!</button><a class="btn ghost" href="../potions/?v=20261123g">정령 포션 주문대</a></div>
+      <div class="r-links"><a id="rStage" href="../stage/?v=20261123g">왕립 극장</a><a href="../?v=20261123g">왕국으로</a></div>
       <p class="sr-only" id="rAnnounce" role="status" aria-live="polite"></p>
     </div>
   </dialog>
 </main>
-<script src="../assets/town.js?v=20261122u"></script><script src="../assets/music.js?v=20261122u"></script><script src="lessons.js?v=20261122u"></script><script src="studio.js?v=20261122u"></script>
+<script src="../assets/town.js?v=20261123g"></script><script src="../assets/music.js?v=20261123g"></script><script src="lessons.js?v=20261123g"></script><script src="studio.js?v=20261123g"></script>
 </body>
 </html>

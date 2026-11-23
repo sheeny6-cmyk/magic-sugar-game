@@ -193,3 +193,10 @@
 .cust-bond .heart-row{display:inline-flex}
 .rcomfort{margin-top:7px;font-size:11.5px;line-height:1.6;color:#7c6577;background:#f8f1f7;border:1px dashed #e7d6e6;border-radius:10px;padding:8px 10px;word-break:keep-all}
 .rbond{margin-top:7px;font-size:11.5px;font-weight:700;line-height:1.5;color:#a0577a;background:#fdf0f6;border:1px solid #f4dee9;border-radius:10px;padding:7px 10px;word-break:keep-all}
+
+/* 20261123g · 먹어본 메뉴 도감 표시 */
+.dcard{position:relative}
+.dcard.tried{border-color:#e7cfa4;box-shadow:0 0 0 2px #fff5dd inset}
+.dcard .dex-count{position:absolute;left:6px;top:6px;background:linear-gradient(150deg,#f7e2b0,#e0b063);
+  color:#5a3a10;border:1px solid #c99a55;border-radius:999px;padding:2px 6px;font-size:.55rem;font-weight:900;
+  letter-spacing:-.01em;box-shadow:0 2px 6px #7a4f1f33}

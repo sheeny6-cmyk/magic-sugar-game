@@ -73,9 +73,9 @@
     arabesque: '../assets/dancers/lilac-arabesque.webp',
     tendu: '../assets/dancers/lilac-tendu.webp',
     curtsy: '../assets/dancers/lilac-curtsy.webp',
-    pasdechat: 'assets/lilac-pasdechat.webp',
-    grandjete: 'assets/lilac-grandjete.webp',
-    pirouette: 'assets/lilac-pirouette.webp'
+    pasdechat: 'assets/lilac-pasdechat.webp?v=20261123g',
+    grandjete: 'assets/lilac-grandjete.webp?v=20261123g',
+    pirouette: 'assets/lilac-pirouette.webp?v=20261123g'
   };
   var POSE_SRC = {};
   POSE_KEYS.forEach(function (k) {

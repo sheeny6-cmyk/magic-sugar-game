@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.v1';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261122u';
+  var V = '20261123g';
   var STAGE_CLASSES = 2;
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
@@ -326,7 +326,9 @@
     stamps: { bar: 0, center: 0, piece: 0 },
     classes: 0, served: 0, best: 0, bestRound: 0, seen: [],
     gifts: [], levelUp: null, fame: 0, show: null,
-    lastServe: null, createdAt: 0, lesson: null, lastLessons: {}
+    lastServe: null, createdAt: 0, lesson: null, lastLessons: {},
+    /* 먹어본 메뉴 도감: 분식집·카페 메뉴를 주문할 때마다 한 칸씩 쌓인다. */
+    tasted: { cafe: {}, snack: {} }
   };
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
@@ -363,10 +365,16 @@
   /* ---------- 상점 메뉴 (기존 사진 그대로 · 가격은 코인) ---------- */
   // 분식집: 기존 메뉴 사진과 이름을 그대로 쓴다.
   var SNACK_PRICE = { tteokbokki: 40, fried: 45, sundae: 35, jjolmyeon: 50, skewer: 30, cola: 25, orderset: 90, fullset: 120 };
+  // 판정 여유(all·동작별 ms)에 더해 연습 코인(coins)과 수업 시작 HP(heal)까지 메뉴마다 다르게 건다.
   var SNACK_BUFF = {
-    tteokbokki: { jump: 60, shield: 1 }, fried: { shield: 1, all: 10 }, sundae: { all: 25 },
-    jjolmyeon: { turn: 55, combo: 1 }, skewer: { beam: 55 }, cola: { all: 15 },
-    orderset: { all: 35, shield: 1 }, fullset: { all: 45, shield: 1, combo: 1 }
+    tteokbokki: { jump: 60, shield: 1, coins: 10 },
+    fried: { shield: 1, all: 10, coins: 15 },
+    sundae: { all: 25, heal: 25 },
+    jjolmyeon: { turn: 55, combo: 1, coins: 10 },
+    skewer: { beam: 55, coins: 10 },
+    cola: { all: 15, coins: 15 },
+    orderset: { all: 35, shield: 1, coins: 20 },
+    fullset: { all: 45, shield: 1, combo: 1, heal: 30, coins: 30 }
   };
   var SNACK_LINE = {
     tteokbokki: '냠냠, 매콤해! 다리가 쫙 펴졌어요.', fried: '바삭! 넘어져도 다시 일어날 힘이 생겼어요.',
@@ -383,16 +391,16 @@
   // 카페: 기존 음료 사진(cafe/assets)을 그대로 쓴다. 경로는 /town/cafe/ 기준.
   var CAFE = [
     { id: 'arabesque', name: '아라베스크 밀크', price: 50, img: '../../cafe/assets/drink-arabesque.webp',
-      desc: '거품 위에 아라베스크가 그려진 시그니처', buff: { all: 25, beam: 40 }, tag: '선 · 균형',
+      desc: '거품 위에 아라베스크가 그려진 시그니처', buff: { all: 25, beam: 40, coins: 20 }, tag: '선 · 균형',
       line: '홀짝, 거품이 부드러워요. 아라도 기뻐해요!' },
     { id: 'turnout', name: '턴아웃 라떼', price: 45, img: '../../cafe/assets/drink-turnout.webp',
-      desc: '턴아웃이 잡히는 진한 라떼', buff: { all: 30 }, tag: '중심 · 턴아웃',
+      desc: '턴아웃이 잡히는 진한 라떼', buff: { all: 30, heal: 20 }, tag: '중심 · 턴아웃',
       line: '홀짝, 다리가 밖으로 도는 느낌이 딱 와요.' },
     { id: 'battement', name: '발레 카푸치노', price: 45, img: '../../cafe/assets/drink-battement.webp',
-      desc: '거품 위에 발레리나가 그려진 카푸치노', buff: { turn: 45, all: 10 }, tag: '회전',
+      desc: '거품 위에 발레리나가 그려진 카푸치노', buff: { turn: 45, all: 10, coins: 15 }, tag: '회전',
       line: '홀짝, 거품이 포근해요. 박자가 또렷하게 들려요.' },
     { id: 'americano', name: '아이스 아메리카노', price: 35, img: '../../cafe/assets/drink-americano.webp',
-      desc: '차갑게 정신을 깨우고 콤보를 이어요', buff: { combo: 1, all: 15 }, tag: '콤보',
+      desc: '차갑게 정신을 깨우고 콤보를 이어요', buff: { combo: 1, all: 15, heal: 15 }, tag: '콤보',
       line: '시원해! 머리가 맑아지고 손이 가벼워요.' }
   ];
   var TURN_LABEL = { cat: '파드샤', jump: '그랑제떼', beam: '아라베스크', turn: '피루엣', beat: '박자' };
@@ -403,6 +411,8 @@
     ['cat', 'jump', 'beam', 'turn', 'beat'].forEach(function (k) {
       if (buff[k]) out.push(TURN_LABEL[k] + ' +' + buff[k] + 'ms');
     });
+    if (buff.coins) out.push('연습 코인 +' + buff.coins);
+    if (buff.heal) out.push('수업 시작 HP +' + buff.heal);
     if (buff.shield) out.push('삐끗 ' + buff.shield + '회 보호');
     if (buff.combo) out.push('콤보 +' + buff.combo);
     return out;
@@ -424,6 +434,8 @@
         kind: kind, id: m.id, name: m.name, price: price, tag: m.tag || '',
         buff: m.buff, line: m.line, at: Date.now()
       };
+      if (!s.tasted || !s.tasted[kind]) s.tasted = { cafe: {}, snack: {} };
+      s.tasted[kind][m.id] = Math.min(999, (s.tasted[kind][m.id] || 0) + 1);
       addJournal(s, 'meal-' + kind + '-' + m.id, kind === 'cafe' ? '☕' : '🍢',
         nick() + '님이 ' + josa(m.name, '을', '를') + ' 주문했어요. 다음 연습에 그 기운이 남아 있어요.');
       return { ok: true, menu: m, price: price, coins: s.coins, meal: clone(s.kingdom.meal) };
@@ -466,6 +478,17 @@
       }
     } else {
       s.coins = (typeof raw.coins === 'number' && isFinite(raw.coins) ? s.coins : 0) + GRANT;
+    }
+    var tasted = raw.tasted;
+    if (tasted && typeof tasted === 'object') {
+      ['cafe', 'snack'].forEach(function (kind) {
+        var src = tasted[kind];
+        if (!src || typeof src !== 'object') return;
+        (kind === 'cafe' ? CAFE : MENU).forEach(function (m) {
+          var n = src[m.id];
+          if (Number.isSafeInteger(n) && n > 0) s.tasted[kind][m.id] = Math.min(999, n);
+        });
+      });
     }
     if (raw.stats && typeof raw.stats === 'object') {
       Object.keys(s.stats).forEach(function (k) {
@@ -656,6 +679,9 @@
       stats[reward.extra.key] = (stats[reward.extra.key] || 0) + reward.extra.amount;
     }
     var bonus = score ? Math.max(0, Math.round(score.comboCoins || 0)) + Math.max(0, Math.round(score.noteCoins || 0)) : 0;
+    /* 카페·분식집에서 주문한 메뉴의 코인 보너스 */
+    var mealCoins = k.meal && k.meal.buff && k.meal.buff.coins ? Math.max(0, Math.round(k.meal.buff.coins)) : 0;
+    bonus += mealCoins;
     // Everyone gets attendance credit; successful technique earns more stats and coins.
     if (score && score.notes > 0) {
       var accuracy = Math.min(1, ((score.perfect || 0) + 0.65 * (score.good || 0)) / score.notes);
@@ -673,7 +699,7 @@
       lessonId: run.id, kind: run.kind, keys: run.rounds ? run.rounds.map(function (r) { return r.key; }) : [],
       first: run.rounds ? run.rounds.filter(function (r) { return r.picks.length === 1; }).length : 0,
       levelBefore: level().n, classesAfter: s.classes + 1,
-      coins: reward.coins + bonus, baseCoins: reward.coins, bonusCoins: bonus, life: reward.life,
+      coins: reward.coins + bonus, baseCoins: reward.coins, bonusCoins: bonus, mealCoins: mealCoins, life: reward.life,
       before: s.coins, after: s.coins + reward.coins + bonus + refund, refund: refund,
       stats: stats, potion: potion, gift: gift
     };
@@ -1007,6 +1033,38 @@
   }
   function seenCount() { return get().seen.filter(function (id) { return MENU.some(function (m) { return m.id === id; }); }).length; }
 
+  /* ---------- 먹어본 메뉴 도감 ---------- */
+  function dexList(kind) { return kind === 'cafe' ? CAFE : MENU; }
+  function dexSize(kind) { return dexList(kind).length; }
+  function tastedOf(kind, id) {
+    var t = get().tasted;
+    t = t && t[kind];
+    return (t && t[id]) || 0;
+  }
+  function tastedCount(kind) {
+    var t = get().tasted[kind] || {};
+    return dexList(kind).filter(function (m) { return (t[m.id] || 0) > 0; }).length;
+  }
+  function tastedTotal() { return tastedCount('cafe') + tastedCount('snack'); }
+
+  /* ---------- 지금 걸린 효과 (홈·스튜디오 상단 배지) ---------- */
+  function activeBuffs() {
+    var s = get(), out = [], meal = s.kingdom.meal, potion = s.kingdom.prepared;
+    if (meal) {
+      out.push({
+        kind: 'meal', icon: meal.kind === 'cafe' ? '☕' : '🍢', name: meal.name,
+        chips: buffChips(meal.buff), note: '다음 연습·공연 한 번'
+      });
+    }
+    if (potion) {
+      out.push({
+        kind: 'potion', icon: '🧪', name: STAFF[potion.id].name,
+        chips: [SPIRITS[potion.id].name + '의 포션 · ' + effectFor(potion.id, potion.level).label], note: '다음 연습에 발동'
+      });
+    }
+    return out;
+  }
+
   /* ---------- 카페 기록 ---------- */
   function cafeBest() {
     try {
@@ -1059,9 +1117,12 @@
       var grade = String(score.grade || 'B').slice(0, 1);
       var base = 60, bonus = { S: 140, A: 100, B: 60, C: 30 }[grade] || 40;
       var coins = base + bonus + Math.max(0, Math.round(score.perfect || 0)) * 2;
+      var mealCoins = s.kingdom.meal && s.kingdom.meal.buff && s.kingdom.meal.buff.coins ? Math.max(0, Math.round(s.kingdom.meal.buff.coins)) : 0;
+      coins += mealCoins;
       var fame = { S: 3, A: 2, B: 1, C: 1 }[grade] || 1;
       var record = {
         grade: grade, score: Math.max(0, Math.round(score.score || 0)), coins: coins, fame: fame,
+        mealCoins: mealCoins,
         notes: Math.max(0, Math.round(score.notes || 0)), perfect: Math.max(0, Math.round(score.perfect || 0)),
         at: Date.now(), outfit: s.worn
       };
@@ -1092,6 +1153,7 @@
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
     dressOf: dressOf, dressHTML: dressHTML, dancerArt: dancerArt, artPose: artPose, showDancer: showDancer, POSES: POSES, nextDress: nextDress, isOwned: isOwned, buy: buy, wear: wear,
     seeMenu: seeMenu, seenCount: seenCount, cafeBest: cafeBest, toast: toast,
+    dexList: dexList, dexSize: dexSize, tastedOf: tastedOf, tastedCount: tastedCount, tastedTotal: tastedTotal, activeBuffs: activeBuffs,
     CAFE: CAFE, orderMeal: orderMeal, mealOf: mealOf, buffChips: buffChips, TURN_LABEL: TURN_LABEL,
     BOND_STEPS: BOND_STEPS, BOND_MAX: BOND_MAX, BOND_IDS: BOND_IDS, TEACHER: TEACHER, LETTERS: LETTERS,
     bondLevel: bondLevel, bondOf: bondOf, bonds: bonds, topBonds: topBonds, heartsHTML: heartsHTML,

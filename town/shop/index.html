@@ -6,15 +6,15 @@
 <meta name="theme-color" content="#EDE4F7">
 <meta name="description" content="왕국 상점 — 의상 상점, 발레 카페, 꿈속 발레 분식집에서 연습과 공연으로 모은 코인을 써요.">
 <title>왕국 상점 · 슈가의 발레왕국</title>
-<link rel="stylesheet" href="../style.css?v=20261122u">
-<link rel="stylesheet" href="../assets/shop.css?v=20261122u">
-<link rel="stylesheet" href="../lilac.css?v=20261122u">
-<link rel="stylesheet" href="shop.css?v=20261122u">
+<link rel="stylesheet" href="../style.css?v=20261123g">
+<link rel="stylesheet" href="../assets/shop.css?v=20261123g">
+<link rel="stylesheet" href="../lilac.css?v=20261123g">
+<link rel="stylesheet" href="shop.css?v=20261123g">
 </head>
 <body class="sub shop">
 <div class="app">
   <header class="subbar">
-    <a class="back" href="../?v=20261122u" aria-label="발레왕국 마을로 돌아가기">←</a>
+    <a class="back" href="../?v=20261123g" aria-label="발레왕국 마을로 돌아가기">←</a>
     <div class="title">🛍️ 왕국 상점<small>KINGDOM&nbsp; SHOP</small></div>
     <span class="coin"><span class="ic">🪙</span><b data-coin>0</b></span>
   </header>
@@ -28,7 +28,7 @@
   <section class="shop-hub" aria-labelledby="hubTitle">
     <h2 id="hubTitle" class="sr-only">상점 세 곳</h2>
 
-    <a class="store outfit" href="../dressroom/?v=20261122u&amp;mode=shop">
+    <a class="store outfit" href="../dressroom/?v=20261123g&amp;mode=shop">
       <span class="store-art"><img src="../assets/dancers/lilac-pasdechat.webp" alt="라일락 의상을 입고 파드샤를 하는 슈가"></span>
       <span class="store-body">
         <span class="store-kicker">01 · DRESS</span>
@@ -39,24 +39,24 @@
       <i aria-hidden="true">↗</i>
     </a>
 
-    <a class="store cafe" href="../cafe/?v=20261122u">
+    <a class="store cafe" href="../cafe/?v=20261123g">
       <span class="store-art"><img src="../../cafe/assets/drink-arabesque.webp" alt="아라베스크 밀크 한 잔"></span>
       <span class="store-body">
         <span class="store-kicker">02 · CAFÉ</span>
         <b>☕ 발레 카페</b>
         <small>아라베스크 밀크·턴아웃 라떼로 다음 연습의 기운을 담아요.</small>
-        <em class="store-state">음료 4종 · 주문 사진 카드</em>
+        <em class="store-state" id="cafeState">음료 4종 · 도감 0/4</em>
       </span>
       <i aria-hidden="true">↗</i>
     </a>
 
-    <a class="store snack" href="../snack/?v=20261122u">
+    <a class="store snack" href="../snack/?v=20261123g">
       <span class="store-art"><img src="../assets/thumbs/tteokbokki.webp" alt="떡볶이 한 그릇"></span>
       <span class="store-body">
         <span class="store-kicker">03 · SNACK</span>
         <b>🍢 꿈속 발레 분식집</b>
         <small>떡볶이·순대·어묵 한 상으로 다리와 마음을 채워요.</small>
-        <em class="store-state" id="snackState">메뉴 8종 · 주문 사진 카드</em>
+        <em class="store-state" id="snackState">메뉴 8종 · 도감 0/8</em>
       </span>
       <i aria-hidden="true">↗</i>
     </a>
@@ -64,13 +64,13 @@
 
   <section class="shop-note">
     <p><b>코인은 이렇게 모아요</b> — 스튜디오 연습 완주, 왕립 극장 공연, 왈츠 무대.</p>
-    <a class="note-link" href="../dressroom/?v=20261122u">👗 내 옷장에서 갈아입기 →</a>
+    <a class="note-link" href="../dressroom/?v=20261123g">👗 내 옷장에서 갈아입기 →</a>
   </section>
 
   <footer class="foot">© 슈가의 발레왕국 · 왕국 상점</footer>
 </div>
 
-<script src="../assets/town.js?v=20261122u"></script>
+<script src="../assets/town.js?v=20261123g"></script>
 <script>
 (function () {
   'use strict';
@@ -79,8 +79,10 @@
   var s = T.get();
   var own = document.getElementById('outfitState');
   if (own) own.textContent = '보유 ' + s.owned.length + ' / ' + T.DRESS.length + '벌 · 코인 ' + T.fmt(s.coins);
+  var cafe = document.getElementById('cafeState');
+  if (cafe) cafe.textContent = '음료 ' + T.dexSize('cafe') + '종 · 도감 ' + T.tastedCount('cafe') + '/' + T.dexSize('cafe');
   var snack = document.getElementById('snackState');
-  if (snack) snack.textContent = '메뉴 ' + T.MENU.length + '종 · 주문 사진 카드';
+  if (snack) snack.textContent = '메뉴 ' + T.MENU.length + '종 · 도감 ' + T.tastedCount('snack') + '/' + T.MENU.length;
   T.syncUI();
 })();
 </script>

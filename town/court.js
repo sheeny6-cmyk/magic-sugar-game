@@ -83,7 +83,9 @@
       var target = T.nextDress();
       kicker = target ? '다음에 만날 의상' : '다음 무대를 향해';
       title = target ? target.name : '나만의 앙코르 무대';
-      detail = target ? '연습으로 성장하고 새 의상을 만나 보세요.' : '원하는 의상으로 새로운 기록에 도전해요.';
+      detail = target
+        ? (s.coins >= target.price ? '코인으로 지금 살 수 있어요.' : T.fmt(target.price - s.coins) + '코인 더 모으면 옷장에 들어와요.')
+        : '원하는 의상으로 새로운 기록에 도전해요.';
       outfit = target ? target.id : s.worn;
     }
     $('firstGiftKicker').textContent = kicker;
@@ -91,6 +93,19 @@
     $('firstGiftText').textContent = detail;
     $('firstGiftImg').src = T.dancerArt(outfit, 'curtsy');
     $('firstGiftImg').alt = T.dressOf(outfit).name + ' 차림의 발레리나';
+  }
+
+  /* ---------- 지금 걸린 효과 배지 ---------- */
+  function renderBuffs() {
+    var host = $('buffStrip');
+    if (!host) return;
+    var list = T.activeBuffs();
+    host.hidden = !list.length;
+    host.innerHTML = list.length
+      ? '<span class="buff-strip-lead">지금 걸린 기운</span>' + list.map(function (b) {
+        return '<span class="buff-chip ' + b.kind + '"><i aria-hidden="true">' + b.icon + '</i><b>' + b.name + '</b><small>' + b.chips.join(' · ') + '</small></span>';
+      }).join('')
+      : '';
   }
 
   /* ---------- 오늘의 초대장 ---------- */
@@ -108,8 +123,10 @@
     $('nextAction').firstChild.textContent = lesson ? '연습 이어 하기 ' : dose ? '포션 들고 바 연습하기 ' : first ? '첫 바 연습 시작 ' : '바 연습 시작 ';
     var target = T.nextDress();
     if (!s.classes && !T.isOwned('lilac')) $('ticketNote').textContent = '첫 수업은 무료 · 선물은 자동으로 지급돼요';
-    else if (dose) $('ticketNote').textContent = T.STAFF[dose.id].name + ' 포션 준비 · ' + T.effectFor(dose.id, dose.level).label;
-    else if (target) $('ticketNote').textContent = s.coins >= target.price ? '의상 상점에서 구매 가능 · ' + target.name : '다음 의상 · ' + target.name + '까지 ' + T.fmt(target.price - s.coins) + '코인';
+    else if (target) {
+      var timing = T.practicePower('bar', s).timing;
+      $('ticketNote').textContent = '연습복 · ' + T.dressOf(s.worn).name + (timing ? ' · 판정 여유 +' + timing + 'ms' : '');
+    }
     else $('ticketNote').textContent = '이번 연습복 · ' + T.dressOf(s.worn).name;
     if (!lesson && !s.shows) {
       $('nextTitle').textContent = T.stageReady() ? '첫 공연 초대장이 도착했어요' : !s.classes ? '첫 바 연습으로 출발!' : '첫 공연까지 딱 한 수업!';
@@ -126,14 +143,25 @@
       var power = T.practicePower('bar', s);
       $('nextGoal').textContent = '오늘도 한 걸음 · 연습으로 판정 여유 +' + power.timing + 'ms';
     }
-    $('stageShortcut').hidden = !T.stageReady() || (!lesson && !s.shows);
-    $('stageShortcut').textContent = T.prima() ? '프리마 피날레 무대 열기 →' : k.debutOutfit ? '오늘의 의상으로 앙코르 공연 →' : '첫 리허설 초대장 열기 →';
+    /* 이 초대장은 '지금 할 일 하나'만 보여 준다. 나머지 장소는 아래 산책길에서 고른다. */
+    var toStage = !lesson && T.stageReady() && !s.shows;
+    $('todayKicker').textContent = lesson ? '오늘의 한 걸음 · 이어서 하는 연습'
+      : toStage ? '오늘의 한 걸음 · 왕립 극장'
+      : '오늘의 한 걸음 · 왕립 발레 스튜디오';
+    $('actionHint').textContent = lesson ? '중단한 지점부터 음악을 다시 틀어 드려요'
+      : toStage ? '연습한 동작 그대로 무대에 올라 공연 포스터를 남겨요'
+      : '노트가 빛나는 링에 닿는 순간, 같은 동작을 눌러요';
+    $('walkStudio').textContent = s.classes
+      ? s.classes + '회 수업 · ' + (T.stageReady() ? '무대 열림' : '무대까지 ' + T.stageLeft() + '회')
+      : '바 · 센터 · 작품 3코스';
+    $('walkShop').textContent = '코인 ' + T.fmt(s.coins) + ' · 도감 ' + T.tastedTotal() + '/' + (T.dexSize('cafe') + T.dexSize('snack'));
+    renderBuffs();
+    var steps = [{label:'첫 연습',done:s.classes>=1},{label:'무대 준비',done:s.classes>=2},{label:'첫 공연',done:s.shows>=1}];
+    $('journeySteps').innerHTML = steps.map(function(x,i){return '<span class="'+(x.done?'done':steps.slice(0,i).every(function(y){return y.done;})?'active':'')+'">'+(x.done?'✓ ':'')+x.label+'</span>';}).join('');
+    document.querySelectorAll('.kingdom-map .venue').forEach(function(a){a.classList.remove('is-next');});
     $('staffIntro').textContent = dose ? T.SPIRITS[dose.id].name + '의 포션이 준비됐어요. ' + who + '님이 연습을 마치면 효과가 발동해요.'
       : !s.classes && !Object.values(k.orders).some(Boolean) ? '첫 지원금은 ' + T.GRANT + '코인이에요. 정령에게 포션을 한 잔 주문하면 생명력 1이 전해져요.'
       : '카드를 누르면 정령의 성격과 편지를 읽을 수 있어요. 함께 연습하고 포션을 주문할수록 하트가 늘어나요.';
-    var steps = [{label:'첫 연습',done:s.classes>=1},{label:'무대 준비',done:s.classes>=2},{label:'첫 공연',done:s.shows>=1}];
-    $('journeySteps').innerHTML = steps.map(function(x,i){return '<span class="'+(x.done?'done':steps.slice(0,i).every(function(y){return y.done;})?'active':'')+'">'+(x.done?'✓ ':'')+x.label+'</span>';}).join('');
-    document.querySelectorAll('.kingdom-map .venue').forEach(function(a){a.classList.toggle('is-next', !s.shows && a.getAttribute('href').indexOf(T.stageReady()&&!lesson?'stage/':'studio/')===0);});
     renderRoster(s);
     $('idRank').textContent = 'Lv.' + level.n + ' ' + level.name;
     $('stageLine').textContent = T.prima() ? '프리마 피날레 무대가 열려 있어요'
