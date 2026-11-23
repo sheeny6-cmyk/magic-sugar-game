@@ -331,7 +331,7 @@
 .practice-ticket #stageShortcut{order:10}
 .action-hint{margin:8px 0 0;font-size:.75rem;line-height:1.45;color:#8a7590;text-align:center;word-break:keep-all}
 /* 지금 걸린 효과 배지 (홈·스튜디오 공통) */
-.court .buff-strip{margin:12px 0 0}
+.court .buff-strip{margin:12px 0 0;max-width:520px}
 .first-gift{display:grid;grid-template-columns:70px minmax(0,1fr);align-items:center;gap:11px;margin-top:14px;padding:8px 11px 8px 7px;background:#f9f3f7;border:1px solid #e2d1df;border-radius:12px;min-height:97px}
 .first-gift img{width:70px;height:84px;object-fit:contain;object-position:center bottom}
 .first-gift-copy{display:flex;flex-direction:column;gap:3px;min-width:0}
