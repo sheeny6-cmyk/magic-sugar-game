@@ -17,7 +17,7 @@
 <body class="court">
 <div class="court-shell">
   <header class="courtbar">
-    <div class="identity"><img src="assets/chars/sugar-face.webp" alt=""><span class="id-text"><strong data-nick>슈가</strong><small id="idRank">Lv.1 입문 발레리나</small></span><button class="nick-edit" id="nickEdit" type="button" aria-label="닉네임 바꾸기" title="닉네임 바꾸기">✎</button></div>
+    <div class="identity"><img src="assets/chars/sugar-face.webp" alt=""><span class="id-text"><strong data-nick>슈가</strong><small id="idRank">Lv.1 · 입문 발레리나</small></span><button class="nick-edit" id="nickEdit" type="button" aria-label="닉네임 바꾸기" title="닉네임 바꾸기">✎</button></div>
     <div class="purse" aria-label="왕국 지갑"><span class="coin-unit"><i aria-hidden="true"></i>코인 <b data-coin>0</b></span><span class="life-unit"><i aria-hidden="true"></i>생명력 <b data-life>0</b></span></div>
   </header>
   <div class="buff-strip" id="buffStrip" aria-label="지금 걸린 효과" hidden></div>
@@ -46,6 +46,15 @@
       </section>
     </div>
 
+    <section class="journey-panel" aria-labelledby="journeyTitle">
+      <div class="journey-heading"><div><p class="place-label">MY BALLET JOURNEY</p><h2 id="journeyTitle">나의 발레 이야기</h2></div><strong id="playerLevel">Lv.1</strong></div>
+      <div class="journey-xp" id="xpTrack" role="progressbar" aria-label="다음 플레이어 레벨" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="xpFill"></i></div>
+      <p class="journey-meta" id="xpText"></p><p class="journey-meta" id="rankGoal"></p>
+      <div class="journey-album"><h3>나의 공연 앨범</h3><div id="performanceAlbum" class="album-grid"></div></div>
+      <details class="mastery-fold"><summary>배운 발레 동작과 숙련도</summary><div id="masteryList" class="mastery-grid"></div></details>
+      <p class="journey-meta" id="lifeStory"></p>
+    </section>
+
     <section class="district" aria-labelledby="townMap">
       <div class="section-line"><div><p class="place-label">A WALK THROUGH THE KINGDOM</p><h2 id="townMap">왕국 산책길</h2></div></div>
       <p class="map-intro">오늘 할 일은 위 초대장에 한 가지로 적어 두었어요. 여기서는 가고 싶은 곳을 골라 들어가면 돼요.</p>
@@ -58,10 +67,10 @@
         <a class="venue" href="dressroom/?v=20261123g"><div class="venue-art wardrobe-art"><img data-worn-pose="ready" src="assets/dancers/basic-ready.webp" loading="lazy" alt=""></div><div><span class="walk-order">03 · WARDROBE</span><h3>👗 내 옷장</h3><p data-worn-name>기본 핑크 레오타드</p></div><i aria-hidden="true">↗</i></a>
       </div>
       <div class="side-streets" aria-labelledby="sideTitle">
-        <div class="side-head"><strong id="sideTitle">그 밖의 무대</strong><small>산책길 밖 · 원할 때 여는 무대</small></div>
+        <div class="side-head"><strong id="sideTitle">왕립 극장 레퍼토리</strong><small>연습한 춤을 무대에 올려요</small></div>
         <div class="side-venues">
           <a class="side-venue" href="stage/?v=20261123g"><img data-worn-pose="curtsy" src="assets/dancers/basic-curtsy.webp" loading="lazy" alt=""><span><b>왕립 극장</b><small id="stageLine">첫 리허설 초대장까지 도장 2개</small></span><i aria-hidden="true">↗</i></a>
-          <a class="side-venue" href="waltz-stage/?v=20261123g"><img src="assets/dancers/lilac-pasdechat.webp?v=20261123g" loading="lazy" alt=""><span><b>3/4 왈츠 무대</b><small>파드샤 · 그랑제떼 · 피루엣 리듬 챌린지</small></span><i aria-hidden="true">↗</i></a>
+          <a class="side-venue" href="waltz-stage/?v=20261123g"><img src="assets/dancers/lilac-pasdechat.webp?v=20261123g" loading="lazy" alt=""><span><b>라일락 왈츠</b><small>파드샤 · 그랑제떼 · 아라베스크 · 피루엣</small></span><i aria-hidden="true">↗</i></a>
         </div>
       </div>
     </section>
