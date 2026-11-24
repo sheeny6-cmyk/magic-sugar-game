@@ -4,7 +4,7 @@
 
   var KEY = 'sugartown.preview.v2';
   var COURT_BACKUP = KEY + '.court';
-  var V = '20261123g';
+  var V = '20261124c';
   var STAGE_CLASSES = 2;
   var NICK_DEFAULT = '슈가', NICK_MAX = 8;
   var PRACTICE = {
@@ -1182,6 +1182,32 @@
   }
 
   /* ---------- 왕립 극장 공연 기록 ---------- */
+  /* One ballet journey: practice and performances share one rhythm screen. */
+  var JOURNEY_LESSONS={bar:{name:'첫걸음 · 기본 동작',stats:{flex:8,axis:4},desc:'에튜와 천천히 네 동작을 배워요'},center:{name:'두 번째 걸음 · 동작 연결',stats:{axis:8,turn:4},desc:'피루와 음악에 맞춰 동작을 이어 봐요'},piece:{name:'작품 연습 · 표현력',stats:{turn:8,stam:5,flex:3},desc:'아라와 한 곡을 완성해요'}};
+  function journeyUrl(kind,key){return 'waltz-stage/?v='+V+(kind==='practice'?'&lesson=':'&work=')+key;}
+  function nextChapter(state){
+    var s=state||get(), key, kind;
+    if(s.lesson && JOURNEY_LESSONS[s.lesson.kind]){kind='practice';key=s.lesson.kind;}
+    else if(s.classes<2){kind='practice';key=s.classes===0?'bar':'center';}
+    else {
+      key=Object.keys(WORKS).find(function(k){return workStatus(k,s).ready&&!s.journey.performances[k];});
+      if(key)kind='performance';
+      else {kind='practice';key=['bar','center','piece'].sort(function(a,b){return s.stamps[a]-s.stamps[b];})[0];}
+    }
+    var info=kind==='practice'?JOURNEY_LESSONS[key]:WORKS[key];
+    return {kind:kind,key:key,name:info.name,desc:info.desc||'배운 동작을 하나의 춤으로 완성해요',url:journeyUrl(kind,key)};
+  }
+  function finishJourneyPractice(kind,score){
+    if(!Object.hasOwn(JOURNEY_LESSONS,kind)||!score||typeof score.runId!=='string'||!score.runId)return Promise.resolve(null);
+    return updateWallet(function(s){
+      if(s.journey.settled.includes(score.runId)||!Number.isFinite(score.notes)||score.notes<1)return null;
+      if(s.lesson && s.lesson.kind!==kind)return null;
+      var run={id:score.runId,kind:kind,paidFee:s.lesson?Math.max(0,s.lesson.paidFee||0):0};
+      var receipt=settlePractice(s,run,JOURNEY_LESSONS[kind].stats,score);
+      s.journey.settled.push(score.runId);s.journey.settled=s.journey.settled.slice(-128);
+      return receipt;
+    });
+  }
   function finishShow(score) {
     return updateWallet(function (s) {
       var work = score.work || 'debut';
@@ -1227,7 +1253,7 @@
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF, staffLine: staffLine,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
-    playerLevel: playerLevel, masteryOf: masteryOf, WORKS: WORKS, workStatus:workStatus,
+    playerLevel: playerLevel, masteryOf: masteryOf, WORKS: WORKS, workStatus:workStatus, JOURNEY_LESSONS:JOURNEY_LESSONS, nextChapter:nextChapter, journeyUrl:journeyUrl, finishJourneyPractice:finishJourneyPractice,
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
     LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, STAGE_CLASSES: STAGE_CLASSES, practicePower: practicePower, stagePower: stagePower, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,

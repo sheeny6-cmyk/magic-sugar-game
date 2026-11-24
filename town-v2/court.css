@@ -493,3 +493,5 @@ body[data-kingdom-life="sprout"] .journey-panel{border-color:#b6d0bc}body[data-k
 .journey-inner{padding:0 15px 15px}
 .court .reset-zone summary{cursor:pointer;font-size:.72rem;color:#8a7494;margin-bottom:8px}
 @media(max-width:420px){.court .palace{min-height:340px}.world-spots .spot{min-width:80px;font-size:.76rem;min-height:45px;padding:6px 7px}.court .palace .dancer{right:19%;height:60%;max-width:51%}.court .palace-copy{left:15px;bottom:15px}.court .palace h1{font-size:2rem}}
+
+.chapter-path{display:flex;gap:5px;margin:8px 0 10px}.chapter-path span{flex:1;min-width:0;text-align:center;border-radius:9px;background:#f2edf4;color:#807387;font-size:.7rem;padding:7px 3px}.chapter-path .current{background:#aa8ac8;color:white;font-weight:700}.chapter-path .done{background:#e1eee5;color:#48765a}.court .practice-ticket{order:-1;margin-top:0;margin-bottom:12px}.court .world-spots .spot-studio{display:none}.court .world-spots .spot-stage{left:5%;top:27%;transform:none}.court .palace{min-height:clamp(290px,52vw,420px)}

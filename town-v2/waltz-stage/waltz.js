@@ -37,8 +37,10 @@
   /* 동일한 원곡의 정령별 안무 변주. 각 악보는 별도 공연 기록을 남긴다. */
   var TOWN = window.SugarTown;
   var requested = new URLSearchParams(location.search).get('work') || 'waltz';
-  var WORK = TOWN && Object.hasOwn(TOWN.WORKS,requested) && requested !== 'debut' ? requested : 'waltz';
-  var WORK_INFO = TOWN ? TOWN.WORKS[WORK] : {name:'라일락 왈츠'};
+  var WORK = TOWN && Object.hasOwn(TOWN.WORKS,requested) ? requested : 'waltz';
+  var lessonParam=new URLSearchParams(location.search).get('lesson');
+  var LESSON=TOWN&&Object.hasOwn(TOWN.JOURNEY_LESSONS,lessonParam)?lessonParam:null;
+  var WORK_INFO=LESSON?TOWN.JOURNEY_LESSONS[LESSON]:TOWN?TOWN.WORKS[WORK]:{name:'라일락 왈츠'};
   var VARIANTS = {
     etu:[[6,'beam'],[12,'beam'],[18,'cat'],[24,'beam'],[27,'beam'],[30,'beam'],[36,'jump'],[42,'beam'],[45,'beam'],[48,'turn'],[54,'beam'],[57,'beam'],[60,'cat'],[66,'beam'],[69,'beam'],[72,'jump'],[78,'beam']],
     ara:[[6,'cat'],[12,'beam'],[18,'beam'],[24,'turn'],[27,'beam'],[30,'cat'],[36,'beam'],[42,'jump'],[45,'beam'],[48,'beam'],[51,'turn'],[54,'beam'],[57,'cat'],[60,'beam'],[66,'jump'],[69,'beam'],[75,'turn'],[78,'beam']],
@@ -47,13 +49,16 @@
     alle:[[6,'cat'],[9,'jump'],[12,'beam'],[15,'turn'],[18,'jump'],[19,'cat'],[20,'cat'],[21,'turn'],[24,'jump'],[26,'beam'],[27,'turn'],[30,'jump'],[31,'cat'],[32,'beam'],[33,'turn'],[36,'jump'],[38,'cat'],[42,'beam'],[44,'cat'],[45,'turn'],[48,'jump'],[49,'cat'],[50,'beam'],[51,'turn'],[54,'jump'],[55,'cat'],[56,'beam'],[57,'turn'],[60,'jump'],[61,'cat'],[62,'beam'],[63,'turn'],[66,'jump'],[68,'cat'],[69,'turn'],[72,'jump'],[73,'cat'],[74,'beam'],[75,'turn',2],[78,'jump'],[79,'cat'],[80,'turn']]
   };
   if(VARIANTS[WORK]) CHART=VARIANTS[WORK].map(function(a){return {b:a[0],t:a[1],turns:a[2]||1};});
+  var LESSON_CHARTS={bar:[[6,'cat'],[12,'jump'],[18,'beam'],[24,'turn'],[30,'cat'],[36,'beam']],center:[[6,'cat'],[9,'jump'],[15,'beam'],[18,'turn'],[24,'cat'],[27,'jump'],[33,'beam'],[36,'turn'],[42,'cat'],[45,'jump']],piece:[[6,'beam'],[9,'turn'],[12,'cat'],[18,'jump'],[21,'beam'],[24,'turn'],[30,'cat'],[33,'jump'],[36,'beam'],[42,'turn'],[45,'jump'],[48,'cat']]};
+  if(LESSON)CHART=LESSON_CHARTS[LESSON].map(function(a){return {b:a[0],t:a[1],turns:1};});
+  else if(WORK==='debut')CHART=[[6,'cat'],[9,'jump'],[15,'beam'],[18,'turn'],[21,'cat'],[24,'jump'],[27,'beam'],[30,'turn'],[36,'cat'],[39,'jump'],[42,'beam'],[45,'turn'],[48,'cat'],[51,'jump'],[54,'beam'],[57,'turn']].map(function(a){return {b:a[0],t:a[1],turns:1};});
   var SECTIONS = [
     { id: 'intro', from: 0, to: 18, tag: '도입 · 세 박을 세어요' },
     { id: 'build', from: 18, to: 48, tag: '전개 · 왈츠의 물결' },
     { id: 'peak', from: 48, to: 84, tag: '절정 · 피루엣의 빛' }
   ];
   var PEAK_BEAT = 48;
-  var END = bt(M.END_BEAT);          // 54.375초
+  var END = bt(LESSON?({bar:42,center:51,piece:54}[LESSON]):WORK==='debut'?63:M.END_BEAT);          // 54.375초
 
   var NAMES = { cat: '파드샤', jump: '그랑제떼', beam: '아라베스크', turn: '피루엣' };
   var SUBS = { cat: '고양이', jump: '허들', beam: '균형대', turn: '회전' };
@@ -194,12 +199,16 @@
 
   /* ---------- 시작 ---------- */
   function startRun() {
-    if (settling || mode === 'play' || (WORK !== 'waltz' && (!TOWN || !TOWN.workStatus(WORK).ready))) return;
+    if (settling || mode === 'play' || (!LESSON && (!TOWN || !TOWN.workStatus(WORK).ready))) return;
     runId = 'waltz-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     resetNotes();
+    var st=TOWN.get(), power=LESSON?TOWN.practicePower(LESSON,st):TOWN.stagePower(st);
+    var meal=st.kingdom.meal&&st.kingdom.meal.buff||{};
+    WIN={perfect:(LESSON?.18:.115)+(power.perfect||0)/1000,good:(LESSON?.36:.245)+(power.timing||power.good||0)/1000+(LESSON?(meal.all||0)/1000:0)};
     mode = 'play';
     cover.hidden = true;
     result.hidden = true;
+    $('nextChapterBtn').hidden=true;$('giftLink').hidden=true;
     document.body.classList.remove('resulting');
     tapHint.textContent = '';
     lastHint = '';
@@ -1133,12 +1142,19 @@
     document.body.classList.add('resulting');
     if (band) band.stop();
     var T = window.SugarTown;
-    if (!T || !T.workStatus(WORK).ready) { $('resStatus').textContent += ' · 연습 기록 (정식 공연은 수업 2회 후)'; return; }
+    if (!T || (!LESSON && !T.workStatus(WORK).ready)) { $('resStatus').textContent += ' · 해금 조건이 필요해요'; return; }
     settling = true; $('retryBtn').disabled = true; $('backBtn').setAttribute('aria-disabled','true');
     var moves = {}; Object.keys(byType).forEach(function(k){moves[k]=byType[k].p*2+byType[k].g;});
     try {
-      var receipt = await T.finishShow({work:WORK,runId:runId,grade:rank,score:Math.round(acc*1000),notes:total,perfect:stats.perfect,good:stats.good,miss:stats.miss,maxCombo:stats.maxCombo,moves:moves});
-      $('resStatus').textContent += receipt ? ' · +' + receipt.coins + '코인 · 경험치 +' + receipt.growth.xp + ' · Lv.' + receipt.growth.level + (receipt.first ? ' · 새 공연 앨범' : '') : ' · 보상 없음';
+      var score={work:WORK,runId:runId,grade:rank,score:Math.round(acc*1000),notes:total,perfect:stats.perfect,good:stats.good,miss:stats.miss,maxCombo:stats.maxCombo,moves:moves};
+      if(LESSON){var p=T.practicePower(LESSON,T.get());score.comboCoins=Math.round(stats.maxCombo*Math.max(0,p.combo-1));score.noteCoins=p.notes*(stats.perfect+stats.good);}
+      var receipt=LESSON?await T.finishJourneyPractice(LESSON,score):await T.finishShow(score);
+      if(receipt){
+        var next=T.nextChapter();
+        $('nextChapterBtn').href='../'+next.url;$('nextChapterBtn').textContent='다음 · '+next.name;$('nextChapterBtn').hidden=false;
+        if(receipt.gift){$('giftLink').hidden=false;$('giftLink').textContent='첫 선물 · 라일락 스커트 입기';}
+      }
+      $('resStatus').textContent += receipt ? ' · +' + receipt.coins + '코인 · 경험치 +' + receipt.growth.xp + ' · Lv.' + receipt.growth.level + ((!LESSON && receipt.first) ? ' · 새 공연 앨범' : '') : ' · 보상 없음';
     } catch (e) { $('resStatus').textContent += ' · 기록 저장 실패'; }
     finally { settling = false; $('retryBtn').disabled = false; $('backBtn').removeAttribute('aria-disabled'); }
   }
@@ -1182,8 +1198,10 @@
   });
 
   $('workTitle').textContent=WORK_INFO.name;
-  if(WORK_INFO.spirit){$('workIntro').textContent=WORK_INFO.desc+' · 기존 라일락 왈츠 음악에 맞춘 정령 전용 안무';}
-  if(TOWN && WORK!=='waltz' && !TOWN.workStatus(WORK).ready){
+  $('workIntro').textContent=(WORK_INFO.desc||'배운 네 동작을 음악에 맞춰 이어 가요')+' · 약 '+Math.round(END)+'초';
+  $('workMeta').textContent=LESSON?'무료 수업 · 코인·경험치·숙련도 적립':'정식 공연 · 코인·경험치·앨범 기록';
+  $('workKind').textContent=LESSON?'BALLET JOURNEY · LESSON':'BALLET JOURNEY · PERFORMANCE';
+  if(TOWN && !LESSON && !TOWN.workStatus(WORK).ready){
     $('startBtn').disabled=true; $('startBtn').textContent='해금 조건 · '+TOWN.workStatus(WORK).reason;
   }
   $('startBtn').addEventListener('click', startRun);

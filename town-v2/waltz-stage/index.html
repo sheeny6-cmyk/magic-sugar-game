@@ -226,12 +226,13 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
 @media (prefers-reduced-motion:reduce){
   .judge.show{animation-duration:.3s}
 }
+#nextChapterBtn[hidden],#giftLink[hidden]{display:none!important} #giftLink{color:#6d5783;font-weight:700;font-size:12px}
 </style>
 </head>
 <body>
 <div class="app">
   <header class="top">
-    <a class="back" href="../?v=20261123g" aria-label="발레왕국 마을로 돌아가기"><span aria-hidden="true">←</span> 마을</a>
+    <a class="back" href="../?v=20261124c" aria-label="발레왕국 마을로 돌아가기"><span aria-hidden="true">←</span> 마을</a>
     <div class="who"><small>SUGAR'S BALLET KINGDOM</small><b>3/4 왈츠 · 세 박의 발레</b></div>
     <button id="sndBtn" class="snd" type="button" aria-label="음악 끄기" aria-pressed="true">♫</button>
   </header>
@@ -248,7 +249,7 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
     <div class="cover" id="cover">
       <div class="cover-card">
         <div class="seal">✧ 3 · 4 ✧</div>
-        <div class="eyebrow">ROYAL THEATER · REPERTOIRE</div>
+        <div class="eyebrow" id="workKind">BALLET JOURNEY</div>
         <h1 id="workTitle">라일락 왈츠</h1>
         <p class="sub" id="workIntro">강-약-약, 왈츠의 세 박에 맞춰 <b>고양이를 넘고 · 허들을 뛰고<br>균형대를 지나 · 빙글 돌아</b> 55초 연습길을 지나요.<br>장애물은 사라지지 않고, 슈가가 정말 뛰어넘어요.</p>
         <div class="guide">
@@ -259,8 +260,8 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
         </div>
         <div class="beat-note" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <button id="startBtn" class="primary" type="button">음악과 함께 시작</button>
-        <a class="cloth" id="clothLink" href="../dressroom/?v=20261123g">👗 <b id="clothName">기본 핑크 레오타드</b> 차림으로 춰요 · 옷 바꾸기</a>
-        <p class="meta">약 55초 · 수업 2회 후 정식 공연 보상 · 그전에는 자유 연습</p>
+        <a class="cloth" id="clothLink" href="../dressroom/?v=20261124c">👗 <b id="clothName">기본 핑크 레오타드</b> 차림으로 춰요 · 옷 바꾸기</a>
+        <p class="meta" id="workMeta">발레 여정 · 코인과 경험치</p>
       </div>
     </div>
 
@@ -279,9 +280,9 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
         <div class="res-moves" id="resMoves"></div>
         <div class="res-actions">
           <button id="retryBtn" class="ghost" type="button">다시 추기</button>
-          <a id="backBtn" class="primary" href="../?v=20261123g" style="display:flex;align-items:center;justify-content:center">마을로</a>
+          <a id="backBtn" class="primary" href="../?v=20261124c" style="display:flex;align-items:center;justify-content:center">마을로</a>
         </div>
-        <div class="status" id="resStatus" role="status" aria-live="polite"></div>
+        <div class="status" id="resStatus" role="status" aria-live="polite"></div><a class="primary" id="nextChapterBtn" href="../" hidden style="margin-top:8px;display:flex;align-items:center;justify-content:center;text-decoration:none">다음 장</a><a class="cloth" id="giftLink" href="../dressroom/?v=20261124c" hidden style="margin-top:8px;display:block;text-align:center">선물 입기</a>
       </div>
     </div>
   </div>
@@ -302,8 +303,8 @@ body.resulting .pad,body.resulting .cue{opacity:.32;pointer-events:none;transiti
   <p class="fine">정식 공연 시 코인·경험치·동작 숙련도 적립 · 음식 효과는 다음 스튜디오 수업에 보존</p>
 </div>
 
-<script src="../assets/town.js?v=20261123g"></script>
-<script src="music.js?v=20261123g"></script>
-<script src="waltz.js?v=20261123g"></script>
+<script src="../assets/town.js?v=20261124c"></script>
+<script src="music.js?v=20261124c"></script>
+<script src="waltz.js?v=20261124c"></script>
 </body>
 </html>

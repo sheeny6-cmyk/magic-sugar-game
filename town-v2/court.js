@@ -118,7 +118,7 @@
     var links = {debut:'stage/',waltz:'waltz-stage/'}, poses={debut:'curtsy',waltz:'pasdechat'};
     $('performanceAlbum').innerHTML = Object.keys(T.WORKS).map(function(key){
       var p=s.journey.performances[key], status=T.workStatus(key,s), ready=status.ready;
-      var w=T.WORKS[key], href=(links[key]||'waltz-stage/')+'?v='+T.V+(w.spirit?'&amp;work='+key:'');
+      var w=T.WORKS[key], href=T.journeyUrl('performance',key).replace('&','&amp;');
       return '<a class="album-card'+(ready?'':' locked')+'" href="'+href+'"><img alt="" src="'+(w.spirit?T.spiritArt(w.spirit,true):T.dancerArt(p?p.outfit:s.worn,poses[key]))+'"><span><b>'+w.name+'</b><small>'+(p?'최고 '+p.grade+' · '+p.count+'회 공연':ready?'첫 공연 가능':'해금 · '+status.reason)+'</small>'+(p?'<small>최고 콤보 '+p.combo+' · 정확도 '+p.accuracy+'%</small>':'')+'</span></a>';
     }).join('');
     var labels={beat:'기본 박자',cat:'파드샤',jump:'그랑제떼',beam:'아라베스크',turn:'피루엣'};
@@ -208,6 +208,15 @@
         $('actionHint').textContent='원하는 다른 수업이나 공연을 선택해도 좋아요';
       }
     }
+    var chapter=T.nextChapter(s);
+    $('nextTitle').textContent=chapter.name;
+    $('nextGoal').textContent=chapter.desc;
+    $('nextAction').href=chapter.url;
+    $('nextAction').firstChild.textContent=chapter.kind==='practice'?'발레 연습 시작 ':'무대에 오르기 ';
+    $('todayKicker').textContent=chapter.kind==='practice'?'발레 여정 · 수업':'발레 여정 · 공연';
+    $('nextReward').textContent=chapter.kind==='practice'?'완주 · 코인과 경험치':'완주 · 코인과 공연 기록';
+    var route=document.getElementById('journeyPath');
+    if(route){var steps=[s.classes>=1,s.classes>=2,!!s.journey.performances.debut,!!s.journey.performances.waltz];route.innerHTML=['첫걸음','동작 연결','첫 공연','왈츠'].map(function(name,n){return '<span class="'+(steps[n]?'done':steps.slice(0,n).every(Boolean)?'current':'')+'">'+(steps[n]?'✓ ':'')+name+'</span>';}).join('');}
     T.syncUI();
   }
 
