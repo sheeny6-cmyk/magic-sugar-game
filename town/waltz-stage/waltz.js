@@ -115,7 +115,7 @@
   var stats = { perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0 };
   var byType = {};
   var lastJudge = 0, nextIdx = -1, lastBeat = -99, lastHint = '', lastSpinSpark = -1;
-  var audioWarned = false;
+  var audioWarned = false, runId = '', settling = false;
 
   function clamp01(p) { return p < 0 ? 0 : p > 1 ? 1 : p; }
   function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
@@ -181,6 +181,8 @@
 
   /* ---------- 시작 ---------- */
   function startRun() {
+    if (settling || mode === 'play') return;
+    runId = 'waltz-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     resetNotes();
     mode = 'play';
     cover.hidden = true;
@@ -1085,7 +1087,8 @@
   }
 
   /* ---------- 결과 ---------- */
-  function finish() {
+  async function finish() {
+    if (mode !== 'play') return;
     cancelAnimationFrame(raf);
     mode = 'result';
     var total = notes.length;
@@ -1116,6 +1119,15 @@
     result.hidden = false;
     document.body.classList.add('resulting');
     if (band) band.stop();
+    var T = window.SugarTown;
+    if (!T || !T.stageReady()) { $('resStatus').textContent += ' · 연습 기록 (정식 공연은 수업 2회 후)'; return; }
+    settling = true; $('retryBtn').disabled = true; $('backBtn').setAttribute('aria-disabled','true');
+    var moves = {}; Object.keys(byType).forEach(function(k){moves[k]=byType[k].p*2+byType[k].g;});
+    try {
+      var receipt = await T.finishShow({work:'waltz',runId:runId,grade:rank,score:Math.round(acc*1000),notes:total,perfect:stats.perfect,good:stats.good,miss:stats.miss,maxCombo:stats.maxCombo,moves:moves});
+      $('resStatus').textContent += receipt ? ' · +' + receipt.coins + '코인 · 경험치 +' + receipt.growth.xp + ' · Lv.' + receipt.growth.level + (receipt.first ? ' · 새 공연 앨범' : '') : ' · 보상 없음';
+    } catch (e) { $('resStatus').textContent += ' · 기록 저장 실패'; }
+    finally { settling = false; $('retryBtn').disabled = false; $('backBtn').removeAttribute('aria-disabled'); }
   }
 
   function resetAll() {
@@ -1157,7 +1169,8 @@
   });
 
   $('startBtn').addEventListener('click', startRun);
-  $('retryBtn').addEventListener('click', function () { result.hidden = true; startRun(); });
+  $('retryBtn').addEventListener('click', function () { if (settling) return; result.hidden = true; startRun(); });
+  $('backBtn').addEventListener('click',function(e){if(settling)e.preventDefault();});
   $('sndBtn').addEventListener('click', function () {
     soundOn = !soundOn; setSound();
     if (soundOn && ctx && ctx.state === 'suspended') ctx.resume();
