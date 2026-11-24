@@ -104,7 +104,9 @@
     if (!ctx || ctx.state !== 'running') return false;
     if (!band) band = window.SugarMusic.create(ctx, musicBus);
     if (!band) return false;
-    return band.start(chart.song || PROG_SONG[ses.kind] || 'bar', elapsed);
+    var started = band.start(chart.song || PROG_SONG[ses.kind] || 'bar', Math.max(0, elapsed || 0));
+    if (started && ses) ses.audioZero = band.startedAt();
+    return started;
   }
   function stopMusic() { if (band) band.stop(); }
   function applySound() {
@@ -512,7 +514,7 @@
       var mine = ses, hello = String(greet.cheer[0]).replace(/\{n\}/g, T.nick());
       setTimeout(function () { if (ses === mine) bubble(hello, 'happy'); }, 600);
     }
-    p0 = performance.now() + 140;
+    p0 = performance.now();
     showDialog('lesson');
     ses.musicStarted = startMusic(chart, 0);
     ses.raf = requestAnimationFrame(loop);
@@ -529,10 +531,11 @@
     ses = null;
   }
 
-  function nowMs() { return performance.now() - p0; }
+  function nowMs() { return ses && actx && Number.isFinite(ses.audioZero) ? (actx.currentTime - ses.audioZero)*1000 : performance.now() - p0; }
 
   function loop() {
     if (!ses || ses.finished) return;
+    if (!ses.musicStarted && actx && actx.state === 'running') ses.musicStarted = startMusic(ses.chart, Math.max(0, nowMs()));
     var t = nowMs();
     var hot = false, pre = false, hotNote = null, hotDelta = Infinity;
     for (var i = 0; i < ses.notes.length; i++) {
