@@ -117,8 +117,9 @@
     $('rankGoal').textContent = '직급 · ' + rank.name + (rank.next ? ' → ' + rank.next.name + ' · ' + rank.steps.filter(function(r){return !r.done;}).map(function(r){return r.label+' '+r.have+'/'+r.need+r.unit;}).join(' · ') : ' · 프리마 달성!');
     var links = {debut:'stage/',waltz:'waltz-stage/'}, poses={debut:'curtsy',waltz:'pasdechat'};
     $('performanceAlbum').innerHTML = Object.keys(T.WORKS).map(function(key){
-      var p=s.journey.performances[key], ready=T.stageReady();
-      return '<a class="album-card" href="'+links[key]+'?v='+T.V+'"><img alt="" src="'+T.dancerArt(p?p.outfit:s.worn,poses[key])+'"><span><b>'+T.WORKS[key].name+'</b><small>'+(p?'최고 '+p.grade+' · '+p.count+'회 공연':ready?'첫 공연 가능':'수업 2회 후 정식 공연')+'</small>'+(p?'<small>최고 콤보 '+p.combo+' · 정확도 '+p.accuracy+'%</small>':'')+'</span></a>';
+      var p=s.journey.performances[key], status=T.workStatus(key,s), ready=status.ready;
+      var w=T.WORKS[key], href=(links[key]||'waltz-stage/')+'?v='+T.V+(w.spirit?'&amp;work='+key:'');
+      return '<a class="album-card'+(ready?'':' locked')+'" href="'+href+'"><img alt="" src="'+(w.spirit?T.spiritArt(w.spirit,true):T.dancerArt(p?p.outfit:s.worn,poses[key]))+'"><span><b>'+w.name+'</b><small>'+(p?'최고 '+p.grade+' · '+p.count+'회 공연':ready?'첫 공연 가능':'해금 · '+status.reason)+'</small>'+(p?'<small>최고 콤보 '+p.combo+' · 정확도 '+p.accuracy+'%</small>':'')+'</span></a>';
     }).join('');
     var labels={beat:'기본 박자',cat:'파드샤',jump:'그랑제떼',beam:'아라베스크',turn:'피루엣'};
     $('masteryList').innerHTML=Object.keys(labels).map(function(key){var m=T.masteryOf(key,s);return '<div><span>'+labels[key]+'</span><b>Lv.'+m.n+'</b><small>'+m.points+' / '+m.next+'</small></div>';}).join('');
@@ -188,11 +189,11 @@
       : T.stageReady() ? (k.debutOutfit ? '앙코르 무대에 오르기' : '오늘의 의상으로 첫 리허설') : '첫 리허설 초대장까지 도장 ' + T.stageLeft() + '개';
     if (!lesson && s.classes) {
       var nextKind = !s.stamps.center ? 'center' : !s.stamps.piece ? 'piece' : ['bar','center','piece'].sort(function(a,b){return s.stamps[a]-s.stamps[b];})[0];
-      var work = T.stageReady() && !s.journey.performances.debut ? 'debut' : T.stageReady() && !s.journey.performances.waltz && s.journey.performances.debut ? 'waltz' : null;
+      var work = Object.keys(T.WORKS).find(function(key){return T.workStatus(key,s).ready&&!s.journey.performances[key];});
       if (work) {
-        $('nextTitle').textContent = work==='debut'?'첫 춤의 초대장':'라일락 왈츠에 도전해요';
-        $('nextGoal').textContent = work==='debut'?'오늘의 의상으로 무대에 올라 첫 공연 포스터를 남겨요.':'강·약·약, 세 박에 맞춰 네 가지 발레 동작을 연결해요.';
-        $('nextAction').href=(work==='debut'?'stage/':'waltz-stage/')+'?v='+T.V;
+        $('nextTitle').textContent = T.WORKS[work].name+'에 도전해요';
+        $('nextGoal').textContent = work==='debut'?'오늘의 의상으로 무대에 올라 첫 공연 포스터를 남겨요.':(T.WORKS[work].desc||'강·약·약, 세 박에 맞춰 네 가지 발레 동작을 연결해요.');
+        $('nextAction').href=(work==='debut'?'stage/':'waltz-stage/')+'?v='+T.V+(T.WORKS[work].spirit?'&work='+work:'');
         $('nextAction').firstChild.textContent='공연 시작 ';
         $('todayKicker').textContent='오늘의 한 걸음 · 왕립 극장';
         $('actionHint').textContent='공연 앨범에 새로운 작품을 기록해요';
