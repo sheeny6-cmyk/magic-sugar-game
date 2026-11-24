@@ -1,0 +1,66 @@
+/* ===== 상점 주문대 (분식집 · 카페 공용, 라일락 테마) ===== */
+.shop-order{margin:14px 14px 0;padding:13px 12px 12px;border:1px solid #e3d4f1;border-radius:18px;
+  background:linear-gradient(160deg,#fffdfe,#f7efff);box-shadow:0 8px 22px #6b4a8a1f}
+.shop-order .shop-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:9px}
+.shop-order .shop-head b{font-size:.95rem;letter-spacing:-.03em;color:#4b3560}
+.shop-order .shop-head small{font-size:.68rem;color:#9a86ad;text-align:right;line-height:1.35}
+.shop-order .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.shop-order .menu-card{position:relative;border:1px solid #ebdcf7;border-radius:15px;background:#fffbfe;padding:6px 6px 7px;
+  display:flex;flex-direction:column;gap:5px;text-align:left;font:inherit;color:inherit;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .1s}
+.shop-order .menu-card:active{transform:scale(.985)}
+.shop-order .menu-card.active{border:2px solid #9b7bb8;background:linear-gradient(165deg,#fbf3ff,#f2e6fd);padding:5px 5px 6px;box-shadow:0 7px 18px #7d5c9b2e}
+.shop-order .pic{position:relative;display:block;border-radius:11px;overflow:hidden;background:#f6edff;box-shadow:inset 0 0 0 1px #ffffff66}
+.shop-order .pic img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.shop-order .pic .coin{position:absolute;right:5px;bottom:5px;background:#fffaf6f2;color:#8a6420;border:1px solid #f0dfc4;border-radius:999px;padding:2px 7px;font-size:.62rem;font-weight:850}
+.shop-order .menu-card b{font-size:.79rem;line-height:1.3;letter-spacing:-.035em}
+.shop-order .menu-card .desc{font-size:.64rem;color:#8a7799;line-height:1.35;word-break:keep-all;min-height:2.6em}
+.shop-order .menu-card .chips{display:flex;flex-wrap:wrap;gap:3px}
+.shop-order .menu-card .chips i{font-style:normal;font-size:.57rem;font-weight:800;color:#7a5b95;background:#f2e7fd;border-radius:6px;padding:2px 5px;letter-spacing:-.02em}
+.shop-order .order-cta{margin-top:10px;width:100%;min-height:48px;border:0;border-radius:13px;font:inherit;font-weight:850;font-size:.92rem;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;box-shadow:0 8px 18px #6b4a8a3d;cursor:pointer;letter-spacing:-.02em}
+.shop-order .order-cta[disabled]{background:#e6dcf0;color:#8f7fa3;box-shadow:none;cursor:default}
+.shop-order .now-meal{margin:9px 2px 0;font-size:.7rem;line-height:1.45;color:#8b7799;word-break:keep-all}
+.shop-order .legal{margin:6px 2px 0;font-size:.64rem;color:#a291b2;line-height:1.4}
+
+/* 주문 완료 카드 */
+.order-card{border:0;padding:0;background:transparent;width:min(92vw,360px);max-width:min(92vw,360px);margin:auto;color:#432e52}
+.order-card::backdrop{background:#3a2440a8;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.order-card .oc-card{background:linear-gradient(170deg,#fffdfe,#f7efff 70%,#f2e7fc);border:1px solid #dfc9ef;border-radius:20px;
+  padding:13px 13px 14px;box-shadow:0 26px 60px #3a244066;max-height:calc(100dvh - 32px);overflow:auto}
+.order-card .oc-kicker{margin:0 0 8px;font-size:.66rem;font-weight:850;letter-spacing:.12em;color:#9a7bb4;text-align:center}
+.order-card .oc-photo{position:relative;border-radius:14px;overflow:hidden;background:#f3e8ff;box-shadow:0 6px 16px #5b3f7a26}
+.order-card .oc-photo img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+.order-card .oc-tag{position:absolute;left:8px;bottom:8px;background:#fffdf8ed;border:1px solid #eadcc4;color:#7a5a2a;
+  border-radius:999px;padding:3px 9px;font-size:.64rem;font-weight:850}
+.order-card .oc-name{margin:10px 0 0;font-family:Georgia,"Nanum Myeongjo",serif;font-size:1.3rem;letter-spacing:-.05em;text-align:center}
+.order-card .oc-talk{display:flex;align-items:center;gap:9px;margin:9px 0 0;padding:9px 10px;border-radius:12px;background:#f6ecff;border:1px solid #e9d9f8}
+.order-card .oc-face{flex:none;width:40px;height:40px;border-radius:50%;background:#fff;border:1px solid #e4d3f3;overflow:hidden}
+.order-card .oc-face img{width:100%;height:100%;object-fit:contain}
+.order-card .oc-talk b{display:block;font-size:.78rem;color:#6d4f86}
+.order-card .oc-line{margin:1px 0 0;font-size:.76rem;line-height:1.45;color:#6a537e;word-break:keep-all}
+.order-card .oc-buffs{list-style:none;display:flex;flex-wrap:wrap;gap:5px;margin:10px 0 0;padding:0}
+.order-card .oc-buffs li{font-size:.66rem;font-weight:800;color:#6a4a8c;background:#f1e5fc;border:1px solid #e5d2f7;border-radius:999px;padding:4px 9px}
+.order-card .oc-coins{margin:10px 0 0;text-align:center;font-size:.82rem;font-weight:850;color:#7a5a1e;font-variant-numeric:tabular-nums}
+.order-card .oc-note{margin:5px 0 0;text-align:center;font-size:.68rem;color:#9a86ad;line-height:1.4}
+.order-card .oc-ok{margin-top:11px;width:100%;min-height:48px;border:0;border-radius:13px;font:inherit;font-weight:850;font-size:.94rem;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;cursor:pointer;box-shadow:0 8px 18px #6b4a8a3d}
+
+/* 화면 아래에 떠 있는 주문 버튼 */
+.order-cta.shop-fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));
+  width:min(92vw,340px);min-height:52px;border:0;border-radius:15px;font:inherit;font-weight:850;font-size:.95rem;
+  background:linear-gradient(150deg,#9b7bb8,#7d5c9b 72%,#71528d);color:#fffafd;cursor:pointer;z-index:80;
+  box-shadow:0 14px 30px #6b4a8a59;letter-spacing:-.02em}
+.order-cta.shop-fab[disabled]{background:linear-gradient(150deg,#d8c9ea,#c3addb);color:#5b4770;box-shadow:0 8px 18px #6b4a8a26}
+.order-cta.shop-fab[hidden]{display:none}
+/* 분식집은 아래 '영업 시작' 바 위로 띄운다 */
+.snack .order-cta.shop-fab{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+
+/* ================= 20261123g · 먹어본 메뉴 도감 표시 ================= */
+.shop-order .pic .tasted{position:absolute;left:5px;top:5px;display:inline-flex;align-items:center;gap:3px;
+  background:linear-gradient(150deg,#f7e2b0,#e0b063);color:#5a3a10;border:1px solid #c99a55;border-radius:999px;
+  padding:2px 7px;font-size:.6rem;font-weight:900;box-shadow:0 2px 6px #7a4f1f33;letter-spacing:-.01em}
+.shop-order .menu-card.tried .pic{box-shadow:inset 0 0 0 1px #ffffff66,0 0 0 1px #e7cfa4}
+.shop-order .dex-line{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin:8px 2px 0;
+  padding:7px 9px;border-radius:9px;background:#fff7e8;border:1px dashed #ecd8ae;font-size:.7rem;line-height:1.4;color:#8a6a3a;word-break:keep-all}
+.shop-order .dex-line b{font-size:.74rem;font-weight:900;color:#7a5320;letter-spacing:-.02em}
+.shop-order .dex-line span{font-size:.66rem;color:#a08453}

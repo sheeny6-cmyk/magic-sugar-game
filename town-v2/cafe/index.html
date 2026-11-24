@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#EDE4F7">
+<meta name="description" content="슈가의 발레왕국 발레 카페. 코인으로 아라베스크 밀크·턴아웃 라떼·발레 카푸치노·아이스 아메리카노를 골라 주문하고, 다음 연습에 기운을 받아요.">
+<title>발레 카페 · 슈가의 발레왕국</title>
+<link rel="stylesheet" href="../style.css?v=20261123g">
+<link rel="stylesheet" href="../assets/shop.css?v=20261123g">
+<link rel="stylesheet" href="../lilac.css?v=20261123g">
+<link rel="stylesheet" href="cafe.css?v=20261123g">
+</head>
+<body class="sub cafe">
+<div class="app">
+  <header class="subbar">
+    <a class="back" href="../?v=20261123g" aria-label="왕국으로 돌아가기">←</a>
+    <div class="title">☕ 발레 카페<small>BALLET&nbsp; KINGDOM&nbsp; CAFÉ</small></div>
+    <span class="coin"><span class="ic">🪙</span><b data-coin>0</b></span>
+  </header>
+
+  <section class="cafe-hero">
+    <img class="hero-art" src="../../cafe/assets/bg-entrance.webp" alt="라일락 빛이 감도는 발레 카페 입구">
+    <div class="hero-copy">
+      <p class="kicker">AFTER&nbsp; CLASS&nbsp; TEA</p>
+      <h1>연습 끝,<br>한 잔의 라일락</h1>
+      <p class="lead">코인으로 원하는 음료를 골라 주문해요. 잔 위에 그려진 그림이 다음 연습의 기운이 돼요.</p>
+    </div>
+  </section>
+
+  <section class="shop-order" data-shop="cafe" aria-labelledby="cafeOrderTitle">
+    <div class="shop-head"><b id="cafeOrderTitle">☕ 오늘의 한 잔 주문</b><small>아라가 거품을 올려 드려요</small></div>
+
+    <div class="menu-grid"></div>
+    <p class="now-meal"></p>
+    <p class="dex-line"></p>
+    <p class="legal">주문한 음료의 실물 사진과 정령의 한마디가 카드로 떠요. 기운은 다음 연습 한 번에 걸려요.</p>
+  </section>
+
+  <div class="cafe-extra">
+    <a class="mini-game" href="../../cafe/?v=20261121f">
+      <img src="../../cafe/assets/bg-making.webp" alt="">
+      <span><b>직접 라떼 만들기</b><small>재료를 담고 컵을 쓱쓱 섞는 카페 놀이 →</small></span>
+    </a>
+    <a class="mini-game" href="../potions/?v=20261123g">
+      <img src="../assets/chars/etu.webp" alt="">
+      <span><b>정령 포션 주문대</b><small>다음 수업의 힘을 미리 담아 두기 →</small></span>
+    </a>
+  </div>
+
+  <footer class="foot">© 슈가의 발레왕국 · 발레 카페</footer>
+</div>
+
+<dialog class="order-card" aria-labelledby="ocName">
+  <div class="oc-card">
+    <p class="oc-kicker">BALLET CAFÉ · 주문 완료</p>
+    <div class="oc-photo"><img src="../../cafe/assets/drink-arabesque.webp" alt="주문한 음료"><span class="oc-tag">방금 내렸어요</span></div>
+    <h2 class="oc-name" id="ocName">아라베스크 밀크</h2>
+    <div class="oc-talk"><span class="oc-face"><img src="../assets/chars/ara.webp" alt=""></span><div><b class="oc-who">아라</b><p class="oc-line"></p></div></div>
+    <ul class="oc-buffs"></ul>
+    <p class="oc-coins"></p>
+    <p class="oc-note"></p>
+    <button class="oc-ok" type="button">코스에 적용하고 닫기</button>
+  </div>
+</dialog>
+
+<script src="../assets/town.js?v=20261123g"></script>
+<script src="../assets/shop.js?v=20261123g"></script>
+</body>
+</html>
