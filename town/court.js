@@ -108,6 +108,26 @@
       : '';
   }
 
+  function renderJourney(s) {
+    var player = T.playerLevel(s), rank = T.level();
+    $('playerLevel').textContent = 'Lv.' + player.n;
+    $('xpText').textContent = player.n === 100 ? '최고 성장 레벨 · 공연 기록은 계속 쌓여요' : '경험치 ' + T.fmt(player.have) + ' / ' + T.fmt(player.need) + ' · 다음 레벨까지 ' + T.fmt(player.need-player.have);
+    $('xpFill').style.width = player.pct + '%';
+    $('xpTrack').setAttribute('aria-valuenow', player.pct);
+    $('rankGoal').textContent = '직급 · ' + rank.name + (rank.next ? ' → ' + rank.next.name + ' · ' + rank.steps.filter(function(r){return !r.done;}).map(function(r){return r.label+' '+r.have+'/'+r.need+r.unit;}).join(' · ') : ' · 프리마 달성!');
+    var links = {debut:'stage/',waltz:'waltz-stage/'}, poses={debut:'curtsy',waltz:'pasdechat'};
+    $('performanceAlbum').innerHTML = Object.keys(T.WORKS).map(function(key){
+      var p=s.journey.performances[key], status=T.workStatus(key,s), ready=status.ready;
+      var w=T.WORKS[key], href=(links[key]||'waltz-stage/')+'?v='+T.V+(w.spirit?'&amp;work='+key:'');
+      return '<a class="album-card'+(ready?'':' locked')+'" href="'+href+'"><img alt="" src="'+(w.spirit?T.spiritArt(w.spirit,true):T.dancerArt(p?p.outfit:s.worn,poses[key]))+'"><span><b>'+w.name+'</b><small>'+(p?'최고 '+p.grade+' · '+p.count+'회 공연':ready?'첫 공연 가능':'해금 · '+status.reason)+'</small>'+(p?'<small>최고 콤보 '+p.combo+' · 정확도 '+p.accuracy+'%</small>':'')+'</span></a>';
+    }).join('');
+    var labels={beat:'기본 박자',cat:'파드샤',jump:'그랑제떼',beam:'아라베스크',turn:'피루엣'};
+    $('masteryList').innerHTML=Object.keys(labels).map(function(key){var m=T.masteryOf(key,s);return '<div><span>'+labels[key]+'</span><b>Lv.'+m.n+'</b><small>'+m.points+' / '+m.next+'</small></div>';}).join('');
+    var life=s.kingdom.life;
+    $('lifeStory').textContent='왕국 생명력 '+T.fmt(life)+' · '+(life>=30?'왕국에 활기가 가득해요':life>=10?'광장에 작은 꽃이 피기 시작해요':'다섯 정령과 첫 춤을 준비하고 있어요');
+    document.body.dataset.kingdomLife=life>=30?'bloom':life>=10?'sprout':'seed';
+  }
+
   /* ---------- 오늘의 초대장 ---------- */
   function refresh() {
     var s = T.get(), k = s.kingdom, dose = k.prepared, lesson = s.lesson;
@@ -148,7 +168,7 @@
     $('todayKicker').textContent = lesson ? '오늘의 한 걸음 · 이어서 하는 연습'
       : toStage ? '오늘의 한 걸음 · 왕립 극장'
       : '오늘의 한 걸음 · 왕립 발레 스튜디오';
-    $('actionHint').textContent = lesson ? '중단한 지점부터 음악을 다시 틀어 드려요'
+    $('actionHint').textContent = lesson ? '연습 중이던 곡을 처음부터 다시 틀어 드려요'
       : toStage ? '연습한 동작 그대로 무대에 올라 공연 포스터를 남겨요'
       : '노트가 빛나는 링에 닿는 순간, 같은 동작을 눌러요';
     $('walkStudio').textContent = s.classes
@@ -163,9 +183,31 @@
       : !s.classes && !Object.values(k.orders).some(Boolean) ? '첫 지원금은 ' + T.GRANT + '코인이에요. 정령에게 포션을 한 잔 주문하면 생명력 1이 전해져요.'
       : '카드를 누르면 정령의 성격과 편지를 읽을 수 있어요. 함께 연습하고 포션을 주문할수록 하트가 늘어나요.';
     renderRoster(s);
-    $('idRank').textContent = 'Lv.' + level.n + ' ' + level.name;
+    $('idRank').textContent = 'Lv.' + T.playerLevel(s).n + ' · ' + level.name;
+    renderJourney(s);
     $('stageLine').textContent = T.prima() ? '프리마 피날레 무대가 열려 있어요'
       : T.stageReady() ? (k.debutOutfit ? '앙코르 무대에 오르기' : '오늘의 의상으로 첫 리허설') : '첫 리허설 초대장까지 도장 ' + T.stageLeft() + '개';
+    if (!lesson && s.classes) {
+      var nextKind = !s.stamps.center ? 'center' : !s.stamps.piece ? 'piece' : ['bar','center','piece'].sort(function(a,b){return s.stamps[a]-s.stamps[b];})[0];
+      var work = Object.keys(T.WORKS).find(function(key){return T.workStatus(key,s).ready&&!s.journey.performances[key];});
+      if (work) {
+        $('nextTitle').textContent = T.WORKS[work].name+'에 도전해요';
+        $('nextGoal').textContent = work==='debut'?'오늘의 의상으로 무대에 올라 첫 공연 포스터를 남겨요.':(T.WORKS[work].desc||'강·약·약, 세 박에 맞춰 네 가지 발레 동작을 연결해요.');
+        $('nextAction').href=(work==='debut'?'stage/':'waltz-stage/')+'?v='+T.V+(T.WORKS[work].spirit?'&work='+work:'');
+        $('nextAction').firstChild.textContent='공연 시작 ';
+        $('todayKicker').textContent='오늘의 한 걸음 · 왕립 극장';
+        $('actionHint').textContent='공연 앨범에 새로운 작품을 기록해요';
+        $('nextReward').textContent='공연 보상 · 코인과 경험치';
+      } else {
+        $('nextTitle').textContent=courseNames[nextKind]+'에 도전해요';
+        $('nextGoal').textContent=!s.stamps[nextKind]?'새로운 수업으로 발레 동작을 익혀요.':'고르게 연습하며 숙련도와 경험치를 쌓아요.';
+        $('nextAction').href='studio/?v='+T.V+'#class-'+nextKind;
+        $('nextAction').firstChild.textContent=courseNames[nextKind]+' 시작 ';
+        $('todayKicker').textContent='오늘의 한 걸음 · 왕립 발레 스튜디오';
+        $('nextReward').textContent='수료 보상 · '+T.rewardFor(nextKind,dose).coins+'코인 + 경험치';
+        $('actionHint').textContent='원하는 다른 수업이나 공연을 선택해도 좋아요';
+      }
+    }
     T.syncUI();
   }
 

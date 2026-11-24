@@ -83,9 +83,9 @@
       <h2 id="mTitle">오늘은 어떤 발레로 갈까요?</h2>
       <p class="m-sub">HP 100으로 버텨야 수업을 마칠 수 있어요. 고른 난이도에 따라 노트가 다가오는 속도, 판정 여유, 잃는 체력이 달라져요.</p>
       <div class="m-options" id="mOptions" role="group" aria-label="난이도 선택">
-        <button class="m-opt easy" type="button" data-mode="easy"><span class="m-badge">EASY</span><b>발레가 조금은 쉬워져요</b><small>노트가 천천히 다가와요 · 판정 넉넉 · 놓쳐도 HP -12</small></button>
-        <button class="m-opt normal" type="button" data-mode="normal"><span class="m-badge">NORMAL</span><b>발레가 꽤 쉬워져요</b><small>기본 속도 · 기준 판정 · 놓치면 HP -20</small><em class="m-memo">“발레 영상 좀 봤는데... 노멀 정도는 괜찮겠지?”</em></button>
-        <button class="m-opt hard" type="button" data-mode="hard"><span class="m-badge">HARD</span><b>발레가 너무너무 쉬워져요</b><small>노트가 쏜살같이 · 판정 타이트 · 놓치면 HP -30</small><em class="m-memo">(정말요. 아주아주 쉬워요. 아마도.)</em></button>
+        <button class="m-opt easy" type="button" data-mode="easy"><span class="m-badge">HEALING</span><b>편안하게 춤추기</b><small>느린 노트 · 넉넉한 판정 · 실패 없이 끝까지</small></button>
+        <button class="m-opt normal" type="button" data-mode="normal"><span class="m-badge">NORMAL</span><b>정확한 박자에 도전</b><small>기본 속도 · 기준 판정 · 콤보 중심</small><em class="m-memo">“발레 영상 좀 봤는데... 노멀 정도는 괜찮겠지?”</em></button>
+        <button class="m-opt hard" type="button" data-mode="hard"><span class="m-badge">CHALLENGE</span><b>무대 실력에 도전</b><small>노트가 쏜살같이 · 판정 타이트 · 놓치면 HP -30</small><em class="m-memo">(정말요. 아주아주 쉬워요. 아마도.)</em></button>
       </div>
       <p class="m-foot" id="mPass"></p>
       <p class="m-hint">카드를 누르면 바로 시작해요 · HP는 수업이 끝날 때까지 회복되지 않아요</p>
@@ -126,7 +126,7 @@
   <dialog class="result" id="result" aria-labelledby="rTitle">
     <div class="rcard" tabindex="-1" autofocus>
       <p class="r-course" id="rCourse"></p><h2 id="rTitle"></h2><p class="wallet-line" id="rBalance"></p>
-      <p class="bonus-line" id="rCoinsDetail" hidden></p>
+      <p class="bonus-line" id="rCoinsDetail" hidden></p><p class="bonus-line" id="rGrowth" aria-live="polite"></p>
       <div class="r-pass" id="rPass">
         <p class="r-pass-head"><span>BALLET FREE PASS</span><b id="rPassCount">0 / 4</b></p>
         <div class="r-pass-row" id="rPassRow"></div>
@@ -134,7 +134,7 @@
       </div>
       <div class="score-row" id="rScore" role="group" aria-label="판정 결과">
         <div class="perfect"><span>Perfect</span><b id="rPerfect">0</b></div>
-        <div class="good"><span>Good</span><b id="rGood">0</b></div>
+        <div class="great"><span>Great</span><b id="rGreat">0</b></div><div class="good"><span>Good</span><b id="rGood">0</b></div>
         <div class="miss"><span>Miss</span><b id="rMiss">0</b></div>
         <div class="combo"><span>Max Combo</span><b id="rCombo">0</b></div>
       </div>

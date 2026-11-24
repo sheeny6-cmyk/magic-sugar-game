@@ -137,7 +137,7 @@
     var meal = s.kingdom.meal && s.kingdom.meal.buff ? s.kingdom.meal.buff : {};
     WINDOW = { perfect: 150 + power.perfect + Math.round((meal.all || 0) / 2), good: 330 + power.good + (meal.all || 0) };
     show = {
-      times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
+      runId: 'debut-'+Date.now()+'-'+Math.random().toString(36).slice(2), times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
       p0: performance.now() + LEAD, done: false, sending: false, raf: 0, pose: null
     };
     $('sStep').textContent = '장면 0 / ' + CUES.length;
@@ -151,7 +151,8 @@
     Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     $('sMove').textContent = '준비 자세';
     $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms' + (s.kingdom.meal ? ' · ' + s.kingdom.meal.name + ' 기운' : '') + '. 링이 겹치는 순간을 탭!';
-    var begin = function () { if (band && show) band.start(SONG, Math.max(0, performance.now() - show.p0)); };
+    var active = show;
+    var begin = function () { if (band && show === active && ctx && ctx.state === 'running' && band.start(SONG, Math.max(0, performance.now() - show.p0))) show.audioZero = band.startedAt(); };
     if (ctx && ctx.state === 'suspended') ctx.resume().then(begin).catch(begin);
     else begin();
     if (!$('show').open) $('show').showModal();
@@ -161,7 +162,7 @@
     show.raf = requestAnimationFrame(loop);
   }
 
-  function nowMs() { return performance.now() - show.p0; }
+  function nowMs() { return show && actx && Number.isFinite(show.audioZero) ? (actx.currentTime-show.audioZero)*1000 : performance.now() - show.p0; }
 
   function loop() {
     if (!show || show.done) return;
@@ -260,7 +261,7 @@
     var max = show.times.length * 100 + show.times.length * 10;
     var ratio = max ? sc / max : 0;
     var grade = ratio >= 0.9 ? 'S' : ratio >= 0.72 ? 'A' : ratio >= 0.5 ? 'B' : 'C';
-    var info = { grade: grade, score: sc, perfect: show.perfect, good: show.good, miss: show.miss, notes: show.times.length, maxCombo: show.maxCombo };
+    var info = { work:'debut', runId:show.runId, grade: grade, score: sc, perfect: show.perfect, good: show.good, miss: show.miss, notes: show.times.length, maxCombo: show.maxCombo };
     var record = null;
     try {
       record = await T.finishShow(info);

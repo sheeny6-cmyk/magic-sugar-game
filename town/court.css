@@ -442,3 +442,20 @@
 .court .reset-btn:hover{border-color:#c9b4d8;color:#6d5585}
 .court .reset-btn:active{transform:translateY(1px)}
 .reset-zone p{margin:7px 0 0;font-size:.7rem;line-height:1.5;color:#ac9cb8;word-break:keep-all}
+
+/* V2 growth card; existing art and court layout remain intact */
+.journey-panel{margin:22px 0;padding:18px;border:1px solid #e1d4e9;border-radius:20px;background:#fffafef2;color:#58445f}
+.journey-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.journey-heading h2{font-size:1.15rem;margin:4px 0 8px}.journey-heading>strong{font-size:1.45rem;color:#9676b7;white-space:nowrap}
+.journey-xp{height:8px;background:#e9e0ef;border-radius:8px;overflow:hidden}.journey-xp i{display:block;height:100%;width:0;background:#a58bc8;border-radius:inherit}
+.journey-meta{font-size:.75rem;line-height:1.55;color:#786580;margin:8px 0;overflow-wrap:anywhere}
+.journey-album{margin-top:16px}.journey-album h3{font-size:.9rem;margin:0 0 8px}
+.album-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.album-card{display:flex;align-items:center;min-width:0;gap:6px;padding:8px;background:#f5eef8;border:1px solid #e5d7ec;border-radius:12px;color:inherit;text-decoration:none}
+.album-card img{width:44px;height:62px;object-fit:contain;flex:none}.album-card span{min-width:0}.album-card b,.album-card small{display:block;overflow-wrap:anywhere}.album-card b{font-size:.76rem}.album-card small{font-size:.65rem;line-height:1.45;color:#7d6689;margin-top:3px}
+.mastery-fold{margin-top:12px;font-size:.78rem}.mastery-fold summary{cursor:pointer;font-weight:700}
+.mastery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:8px}.mastery-grid div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#f6f0f8;padding:8px;border-radius:8px}.mastery-grid small{width:100%;color:#8c7898}
+body[data-kingdom-life="sprout"] .journey-panel{border-color:#b6d0bc}body[data-kingdom-life="bloom"] .journey-panel{border-color:#d4b66f;background:linear-gradient(145deg,#fffaf2,#faf1ff)}
+@media(max-width:360px){.journey-panel{padding:12px}.album-card{flex-direction:column;text-align:center}.album-card img{width:50px;height:58px}}
+
+.album-card.locked{background:#f5f3f5;border-style:dashed}.album-card.locked img{opacity:.65}.album-card.locked small{color:#746a7c}

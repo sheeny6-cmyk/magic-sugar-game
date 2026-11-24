@@ -34,6 +34,19 @@
     { b: 78, t: 'turn', turns: 2 }, { b: 80, t: 'cat' }
   ];
 
+  /* 동일한 원곡의 정령별 안무 변주. 각 악보는 별도 공연 기록을 남긴다. */
+  var TOWN = window.SugarTown;
+  var requested = new URLSearchParams(location.search).get('work') || 'waltz';
+  var WORK = TOWN && Object.hasOwn(TOWN.WORKS,requested) && requested !== 'debut' ? requested : 'waltz';
+  var WORK_INFO = TOWN ? TOWN.WORKS[WORK] : {name:'라일락 왈츠'};
+  var VARIANTS = {
+    etu:[[6,'beam'],[12,'beam'],[18,'cat'],[24,'beam'],[27,'beam'],[30,'beam'],[36,'jump'],[42,'beam'],[45,'beam'],[48,'turn'],[54,'beam'],[57,'beam'],[60,'cat'],[66,'beam'],[69,'beam'],[72,'jump'],[78,'beam']],
+    ara:[[6,'cat'],[12,'beam'],[18,'beam'],[24,'turn'],[27,'beam'],[30,'cat'],[36,'beam'],[42,'jump'],[45,'beam'],[48,'beam'],[51,'turn'],[54,'beam'],[57,'cat'],[60,'beam'],[66,'jump'],[69,'beam'],[75,'turn'],[78,'beam']],
+    piru:[[6,'turn'],[12,'cat'],[18,'turn'],[21,'turn'],[24,'beam'],[30,'turn'],[33,'turn'],[36,'jump'],[42,'turn'],[45,'turn'],[48,'turn'],[50,'cat'],[51,'turn'],[54,'turn',2],[57,'turn',2],[60,'beam'],[63,'turn',2],[66,'turn'],[69,'turn',2],[72,'jump'],[75,'turn',2],[78,'turn',2]],
+    shangz:[[6,'cat'],[12,'jump'],[18,'jump'],[20,'cat'],[24,'jump'],[27,'jump'],[30,'cat'],[32,'cat'],[36,'jump'],[39,'jump'],[42,'beam'],[48,'jump'],[50,'cat'],[51,'jump'],[54,'jump'],[56,'cat'],[57,'jump'],[60,'turn'],[63,'jump'],[66,'jump'],[68,'cat'],[72,'jump'],[75,'jump'],[78,'jump'],[80,'cat']],
+    alle:[[6,'cat'],[9,'jump'],[12,'beam'],[15,'turn'],[18,'jump'],[19,'cat'],[20,'cat'],[21,'turn'],[24,'jump'],[26,'beam'],[27,'turn'],[30,'jump'],[31,'cat'],[32,'beam'],[33,'turn'],[36,'jump'],[38,'cat'],[42,'beam'],[44,'cat'],[45,'turn'],[48,'jump'],[49,'cat'],[50,'beam'],[51,'turn'],[54,'jump'],[55,'cat'],[56,'beam'],[57,'turn'],[60,'jump'],[61,'cat'],[62,'beam'],[63,'turn'],[66,'jump'],[68,'cat'],[69,'turn'],[72,'jump'],[73,'cat'],[74,'beam'],[75,'turn',2],[78,'jump'],[79,'cat'],[80,'turn']]
+  };
+  if(VARIANTS[WORK]) CHART=VARIANTS[WORK].map(function(a){return {b:a[0],t:a[1],turns:a[2]||1};});
   var SECTIONS = [
     { id: 'intro', from: 0, to: 18, tag: '도입 · 세 박을 세어요' },
     { id: 'build', from: 18, to: 48, tag: '전개 · 왈츠의 물결' },
@@ -95,7 +108,7 @@
     grandjete: { ar: 640 / 500, hs: 0.85 }
   };
   var IMG = {};
-  var spiritImg = new Image(); spiritImg.src = '../../kingdom/assets/av_etu.webp';
+  var spiritImg = new Image(); spiritImg.src = '../../kingdom/assets/av_'+(WORK_INFO.spirit||'etu')+'.webp';
 
   /* ---------- DOM ---------- */
   var canvas = $('stage'), ctx2d = canvas.getContext('2d');
@@ -115,7 +128,7 @@
   var stats = { perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0 };
   var byType = {};
   var lastJudge = 0, nextIdx = -1, lastBeat = -99, lastHint = '', lastSpinSpark = -1;
-  var audioWarned = false;
+  var audioWarned = false, runId = '', settling = false;
 
   function clamp01(p) { return p < 0 ? 0 : p > 1 ? 1 : p; }
   function easeOut(p) { return 1 - Math.pow(1 - p, 3); }
@@ -181,6 +194,8 @@
 
   /* ---------- 시작 ---------- */
   function startRun() {
+    if (settling || mode === 'play' || (WORK !== 'waltz' && (!TOWN || !TOWN.workStatus(WORK).ready))) return;
+    runId = 'waltz-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     resetNotes();
     mode = 'play';
     cover.hidden = true;
@@ -1085,11 +1100,12 @@
   }
 
   /* ---------- 결과 ---------- */
-  function finish() {
+  async function finish() {
+    if (mode !== 'play') return;
     cancelAnimationFrame(raf);
     mode = 'result';
     var total = notes.length;
-    var acc = (stats.perfect + stats.good * 0.6) / total;
+    var acc = (stats.perfect + stats.good * 0.65) / total;
     var rank = acc >= 0.93 ? 'S' : acc >= 0.82 ? 'A' : acc >= 0.66 ? 'B' : 'C';
     var lines = {
       S: '와, 왈츠가 슈가의 것이 되었어요. 세 박이 몸에 그대로 새겨졌네요.',
@@ -1104,11 +1120,11 @@
     $('resGood').textContent = stats.good;
     $('resMiss').textContent = stats.miss;
     $('resCombo').textContent = stats.maxCombo;
-    $('resTitle').textContent = rank === 'S' ? '첫 왈츠를 완벽하게 마쳤어요' : '첫 왈츠를 마쳤어요';
+    $('resTitle').textContent = WORK_INFO.name + ' 완주' + (rank==='S'?' · 완벽한 무대!':'');
     var rows = '';
     ['cat', 'jump', 'beam', 'turn'].forEach(function (k) {
       var r = byType[k], n = r.p + r.g + r.m;
-      var pct = n ? Math.round(((r.p + r.g * 0.6) / n) * 100) : 0;
+      var pct = n ? Math.round(((r.p + r.g * 0.65) / n) * 100) : 0;
       rows += '<div class="row"><span>' + NAMES[k] + '</span><span class="bar"><i style="width:' + pct + '%"></i></span><span>' + r.p + '/' + n + '</span></div>';
     });
     $('resMoves').innerHTML = rows;
@@ -1116,6 +1132,15 @@
     result.hidden = false;
     document.body.classList.add('resulting');
     if (band) band.stop();
+    var T = window.SugarTown;
+    if (!T || !T.workStatus(WORK).ready) { $('resStatus').textContent += ' · 연습 기록 (정식 공연은 수업 2회 후)'; return; }
+    settling = true; $('retryBtn').disabled = true; $('backBtn').setAttribute('aria-disabled','true');
+    var moves = {}; Object.keys(byType).forEach(function(k){moves[k]=byType[k].p*2+byType[k].g;});
+    try {
+      var receipt = await T.finishShow({work:WORK,runId:runId,grade:rank,score:Math.round(acc*1000),notes:total,perfect:stats.perfect,good:stats.good,miss:stats.miss,maxCombo:stats.maxCombo,moves:moves});
+      $('resStatus').textContent += receipt ? ' · +' + receipt.coins + '코인 · 경험치 +' + receipt.growth.xp + ' · Lv.' + receipt.growth.level + (receipt.first ? ' · 새 공연 앨범' : '') : ' · 보상 없음';
+    } catch (e) { $('resStatus').textContent += ' · 기록 저장 실패'; }
+    finally { settling = false; $('retryBtn').disabled = false; $('backBtn').removeAttribute('aria-disabled'); }
   }
 
   function resetAll() {
@@ -1156,8 +1181,14 @@
     press(k);
   });
 
+  $('workTitle').textContent=WORK_INFO.name;
+  if(WORK_INFO.spirit){$('workIntro').textContent=WORK_INFO.desc+' · 기존 라일락 왈츠 음악에 맞춘 정령 전용 안무';}
+  if(TOWN && WORK!=='waltz' && !TOWN.workStatus(WORK).ready){
+    $('startBtn').disabled=true; $('startBtn').textContent='해금 조건 · '+TOWN.workStatus(WORK).reason;
+  }
   $('startBtn').addEventListener('click', startRun);
-  $('retryBtn').addEventListener('click', function () { result.hidden = true; startRun(); });
+  $('retryBtn').addEventListener('click', function () { if (settling) return; result.hidden = true; startRun(); });
+  $('backBtn').addEventListener('click',function(e){if(settling)e.preventDefault();});
   $('sndBtn').addEventListener('click', function () {
     soundOn = !soundOn; setSound();
     if (soundOn && ctx && ctx.state === 'suspended') ctx.resume();

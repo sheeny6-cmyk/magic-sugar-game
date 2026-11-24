@@ -91,11 +91,12 @@
 .reaction b{font-size:.84rem;font-weight:650;color:#5a4359;line-height:1.35;word-break:keep-all}
 .r-course{font-weight:700;color:#785470;font-size:.88rem}.rcard h2{font:700 clamp(1.75rem,7vw,2.5rem)/1.14 var(--serif);color:#593b54;margin:3px 0}
 .wallet-line{font-size:1rem;color:#664c39;font-variant-numeric:tabular-nums}.bonus-line,.rcard details p,.r-links{font-size:.83rem;color:var(--muted);line-height:1.45}
-.score-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:11px 0 0}
+.score-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin:11px 0 0}
 .score-row div{display:grid;place-items:center;gap:1px;padding:7px 2px 6px;border-radius:9px;background:#f6eef4;border:1px solid #e3d2e0}
 .score-row span{font-size:.6rem;font-weight:750;letter-spacing:.02em;color:#7a6076}
 .score-row b{font-size:1.24rem;font-variant-numeric:tabular-nums;color:#4f3652;line-height:1.1}
 .score-row .perfect{background:#fdf3d8;border-color:#ecd9a8}.score-row .perfect b{color:#a5750f}
+.score-row .great{background:#e9edf9;border-color:#cdd6ec}.score-row .great b{color:#6476a4}.hp-row[hidden]{display:none!important}
 .score-row .good{background:#e8f6f1;border-color:#c6e4da}.score-row .good b{color:#2c7a68}
 .score-row .miss{background:#fbeaee;border-color:#eccdd4}.score-row .miss b{color:#a25063}
 .reward-feature{display:grid;grid-template-columns:minmax(92px,.8fr) minmax(0,1.2fr);min-height:140px;border:1px solid #d9c5b0;background:#faf2e6;border-radius:13px;overflow:hidden;margin:12px 0 10px}
