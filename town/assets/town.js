@@ -666,7 +666,22 @@
   }
 
   /* V2: 발레단 직급과 장기 성장 레벨을 분리한다. 기존 지갑은 최초에만 이관한다. */
-  var WORKS = { debut: { name: '첫 춤의 초대장' }, waltz: { name: '라일락 왈츠' } };
+  var WORKS = {
+    debut:{name:'첫 춤의 초대장',level:1}, waltz:{name:'라일락 왈츠',level:1},
+    etu:{name:'에튜의 균형 왈츠',level:4,spirit:'etu',focus:'beam',desc:'긴 선과 안정적인 균형'},
+    ara:{name:'아라의 달빛 왈츠',level:5,spirit:'ara',focus:'beam',desc:'느린 균형과 부드러운 연결'},
+    piru:{name:'피루의 회전 왈츠',level:6,spirit:'piru',focus:'turn',desc:'이어지는 피루엣'},
+    shangz:{name:'샹즈의 도약 왈츠',level:8,spirit:'shangz',focus:'jump',desc:'도약과 가벼운 착지'},
+    alle:{name:'알레의 리듬 왈츠',level:10,spirit:'alle',focus:'cat',desc:'세 박을 잇는 복합 안무'}
+  };
+  function workStatus(key,state) {
+    var s=state||get(), w=WORKS[key];
+    if(!w) return {ready:false,reason:'없는 공연'};
+    if(s.classes<STAGE_CLASSES) return {ready:false,reason:'수업 2회 수료'};
+    if(w.spirit && playerLevel(s).n<w.level) return {ready:false,reason:'플레이어 Lv.'+w.level};
+    if(w.spirit && !s.journey.performances.waltz) return {ready:false,reason:'라일락 왈츠 먼저 완주'};
+    return {ready:true,reason:''};
+  }
   function safeCount(n, cap) { return Number.isFinite(n) ? Math.max(0, Math.min(cap, Math.round(n))) : 0; }
   function normalizeJourney(raw, state) {
     var j = clone(DEFAULT.journey);
@@ -1169,14 +1184,15 @@
   /* ---------- 왕립 극장 공연 기록 ---------- */
   function finishShow(score) {
     return updateWallet(function (s) {
-      var work = score.work === 'waltz' ? 'waltz' : 'debut';
+      var work = score.work || 'debut';
+      if (!Object.hasOwn(WORKS,work) || !workStatus(work,s).ready) return null;
       if (score.runId && s.journey.settled.includes(score.runId)) return null;
       if (s.classes < STAGE_CLASSES) return null;
       var grade = /^[SABC]$/.test(score.grade) ? score.grade : 'C';
       var base = 60, bonus = { S: 140, A: 100, B: 60, C: 30 }[grade] || 40;
       var coins = base + bonus + Math.max(0, Math.round(score.perfect || 0)) * 2;
       var mealCoins = work === 'debut' && s.kingdom.meal && s.kingdom.meal.buff && s.kingdom.meal.buff.coins ? Math.max(0, Math.round(s.kingdom.meal.buff.coins)) : 0;
-      if (work === 'waltz') coins = (s.journey.performances.waltz ? 45 : 110) + {S:55,A:40,B:25,C:10}[grade];
+      if (work !== 'debut') coins = (s.journey.performances[work] ? 45 : 110) + {S:55,A:40,B:25,C:10}[grade];
       coins += mealCoins;
       var fame = { S: 3, A: 2, B: 1, C: 1 }[grade] || 1;
       var record = {
@@ -1197,6 +1213,7 @@
         s.kingdom.meal = null;
       }
       recordPerformance(s, work, score, record);
+      if (WORKS[work].spirit) { record.bond = raiseBond(s,WORKS[work].spirit,record.first?2:1); }
       if (score.runId) { s.journey.settled.push(score.runId); s.journey.settled = s.journey.settled.slice(-128); }
       grantGifts(s);
       return record;
@@ -1210,7 +1227,7 @@
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF, staffLine: staffLine,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
-    playerLevel: playerLevel, masteryOf: masteryOf, WORKS: WORKS,
+    playerLevel: playerLevel, masteryOf: masteryOf, WORKS: WORKS, workStatus:workStatus,
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
     LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, STAGE_CLASSES: STAGE_CLASSES, practicePower: practicePower, stagePower: stagePower, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
