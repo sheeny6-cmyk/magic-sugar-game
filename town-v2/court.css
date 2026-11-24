@@ -459,3 +459,37 @@ body[data-kingdom-life="sprout"] .journey-panel{border-color:#b6d0bc}body[data-k
 @media(max-width:360px){.journey-panel{padding:12px}.album-card{flex-direction:column;text-align:center}.album-card img{width:50px;height:58px}}
 
 .album-card.locked{background:#f5f3f5;border-style:dashed}.album-card.locked img{opacity:.65}.album-card.locked small{color:#746a7c}
+
+/* V2 preview: illustrated hub, no duplicated menu cards */
+.court .district[hidden]{display:none!important}
+.court .opening{display:flex;flex-direction:column;max-width:780px;margin:0 auto;border:0;border-radius:24px;background:transparent;box-shadow:none;overflow:visible}
+.court .palace{min-height:clamp(350px,58vw,500px);height:auto;isolation:isolate;border-radius:22px;box-shadow:0 7px 22px #6e4d7d20;background:#a99ab8}
+.court .palace-art{object-position:center}
+.court .palace:before{background:linear-gradient(0deg,#332341b8,transparent 43%,transparent 77%,#3323413d)}
+.court .palace:after{border-radius:17px;inset:8px}
+.court .palace-copy{left:19px;bottom:19px;max-width:68%;pointer-events:none}
+.court .palace h1{font-size:clamp(2rem,5.5vw,3.5rem);line-height:1}
+.court .palace-hi{font-size:.75rem}
+.court .palace .dancer{height:65%;right:22%;bottom:4%;max-width:46%;object-fit:contain;z-index:0;pointer-events:none}
+.world-label{position:absolute;top:17px;left:18px;color:#fff;font-size:.72rem;font-weight:700;text-shadow:0 1px 4px #30213c;z-index:3}
+.world-spots{position:absolute;inset:0;z-index:4;pointer-events:none}
+.world-spots .spot{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;min-width:92px;padding:7px 10px;max-width:43%;text-align:center;text-decoration:none;color:#58415e;background:#fffaf2ed;border:1px solid #e0c9a8;box-shadow:0 3px 10px #37283a35;border-radius:13px;pointer-events:auto;line-height:1.15;font-size:.86rem;font-weight:800}
+.world-spots .spot small{font-size:.52rem;letter-spacing:.11em;color:#8a7691;margin-top:3px}
+.world-spots .spot:focus-visible{outline:3px solid #9774c3;outline-offset:3px}
+.spot-studio{left:5%;top:27%}.spot-stage{left:50%;top:11%;transform:translateX(-50%)}.spot-wardrobe{right:5%;top:29%}.spot-shop{left:5%;top:53%}.spot-spirit{right:5%;top:55%}
+.court .practice-ticket{margin-top:13px;border:1px solid #e7dceb;border-radius:18px;padding:15px 18px;background:#fffdfb;box-shadow:0 3px 10px #6e4d7d0b}
+.court .practice-ticket h2{font-size:1.25rem;margin:4px 0 6px}
+.court .practice-ticket #nextGoal{font-size:.83rem}
+.court .practice-ticket .first-gift{margin-top:8px;padding:5px 8px}
+.court .practice-ticket .first-gift img{max-height:48px}
+.court .practice-ticket .ticket-reward{margin:7px 0}
+.court .practice-ticket .action-hint,.court .practice-ticket .ticket-note,.court .practice-ticket .journey-steps{display:none}
+.court .journey-panel,.court .spirit-fold,.court .reset-zone{max-width:780px;margin:12px auto}
+.court .journey-panel{padding:0;background:#fffdfb}
+.world-summary{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 15px;cursor:pointer;list-style:none;font-weight:700;font-size:.92rem}
+.world-summary small{color:#8a7494;font-size:.68rem;font-weight:400}
+.world-summary:after{content:'+';font-size:1.3rem;color:#9676b7}
+.journey-panel[open] .world-summary:after{content:'−'}
+.journey-inner{padding:0 15px 15px}
+.court .reset-zone summary{cursor:pointer;font-size:.72rem;color:#8a7494;margin-bottom:8px}
+@media(max-width:420px){.court .palace{min-height:340px}.world-spots .spot{min-width:80px;font-size:.76rem;min-height:45px;padding:6px 7px}.court .palace .dancer{right:19%;height:60%;max-width:51%}.court .palace-copy{left:15px;bottom:15px}.court .palace h1{font-size:2rem}}

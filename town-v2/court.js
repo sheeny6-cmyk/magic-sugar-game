@@ -305,3 +305,5 @@
   refresh();
   if (!T.named()) setTimeout(function () { openNick('welcome'); }, 220);
 })();
+
+document.querySelectorAll('[data-open-panel]').forEach(function(link){link.addEventListener('click',function(e){var panel=document.getElementById(link.dataset.openPanel);if(!panel)return;e.preventDefault();panel.open=true;panel.scrollIntoView({block:'start',behavior:'smooth'});});});
