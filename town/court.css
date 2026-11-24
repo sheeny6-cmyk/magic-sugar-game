@@ -457,3 +457,5 @@
 .mastery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:8px}.mastery-grid div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#f6f0f8;padding:8px;border-radius:8px}.mastery-grid small{width:100%;color:#8c7898}
 body[data-kingdom-life="sprout"] .journey-panel{border-color:#b6d0bc}body[data-kingdom-life="bloom"] .journey-panel{border-color:#d4b66f;background:linear-gradient(145deg,#fffaf2,#faf1ff)}
 @media(max-width:360px){.journey-panel{padding:12px}.album-card{flex-direction:column;text-align:center}.album-card img{width:50px;height:58px}}
+
+.album-card.locked{background:#f5f3f5;border-style:dashed}.album-card.locked img{opacity:.65}.album-card.locked small{color:#746a7c}
