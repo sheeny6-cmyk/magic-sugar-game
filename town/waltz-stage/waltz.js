@@ -1092,7 +1092,7 @@
     cancelAnimationFrame(raf);
     mode = 'result';
     var total = notes.length;
-    var acc = (stats.perfect + stats.good * 0.6) / total;
+    var acc = (stats.perfect + stats.good * 0.65) / total;
     var rank = acc >= 0.93 ? 'S' : acc >= 0.82 ? 'A' : acc >= 0.66 ? 'B' : 'C';
     var lines = {
       S: '와, 왈츠가 슈가의 것이 되었어요. 세 박이 몸에 그대로 새겨졌네요.',
@@ -1111,7 +1111,7 @@
     var rows = '';
     ['cat', 'jump', 'beam', 'turn'].forEach(function (k) {
       var r = byType[k], n = r.p + r.g + r.m;
-      var pct = n ? Math.round(((r.p + r.g * 0.6) / n) * 100) : 0;
+      var pct = n ? Math.round(((r.p + r.g * 0.65) / n) * 100) : 0;
       rows += '<div class="row"><span>' + NAMES[k] + '</span><span class="bar"><i style="width:' + pct + '%"></i></span><span>' + r.p + '/' + n + '</span></div>';
     });
     $('resMoves').innerHTML = rows;
