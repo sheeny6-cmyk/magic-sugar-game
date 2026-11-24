@@ -151,7 +151,8 @@
     Object.keys(T.POSES).forEach(function(pose){var img=new Image();img.src=T.dancerArt(s.worn,pose);});
     $('sMove').textContent = '준비 자세';
     $('sCue').textContent = '연습 효과 · 판정 여유 +' + power.good + 'ms' + (s.kingdom.meal ? ' · ' + s.kingdom.meal.name + ' 기운' : '') + '. 링이 겹치는 순간을 탭!';
-    var begin = function () { if (band && show) band.start(SONG, Math.max(0, performance.now() - show.p0)); };
+    var active = show;
+    var begin = function () { if (band && show === active && ctx && ctx.state === 'running' && band.start(SONG, Math.max(0, performance.now() - show.p0))) show.audioZero = band.startedAt(); };
     if (ctx && ctx.state === 'suspended') ctx.resume().then(begin).catch(begin);
     else begin();
     if (!$('show').open) $('show').showModal();
@@ -161,7 +162,7 @@
     show.raf = requestAnimationFrame(loop);
   }
 
-  function nowMs() { return performance.now() - show.p0; }
+  function nowMs() { return show && actx && Number.isFinite(show.audioZero) ? (actx.currentTime-show.audioZero)*1000 : performance.now() - show.p0; }
 
   function loop() {
     if (!show || show.done) return;
