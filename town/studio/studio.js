@@ -16,17 +16,17 @@
      한 번 놓칠 때 잃는 HP(damage)가 실제로 달라진다. */
   var MODES = {
     easy: {
-      key: 'easy', label: 'EASY', title: '발레가 조금은 쉬워져요',
-      note: '노트가 천천히 다가와요 · 판정 넉넉 · 놓쳐도 HP -12',
-      approach: 2900, window: 1.4, damage: 12
+      key: 'easy', label: 'HEALING', title: '편안하게 춤추기',
+      note: '느린 노트 · 넉넉한 판정 · 실패 없이 끝까지',
+      approach: 2900, window: 1.4, damage: 0
     },
     normal: {
-      key: 'normal', label: 'NORMAL', title: '발레가 꽤 쉬워져요',
-      note: '기본 속도 · 기준 판정 · 놓치면 HP -20',
-      approach: 2300, window: 1, damage: 20
+      key: 'normal', label: 'NORMAL', title: '정확한 박자에 도전',
+      note: '기본 속도 · 기준 판정 · 콤보 중심',
+      approach: 2300, window: 1, damage: 0
     },
     hard: {
-      key: 'hard', label: 'HARD', title: '발레가 너무너무 쉬워져요',
+      key: 'hard', label: 'CHALLENGE', title: '무대 실력에 도전',
       note: '노트가 쏜살같이 · 판정 타이트 · 놓치면 HP -30',
       approach: 1700, window: 0.72, damage: 30
     }
@@ -238,7 +238,7 @@
     el.className = 'warn-bubble on';
   }
   function hurtHP(loss, text) {
-    if (!ses || ses.dead) return;
+    if (!ses || ses.dead || loss <= 0) return;
     ses.hp = Math.max(0, ses.hp - loss);
     paintHP();
     warn(text, loss);
@@ -497,13 +497,14 @@
       run: run, id: run.id, kind: kind, chart: chart, notes: notes,
       mode: mode.key, approach: mode.approach, damage: mode.damage,
       hp: hpMax, maxHP: hpMax, dead: false,
-      judged: 0, combo: 0, maxCombo: 0, perfect: 0, good: 0, miss: 0,
+      judged: 0, combo: 0, maxCombo: 0, perfect: 0, great: 0, good: 0, miss: 0,
       shields: buffs.shields, comboRate: buffs.comboRate, noteCoins: buffs.noteCoins, window: buffs.window,
       meal: meal ? meal.buff : {}, moveAt: -1, beatPose: 'plie', finished: false, sending: false,
       musicStarted: false, raf: 0, interrupted: false
     };
     paintDots();
     paintCount();
+    $('lHpRow').hidden = mode.key !== 'hard';
     paintHP();
     applySound();
     var greet = T.SPIRITS[mate || teachers[kind]];
@@ -822,7 +823,7 @@
 
   function hitNote(n, verdict) {
     n.judged = true; n.result = verdict; ses.judged++;
-    if (verdict === 'perfect') ses.perfect++; else ses.good++;
+    if (verdict === 'perfect') ses.perfect++; else if (verdict === 'great') ses.great++; else ses.good++;
     ses.combo++;
     if (ses.combo > ses.maxCombo) ses.maxCombo = ses.combo;
     popNote(n);
@@ -912,10 +913,12 @@
     if (!ses || ses.sending) return;
     ses.sending = true;
     var run = ses.run;
+    var moves = {};
+    ses.notes.forEach(function(n){ if (['perfect','great','good'].includes(n.result)) moves[n.type] = (moves[n.type] || 0) + (n.result === 'perfect' ? 2 : 1); });
     var score = {
-      perfect: ses.perfect, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, notes: ses.notes.length,
+      lessonId: run.id, moves: moves, perfect: ses.perfect, great: ses.great, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, notes: ses.notes.length,
       comboCoins: Math.floor(ses.maxCombo / 4) * 2 * ses.comboRate,
-      noteCoins: ses.noteCoins * (ses.perfect + ses.good)
+      noteCoins: ses.noteCoins * (ses.perfect + ses.great + ses.good)
     };
     lastSurvived = { lessonId: run.id, hp: Math.round(ses.hp), maxHP: ses.maxHP, mode: ses.mode };
     ses.finished = true;
@@ -1019,7 +1022,9 @@
     $('rCoinsDetail').hidden = parts.length < 2;
     $('rCoinsDetail').textContent = parts.join(' + ') + '코인';
     $('rPerfect').textContent = r.perfect || 0;
+    $('rGreat').textContent = r.great || 0;
     $('rGood').textContent = r.good || 0;
+    $('rGrowth').textContent = r.growth ? '경험치 +' + r.growth.xp + ' · 플레이어 Lv.' + r.growth.level + (r.growth.level > r.growth.before ? ' · 레벨업!' : '') : '플레이어 Lv.' + T.playerLevel().n;
     $('rMiss').textContent = r.miss || 0;
     $('rCombo').textContent = r.maxCombo || 0;
     renderResultPass(r);
@@ -1055,7 +1060,7 @@
       (T.stageReady() ? '' : ' · 왕립 극장까지 ' + T.stageLeft() + '개');
     var st = Object.keys(r.stats || {}).map(function (k) { return T.STATS[k].label + ' +' + r.stats[k]; }).join(' · ');
     $('rGains').textContent = st + ' · 다음 수업 판정 여유 +' + T.practicePower(r.kind, s).timing + 'ms';
-    if (lastSurvived && lastSurvived.lessonId === r.lessonId) {
+    if (lastSurvived && lastSurvived.lessonId === r.lessonId && lastSurvived.mode === 'hard') {
       $('rSurvive').hidden = false;
       $('rSurvive').textContent = '살아남은 HP ' + lastSurvived.hp + ' / ' + lastSurvived.maxHP +
         ' · ' + (MODES[lastSurvived.mode] || MODES.normal).label + ' 모드';
@@ -1185,7 +1190,7 @@
     mode: function () { return readMode(); },
     pickMode: function (id) { pickMode(id); },
     notes: function () { return ses ? ses.notes.map(function (n) { return { t: n.t, type: n.type, judged: n.judged, result: n.result }; }) : []; },
-    score: function () { return ses ? { perfect: ses.perfect, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, window: ses.window, shields: ses.shields } : null; },
+    score: function () { return ses ? { perfect: ses.perfect, great: ses.great, good: ses.good, miss: ses.miss, maxCombo: ses.maxCombo, window: ses.window, shields: ses.shields } : null; },
     audio: function () { return actx ? { state: actx.state, time: actx.currentTime, sound: soundOn } : null; },
     music: function () {
       var m = band && band.info();
