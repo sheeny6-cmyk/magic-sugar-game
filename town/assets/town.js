@@ -1190,9 +1190,8 @@
       s.shows = (s.shows || 0) + 1;
       if (s.shows === 1) addJournal(s, 'first-show', '🎭', nick() + '님이 왕립 극장 첫 무대에 올랐어요. 마지막 인사까지 박수가 이어졌어요.');
       if (!s.bestGrade || 'SABC'.indexOf(grade) < 'SABC'.indexOf(s.bestGrade)) s.bestGrade = grade;
-      s.show = record;
-      if (s.kingdom.debutOutfit) { /* 이미 데뷔 의상이 있으면 유지한다 */ }
-      else s.kingdom.debutOutfit = s.worn;
+      if (work === 'debut') s.show = record;
+      if (work === 'debut' && !s.kingdom.debutOutfit) s.kingdom.debutOutfit = s.worn;
       if (work === 'debut') {
         if (s.kingdom.meal) record.meal = { name: s.kingdom.meal.name, kind: s.kingdom.meal.kind };
         s.kingdom.meal = null;
