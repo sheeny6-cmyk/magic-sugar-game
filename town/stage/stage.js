@@ -137,7 +137,7 @@
     var meal = s.kingdom.meal && s.kingdom.meal.buff ? s.kingdom.meal.buff : {};
     WINDOW = { perfect: 150 + power.perfect + Math.round((meal.all || 0) / 2), good: 330 + power.good + (meal.all || 0) };
     show = {
-      times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
+      runId: 'debut-'+Date.now()+'-'+Math.random().toString(36).slice(2), times: times, at: 0, judged: 0, perfect: 0, good: 0, miss: 0, combo: 0, maxCombo: 0,
       p0: performance.now() + LEAD, done: false, sending: false, raf: 0, pose: null
     };
     $('sStep').textContent = '장면 0 / ' + CUES.length;
@@ -260,7 +260,7 @@
     var max = show.times.length * 100 + show.times.length * 10;
     var ratio = max ? sc / max : 0;
     var grade = ratio >= 0.9 ? 'S' : ratio >= 0.72 ? 'A' : ratio >= 0.5 ? 'B' : 'C';
-    var info = { grade: grade, score: sc, perfect: show.perfect, good: show.good, miss: show.miss, notes: show.times.length, maxCombo: show.maxCombo };
+    var info = { work:'debut', runId:show.runId, grade: grade, score: sc, perfect: show.perfect, good: show.good, miss: show.miss, notes: show.times.length, maxCombo: show.maxCombo };
     var record = null;
     try {
       record = await T.finishShow(info);
