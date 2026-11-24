@@ -328,7 +328,8 @@
     gifts: [], levelUp: null, fame: 0, show: null,
     lastServe: null, createdAt: 0, lesson: null, lastLessons: {},
     /* 먹어본 메뉴 도감: 분식집·카페 메뉴를 주문할 때마다 한 칸씩 쌓인다. */
-    tasted: { cafe: {}, snack: {} }
+    tasted: { cafe: {}, snack: {} },
+    journey: { xp: 0, mastery: { beat: 0, cat: 0, jump: 0, beam: 0, turn: 0 }, performances: {}, settled: [] }
   };
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
@@ -590,6 +591,7 @@
       addJournal(s, 'resume', '📖', '지금까지 수업 ' + s.classes + '회를 마쳤어요. 오늘부터 성장 일기에 한 줄씩 쌓여요.');
     }
     if (typeof raw.createdAt === 'number') s.createdAt = raw.createdAt;
+    s.journey = normalizeJourney(raw.journey, s);
     return s;
   }
 
@@ -663,6 +665,57 @@
     });
   }
 
+  /* V2: 발레단 직급과 장기 성장 레벨을 분리한다. 기존 지갑은 최초에만 이관한다. */
+  var WORKS = { debut: { name: '첫 춤의 초대장' }, waltz: { name: '라일락 왈츠' } };
+  function safeCount(n, cap) { return Number.isFinite(n) ? Math.max(0, Math.min(cap, Math.round(n))) : 0; }
+  function normalizeJourney(raw, state) {
+    var j = clone(DEFAULT.journey);
+    if (!raw || typeof raw !== 'object') {
+      j.xp = safeCount(state.classes * 45 + state.shows * 90, 10000000);
+      if (state.shows) j.performances.debut = { count: state.shows, grade: /^[SABC]$/.test(state.bestGrade) ? state.bestGrade : 'C', accuracy: 0, combo: 0, firstAt: state.show ? state.show.at : 0, outfit: state.show && state.show.outfit || state.worn };
+      return j;
+    }
+    j.xp = safeCount(raw.xp, 10000000);
+    Object.keys(j.mastery).forEach(function(k) { j.mastery[k] = safeCount(raw.mastery && raw.mastery[k], 450); });
+    Object.keys(WORKS).forEach(function(k) {
+      var p = raw.performances && raw.performances[k];
+      if (!p || !p.count) return;
+      j.performances[k] = { count: safeCount(p.count, 1000000), grade: /^[SABC]$/.test(p.grade) ? p.grade : 'C', accuracy: safeCount(p.accuracy,100), combo: safeCount(p.combo,1000), firstAt: safeCount(p.firstAt, 9999999999999), outfit: DRESS.some(function(d){return d.id === p.outfit;}) ? p.outfit : 'basic' };
+    });
+    if (Array.isArray(raw.settled)) j.settled = raw.settled.filter(function(id){ return typeof id === 'string' && id.length <= 100; }).slice(-128);
+    return j;
+  }
+  function xpAt(level) { var n = level - 1; return 80 * n + 5 * n * (n - 1); }
+  function playerLevel(state) {
+    var xp = (state || get()).journey.xp, n = 1;
+    while (n < 100 && xp >= xpAt(n+1)) n++;
+    return { n:n, xp:xp, have:xp-xpAt(n), need:n<100?xpAt(n+1)-xpAt(n):0, pct:n===100?100:Math.min(100,Math.floor(100*(xp-xpAt(n))/(xpAt(n+1)-xpAt(n)))) };
+  }
+  function masteryOf(key,state) {
+    var points = (state || get()).journey.mastery[key] || 0, n=1;
+    while(n<10 && points >= 5*n*(n+1)) n++;
+    return {n:n,points:points,next:n<10?5*n*(n+1):450};
+  }
+  function journeyEarn(s, amount, moves) {
+    var before = playerLevel(s).n;
+    s.journey.xp = safeCount(s.journey.xp + amount, 10000000);
+    Object.keys(s.journey.mastery).forEach(function(k){ s.journey.mastery[k] = safeCount(s.journey.mastery[k] + safeCount(moves && moves[k], 100), 450); });
+    return { xp:amount, before:before, level:playerLevel(s).n };
+  }
+  function recordPerformance(s, work, score, record) {
+    var old = s.journey.performances[work], first = !old;
+    var p = old || {count:0,grade:'C',accuracy:0,combo:0,firstAt:Date.now(),outfit:s.worn};
+    p.count++;
+    if ('SABC'.indexOf(record.grade) < 'SABC'.indexOf(p.grade)) p.grade = record.grade;
+    var accuracy = score.notes ? safeCount(100*((score.perfect||0)+.85*(score.great||0)+.65*(score.good||0))/score.notes,100) : 0;
+    p.accuracy = Math.max(p.accuracy,accuracy);
+    p.combo = Math.max(p.combo,safeCount(score.maxCombo,1000));
+    s.journey.performances[work] = p;
+    record.work = work; record.first = first;
+    record.growth = journeyEarn(s, 50 + Math.round(accuracy/2) + (first?40:0), score.moves);
+    if (first) { addJournal(s, 'work-'+work, '🎭', WORKS[work].name + ' 공연 기록이 앨범에 추가됐어요.'); s.kingdom.life += 3; }
+    return record;
+  }
   function rewardFor(kind, potion) {
     var rules = PRACTICE[kind], coins = rules.coins, life = rules.life;
     var extra = potion && effectFor(potion.id, potion.level);
@@ -684,7 +737,7 @@
     bonus += mealCoins;
     // Everyone gets attendance credit; successful technique earns more stats and coins.
     if (score && score.notes > 0) {
-      var accuracy = Math.min(1, ((score.perfect || 0) + 0.65 * (score.good || 0)) / score.notes);
+      var accuracy = Math.min(1, ((score.perfect || 0) + 0.85 * (score.great || 0) + 0.65 * (score.good || 0)) / score.notes);
       Object.keys(classStats).forEach(function (key) {
         var extra = stats[key] - classStats[key];
         stats[key] = Math.max(1, Math.round(classStats[key] * (0.5 + 0.5 * accuracy))) + extra;
@@ -704,7 +757,7 @@
       stats: stats, potion: potion, gift: gift
     };
     if (score) {
-      receipt.notes = score.notes || 0; receipt.perfect = score.perfect || 0; receipt.good = score.good || 0;
+      receipt.notes = score.notes || 0; receipt.perfect = score.perfect || 0; receipt.great = score.great || 0; receipt.good = score.good || 0;
       receipt.miss = score.miss || 0; receipt.maxCombo = score.maxCombo || 0;
       receipt.comboCoins = Math.max(0, Math.round(score.comboCoins || 0));
       receipt.noteCoins = Math.max(0, Math.round(score.noteCoins || 0));
@@ -717,6 +770,8 @@
     if (k.meal) receipt.meal = clone(k.meal);
     k.meal = null;
     Object.keys(stats).forEach(function (key) { s.stats[key] += stats[key]; });
+    var firstCourse = !s.stamps[run.kind];
+    receipt.growth = journeyEarn(s, 35 + Math.round(35 * (score && score.notes ? accuracy : 1)) + (firstCourse ? 20 : 0), score && score.moves);
     s.classes += 1;
     s.stamps[run.kind] += 1;
     s.lastLessons[run.kind] = receipt.keys;
@@ -746,7 +801,7 @@
   // A rhythm lesson settles when the song ends, with its judgement counts as the score.
   function finishRhythm(s, classStats, score) {
     var run = s.lesson;
-    if (!run || run.mode !== 'rhythm' || !run.chart) return null;
+    if (!run || run.mode !== 'rhythm' || !run.chart || (score && score.lessonId && score.lessonId !== run.id)) return null;
     return settlePractice(s, run, classStats, score);
   }
 
@@ -1114,10 +1169,14 @@
   /* ---------- 왕립 극장 공연 기록 ---------- */
   function finishShow(score) {
     return updateWallet(function (s) {
-      var grade = String(score.grade || 'B').slice(0, 1);
+      var work = score.work === 'waltz' ? 'waltz' : 'debut';
+      if (score.runId && s.journey.settled.includes(score.runId)) return null;
+      if (s.classes < STAGE_CLASSES) return null;
+      var grade = /^[SABC]$/.test(score.grade) ? score.grade : 'C';
       var base = 60, bonus = { S: 140, A: 100, B: 60, C: 30 }[grade] || 40;
       var coins = base + bonus + Math.max(0, Math.round(score.perfect || 0)) * 2;
-      var mealCoins = s.kingdom.meal && s.kingdom.meal.buff && s.kingdom.meal.buff.coins ? Math.max(0, Math.round(s.kingdom.meal.buff.coins)) : 0;
+      var mealCoins = work === 'debut' && s.kingdom.meal && s.kingdom.meal.buff && s.kingdom.meal.buff.coins ? Math.max(0, Math.round(s.kingdom.meal.buff.coins)) : 0;
+      if (work === 'waltz') coins = (s.journey.performances.waltz ? 45 : 110) + {S:55,A:40,B:25,C:10}[grade];
       coins += mealCoins;
       var fame = { S: 3, A: 2, B: 1, C: 1 }[grade] || 1;
       var record = {
@@ -1134,8 +1193,12 @@
       s.show = record;
       if (s.kingdom.debutOutfit) { /* 이미 데뷔 의상이 있으면 유지한다 */ }
       else s.kingdom.debutOutfit = s.worn;
-      if (s.kingdom.meal) record.meal = { name: s.kingdom.meal.name, kind: s.kingdom.meal.kind };
-      s.kingdom.meal = null;
+      if (work === 'debut') {
+        if (s.kingdom.meal) record.meal = { name: s.kingdom.meal.name, kind: s.kingdom.meal.kind };
+        s.kingdom.meal = null;
+      }
+      recordPerformance(s, work, score, record);
+      if (score.runId) { s.journey.settled.push(score.runId); s.journey.settled = s.journey.settled.slice(-128); }
       grantGifts(s);
       return record;
     });
@@ -1148,6 +1211,7 @@
     updateWallet: updateWallet, classFee: classFee, PRACTICE: PRACTICE, STAFF: STAFF, staffLine: staffLine,
     GRANT: GRANT, POTION_PRICE: POTION_PRICE, ORDERS_PER_LEVEL: ORDERS_PER_LEVEL,
     staffLevel: staffLevel, effectFor: effectFor, spiritArt: spiritArt, orderPotion: orderPotion, rewardFor: rewardFor, finishPractice: finishPractice, finishRhythm: finishRhythm,
+    playerLevel: playerLevel, masteryOf: masteryOf, WORKS: WORKS,
     level: level, levelOf: levelOf, LEVELS: LEVELS, RANKS: RANKS, rankOf: rankOf, rankReq: rankReq, statTotal: statTotal, prima: prima,
     LEVEL_GIFTS: LEVEL_GIFTS, ackLevelUp: ackLevelUp, finishShow: finishShow, stampsTotal: stampsTotal, stageReady: stageReady, stageLeft: stageLeft, STAGE_CLASSES: STAGE_CLASSES, practicePower: practicePower, stagePower: stagePower, addClass: addClass,
     nick: nick, named: named, setNick: setNick, NICK_MAX: NICK_MAX, NICK_DEFAULT: NICK_DEFAULT, josa: josa, hasBatchim: hasBatchim,
